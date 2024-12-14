@@ -2,8 +2,8 @@ import { DatabaseTable } from "../state/DatabaseTable";
 import { DbDeck } from "../state/Deck";
 import { DbGame, Game } from "../state/Game";
 import { DbPlayer } from "../state/Player";
-import { parseAsJson } from "../utils/csv";
-import { createItem, getItemsByName } from "../utils/firestore";
+import { parseAsJson } from "../utils/CSV";
+import { createItem, getItemsByName } from "../utils/Firestore";
 
 export async function run() {
   parseAsJson("games.csv", async (rows) => {

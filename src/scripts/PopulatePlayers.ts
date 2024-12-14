@@ -1,6 +1,6 @@
 import { DatabaseTable } from "../state/DatabaseTable";
 import { DbPlayer, Player } from "../state/Player";
-import { createItem } from "../utils/firestore";
+import { createItem } from "../utils/Firestore";
 
 const PLAYERS = ["Gabriel", "Simon", "Chloé", "Peru", "Alex"];
 export async function run() {

@@ -7,6 +7,7 @@ import {
   getDoc,
   getDocs,
   onSnapshot,
+  orderBy,
   query,
   updateDoc,
   where,
@@ -14,8 +15,14 @@ import {
 import { db } from "../config/firebase";
 import { DatabaseTable } from "../state/DatabaseTable";
 
-export async function getItems<T>(table: DatabaseTable): Promise<T[]> {
-  const snapshot = await getDocs(collection(db, table));
+export async function getItems<T>(
+  table: DatabaseTable,
+  orderKey?: string
+): Promise<T[]> {
+  const q = orderKey
+    ? query(collection(db, table), orderBy(orderKey))
+    : query(collection(db, table));
+  const snapshot = await getDocs(q);
   const items: T[] = [];
   snapshot.forEach((doc: DocumentData) => {
     if (!doc.data().deleted) {

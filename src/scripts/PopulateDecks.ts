@@ -1,7 +1,7 @@
 import { DatabaseTable } from "../state/DatabaseTable";
 import { DbDeck, Deck } from "../state/Deck";
-import { parseAsJson } from "../utils/csv";
-import { createItem } from "../utils/firestore";
+import { parseAsJson } from "../utils/CSV";
+import { createItem } from "../utils/Firestore";
 
 export async function run() {
   parseAsJson("decks.csv", (rows) => {
