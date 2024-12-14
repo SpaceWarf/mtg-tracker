@@ -68,9 +68,9 @@ export async function run() {
         player4: {
           player: player4[0].id,
           deck: deck4[0].id,
-          started: row["Started? 3"] === "TRUE",
-          t1SolRing: row["T1 Sol Ring? 3"] === "TRUE",
-          won: row["Won? 3"] === "TRUE",
+          started: row["Started? 4"] === "TRUE",
+          t1SolRing: row["T1 Sol Ring? 4"] === "TRUE",
+          won: row["Won? 4"] === "TRUE",
         },
         comments: row.Comments,
       };

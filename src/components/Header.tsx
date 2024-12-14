@@ -11,7 +11,7 @@ export function Header({ children }: OwnProps) {
 
   return (
     <>
-      <Flex className="p-3 mb-3 bg-gray-800" align="end">
+      <Flex className="p-3 bg-gray-800" align="end">
         <Flex className="mr-5" align="center">
           <img width="40px" src="/src/assets/img/chalice.png"></img>
           <p>Calice de Marbre</p>

@@ -1,19 +1,22 @@
-import { Spinner } from "@radix-ui/themes";
+import { Flex, Spinner, Switch, Text } from "@radix-ui/themes";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { DeckService } from "../services/Deck";
 import { PlayerService } from "../services/Player";
 import { DatabaseTable } from "../state/DatabaseTable";
 import { DbGame } from "../state/Game";
+import { GameViewType } from "../state/GameViewType";
 import { getItems } from "../utils/Firestore";
-import { GamesTable } from "./GamesTable";
+import { GamesCardView } from "./GamesCardView";
+import { GamesTableView } from "./GamesTableView";
 
 export function GamesViewer() {
   const { data, isLoading } = useQuery("getGames", () =>
     getItems<DbGame>(DatabaseTable.GAMES, "date")
   );
-  const [populatingGames, setPopulatingGames] = useState<boolean>(false);
+  const [populatingGames, setPopulatingGames] = useState<boolean>(true);
   const [games, setGames] = useState<DbGame[]>([]);
+  const [viewType, setViewType] = useState<GameViewType>(GameViewType.CARDS);
 
   const populateGames = useCallback(async () => {
     if (data) {
@@ -50,9 +53,33 @@ export function GamesViewer() {
     }
   }, [isLoading, populateGames]);
 
-  if (isLoading || populatingGames) {
-    return <Spinner size="3" />;
+  if (isLoading || populatingGames || !data?.length) {
+    return <Spinner className="mt-5" size="3" />;
   }
 
-  return <GamesTable games={games} />;
+  return (
+    <div className="m-5 max-w-7xl">
+      <Flex className="mb-5">
+        <Text as="label" size="2">
+          <Flex gap="2">
+            Table
+            <Switch
+              size="2"
+              checked={viewType === GameViewType.CARDS}
+              onClick={() =>
+                setViewType(
+                  viewType === GameViewType.CARDS
+                    ? GameViewType.TABLE
+                    : GameViewType.CARDS
+                )
+              }
+            />
+            Cards
+          </Flex>
+        </Text>
+      </Flex>
+      {viewType === GameViewType.CARDS && <GamesCardView games={games} />}
+      {viewType === GameViewType.TABLE && <GamesTableView games={games} />}
+    </div>
+  );
 }

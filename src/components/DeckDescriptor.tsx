@@ -6,12 +6,12 @@ type OwnProps = {
 
 export function DeckDescriptor(props: OwnProps) {
   return (
-    <>
+    <div>
       <span>{props.deck.name}</span>
       <br />
-      {props.deck.commander && (
+      {/* {props.deck.commander && (
         <span className="text-xs">[{props.deck.commander}]</span>
-      )}
-    </>
+      )} */}
+    </div>
   );
 }
