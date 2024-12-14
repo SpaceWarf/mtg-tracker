@@ -1,5 +1,7 @@
-import { Flex } from "@radix-ui/themes";
+import { Flex, Heading } from "@radix-ui/themes";
+import { useCallback, useEffect, useState } from "react";
 import { DbGame } from "../state/Game";
+import { getLongDateString } from "../utils/Date";
 import { GameCard } from "./GameCard";
 
 type OwnProps = {
@@ -7,11 +9,37 @@ type OwnProps = {
 };
 
 export function GamesCardView({ games }: OwnProps) {
-  return (
-    <Flex flexGrow="1" gap="25px" wrap="wrap" justify="center">
-      {games.map((game) => (
-        <GameCard key={game.id} game={game} />
-      ))}
-    </Flex>
-  );
+  const [dateMap, setDateMap] = useState<Map<string, DbGame[]>>(new Map());
+
+  const populateDateMap = useCallback((games: DbGame[]) => {
+    const map = new Map<string, DbGame[]>();
+    games.forEach((game) => {
+      const entry = map.get(game.date);
+      if (entry) {
+        map.set(game.date, [...entry, game]);
+      } else {
+        map.set(game.date, [game]);
+      }
+    });
+    setDateMap(map);
+  }, []);
+
+  useEffect(() => {
+    populateDateMap(games);
+  }, [games, populateDateMap]);
+
+  return Array.from(dateMap.entries()).map(([date, gamesForDate]) => (
+    <>
+      <Heading className="mb-5 pb-2 border-b">
+        {getLongDateString(date)}
+      </Heading>
+      <Flex className="mb-10" flexGrow="1" gap="25px" wrap="wrap">
+        {gamesForDate.map((game) => (
+          <div style={{ flexBasis: "calc(50% - 12.5px)" }}>
+            <GameCard key={game.id} game={game} />
+          </div>
+        ))}
+      </Flex>
+    </>
+  ));
 }

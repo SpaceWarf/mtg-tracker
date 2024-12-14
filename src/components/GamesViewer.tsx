@@ -32,6 +32,20 @@ export function GamesViewer() {
   const [populatedGames, setPopulatedGames] = useState<DbGame[]>([]);
   const [viewType, setViewType] = useState<GameViewType>(GameViewType.CARDS);
 
+  const getPlayerByIdFromContext = useCallback(
+    (id: string): DbPlayer | undefined => {
+      return dbPlayers?.find((player) => player.id === id) ?? undefined;
+    },
+    [dbPlayers]
+  );
+
+  const getDeckByIdFromContext = useCallback(
+    (id: string): DbDeck | undefined => {
+      return dbDecks?.find((deck) => deck.id === id) ?? undefined;
+    },
+    [dbDecks]
+  );
+
   const populateGames = useCallback(async () => {
     if (dbGames) {
       setPopulatingGames(true);
@@ -51,7 +65,7 @@ export function GamesViewer() {
       setPopulatedGames(populated);
       setPopulatingGames(false);
     }
-  }, [dbGames]);
+  }, [dbGames, getDeckByIdFromContext, getPlayerByIdFromContext]);
 
   useEffect(() => {
     if (!loadingGames) {
@@ -79,14 +93,6 @@ export function GamesViewer() {
 
   function loading(): boolean {
     return loadingGames || loadingPlayers || loadingDecks || populatingGames;
-  }
-
-  function getPlayerByIdFromContext(id: string): DbPlayer | undefined {
-    return dbPlayers?.find((player) => player.id === id) ?? undefined;
-  }
-
-  function getDeckByIdFromContext(id: string): DbDeck | undefined {
-    return dbDecks?.find((deck) => deck.id === id) ?? undefined;
   }
 
   if (loading()) {

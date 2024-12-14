@@ -27,7 +27,12 @@ export function Main() {
 
   return (
     <StrictMode>
-      <Theme appearance="dark" accentColor="blue" grayColor="slate">
+      <Theme
+        appearance="dark"
+        accentColor="blue"
+        grayColor="slate"
+        scaling="90%"
+      >
         <QueryClientProvider client={queryClient}>
           <DataContext.Provider
             value={{ games, setGames, players, setPlayers, decks, setDecks }}

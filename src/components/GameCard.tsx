@@ -1,4 +1,4 @@
-import { Card, Grid } from "@radix-ui/themes";
+import { Card, Grid, Separator } from "@radix-ui/themes";
 import { DbGame, GamePlayer } from "../state/Game";
 import { GamePlayerSection } from "./GamePlayerSection";
 
@@ -29,13 +29,19 @@ export function GameCard({ game }: OwnProps) {
   }
 
   return (
-    <Card style={{ flexBasis: "calc(50% - 12.5px)" }} size="3">
+    <Card size="3">
       <Grid columns="2" rows="2" width="auto" gap="5">
         <GamePlayerSection player={getPlayerbyName(orderedPlayerNames[0])} />
         <GamePlayerSection player={getPlayerbyName(orderedPlayerNames[1])} />
         <GamePlayerSection player={getPlayerbyName(orderedPlayerNames[2])} />
         <GamePlayerSection player={getPlayerbyName(orderedPlayerNames[3])} />
       </Grid>
+      {game.comments && (
+        <>
+          <Separator className="mt-5 mb-3" size="4" />
+          <p>{game.comments}</p>
+        </>
+      )}
     </Card>
   );
 }
