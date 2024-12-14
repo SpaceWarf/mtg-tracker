@@ -5,9 +5,10 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Routes } from "react-router";
 import "./assets/styles/index.scss";
 import { Header } from "./components/Header.tsx";
-import { PageWrapper } from "./components/PageWrapper.tsx";
 import { DataContext } from "./contexts/DataContext.tsx";
 import { Games } from "./pages/Games.tsx";
+import { PageWrapper } from "./pages/PageWrapper.tsx";
+import { Players } from "./pages/Players.tsx";
 import { DbDeck } from "./state/Deck.ts";
 import { DbGame } from "./state/Game.ts";
 import { DbPlayer } from "./state/Player.ts";
@@ -48,7 +49,14 @@ export function Main() {
                       </PageWrapper>
                     }
                   />
-                  <Route path="/players" element={<Header></Header>} />
+                  <Route
+                    path="/players"
+                    element={
+                      <PageWrapper>
+                        <Players />
+                      </PageWrapper>
+                    }
+                  />
                   <Route path="/decks" element={<Header></Header>} />
                 </Routes>
               </BrowserRouter>

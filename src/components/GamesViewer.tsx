@@ -1,33 +1,19 @@
 import { Flex, Spinner, Switch, Text } from "@radix-ui/themes";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { DataContext } from "../contexts/DataContext";
-import { DatabaseTable } from "../state/DatabaseTable";
+import { useCallback, useEffect, useState } from "react";
+import { useDecks } from "../hooks/useDecks";
+import { useGames } from "../hooks/useGames";
+import { usePlayers } from "../hooks/usePlayers";
 import { DbDeck } from "../state/Deck";
 import { DbGame } from "../state/Game";
 import { GameViewType } from "../state/GameViewType";
 import { DbPlayer } from "../state/Player";
-import { getItems } from "../utils/Firestore";
 import { GamesCardView } from "./GamesCardView";
 import { GamesTableView } from "./GamesTableView";
 
 export function GamesViewer() {
-  const currentData = useContext(DataContext);
-  const { data: dbGames, isLoading: loadingGames } = useQuery(
-    "getGames",
-    () => getItems<DbGame>(DatabaseTable.GAMES, "date"),
-    { enabled: !currentData?.games.length }
-  );
-  const { data: dbPlayers, isLoading: loadingPlayers } = useQuery(
-    "getPlayers",
-    () => getItems<DbPlayer>(DatabaseTable.PLAYERS),
-    { enabled: !currentData?.players.length }
-  );
-  const { data: dbDecks, isLoading: loadingDecks } = useQuery(
-    "getDecks",
-    () => getItems<DbDeck>(DatabaseTable.DECKS),
-    { enabled: !currentData?.decks.length }
-  );
+  const { dbGames, loadingGames } = useGames();
+  const { dbPlayers, loadingPlayers } = usePlayers();
+  const { dbDecks, loadingDecks } = useDecks();
   const [populatingGames, setPopulatingGames] = useState<boolean>(true);
   const [populatedGames, setPopulatedGames] = useState<DbGame[]>([]);
   const [viewType, setViewType] = useState<GameViewType>(GameViewType.CARDS);
@@ -72,24 +58,6 @@ export function GamesViewer() {
       populateGames();
     }
   }, [loadingGames, populateGames]);
-
-  useEffect(() => {
-    if (dbGames?.length) {
-      currentData?.setGames(dbGames);
-    }
-  }, [dbGames, currentData]);
-
-  useEffect(() => {
-    if (dbPlayers?.length) {
-      currentData?.setPlayers(dbPlayers);
-    }
-  }, [dbPlayers, currentData]);
-
-  useEffect(() => {
-    if (dbDecks?.length) {
-      currentData?.setDecks(dbDecks);
-    }
-  }, [dbDecks, currentData]);
 
   function loading(): boolean {
     return loadingGames || loadingPlayers || loadingDecks || populatingGames;

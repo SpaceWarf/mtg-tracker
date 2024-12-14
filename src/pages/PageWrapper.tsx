@@ -1,6 +1,6 @@
 import { Flex } from "@radix-ui/themes";
 import { ReactElement } from "react";
-import { Header } from "./Header";
+import { Header } from "../components/Header";
 
 type OwnProps = {
   children?: ReactElement;
