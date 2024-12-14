@@ -1,6 +1,6 @@
 import { Flex, TabNav } from "@radix-ui/themes";
 import { ReactElement } from "react";
-import { useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
 
 type OwnProps = {
   children?: ReactElement;
@@ -13,22 +13,19 @@ export function Header({ children }: OwnProps) {
     <>
       <Flex className="p-3 bg-gray-800" align="end">
         <Flex className="mr-5" align="center">
-          <img width="40px" src="/src/assets/img/chalice.png"></img>
+          <img width="40px" src="/img/chalice.png"></img>
           <p>Calice de Marbre</p>
         </Flex>
         <nav>
           <TabNav.Root>
-            <TabNav.Link href="/" active={location.pathname === "/"}>
-              Games
+            <TabNav.Link asChild active={location.pathname === "/"}>
+              <Link to="/">Games</Link>
             </TabNav.Link>
-            <TabNav.Link
-              href="/players"
-              active={location.pathname === "/players"}
-            >
-              Players
+            <TabNav.Link asChild active={location.pathname === "/players"}>
+              <Link to="/players">Players</Link>
             </TabNav.Link>
-            <TabNav.Link href="/decks" active={location.pathname === "/decks"}>
-              Decks
+            <TabNav.Link asChild active={location.pathname === "/decks"}>
+              <Link to="/decks">Decks</Link>
             </TabNav.Link>
           </TabNav.Root>
         </nav>

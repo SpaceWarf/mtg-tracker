@@ -1,59 +1,95 @@
 import { Flex, Spinner, Switch, Text } from "@radix-ui/themes";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { DeckService } from "../services/Deck";
-import { PlayerService } from "../services/Player";
+import { DataContext } from "../contexts/DataContext";
 import { DatabaseTable } from "../state/DatabaseTable";
+import { DbDeck } from "../state/Deck";
 import { DbGame } from "../state/Game";
 import { GameViewType } from "../state/GameViewType";
+import { DbPlayer } from "../state/Player";
 import { getItems } from "../utils/Firestore";
 import { GamesCardView } from "./GamesCardView";
 import { GamesTableView } from "./GamesTableView";
 
 export function GamesViewer() {
-  const { data, isLoading } = useQuery("getGames", () =>
-    getItems<DbGame>(DatabaseTable.GAMES, "date")
+  const currentData = useContext(DataContext);
+  const { data: dbGames, isLoading: loadingGames } = useQuery(
+    "getGames",
+    () => getItems<DbGame>(DatabaseTable.GAMES, "date"),
+    { enabled: !currentData?.games.length }
+  );
+  const { data: dbPlayers, isLoading: loadingPlayers } = useQuery(
+    "getPlayers",
+    () => getItems<DbPlayer>(DatabaseTable.PLAYERS),
+    { enabled: !currentData?.players.length }
+  );
+  const { data: dbDecks, isLoading: loadingDecks } = useQuery(
+    "getDecks",
+    () => getItems<DbDeck>(DatabaseTable.DECKS),
+    { enabled: !currentData?.decks.length }
   );
   const [populatingGames, setPopulatingGames] = useState<boolean>(true);
-  const [games, setGames] = useState<DbGame[]>([]);
+  const [populatedGames, setPopulatedGames] = useState<DbGame[]>([]);
   const [viewType, setViewType] = useState<GameViewType>(GameViewType.CARDS);
 
   const populateGames = useCallback(async () => {
-    if (data) {
+    if (dbGames) {
       setPopulatingGames(true);
-      const populatedGames = [];
-      for (let i = 0; i < data.length; i++) {
-        const game = data[i];
-        game.player1.playerObj = await PlayerService.getById(
-          game.player1.player
-        );
-        game.player1.deckObj = await DeckService.getById(game.player1.deck);
-        game.player2.playerObj = await PlayerService.getById(
-          game.player2.player
-        );
-        game.player2.deckObj = await DeckService.getById(game.player2.deck);
-        game.player3.playerObj = await PlayerService.getById(
-          game.player3.player
-        );
-        game.player3.deckObj = await DeckService.getById(game.player3.deck);
-        game.player4.playerObj = await PlayerService.getById(
-          game.player4.player
-        );
-        game.player4.deckObj = await DeckService.getById(game.player4.deck);
-        populatedGames.push(game);
+      const populated = [];
+      for (let i = 0; i < dbGames.length; i++) {
+        const game = dbGames[i];
+        game.player1.playerObj = getPlayerByIdFromContext(game.player1.player);
+        game.player1.deckObj = getDeckByIdFromContext(game.player1.deck);
+        game.player2.playerObj = getPlayerByIdFromContext(game.player2.player);
+        game.player2.deckObj = getDeckByIdFromContext(game.player2.deck);
+        game.player3.playerObj = getPlayerByIdFromContext(game.player3.player);
+        game.player3.deckObj = getDeckByIdFromContext(game.player3.deck);
+        game.player4.playerObj = getPlayerByIdFromContext(game.player4.player);
+        game.player4.deckObj = getDeckByIdFromContext(game.player4.deck);
+        populated.push(game);
       }
-      setGames(populatedGames);
+      setPopulatedGames(populated);
       setPopulatingGames(false);
     }
-  }, [data]);
+  }, [dbGames]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!loadingGames) {
       populateGames();
     }
-  }, [isLoading, populateGames]);
+  }, [loadingGames, populateGames]);
 
-  if (isLoading || populatingGames || !data?.length) {
+  useEffect(() => {
+    if (dbGames?.length) {
+      currentData?.setGames(dbGames);
+    }
+  }, [dbGames, currentData]);
+
+  useEffect(() => {
+    if (dbPlayers?.length) {
+      currentData?.setPlayers(dbPlayers);
+    }
+  }, [dbPlayers, currentData]);
+
+  useEffect(() => {
+    if (dbDecks?.length) {
+      currentData?.setDecks(dbDecks);
+    }
+  }, [dbDecks, currentData]);
+
+  function loading(): boolean {
+    return loadingGames || loadingPlayers || loadingDecks || populatingGames;
+  }
+
+  function getPlayerByIdFromContext(id: string): DbPlayer | undefined {
+    return dbPlayers?.find((player) => player.id === id) ?? undefined;
+  }
+
+  function getDeckByIdFromContext(id: string): DbDeck | undefined {
+    return dbDecks?.find((deck) => deck.id === id) ?? undefined;
+  }
+
+  if (loading()) {
     return <Spinner className="mt-5" size="3" />;
   }
 
@@ -78,8 +114,12 @@ export function GamesViewer() {
           </Flex>
         </Text>
       </Flex>
-      {viewType === GameViewType.CARDS && <GamesCardView games={games} />}
-      {viewType === GameViewType.TABLE && <GamesTableView games={games} />}
+      {viewType === GameViewType.CARDS && (
+        <GamesCardView games={populatedGames} />
+      )}
+      {viewType === GameViewType.TABLE && (
+        <GamesTableView games={populatedGames} />
+      )}
     </div>
   );
 }
