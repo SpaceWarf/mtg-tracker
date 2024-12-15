@@ -1,6 +1,7 @@
-import { Spinner } from "@radix-ui/themes";
+import { Flex, Spinner } from "@radix-ui/themes";
 import { useDecks } from "../hooks/useDecks";
 import { useGames } from "../hooks/useGames";
+import { DeckCreateModal } from "./DeckCreateModal";
 import { DecksCardView } from "./DecksCardView";
 
 export function DecksViewer() {
@@ -17,6 +18,9 @@ export function DecksViewer() {
 
   return (
     <div className="m-5 max-w-7xl">
+      <Flex className="mb-5" justify="end" align="center">
+        <DeckCreateModal />
+      </Flex>
       <DecksCardView decks={dbDecks} games={dbGames} />
     </div>
   );

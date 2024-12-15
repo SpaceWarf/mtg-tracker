@@ -1,5 +1,6 @@
 import { Card, Flex, Heading, Strong, Table, Text } from "@radix-ui/themes";
 import { DbDeck } from "../state/Deck";
+import { DeckEditModal } from "./DeckEditModal";
 
 type OwnProps = {
   deck: DbDeck;
@@ -11,6 +12,9 @@ type OwnProps = {
 export function DeckCard({ deck, gamesPlayed, winCount, winRate }: OwnProps) {
   return (
     <Card size="3">
+      <Flex className="absolute right-3 top-3" justify="end">
+        <DeckEditModal deck={deck} />
+      </Flex>
       <Flex className="mb-3" direction="column">
         <Heading>{deck.name}</Heading>
         <Heading size="3">({deck.commander})</Heading>
