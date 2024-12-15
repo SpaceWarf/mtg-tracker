@@ -10,15 +10,25 @@ import {
 } from "@radix-ui/themes";
 import { DbDeck } from "../state/Deck";
 import { DeckEditModal } from "./DeckEditModal";
+import { SortHighlightIcon } from "./SortHighlightIcon";
 
 type OwnProps = {
   deck: DbDeck;
+  highlightedKey: string;
+  highlightedDirection: "asc" | "desc";
   gamesPlayed: number;
   winCount: number;
   winRate: number;
 };
 
-export function DeckCard({ deck, gamesPlayed, winCount, winRate }: OwnProps) {
+export function DeckCard({
+  deck,
+  highlightedKey,
+  highlightedDirection,
+  gamesPlayed,
+  winCount,
+  winRate,
+}: OwnProps) {
   return (
     <Card size="3">
       <Flex gap="3" className="absolute right-3 top-5" justify="end">
@@ -38,25 +48,43 @@ export function DeckCard({ deck, gamesPlayed, winCount, winRate }: OwnProps) {
           <Table.Row>
             <Table.RowHeaderCell>Games played</Table.RowHeaderCell>
             <Table.Cell>
-              <Text size="4">
-                <Strong>{gamesPlayed}</Strong>
-              </Text>
+              <Flex gap="3" align="center">
+                <Text size="4">
+                  <Strong>{gamesPlayed}</Strong>
+                </Text>
+                <SortHighlightIcon
+                  highlighted={highlightedKey === "gamesPlayed"}
+                  direction={highlightedDirection}
+                />
+              </Flex>
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.RowHeaderCell>Games won</Table.RowHeaderCell>
             <Table.Cell>
-              <Text size="4">
-                <Strong>{winCount}</Strong>
-              </Text>
+              <Flex gap="3" align="center">
+                <Text size="4">
+                  <Strong>{winCount}</Strong>
+                </Text>
+                <SortHighlightIcon
+                  highlighted={highlightedKey === "winCount"}
+                  direction={highlightedDirection}
+                />
+              </Flex>
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.RowHeaderCell>Win rate</Table.RowHeaderCell>
             <Table.Cell>
-              <Text size="4">
-                <Strong>{`${Math.round(winRate * 100)}%`}</Strong>
-              </Text>
+              <Flex gap="3" align="center">
+                <Text size="4">
+                  <Strong>{`${Math.round(winRate * 100)}%`}</Strong>
+                </Text>
+                <SortHighlightIcon
+                  highlighted={highlightedKey === "winRate"}
+                  direction={highlightedDirection}
+                />
+              </Flex>
             </Table.Cell>
           </Table.Row>
         </Table.Body>

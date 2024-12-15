@@ -7,3 +7,9 @@ export interface Deck {
 }
 
 export interface DbDeck extends Deck, DatabaseItem {}
+
+export interface DeckWithStats extends DbDeck {
+  gamesPlayed: number;
+  winCount: number;
+  winRate: number;
+}
