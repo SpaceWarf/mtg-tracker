@@ -1,6 +1,7 @@
 import { Flex, Heading, Select, Spinner } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
 import { useDecks } from "../hooks/useDecks";
 import { useGames } from "../hooks/useGames";
 import { DeckWithStats } from "../state/Deck";
@@ -15,6 +16,7 @@ import { DeckCreateModal } from "./DeckCreateModal";
 import { DecksCardView } from "./DecksCardView";
 
 export function DecksViewer() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { dbDecks, loadingDecks } = useDecks();
   const { dbGames, loadingGames } = useGames();
   const [sortFctKey, setSortFctKey] = useState<DeckSortFctKey>(
@@ -49,8 +51,24 @@ export function DecksViewer() {
     }
   }, [loadingDecks, loadingGames, populateDeckStats]);
 
+  useEffect(() => {
+    const urlSortKey = searchParams.get("sort");
+    if (
+      urlSortKey &&
+      Object.values<string>(DeckSortFctKey).includes(urlSortKey)
+    ) {
+      setSortFctKey(urlSortKey as DeckSortFctKey);
+    }
+  }, [searchParams]);
+
   function loading(): boolean {
     return loadingGames || loadingDecks;
+  }
+
+  function handleSort(sortKey: DeckSortFctKey) {
+    setSearchParams({
+      sort: sortKey,
+    });
   }
 
   if (loading() || !dbDecks?.length || !dbGames?.length) {
@@ -66,7 +84,7 @@ export function DecksViewer() {
           </Heading>
           <Select.Root
             value={sortFctKey}
-            onValueChange={(value) => setSortFctKey(value as DeckSortFctKey)}
+            onValueChange={(value) => handleSort(value as DeckSortFctKey)}
           >
             <Select.Trigger />
             <Select.Content>

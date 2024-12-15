@@ -16,7 +16,7 @@ export function DecksCardView({
   return (
     <Flex className="mb-10" flexGrow="1" gap="25px" wrap="wrap">
       {decks.map((deck) => (
-        <div style={{ flexBasis: "calc(33.33% - 16.66px)" }}>
+        <div key={deck.id} style={{ flexBasis: "calc(33.33% - 16.66px)" }}>
           <DeckCard
             key={deck.id}
             deck={deck}

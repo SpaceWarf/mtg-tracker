@@ -1,6 +1,7 @@
 import { Flex, Heading, Select, Spinner } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
 import { useGames } from "../hooks/useGames";
 import { usePlayers } from "../hooks/usePlayers";
 import { PlayerWithStats } from "../state/Player";
@@ -22,6 +23,7 @@ import { PlayerCreateModal } from "./PlayerCreateModal";
 import { PlayersCardView } from "./PlayersCardView";
 
 export function PlayersViewer() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { dbPlayers, loadingPlayers } = usePlayers();
   const { dbGames, loadingGames } = useGames();
   const [sortFctKey, setSortFctKey] = useState<PlayerSortFctKey>(
@@ -65,8 +67,24 @@ export function PlayersViewer() {
     }
   }, [loadingPlayers, loadingGames, populatePlayerStats]);
 
+  useEffect(() => {
+    const urlSortKey = searchParams.get("sort");
+    if (
+      urlSortKey &&
+      Object.values<string>(PlayerSortFctKey).includes(urlSortKey)
+    ) {
+      setSortFctKey(urlSortKey as PlayerSortFctKey);
+    }
+  }, [searchParams]);
+
   function loading(): boolean {
     return loadingGames || loadingPlayers;
+  }
+
+  function handleSort(sortKey: PlayerSortFctKey) {
+    setSearchParams({
+      sort: sortKey,
+    });
   }
 
   if (loading() || !dbPlayers?.length || !dbGames?.length) {
@@ -82,7 +100,7 @@ export function PlayersViewer() {
           </Heading>
           <Select.Root
             value={sortFctKey}
-            onValueChange={(value) => setSortFctKey(value as PlayerSortFctKey)}
+            onValueChange={(value) => handleSort(value as PlayerSortFctKey)}
           >
             <Select.Trigger />
             <Select.Content>
