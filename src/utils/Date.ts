@@ -3,5 +3,10 @@ export function getLongDateString(date: string): string {
     year: "numeric",
     month: "long",
     day: "numeric",
+    timeZone: "UTC",
   });
+}
+
+export function isDateValid(date: string): boolean {
+  return !isNaN(new Date(date).getTime());
 }

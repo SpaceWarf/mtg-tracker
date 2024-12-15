@@ -24,8 +24,8 @@ export function GamePlayerSection({ player }: OwnProps) {
           <Flex align="center" gap="2">
             <p>{player.playerObj?.name ?? ""}</p>
             {player.won && <GameWonIcon />}
-            {player.started && <GameStartIcon />}
             {player.t1SolRing && <SolRingIcon />}
+            {player.started && <GameStartIcon />}
           </Flex>
           {player.deckObj && <DeckDescriptor deck={player.deckObj} />}
         </Flex>

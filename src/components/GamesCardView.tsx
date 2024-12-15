@@ -29,17 +29,17 @@ export function GamesCardView({ games }: OwnProps) {
   }, [games, populateDateMap]);
 
   return Array.from(dateMap.entries()).map(([date, gamesForDate]) => (
-    <>
+    <div key={date}>
       <Heading className="mb-5 pb-2 border-b">
         {getLongDateString(date)}
       </Heading>
       <Flex className="mb-10" flexGrow="1" gap="25px" wrap="wrap">
         {gamesForDate.map((game) => (
-          <div style={{ flexBasis: "calc(50% - 12.5px)" }}>
+          <div key={game.id} style={{ flexBasis: "calc(50% - 12.5px)" }}>
             <GameCard key={game.id} game={game} />
           </div>
         ))}
       </Flex>
-    </>
+    </div>
   ));
 }

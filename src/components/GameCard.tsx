@@ -1,5 +1,7 @@
-import { Card, Grid, Separator } from "@radix-ui/themes";
+import { Card, Flex, Grid, Separator } from "@radix-ui/themes";
+import { useCallback } from "react";
 import { DbGame, GamePlayer } from "../state/Game";
+import { GameEditModal } from "./GameEditModal";
 import { GamePlayerSection } from "./GamePlayerSection";
 
 type OwnProps = {
@@ -14,22 +16,28 @@ export function GameCard({ game }: OwnProps) {
     game.player4.playerObj?.name ?? "",
   ].sort();
 
-  function getPlayerbyName(name: string): GamePlayer {
-    const player = [
-      game.player1,
-      game.player2,
-      game.player3,
-      game.player4,
-    ].find((player) => player.playerObj?.name === name);
+  const getPlayerbyName = useCallback(
+    (name: string): GamePlayer => {
+      const player = [
+        game.player1,
+        game.player2,
+        game.player3,
+        game.player4,
+      ].find((player) => player.playerObj?.name === name);
 
-    if (!player) {
-      throw new Error("Error: Could not find player.");
-    }
-    return player;
-  }
+      if (!player) {
+        throw new Error("Error: Could not find player.");
+      }
+      return player;
+    },
+    [game]
+  );
 
   return (
     <Card size="3">
+      <Flex className="absolute right-3 top-3" justify="end">
+        <GameEditModal game={game} />
+      </Flex>
       <Grid columns="2" rows="2" width="auto" gap="5">
         <GamePlayerSection player={getPlayerbyName(orderedPlayerNames[0])} />
         <GamePlayerSection player={getPlayerbyName(orderedPlayerNames[1])} />
