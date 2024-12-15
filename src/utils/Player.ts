@@ -37,7 +37,7 @@ export function getPlayerWinCount(player: DbPlayer, games: DbGame[]): number {
 export function getPlayerWinRate(player: DbPlayer, games: DbGame[]): number {
   const gamesCount = getPlayerGamesCount(player, games);
   const winCount = getPlayerWinCount(player, games);
-  return winCount / gamesCount;
+  return winCount / gamesCount || 0;
 }
 
 export function getPlayerGamesStarted(
@@ -54,7 +54,7 @@ export function getPlayerGamesStartedRate(
 ): number {
   const gamesCount = getPlayerGamesCount(player, games);
   const gamesStarted = getPlayerGamesStarted(player, games);
-  return gamesStarted / gamesCount;
+  return gamesStarted / gamesCount || 0;
 }
 
 export function getPlayerGamesStartedAndWon(
@@ -72,7 +72,7 @@ export function getPlayerGamesStartedToWinRate(
 ): number {
   const gamesStarted = getPlayerGamesStarted(player, games);
   const gamesStartedAndWon = getPlayerGamesStartedAndWon(player, games);
-  return gamesStartedAndWon / gamesStarted;
+  return gamesStartedAndWon / gamesStarted || 0;
 }
 
 export function getPlayerSolRingCount(
@@ -89,7 +89,7 @@ export function getPlayerSolRingRate(
 ): number {
   const gamesCount = getPlayerGamesCount(player, games);
   const solRingCount = getPlayerSolRingCount(player, games);
-  return solRingCount / gamesCount;
+  return solRingCount / gamesCount || 0;
 }
 
 export function getPlayerSolRingAndWonCount(
@@ -107,7 +107,7 @@ export function getPlayerSolRingToWinRate(
 ): number {
   const solRingCount = getPlayerSolRingCount(player, games);
   const solRingAndWonCount = getPlayerSolRingAndWonCount(player, games);
-  return solRingAndWonCount / solRingCount;
+  return solRingAndWonCount / solRingCount || 0;
 }
 
 export function getPlayerGrandSlamCount(
