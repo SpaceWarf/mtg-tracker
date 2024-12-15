@@ -5,7 +5,6 @@ import {
   Flex,
   Grid,
   Heading,
-  IconButton,
   TextArea,
   TextField,
 } from "@radix-ui/themes";
@@ -13,26 +12,28 @@ import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { GameService } from "../services/Game";
-import { DbGame, GamePlayer } from "../state/Game";
-import { isDateValid } from "../utils/Date";
+import { Game, GamePlayer } from "../state/Game";
+import { getShortDateString, isDateValid } from "../utils/Date";
 import { GamePlayerEditSection } from "./GamePlayerEditSection";
 
-type OwnProps = {
-  game: DbGame;
-};
-
-export function GameEditModal({ game }: OwnProps) {
+export function GameCreateModal() {
   const navigate = useNavigate();
-  const [date, setDate] = useState<string>(game.date);
-  const [player1, setPlayer1] = useState<GamePlayer>(game.player1);
-  const [player2, setPlayer2] = useState<GamePlayer>(game.player2);
-  const [player3, setPlayer3] = useState<GamePlayer>(game.player3);
-  const [player4, setPlayer4] = useState<GamePlayer>(game.player4);
-  const [comments, setComments] = useState<string>(game.comments);
+  const newGamePlayer: GamePlayer = {
+    player: "",
+    deck: "",
+    started: false,
+    t1SolRing: false,
+    won: false,
+  };
+  const [date, setDate] = useState<string>(getShortDateString(new Date()));
+  const [player1, setPlayer1] = useState<GamePlayer>(cloneDeep(newGamePlayer));
+  const [player2, setPlayer2] = useState<GamePlayer>(cloneDeep(newGamePlayer));
+  const [player3, setPlayer3] = useState<GamePlayer>(cloneDeep(newGamePlayer));
+  const [player4, setPlayer4] = useState<GamePlayer>(cloneDeep(newGamePlayer));
+  const [comments, setComments] = useState<string>("");
 
-  async function handleSave() {
-    const update: DbGame = {
-      ...cloneDeep(game),
+  async function handleCreate() {
+    const update: Game = {
       date,
       player1,
       player2,
@@ -40,38 +41,48 @@ export function GameEditModal({ game }: OwnProps) {
       player4,
       comments,
     };
-    await GameService.update(game.id, update);
-    navigate(0);
-  }
-
-  async function handleDelete() {
-    await GameService.delete(game.id);
+    await GameService.create(update);
     navigate(0);
   }
 
   function handleOpenChange(open: boolean) {
     if (!open) {
-      setDate(game.date);
-      setPlayer1(game.player1);
-      setPlayer2(game.player2);
-      setPlayer3(game.player3);
-      setPlayer4(game.player4);
-      setComments(game.comments);
+      setDate(getShortDateString(new Date()));
+      setPlayer1(cloneDeep(newGamePlayer));
+      setPlayer2(cloneDeep(newGamePlayer));
+      setPlayer3(cloneDeep(newGamePlayer));
+      setPlayer4(cloneDeep(newGamePlayer));
+      setComments("");
     }
+  }
+
+  function isValidPlayer(player: GamePlayer): boolean {
+    return !!player.player && !!player.deck;
+  }
+
+  function canCreate(): boolean {
+    return (
+      isDateValid(date) &&
+      isValidPlayer(player1) &&
+      isValidPlayer(player2) &&
+      isValidPlayer(player3) &&
+      isValidPlayer(player4)
+    );
   }
 
   return (
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
-        <IconButton>
+        <Button>
           <Pencil1Icon width="18" height="18" />
-        </IconButton>
+          Create new game
+        </Button>
       </Dialog.Trigger>
 
       <Dialog.Description></Dialog.Description>
 
       <Dialog.Content>
-        <Dialog.Title>Edit game</Dialog.Title>
+        <Dialog.Title>Create game</Dialog.Title>
 
         <div className="mb-5">
           <Heading className="mb-1" size="3">
@@ -118,20 +129,15 @@ export function GameEditModal({ game }: OwnProps) {
           />
         </div>
 
-        <Flex gap="3" mt="4" justify="between">
-          <Dialog.Close onClick={handleDelete}>
-            <Button color="red">Delete</Button>
+        <Flex gap="3" mt="4" justify="end">
+          <Dialog.Close>
+            <Button variant="soft" color="gray">
+              Cancel
+            </Button>
           </Dialog.Close>
-          <Flex gap="3">
-            <Dialog.Close>
-              <Button variant="soft" color="gray">
-                Cancel
-              </Button>
-            </Dialog.Close>
-            <Dialog.Close disabled={!isDateValid(date)} onClick={handleSave}>
-              <Button>Save</Button>
-            </Dialog.Close>
-          </Flex>
+          <Dialog.Close disabled={!canCreate()} onClick={handleCreate}>
+            <Button>Create</Button>
+          </Dialog.Close>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>

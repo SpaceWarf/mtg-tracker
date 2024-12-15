@@ -7,6 +7,7 @@ import { DbDeck } from "../state/Deck";
 import { DbGame } from "../state/Game";
 import { GameViewType } from "../state/GameViewType";
 import { DbPlayer } from "../state/Player";
+import { GameCreateModal } from "./GameCreateModal";
 import { GamesCardView } from "./GamesCardView";
 import { GamesTableView } from "./GamesTableView";
 
@@ -48,7 +49,7 @@ export function GamesViewer() {
         game.player4.deckObj = getDeckByIdFromContext(game.player4.deck);
         populated.push(game);
       }
-      setPopulatedGames(populated);
+      setPopulatedGames(populated.sort((a, b) => b.date.localeCompare(a.date)));
       setPopulatingGames(false);
     }
   }, [dbGames, getDeckByIdFromContext, getPlayerByIdFromContext]);
@@ -69,7 +70,7 @@ export function GamesViewer() {
 
   return (
     <div className="m-5 max-w-7xl">
-      <Flex className="mb-5">
+      <Flex className="mb-5" justify="between" align="center">
         <Text as="label" size="2">
           <Flex gap="2">
             Table
@@ -87,6 +88,9 @@ export function GamesViewer() {
             Cards
           </Flex>
         </Text>
+        <div>
+          <GameCreateModal />
+        </div>
       </Flex>
       {viewType === GameViewType.CARDS && (
         <GamesCardView games={populatedGames} />
