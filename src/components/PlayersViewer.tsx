@@ -1,6 +1,7 @@
-import { Spinner } from "@radix-ui/themes";
+import { Flex, Spinner } from "@radix-ui/themes";
 import { useGames } from "../hooks/useGames";
 import { usePlayers } from "../hooks/usePlayers";
+import { PlayerCreateModal } from "./PlayerCreateModal";
 import { PlayersCardView } from "./PlayersCardView";
 
 export function PlayersViewer() {
@@ -17,6 +18,9 @@ export function PlayersViewer() {
 
   return (
     <div className="m-5 max-w-7xl">
+      <Flex className="mb-5" justify="end" align="center">
+        <PlayerCreateModal />
+      </Flex>
       <PlayersCardView players={dbPlayers} games={dbGames} />
     </div>
   );

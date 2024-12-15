@@ -10,6 +10,7 @@ import {
   Text,
 } from "@radix-ui/themes";
 import { DbPlayer } from "../state/Player";
+import { PlayerEditModal } from "./PlayerEditModal";
 
 type OwnProps = {
   player: DbPlayer;
@@ -40,6 +41,9 @@ export function PlayerCard({
 }: OwnProps) {
   return (
     <Card size="3">
+      <Flex className="absolute right-3 top-3" justify="end">
+        <PlayerEditModal player={player} />
+      </Flex>
       <Flex className="mb-5" gap="3" align="center">
         <Avatar
           src={`/img/pfp/${player.id}.webp`}
