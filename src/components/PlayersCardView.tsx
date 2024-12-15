@@ -1,47 +1,39 @@
 import { Flex } from "@radix-ui/themes";
-import { DbGame } from "../state/Game";
-import { DbPlayer } from "../state/Player";
-import {
-  getPlayerGamesCount,
-  getPlayerGamesStarted,
-  getPlayerGamesStartedRate,
-  getPlayerGamesStartedToWinRate,
-  getPlayerGrandSlamCount,
-  getPlayerSolRingCount,
-  getPlayerSolRingRate,
-  getPlayerSolRingToWinRate,
-  getPlayerWinCount,
-  getPlayerWinRate,
-} from "../utils/Player";
+import { PlayerWithStats } from "../state/Player";
 import { PlayerCard } from "./PlayerCard";
 
 type OwnProps = {
-  players: DbPlayer[];
-  games: DbGame[];
+  players: PlayerWithStats[];
+  highlightedKey: string;
+  highlightedDirection: "asc" | "desc";
 };
 
-export function PlayersCardView({ players, games }: OwnProps) {
+export function PlayersCardView({
+  players,
+  highlightedKey,
+  highlightedDirection,
+}: OwnProps) {
   return (
     <Flex flexGrow="1" gap="25px" wrap="wrap">
-      {players
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .map((player) => (
-          <div key={player.id} style={{ flexBasis: "calc(50% - 12.5px)" }}>
-            <PlayerCard
-              player={player}
-              gamesPlayed={getPlayerGamesCount(player, games)}
-              winCount={getPlayerWinCount(player, games)}
-              winRate={getPlayerWinRate(player, games)}
-              startCount={getPlayerGamesStarted(player, games)}
-              startRate={getPlayerGamesStartedRate(player, games)}
-              startToWinRate={getPlayerGamesStartedToWinRate(player, games)}
-              solRingCount={getPlayerSolRingCount(player, games)}
-              solRingRate={getPlayerSolRingRate(player, games)}
-              solRingToWinRate={getPlayerSolRingToWinRate(player, games)}
-              grandSlamCount={getPlayerGrandSlamCount(player, games)}
-            />
-          </div>
-        ))}
+      {players.map((player) => (
+        <div key={player.id} style={{ flexBasis: "calc(50% - 12.5px)" }}>
+          <PlayerCard
+            player={player}
+            highlightedKey={highlightedKey}
+            highlightedDirection={highlightedDirection}
+            gamesPlayed={player.gamesPlayed}
+            winCount={player.winCount}
+            winRate={player.winRate}
+            startCount={player.startCount}
+            startRate={player.startRate}
+            startToWinRate={player.startToWinRate}
+            solRingCount={player.solRingCount}
+            solRingRate={player.solRingRate}
+            solRingToWinRate={player.solRingToWinRate}
+            grandSlamCount={player.grandSlamCount}
+          />
+        </div>
+      ))}
     </Flex>
   );
 }
