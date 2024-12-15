@@ -41,7 +41,7 @@ export function PlayerCard({
 }: OwnProps) {
   return (
     <Card size="3">
-      <Flex className="absolute right-3 top-3" justify="end">
+      <Flex gap="3" className="absolute right-3 top-5" justify="end">
         <PlayerEditModal player={player} />
       </Flex>
       <Flex className="mb-5" gap="3" align="center">

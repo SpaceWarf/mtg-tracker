@@ -1,4 +1,13 @@
-import { Card, Flex, Heading, Strong, Table, Text } from "@radix-ui/themes";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import {
+  Card,
+  Flex,
+  Heading,
+  IconButton,
+  Strong,
+  Table,
+  Text,
+} from "@radix-ui/themes";
 import { DbDeck } from "../state/Deck";
 import { DeckEditModal } from "./DeckEditModal";
 
@@ -12,7 +21,12 @@ type OwnProps = {
 export function DeckCard({ deck, gamesPlayed, winCount, winRate }: OwnProps) {
   return (
     <Card size="3">
-      <Flex className="absolute right-3 top-3" justify="end">
+      <Flex gap="3" className="absolute right-3 top-5" justify="end">
+        {deck.url && (
+          <IconButton onClick={() => window.open(deck.url, "_blank")}>
+            <ExternalLinkIcon />
+          </IconButton>
+        )}
         <DeckEditModal deck={deck} />
       </Flex>
       <Flex className="mb-3" direction="column">

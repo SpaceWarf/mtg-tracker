@@ -35,7 +35,7 @@ export function GameCard({ game }: OwnProps) {
 
   return (
     <Card size="3">
-      <Flex className="absolute right-3 top-3" justify="end">
+      <Flex gap="3" className="absolute right-3 top-5" justify="end">
         <GameEditModal game={game} />
       </Flex>
       <Grid columns="2" rows="2" width="auto" gap="5">
