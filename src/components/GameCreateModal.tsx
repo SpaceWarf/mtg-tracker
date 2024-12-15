@@ -1,4 +1,4 @@
-import { Pencil1Icon } from "@radix-ui/react-icons";
+import { PlusIcon } from "@radix-ui/react-icons";
 import {
   Button,
   Dialog,
@@ -74,7 +74,7 @@ export function GameCreateModal() {
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
         <Button>
-          <Pencil1Icon width="18" height="18" />
+          <PlusIcon width="18" height="18" />
           Create new game
         </Button>
       </Dialog.Trigger>
