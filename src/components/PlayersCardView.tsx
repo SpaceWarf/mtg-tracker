@@ -16,7 +16,7 @@ export function PlayersCardView({
   return (
     <Flex flexGrow="1" gap="25px" wrap="wrap">
       {players.map((player) => (
-        <div key={player.id} style={{ flexBasis: "calc(50% - 12.5px)" }}>
+        <div key={player.id} style={{ flexBasis: "calc(33.33% - 16.66px)" }}>
           <PlayerCard
             player={player}
             highlightedKey={highlightedKey}

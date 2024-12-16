@@ -26,7 +26,7 @@ export function GamesViewer() {
   const [sortFctKey, setSortFctKey] = useState<GameSortFctKey>(
     GameSortFctKey.DATE_DESC
   );
-  const [sortedGames, setSortedGames] = useState<DbGame[]>([]);
+  const [filteredGames, setFilteredGames] = useState<DbGame[]>([]);
 
   const getPlayerByIdFromContext = useCallback(
     (id: string): DbPlayer | undefined => {
@@ -71,7 +71,7 @@ export function GamesViewer() {
 
   useEffect(() => {
     const sortFct = GAME_SORT_FCTS[sortFctKey].sortFct;
-    setSortedGames(cloneDeep(populatedGames).sort(sortFct));
+    setFilteredGames(cloneDeep(populatedGames).sort(sortFct));
   }, [populatedGames, sortFctKey]);
 
   useEffect(() => {
@@ -99,8 +99,8 @@ export function GamesViewer() {
   }
 
   return (
-    <div className="m-5 max-w-7xl">
-      <Flex className="mb-5" justify="between" align="center">
+    <div className="p-5 w-full">
+      <Flex className="mb-5" justify="between" align="end">
         <Flex gap="5">
           <div>
             <Heading className="mb-2" size="3">
@@ -149,9 +149,11 @@ export function GamesViewer() {
           <GameCreateModal />
         </div>
       </Flex>
-      {viewType === GameViewType.CARDS && <GamesCardView games={sortedGames} />}
+      {viewType === GameViewType.CARDS && (
+        <GamesCardView games={filteredGames} />
+      )}
       {viewType === GameViewType.TABLE && (
-        <GamesTableView games={sortedGames} />
+        <GamesTableView games={filteredGames} />
       )}
     </div>
   );

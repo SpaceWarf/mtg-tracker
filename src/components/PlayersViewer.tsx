@@ -1,4 +1,4 @@
-import { Flex, Heading, Select, Spinner } from "@radix-ui/themes";
+import { Flex, Heading, Select, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -26,13 +26,14 @@ export function PlayersViewer() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { dbPlayers, loadingPlayers } = usePlayers();
   const { dbGames, loadingGames } = useGames();
+  const [search, setSearch] = useState<string>("");
   const [sortFctKey, setSortFctKey] = useState<PlayerSortFctKey>(
     PlayerSortFctKey.NAME_ASC
   );
   const [playersWithStats, setPlayersWithStats] = useState<PlayerWithStats[]>(
     []
   );
-  const [sortedPlayers, setSortedPlayers] = useState<PlayerWithStats[]>([]);
+  const [filteredPlayers, setFilteredPlayers] = useState<PlayerWithStats[]>([]);
 
   const populatePlayerStats = useCallback(() => {
     if (dbPlayers && dbGames) {
@@ -57,9 +58,13 @@ export function PlayersViewer() {
   }, [dbPlayers, dbGames]);
 
   useEffect(() => {
+    const filtered = cloneDeep(playersWithStats).filter((player) =>
+      player.name.toLowerCase().includes(search.toLowerCase())
+    );
     const sortFct = PLAYER_SORT_FCTS[sortFctKey].sortFct;
-    setSortedPlayers(cloneDeep(playersWithStats).sort(sortFct));
-  }, [playersWithStats, sortFctKey]);
+    const sorted = filtered.sort(sortFct);
+    setFilteredPlayers(sorted);
+  }, [playersWithStats, sortFctKey, search]);
 
   useEffect(() => {
     if (!loadingPlayers && !loadingGames) {
@@ -92,37 +97,55 @@ export function PlayersViewer() {
   }
 
   return (
-    <div className="m-5 max-w-7xl">
-      <Flex className="mb-5" justify="between" align="center">
-        <div>
-          <Heading className="mb-1" size="3">
-            Sort by
-          </Heading>
-          <Select.Root
-            value={sortFctKey}
-            onValueChange={(value) => handleSort(value as PlayerSortFctKey)}
-          >
-            <Select.Trigger />
-            <Select.Content>
-              <Select.Group>
-                {Object.values(PlayerSortFctKey).map((key) => (
-                  <Select.Item key={key} value={key}>
-                    {PLAYER_SORT_FCTS[key].name}
-                  </Select.Item>
-                ))}
-              </Select.Group>
-            </Select.Content>
-          </Select.Root>
-        </div>
+    <div className="p-5 w-full">
+      <Flex className="mb-5" justify="between" align="end">
+        <Flex gap="5">
+          <div className="w-60">
+            <Heading className="mb-1" size="3">
+              Search
+            </Heading>
+            <TextField.Root
+              placeholder="Search…"
+              value={search}
+              onChange={({ target }) => setSearch(target.value)}
+            ></TextField.Root>
+          </div>
+          <div>
+            <Heading className="mb-1" size="3">
+              Sort by
+            </Heading>
+            <Select.Root
+              value={sortFctKey}
+              onValueChange={(value) => handleSort(value as PlayerSortFctKey)}
+            >
+              <Select.Trigger />
+              <Select.Content>
+                <Select.Group>
+                  {Object.values(PlayerSortFctKey).map((key) => (
+                    <Select.Item key={key} value={key}>
+                      {PLAYER_SORT_FCTS[key].name}
+                    </Select.Item>
+                  ))}
+                </Select.Group>
+              </Select.Content>
+            </Select.Root>
+          </div>
+        </Flex>
         <div>
           <PlayerCreateModal />
         </div>
       </Flex>
-      <PlayersCardView
-        players={sortedPlayers}
-        highlightedKey={PLAYER_SORT_FCTS[sortFctKey].highlightedKey}
-        highlightedDirection={PLAYER_SORT_FCTS[sortFctKey].highlightedDirection}
-      />
+      {filteredPlayers.length ? (
+        <PlayersCardView
+          players={filteredPlayers}
+          highlightedKey={PLAYER_SORT_FCTS[sortFctKey].highlightedKey}
+          highlightedDirection={
+            PLAYER_SORT_FCTS[sortFctKey].highlightedDirection
+          }
+        />
+      ) : (
+        <div>No results for applied filters.</div>
+      )}
     </div>
   );
 }

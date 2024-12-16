@@ -35,7 +35,7 @@ export function GamesCardView({ games }: OwnProps) {
       </Heading>
       <Flex className="mb-10" flexGrow="1" gap="25px" wrap="wrap">
         {gamesForDate.map((game) => (
-          <div key={game.id} style={{ flexBasis: "calc(50% - 12.5px)" }}>
+          <div key={game.id} style={{ flexBasis: "calc(33.33% - 16.66px)" }}>
             <GameCard key={game.id} game={game} />
           </div>
         ))}
