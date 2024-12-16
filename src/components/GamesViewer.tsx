@@ -185,7 +185,7 @@ export function GamesViewer() {
             </Heading>
             <CheckboxCards.Root
               value={visiblePlayers}
-              columns={{ initial: "1", sm: "3" }}
+              columns={{ initial: "1", sm: "5" }}
               size="1"
             >
               {dbPlayers?.map((player) => (
