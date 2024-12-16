@@ -1,10 +1,14 @@
-import { Flex, Spinner, Switch, Text } from "@radix-ui/themes";
+import { Flex, Heading, Select, Spinner, Switch, Text } from "@radix-ui/themes";
+import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
 import { useDecks } from "../hooks/useDecks";
 import { useGames } from "../hooks/useGames";
 import { usePlayers } from "../hooks/usePlayers";
 import { DbDeck } from "../state/Deck";
 import { DbGame } from "../state/Game";
+import { GameSortFctKey } from "../state/GameSortFctKey";
+import { GAME_SORT_FCTS } from "../state/GameSortFcts";
 import { GameViewType } from "../state/GameViewType";
 import { DbPlayer } from "../state/Player";
 import { GameCreateModal } from "./GameCreateModal";
@@ -12,12 +16,17 @@ import { GamesCardView } from "./GamesCardView";
 import { GamesTableView } from "./GamesTableView";
 
 export function GamesViewer() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { dbGames, loadingGames } = useGames();
   const { dbPlayers, loadingPlayers } = usePlayers();
   const { dbDecks, loadingDecks } = useDecks();
   const [populatingGames, setPopulatingGames] = useState<boolean>(true);
   const [populatedGames, setPopulatedGames] = useState<DbGame[]>([]);
   const [viewType, setViewType] = useState<GameViewType>(GameViewType.CARDS);
+  const [sortFctKey, setSortFctKey] = useState<GameSortFctKey>(
+    GameSortFctKey.DATE_DESC
+  );
+  const [sortedGames, setSortedGames] = useState<DbGame[]>([]);
 
   const getPlayerByIdFromContext = useCallback(
     (id: string): DbPlayer | undefined => {
@@ -60,8 +69,29 @@ export function GamesViewer() {
     }
   }, [loadingGames, populateGames]);
 
+  useEffect(() => {
+    const sortFct = GAME_SORT_FCTS[sortFctKey].sortFct;
+    setSortedGames(cloneDeep(populatedGames).sort(sortFct));
+  }, [populatedGames, sortFctKey]);
+
+  useEffect(() => {
+    const urlSortKey = searchParams.get("sort");
+    if (
+      urlSortKey &&
+      Object.values<string>(GameSortFctKey).includes(urlSortKey)
+    ) {
+      setSortFctKey(urlSortKey as GameSortFctKey);
+    }
+  }, [searchParams]);
+
   function loading(): boolean {
     return loadingGames || loadingPlayers || loadingDecks || populatingGames;
+  }
+
+  function handleSort(sortKey: GameSortFctKey) {
+    setSearchParams({
+      sort: sortKey,
+    });
   }
 
   if (loading()) {
@@ -71,32 +101,57 @@ export function GamesViewer() {
   return (
     <div className="m-5 max-w-7xl">
       <Flex className="mb-5" justify="between" align="center">
-        <Text as="label" size="2">
-          <Flex gap="2">
-            Table
-            <Switch
-              size="2"
-              checked={viewType === GameViewType.CARDS}
-              onClick={() =>
-                setViewType(
-                  viewType === GameViewType.CARDS
-                    ? GameViewType.TABLE
-                    : GameViewType.CARDS
-                )
-              }
-            />
-            Cards
-          </Flex>
-        </Text>
+        <Flex gap="5">
+          <div>
+            <Heading className="mb-2" size="3">
+              View type
+            </Heading>
+            <Text as="label" size="2">
+              <Flex gap="2">
+                Table
+                <Switch
+                  size="2"
+                  checked={viewType === GameViewType.CARDS}
+                  onClick={() =>
+                    setViewType(
+                      viewType === GameViewType.CARDS
+                        ? GameViewType.TABLE
+                        : GameViewType.CARDS
+                    )
+                  }
+                />
+                Cards
+              </Flex>
+            </Text>
+          </div>
+          <div>
+            <Heading className="mb-1" size="3">
+              Sort by
+            </Heading>
+            <Select.Root
+              value={sortFctKey}
+              onValueChange={(value) => handleSort(value as GameSortFctKey)}
+            >
+              <Select.Trigger />
+              <Select.Content>
+                <Select.Group>
+                  {Object.values(GameSortFctKey).map((key) => (
+                    <Select.Item key={key} value={key}>
+                      {GAME_SORT_FCTS[key].name}
+                    </Select.Item>
+                  ))}
+                </Select.Group>
+              </Select.Content>
+            </Select.Root>
+          </div>
+        </Flex>
         <div>
           <GameCreateModal />
         </div>
       </Flex>
-      {viewType === GameViewType.CARDS && (
-        <GamesCardView games={populatedGames} />
-      )}
+      {viewType === GameViewType.CARDS && <GamesCardView games={sortedGames} />}
       {viewType === GameViewType.TABLE && (
-        <GamesTableView games={populatedGames} />
+        <GamesTableView games={sortedGames} />
       )}
     </div>
   );
