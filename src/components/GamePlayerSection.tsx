@@ -14,8 +14,9 @@ type OwnProps = {
 export function GamePlayerSection({ player }: OwnProps) {
   return (
     <div>
-      <Flex gap="10px" align="center">
+      <Flex gap="10px" align="start">
         <Avatar
+          className="mt-1"
           src={`/img/pfp/${player.player}.webp`}
           fallback={<FontAwesomeIcon icon={faUser} />}
           radius="full"

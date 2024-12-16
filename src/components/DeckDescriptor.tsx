@@ -9,9 +9,9 @@ export function DeckDescriptor(props: OwnProps) {
     <div>
       <span>{props.deck.name}</span>
       <br />
-      {/* {props.deck.commander && (
-        <span className="text-xs">[{props.deck.commander}]</span>
-      )} */}
+      {props.deck.commander && (
+        <span className="text-xs">({props.deck.commander})</span>
+      )}
     </div>
   );
 }
