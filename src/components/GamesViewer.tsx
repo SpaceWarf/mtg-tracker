@@ -1,4 +1,15 @@
-import { Flex, Heading, Select, Spinner, Switch, Text } from "@radix-ui/themes";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  Avatar,
+  CheckboxCards,
+  Flex,
+  Heading,
+  Select,
+  Spinner,
+  Switch,
+  Text,
+} from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -23,6 +34,7 @@ export function GamesViewer() {
   const [populatingGames, setPopulatingGames] = useState<boolean>(true);
   const [populatedGames, setPopulatedGames] = useState<DbGame[]>([]);
   const [viewType, setViewType] = useState<GameViewType>(GameViewType.CARDS);
+  const [visiblePlayers, setVisiblePlayers] = useState<string[]>([]);
   const [sortFctKey, setSortFctKey] = useState<GameSortFctKey>(
     GameSortFctKey.DATE_DESC
   );
@@ -70,9 +82,24 @@ export function GamesViewer() {
   }, [loadingGames, populateGames]);
 
   useEffect(() => {
+    const filtered = cloneDeep(populatedGames).filter((game) => {
+      if (visiblePlayers.length) {
+        const gamePlayers = [
+          game.player1.player,
+          game.player2.player,
+          game.player3.player,
+          game.player4.player,
+        ];
+        return visiblePlayers.every((visiblePlayer) =>
+          gamePlayers.includes(visiblePlayer)
+        );
+      }
+      return game;
+    });
     const sortFct = GAME_SORT_FCTS[sortFctKey].sortFct;
-    setFilteredGames(cloneDeep(populatedGames).sort(sortFct));
-  }, [populatedGames, sortFctKey]);
+    const sorted = cloneDeep(filtered).sort(sortFct);
+    setFilteredGames(sorted);
+  }, [populatedGames, sortFctKey, visiblePlayers]);
 
   useEffect(() => {
     const urlSortKey = searchParams.get("sort");
@@ -94,13 +121,21 @@ export function GamesViewer() {
     });
   }
 
+  function handleVisiblePlayerToggle(id: string) {
+    if (visiblePlayers.includes(id)) {
+      setVisiblePlayers(visiblePlayers.filter((player) => player !== id));
+    } else {
+      setVisiblePlayers([...visiblePlayers, id]);
+    }
+  }
+
   if (loading()) {
     return <Spinner className="mt-5" size="3" />;
   }
 
   return (
     <div className="p-5 w-full">
-      <Flex className="mb-5" justify="between" align="end">
+      <Flex className="mb-5" justify="between" align="start">
         <Flex gap="5">
           <div>
             <Heading className="mb-2" size="3">
@@ -144,16 +179,52 @@ export function GamesViewer() {
               </Select.Content>
             </Select.Root>
           </div>
+          <div>
+            <Heading className="mb-1" size="3">
+              Include players
+            </Heading>
+            <CheckboxCards.Root
+              value={visiblePlayers}
+              columns={{ initial: "1", sm: "3" }}
+              size="1"
+            >
+              {dbPlayers?.map((player) => (
+                <CheckboxCards.Item
+                  key={player.id}
+                  value={player.id}
+                  onClick={() => handleVisiblePlayerToggle(player.id)}
+                >
+                  <Flex gap="2" align="center" width="100%">
+                    <Avatar
+                      className="mt-1"
+                      src={`/img/pfp/${player.id}.webp`}
+                      fallback={<FontAwesomeIcon icon={faUser} />}
+                      radius="full"
+                      size="1"
+                    />
+                    <Text>{player.name}</Text>
+                  </Flex>
+                </CheckboxCards.Item>
+              ))}
+            </CheckboxCards.Root>
+          </div>
         </Flex>
         <div>
           <GameCreateModal />
         </div>
       </Flex>
-      {viewType === GameViewType.CARDS && (
-        <GamesCardView games={filteredGames} />
-      )}
-      {viewType === GameViewType.TABLE && (
-        <GamesTableView games={filteredGames} />
+
+      {filteredGames.length ? (
+        <>
+          {viewType === GameViewType.CARDS && (
+            <GamesCardView games={filteredGames} />
+          )}
+          {viewType === GameViewType.TABLE && (
+            <GamesTableView games={filteredGames} />
+          )}
+        </>
+      ) : (
+        <div>No results for applied filters.</div>
       )}
     </div>
   );
