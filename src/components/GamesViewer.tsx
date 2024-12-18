@@ -134,7 +134,7 @@ export function GamesViewer() {
   }
 
   return (
-    <div className="p-5 w-full">
+    <div className="p-5 w-full" style={{ maxWidth: "1750px" }}>
       <Flex className="mb-5" justify="between" align="start">
         <Flex gap="5">
           <div>
