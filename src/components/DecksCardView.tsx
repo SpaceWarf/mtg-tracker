@@ -1,4 +1,5 @@
 import { Flex } from "@radix-ui/themes";
+import { useAuth } from "../hooks/useAuth";
 import { DeckWithStats } from "../state/Deck";
 import { DeckCard } from "./DeckCard";
 
@@ -13,13 +14,15 @@ export function DecksCardView({
   highlightedKey,
   highlightedDirection,
 }: OwnProps) {
+  const auth = useAuth();
+
   return (
     <Flex className="mb-10" flexGrow="1" gap="25px" wrap="wrap">
       {decks.map((deck) => (
         <div key={deck.id} style={{ flexBasis: "calc(25% - 18.75px)" }}>
           <DeckCard
-            key={deck.id}
             deck={deck}
+            editable={!!auth.user}
             highlightedKey={highlightedKey}
             highlightedDirection={highlightedDirection}
             gamesPlayed={deck.gamesPlayed}

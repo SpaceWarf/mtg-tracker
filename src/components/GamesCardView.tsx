@@ -1,5 +1,6 @@
 import { Flex, Heading } from "@radix-ui/themes";
 import { useCallback, useEffect, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 import { DbGame } from "../state/Game";
 import { getLongDateString } from "../utils/Date";
 import { GameCard } from "./GameCard";
@@ -9,6 +10,7 @@ type OwnProps = {
 };
 
 export function GamesCardView({ games }: OwnProps) {
+  const auth = useAuth();
   const [dateMap, setDateMap] = useState<Map<string, DbGame[]>>(new Map());
 
   const populateDateMap = useCallback((games: DbGame[]) => {
@@ -36,7 +38,7 @@ export function GamesCardView({ games }: OwnProps) {
       <Flex className="mb-10" flexGrow="1" gap="25px" wrap="wrap">
         {gamesForDate.map((game) => (
           <div key={game.id} style={{ flexBasis: "calc(33.33% - 16.66px)" }}>
-            <GameCard key={game.id} game={game} />
+            <GameCard key={game.id} game={game} editable={!!auth.user} />
           </div>
         ))}
       </Flex>

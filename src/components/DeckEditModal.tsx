@@ -54,7 +54,7 @@ export function DeckEditModal({ deck }: OwnProps) {
   return (
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
-        <IconButton>
+        <IconButton variant="soft">
           <Pencil1Icon width="18" height="18" />
         </IconButton>
       </Dialog.Trigger>

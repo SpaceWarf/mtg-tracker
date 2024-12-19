@@ -14,6 +14,7 @@ import { SortHighlightIcon } from "./SortHighlightIcon";
 
 type OwnProps = {
   deck: DbDeck;
+  editable?: boolean;
   highlightedKey: string;
   highlightedDirection: "asc" | "desc";
   gamesPlayed: number;
@@ -23,6 +24,7 @@ type OwnProps = {
 
 export function DeckCard({
   deck,
+  editable,
   highlightedKey,
   highlightedDirection,
   gamesPlayed,
@@ -33,11 +35,14 @@ export function DeckCard({
     <Card size="3">
       <Flex gap="3" className="absolute right-3 top-5" justify="end">
         {deck.url && (
-          <IconButton onClick={() => window.open(deck.url, "_blank")}>
+          <IconButton
+            variant="soft"
+            onClick={() => window.open(deck.url, "_blank")}
+          >
             <ExternalLinkIcon />
           </IconButton>
         )}
-        <DeckEditModal deck={deck} />
+        {editable && <DeckEditModal deck={deck} />}
       </Flex>
       <Flex className="mb-3" direction="column">
         <Heading>{deck.name}</Heading>

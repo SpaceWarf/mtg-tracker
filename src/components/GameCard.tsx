@@ -6,9 +6,10 @@ import { GamePlayerSection } from "./GamePlayerSection";
 
 type OwnProps = {
   game: DbGame;
+  editable?: boolean;
 };
 
-export function GameCard({ game }: OwnProps) {
+export function GameCard({ game, editable }: OwnProps) {
   const orderedPlayerNames = [
     game.player1.playerObj?.name ?? "",
     game.player2.playerObj?.name ?? "",
@@ -35,9 +36,11 @@ export function GameCard({ game }: OwnProps) {
 
   return (
     <Card size="3">
-      <Flex gap="3" className="absolute right-3 top-5" justify="end">
-        <GameEditModal game={game} />
-      </Flex>
+      {editable && (
+        <Flex gap="3" className="absolute right-3 top-5" justify="end">
+          <GameEditModal game={game} />
+        </Flex>
+      )}
       <Grid columns="2" rows="2" width="auto" gap="5">
         <GamePlayerSection player={getPlayerbyName(orderedPlayerNames[0])} />
         <GamePlayerSection player={getPlayerbyName(orderedPlayerNames[1])} />

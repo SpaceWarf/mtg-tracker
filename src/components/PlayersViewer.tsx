@@ -2,6 +2,7 @@ import { Flex, Heading, Select, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 import { useGames } from "../hooks/useGames";
 import { usePlayers } from "../hooks/usePlayers";
 import { PlayerWithStats } from "../state/Player";
@@ -23,6 +24,7 @@ import { PlayerCreateModal } from "./PlayerCreateModal";
 import { PlayersCardView } from "./PlayersCardView";
 
 export function PlayersViewer() {
+  const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const { dbPlayers, loadingPlayers } = usePlayers();
   const { dbGames, loadingGames } = useGames();
@@ -131,9 +133,7 @@ export function PlayersViewer() {
             </Select.Root>
           </div>
         </Flex>
-        <div>
-          <PlayerCreateModal />
-        </div>
+        <div>{auth.user && <PlayerCreateModal />}</div>
       </Flex>
       {filteredPlayers.length ? (
         <PlayersCardView

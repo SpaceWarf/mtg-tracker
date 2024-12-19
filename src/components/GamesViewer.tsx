@@ -13,6 +13,7 @@ import {
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 import { useDecks } from "../hooks/useDecks";
 import { useGames } from "../hooks/useGames";
 import { usePlayers } from "../hooks/usePlayers";
@@ -27,6 +28,7 @@ import { GamesCardView } from "./GamesCardView";
 import { GamesTableView } from "./GamesTableView";
 
 export function GamesViewer() {
+  const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const { dbGames, loadingGames } = useGames();
   const { dbPlayers, loadingPlayers } = usePlayers();
@@ -209,9 +211,7 @@ export function GamesViewer() {
             </CheckboxCards.Root>
           </div>
         </Flex>
-        <div>
-          <GameCreateModal />
-        </div>
+        <div>{auth.user && <GameCreateModal />}</div>
       </Flex>
 
       {filteredGames.length ? (

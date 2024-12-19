@@ -15,6 +15,7 @@ import { SortHighlightIcon } from "./SortHighlightIcon";
 
 type OwnProps = {
   player: DbPlayer;
+  editable?: boolean;
   highlightedKey: string;
   highlightedDirection: "asc" | "desc";
   gamesPlayed: number;
@@ -31,6 +32,7 @@ type OwnProps = {
 
 export function PlayerCard({
   player,
+  editable,
   highlightedKey,
   highlightedDirection,
   gamesPlayed,
@@ -46,9 +48,11 @@ export function PlayerCard({
 }: OwnProps) {
   return (
     <Card size="3">
-      <Flex gap="3" className="absolute right-3 top-5" justify="end">
-        <PlayerEditModal player={player} />
-      </Flex>
+      {editable && (
+        <Flex gap="3" className="absolute right-3 top-5" justify="end">
+          <PlayerEditModal player={player} />
+        </Flex>
+      )}
       <Flex className="mb-5" gap="3" align="center">
         <Avatar
           src={`/img/pfp/${player.id}.webp`}

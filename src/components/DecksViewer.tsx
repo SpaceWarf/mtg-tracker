@@ -2,6 +2,7 @@ import { Flex, Heading, Select, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 import { useDecks } from "../hooks/useDecks";
 import { useGames } from "../hooks/useGames";
 import { DeckWithStats } from "../state/Deck";
@@ -16,6 +17,7 @@ import { DeckCreateModal } from "./DeckCreateModal";
 import { DecksCardView } from "./DecksCardView";
 
 export function DecksViewer() {
+  const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const { dbDecks, loadingDecks } = useDecks();
   const { dbGames, loadingGames } = useGames();
@@ -117,9 +119,7 @@ export function DecksViewer() {
             </Select.Root>
           </div>
         </Flex>
-        <div>
-          <DeckCreateModal />
-        </div>
+        <div>{auth.user && <DeckCreateModal />}</div>
       </Flex>
       {filteredDecks.length ? (
         <DecksCardView
