@@ -73,15 +73,6 @@ export function LoginModal() {
       <Dialog.Content width="500px">
         <Dialog.Title>Login</Dialog.Title>
 
-        {loginError && (
-          <Callout.Root color="red">
-            <Callout.Icon>
-              <InfoCircledIcon />
-            </Callout.Icon>
-            <Callout.Text>{loginError}</Callout.Text>
-          </Callout.Root>
-        )}
-
         <div className="mb-5">
           <Heading className="mb-1" size="3">
             Username
@@ -105,15 +96,24 @@ export function LoginModal() {
           ></TextField.Root>
         </div>
 
+        {loginError && (
+          <Callout.Root color="red">
+            <Callout.Icon>
+              <InfoCircledIcon />
+            </Callout.Icon>
+            <Callout.Text>{loginError}</Callout.Text>
+          </Callout.Root>
+        )}
+
         <Flex gap="3" mt="4" justify="end">
           <Dialog.Close>
             <Button variant="soft" color="gray">
               Cancel
             </Button>
           </Dialog.Close>
-          <Dialog.Close disabled={!canSubmit()} onClick={handleLogin}>
-            <Button>Login</Button>
-          </Dialog.Close>
+          <Button disabled={!canSubmit()} onClick={handleLogin}>
+            Login
+          </Button>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
