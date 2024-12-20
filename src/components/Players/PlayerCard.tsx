@@ -9,9 +9,9 @@ import {
   Table,
   Text,
 } from "@radix-ui/themes";
-import { DbPlayer } from "../state/Player";
+import { DbPlayer } from "../../state/Player";
+import { SortHighlightIcon } from "../Icons/SortHighlightIcon";
 import { PlayerEditModal } from "./PlayerEditModal";
-import { SortHighlightIcon } from "./SortHighlightIcon";
 
 type OwnProps = {
   player: DbPlayer;

@@ -8,9 +8,9 @@ import {
   Table,
   Text,
 } from "@radix-ui/themes";
-import { DbDeck } from "../state/Deck";
+import { DbDeck } from "../../state/Deck";
+import { SortHighlightIcon } from "../Icons/SortHighlightIcon";
 import { DeckEditModal } from "./DeckEditModal";
-import { SortHighlightIcon } from "./SortHighlightIcon";
 
 type OwnProps = {
   deck: DbDeck;

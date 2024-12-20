@@ -10,8 +10,8 @@ import {
 import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { DeckService } from "../services/Deck";
-import { DbDeck } from "../state/Deck";
+import { DeckService } from "../../services/Deck";
+import { DbDeck } from "../../state/Deck";
 
 type OwnProps = {
   deck: DbDeck;

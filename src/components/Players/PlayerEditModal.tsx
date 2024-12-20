@@ -10,8 +10,8 @@ import {
 import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { PlayerService } from "../services/Player";
-import { DbPlayer } from "../state/Player";
+import { PlayerService } from "../../services/Player";
+import { DbPlayer } from "../../state/Player";
 
 type OwnProps = {
   player: DbPlayer;

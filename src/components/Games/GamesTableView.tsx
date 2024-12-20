@@ -1,6 +1,6 @@
 import { Checkbox, Table } from "@radix-ui/themes";
-import { DbGame } from "../state/Game";
-import { DeckDescriptor } from "./DeckDescriptor";
+import { DbGame } from "../../state/Game";
+import { DeckDescriptor } from "../Decks/DeckDescriptor";
 
 type OwnProps = {
   games: DbGame[];

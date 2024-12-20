@@ -1,6 +1,6 @@
 import { Card, Flex, Grid, Separator } from "@radix-ui/themes";
 import { useCallback } from "react";
-import { DbGame, GamePlayer } from "../state/Game";
+import { DbGame, GamePlayer } from "../../state/Game";
 import { GameEditModal } from "./GameEditModal";
 import { GamePlayerSection } from "./GamePlayerSection";
 

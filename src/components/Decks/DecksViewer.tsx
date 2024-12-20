@@ -2,17 +2,17 @@ import { Flex, Heading, Select, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
-import { useAuth } from "../hooks/useAuth";
-import { useDecks } from "../hooks/useDecks";
-import { useGames } from "../hooks/useGames";
-import { DeckWithStats } from "../state/Deck";
-import { DeckSortFctKey } from "../state/DeckSortFctKey";
-import { DECK_SORT_FCTS } from "../state/DeckSortFcts";
+import { useAuth } from "../../hooks/useAuth";
+import { useDecks } from "../../hooks/useDecks";
+import { useGames } from "../../hooks/useGames";
+import { DeckWithStats } from "../../state/Deck";
+import { DeckSortFctKey } from "../../state/DeckSortFctKey";
+import { DECK_SORT_FCTS } from "../../state/DeckSortFcts";
 import {
   getDeckGamesCount,
   getDeckWinCount,
   getDeckWinRate,
-} from "../utils/Deck";
+} from "../../utils/Deck";
 import { DeckCreateModal } from "./DeckCreateModal";
 import { DecksCardView } from "./DecksCardView";
 

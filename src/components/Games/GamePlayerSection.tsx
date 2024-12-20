@@ -1,11 +1,11 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar, Flex } from "@radix-ui/themes";
-import { GamePlayer } from "../state/Game";
-import { DeckDescriptor } from "./DeckDescriptor";
-import { GameStartIcon } from "./GameStartIcon";
-import { GameWonIcon } from "./GameWonIcon";
-import { SolRingIcon } from "./SolRingIcon";
+import { GamePlayer } from "../../state/Game";
+import { DeckDescriptor } from "../Decks/DeckDescriptor";
+import { GameStartIcon } from "../Icons/GameStartIcon";
+import { GameWonIcon } from "../Icons/GameWonIcon";
+import { SolRingIcon } from "../Icons/SolRingIcon";
 
 type OwnProps = {
   player: GamePlayer;

@@ -1,8 +1,8 @@
 import { Flex, Heading } from "@radix-ui/themes";
 import { useCallback, useEffect, useState } from "react";
-import { useAuth } from "../hooks/useAuth";
-import { DbGame } from "../state/Game";
-import { getLongDateString } from "../utils/Date";
+import { useAuth } from "../../hooks/useAuth";
+import { DbGame } from "../../state/Game";
+import { getLongDateString } from "../../utils/Date";
 import { GameCard } from "./GameCard";
 
 type OwnProps = {

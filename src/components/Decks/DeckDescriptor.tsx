@@ -1,4 +1,4 @@
-import { DbDeck } from "../state/Deck";
+import { DbDeck } from "../../state/Deck";
 
 type OwnProps = {
   deck: DbDeck;

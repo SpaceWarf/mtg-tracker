@@ -2,8 +2,8 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { Button, Dialog, Flex, Heading, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { PlayerService } from "../services/Player";
-import { Player } from "../state/Player";
+import { PlayerService } from "../../services/Player";
+import { Player } from "../../state/Player";
 
 export function PlayerCreateModal() {
   const navigate = useNavigate();

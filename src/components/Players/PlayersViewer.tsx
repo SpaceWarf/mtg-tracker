@@ -2,12 +2,12 @@ import { Flex, Heading, Select, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
-import { useAuth } from "../hooks/useAuth";
-import { useGames } from "../hooks/useGames";
-import { usePlayers } from "../hooks/usePlayers";
-import { PlayerWithStats } from "../state/Player";
-import { PlayerSortFctKey } from "../state/PlayerSortFctKey";
-import { PLAYER_SORT_FCTS } from "../state/PlayerSortFcts";
+import { useAuth } from "../../hooks/useAuth";
+import { useGames } from "../../hooks/useGames";
+import { usePlayers } from "../../hooks/usePlayers";
+import { PlayerWithStats } from "../../state/Player";
+import { PlayerSortFctKey } from "../../state/PlayerSortFctKey";
+import { PLAYER_SORT_FCTS } from "../../state/PlayerSortFcts";
 import {
   getPlayerGamesCount,
   getPlayerGamesStarted,
@@ -19,7 +19,7 @@ import {
   getPlayerSolRingToWinRate,
   getPlayerWinCount,
   getPlayerWinRate,
-} from "../utils/Player";
+} from "../../utils/Player";
 import { PlayerCreateModal } from "./PlayerCreateModal";
 import { PlayersCardView } from "./PlayersCardView";
 

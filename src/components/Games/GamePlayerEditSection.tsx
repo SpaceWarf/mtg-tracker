@@ -1,8 +1,8 @@
 import { Flex, Heading, Select, Switch, Text } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useDecks } from "../hooks/useDecks";
-import { usePlayers } from "../hooks/usePlayers";
-import { GamePlayer } from "../state/Game";
+import { useDecks } from "../../hooks/useDecks";
+import { usePlayers } from "../../hooks/usePlayers";
+import { GamePlayer } from "../../state/Game";
 
 type OwnProps = {
   gamePlayer: GamePlayer;

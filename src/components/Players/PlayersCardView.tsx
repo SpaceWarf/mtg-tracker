@@ -1,6 +1,6 @@
 import { Flex } from "@radix-ui/themes";
-import { useAuth } from "../hooks/useAuth";
-import { PlayerWithStats } from "../state/Player";
+import { useAuth } from "../../hooks/useAuth";
+import { PlayerWithStats } from "../../state/Player";
 import { PlayerCard } from "./PlayerCard";
 
 type OwnProps = {

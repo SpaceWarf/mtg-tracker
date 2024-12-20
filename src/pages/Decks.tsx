@@ -1,4 +1,4 @@
-import { DecksViewer } from "../components/DecksViewer";
+import { DecksViewer } from "../components/Decks/DecksViewer";
 
 export function Decks() {
   return <DecksViewer />;

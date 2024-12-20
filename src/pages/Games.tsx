@@ -1,4 +1,4 @@
-import { GamesViewer } from "../components/GamesViewer";
+import { GamesViewer } from "../components/Games/GamesViewer";
 
 export function Games() {
   return <GamesViewer />;
