@@ -70,7 +70,7 @@ export function GamePlayerEditSection({
           <Select.Trigger />
           <Select.Content>
             <Select.Group>
-              {dbPlayers
+              {cloneDeep(dbPlayers)
                 ?.sort((a, b) => a.name.localeCompare(b.name))
                 .map((player) => (
                   <Select.Item key={player.id} value={player.id}>
@@ -84,7 +84,7 @@ export function GamePlayerEditSection({
           <Select.Trigger />
           <Select.Content>
             <Select.Group>
-              {dbDecks
+              {cloneDeep(dbDecks)
                 ?.sort((a, b) => a.name.localeCompare(b.name))
                 .map((deck) => (
                   <Select.Item key={deck.id} value={deck.id}>

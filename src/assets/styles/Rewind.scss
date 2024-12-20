@@ -1,0 +1,179 @@
+.RewindWrapper,
+.RewindPageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 550px;
+  height: 900px;
+  background-color: var(--gray-2);
+  margin: auto;
+}
+
+.RewindPageWrapper {
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+}
+
+.RewindPaginator {
+  background-color: rgba($color: black, $alpha: 0.4);
+}
+
+.RewindHeading {
+  position: absolute;
+}
+
+.Page1 {
+  animation: fadeIn 3s ease-in-out 0s 1 normal forwards,
+    fadeOut 3s ease-in-out 28s 1 normal forwards;
+  background-image: url("/public/img/rewind-backgrounds/background-1.jpeg");
+  background-size: cover;
+
+  .Heading1 {
+    visibility: hidden;
+    top: 505px;
+    animation: comeInFromRight 2s ease-out 2s 1 normal forwards,
+      leaveToLeft 2s ease-in-out 10s 1 normal forwards;
+  }
+
+  .Heading2 {
+    visibility: hidden;
+    top: 565px;
+    animation: fadeIn 3s ease-in-out 4s 1 normal forwards,
+      leaveToLeft 2s ease-in-out 10s 1 normal forwards;
+  }
+
+  .Heading3 {
+    visibility: hidden;
+    --endPosition: 200px;
+    animation: comeInFromBottom 2s ease-out 7s 1 normal forwards,
+      leaveToLeft 2s ease-in-out 10s 1 normal forwards;
+  }
+
+  .Heading4 {
+    visibility: hidden;
+    --endPosition: 300px;
+    animation: comeInFromBottom 3s ease-out 12s 1 normal forwards,
+      leaveToLeft 2s ease-in-out 23s 1 normal forwards;
+  }
+
+  .Heading5 {
+    visibility: hidden;
+    top: 625px;
+    animation: fadeIn 3s ease-in-out 15s 1 normal forwards,
+      leaveToLeft 2s ease-in-out 23s 1 normal forwards;
+  }
+
+  .Heading6 {
+    visibility: hidden;
+    top: 665px;
+    animation: fadeIn 3s ease-in-out 17s 1 normal forwards,
+      leaveToLeft 2s ease-in-out 23s 1 normal forwards;
+  }
+
+  .Heading7 {
+    visibility: hidden;
+    top: 710px;
+    animation: fadeIn 3s ease-in-out 19s 1 normal forwards,
+      leaveToLeft 2s ease-in-out 23s 1 normal forwards;
+  }
+
+  .Heading8 {
+    visibility: hidden;
+    top: 640px;
+    animation: comeInFromRight 2s ease-out 24s 1 normal forwards;
+  }
+}
+
+.Page2 {
+  animation: fadeIn 3s ease-in-out;
+  background-image: url("/public/img/rewind-backgrounds/background-2.jpeg");
+  background-size: cover;
+}
+
+.Background3 {
+  background-image: url("/public/img/rewind-backgrounds/background-numbered-1.jpeg");
+  background-size: cover;
+}
+
+.Background4 {
+  background-image: url("/public/img/rewind-backgrounds/background-3.jpeg");
+  background-size: cover;
+}
+
+.Background5 {
+  background-image: url("/public/img/rewind-backgrounds/background-numbered-2.jpeg");
+  background-size: cover;
+}
+
+.Background6 {
+  background-image: url("/public/img/rewind-backgrounds/background-6.jpeg");
+  background-size: cover;
+}
+
+@keyframes fadeIn {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  1% {
+    visibility: visible;
+    display: block;
+    opacity: 0;
+  }
+
+  100% {
+    visibility: visible;
+    display: block;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  99% {
+    opacity: 0;
+  }
+
+  100% {
+    display: none;
+    opacity: 0;
+  }
+}
+
+@keyframes comeInFromRight {
+  0% {
+    left: 550px;
+  }
+
+  100% {
+    visibility: visible;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes comeInFromBottom {
+  0% {
+    bottom: -20%;
+  }
+
+  100% {
+    visibility: visible;
+    bottom: var(--endPosition);
+  }
+}
+
+@keyframes leaveToLeft {
+  0% {
+  }
+
+  100% {
+    visibility: hidden;
+    left: 0;
+    transform: translateX(-100%);
+  }
+}

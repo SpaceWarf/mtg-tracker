@@ -1,6 +1,26 @@
 import { DbGame, GamePlayer } from "../state/Game";
 import { DbPlayer } from "../state/Player";
 
+export function getAllGamesWithPlayer(
+  player: DbPlayer,
+  games: DbGame[]
+): DbGame[] {
+  return games.reduce((games: DbGame[], nextGame: DbGame) => {
+    if (
+      [
+        nextGame.player1.player,
+        nextGame.player2.player,
+        nextGame.player3.player,
+        nextGame.player4.player,
+      ].includes(player.id)
+    ) {
+      return [...games, nextGame];
+    }
+
+    return games;
+  }, []);
+}
+
 export function getAllGamesForPlayer(
   player: DbPlayer,
   games: DbGame[]

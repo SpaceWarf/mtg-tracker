@@ -8,8 +8,8 @@ import { AuthProvider } from "./contexts/AuthProvider.tsx";
 import { DataProvider } from "./contexts/DataProvider.tsx";
 import { Decks } from "./pages/Decks.tsx";
 import { Games } from "./pages/Games.tsx";
-import { PageWrapper } from "./pages/PageWrapper.tsx";
 import { Players } from "./pages/Players.tsx";
+import { Rewind } from "./pages/Rewind.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,30 +34,10 @@ export function Main() {
               <div id="mtg-tracker">
                 <BrowserRouter>
                   <Routes>
-                    <Route
-                      path="/"
-                      element={
-                        <PageWrapper>
-                          <Games />
-                        </PageWrapper>
-                      }
-                    />
-                    <Route
-                      path="/players"
-                      element={
-                        <PageWrapper>
-                          <Players />
-                        </PageWrapper>
-                      }
-                    />
-                    <Route
-                      path="/decks"
-                      element={
-                        <PageWrapper>
-                          <Decks />
-                        </PageWrapper>
-                      }
-                    />
+                    <Route path="/" element={<Games />} />
+                    <Route path="/players" element={<Players />} />
+                    <Route path="/decks" element={<Decks />} />
+                    <Route path="/rewind" element={<Rewind />} />
                   </Routes>
                 </BrowserRouter>
               </div>

@@ -10,7 +10,7 @@ export function PageWrapper({ children }: OwnProps) {
   return (
     <>
       <Header />
-      <Flex direction="column" align="center">
+      <Flex className="h-full" direction="column" align="center">
         {children}
       </Flex>
     </>
