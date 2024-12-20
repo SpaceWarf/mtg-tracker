@@ -25,7 +25,7 @@
 .Page1 {
   animation: fadeIn 3s ease-in-out 0s 1 normal forwards,
     fadeOut 3s ease-in-out 28s 1 normal forwards;
-  background-image: url("/public/img/rewind-backgrounds/background-1.jpeg");
+  background-image: url("/img/rewind-backgrounds/background-1.jpeg");
   background-size: cover;
 
   .Heading1 {
@@ -85,28 +85,75 @@
 }
 
 .Page2 {
-  animation: fadeIn 3s ease-in-out;
-  background-image: url("/public/img/rewind-backgrounds/background-2.jpeg");
+  animation: fadeIn 3s ease-in-out 0s 1 normal forwards,
+    fadeOut 3s ease-in-out 28s 1 normal forwards;
+  background-image: url("/img/rewind-backgrounds/background-2.jpeg");
   background-size: cover;
+
+  .Heading1 {
+    visibility: hidden;
+    top: 275px;
+    animation: fadeIn 3s ease-out 3s 1 normal forwards,
+      leaveToLeft 2s ease-in-out 12s 1 normal forwards;
+  }
+
+  .Heading2 {
+    visibility: hidden;
+    top: 375px;
+    animation: fadeIn 3s ease-out 6s 1 normal forwards,
+      leaveToLeft 2s ease-in-out 12s 1 normal forwards;
+  }
+
+  .Heading3 {
+    visibility: hidden;
+    --endPosition: 375px;
+    animation: comeInFromBottom 2s ease-out 9s 1 normal forwards,
+      leaveToLeft 2s ease-in-out 12s 1 normal forwards;
+  }
+
+  .Heading4 {
+    visibility: hidden;
+    top: 275px;
+    animation: fadeIn 3s ease-out 14s 1 normal forwards;
+  }
+
+  .Heading5 {
+    visibility: hidden;
+    top: 375px;
+    animation: comeInFromRight 3s ease-out 18s 1 normal forwards;
+  }
+
+  .Heading6 {
+    visibility: hidden;
+    top: 440px;
+    animation: fadeIn 3s ease-out 21s 1 normal forwards;
+  }
+
+  .Heading7 {
+    visibility: hidden;
+    --endPosition: 350px;
+    animation: comeInFromBottom 3s ease-out 24s 1 normal forwards;
+  }
 }
 
-.Background3 {
-  background-image: url("/public/img/rewind-backgrounds/background-numbered-1.jpeg");
+.Page3 {
+  animation: fadeIn 3s ease-in-out 0s 1 normal forwards;
+  background-image: url("/img/rewind-backgrounds/background-numbered-1.jpeg");
   background-size: cover;
 }
 
 .Background4 {
-  background-image: url("/public/img/rewind-backgrounds/background-3.jpeg");
+  background-image: url("/img/rewind-backgrounds/background-3.jpeg");
   background-size: cover;
 }
 
 .Background5 {
-  background-image: url("/public/img/rewind-backgrounds/background-numbered-2.jpeg");
+  background-image: url("/img/rewind-backgrounds/background-numbered-2.jpeg");
   background-size: cover;
 }
 
 .Background6 {
-  background-image: url("/public/img/rewind-backgrounds/background-6.jpeg");
+  background-image: url("/img/rewind-backgrounds/background-6.jpeg");
   background-size: cover;
 }
 

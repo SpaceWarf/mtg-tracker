@@ -12,5 +12,5 @@ type OwnProps = {
 
 // Comparative win rate
 export function RewindPage3({ viewer, players, games, decks }: OwnProps) {
-  return <div className="Background3 w-full h-full"></div>;
+  return <div className="Page3 w-full h-full"></div>;
 }
