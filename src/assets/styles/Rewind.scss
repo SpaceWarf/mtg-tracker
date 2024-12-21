@@ -259,14 +259,64 @@
 }
 
 .Page6 {
+  animation: fadeIn 3s ease-in-out 0s 1 normal forwards,
+    fadeOut 3s ease-in-out 18s 1 normal forwards;
   background-image: url("/img/rewind-backgrounds/background-numbered-2.jpeg");
   background-size: cover;
+
+  .Heading1 {
+    visibility: hidden;
+    top: 200px;
+    animation: comeInFromRight 2s ease-out 2s 1 normal forwards;
+  }
+
+  .Heading2 {
+    visibility: hidden;
+    top: 295px;
+    left: 80px;
+    animation: fadeIn 2s ease-out 5s 1 normal forwards;
+  }
+
+  .Heading3 {
+    visibility: hidden;
+    top: 415px;
+    left: 80px;
+    animation: fadeIn 2s ease-out 6s 1 normal forwards;
+  }
+
+  .Heading4 {
+    visibility: hidden;
+    top: 535px;
+    left: 80px;
+    animation: fadeIn 2s ease-out 7s 1 normal forwards;
+  }
+
+  .Heading5 {
+    visibility: hidden;
+    top: 660px;
+    left: 80px;
+    animation: fadeIn 2s ease-out 8s 1 normal forwards;
+  }
+
+  .Heading6 {
+    visibility: hidden;
+    top: 780px;
+    left: 80px;
+    animation: fadeIn 2s ease-out 9s 1 normal forwards;
+  }
 }
 
 .Page7 {
-  // TODO
+  animation: fadeIn 3s ease-in-out 0s 1 normal forwards;
+  // fadeOut 3s ease-in-out 20s 1 normal forwards;
   background-image: url("/img/rewind-backgrounds/background-numbered-2.jpeg");
   background-size: cover;
+
+  .Heading1 {
+    // visibility: hidden;
+    top: 200px;
+    // animation: comeInFromRight 2s ease-out 2s 1 normal forwards;
+  }
 }
 
 @keyframes fadeIn {

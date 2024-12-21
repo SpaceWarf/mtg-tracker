@@ -13,7 +13,6 @@ type OwnProps = {
   decks: DbDeck[];
 };
 
-// most played deck
 export function RewindPage5({ viewer, games, decks }: OwnProps) {
   const deckMap = getPlayerDecksPlayedMap(viewer, games);
   const mostPlayedDeck = getMostPlayedDeck();
@@ -75,7 +74,7 @@ export function RewindPage5({ viewer, games, decks }: OwnProps) {
         One deck that you loved just a bit more than all the others...
       </Heading>
       <div className="RewindHeading Heading5 w-full">
-        <Heading align="center" size="9">
+        <Heading align="center" size="8">
           {mostPlayedDeck.name}
         </Heading>
         <Heading align="center" size="7">
