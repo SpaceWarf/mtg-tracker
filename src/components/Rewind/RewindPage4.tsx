@@ -12,5 +12,5 @@ type OwnProps = {
 
 // Games started
 export function RewindPage4({ viewer, players, games, decks }: OwnProps) {
-  return <div className="Background4 w-full h-full"></div>;
+  return <div className="Page4 w-full h-full"></div>;
 }

@@ -17,6 +17,13 @@ type OwnProps = {
   children: ReactElement;
 };
 
+const TIMINGS: { [key: number]: number } = {
+  0: 5000,
+  1: 5000,
+  2: 8000,
+  3: 5000,
+};
+
 export function RewindPageWrapper({
   page,
   pageCount,
@@ -29,7 +36,9 @@ export function RewindPageWrapper({
     const lastEl = document.getElementById("AnimationEndTrigger");
 
     if (lastEl) {
-      lastEl.addEventListener("animationend", () => setTimeout(onNext, 5000));
+      lastEl.addEventListener("animationend", () => {
+        setTimeout(onNext, TIMINGS[page]);
+      });
     }
   }, [page, onNext]);
 

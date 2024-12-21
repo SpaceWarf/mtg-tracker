@@ -137,14 +137,63 @@
 }
 
 .Page3 {
-  animation: fadeIn 3s ease-in-out 0s 1 normal forwards;
+  animation: fadeIn 3s ease-in-out 0s 1 normal forwards,
+    fadeOut 3s ease-in-out 17s 1 normal forwards;
   background-image: url("/img/rewind-backgrounds/background-numbered-1.jpeg");
   background-size: cover;
+
+  .Heading1 {
+    visibility: hidden;
+    top: 180px;
+    animation: fadeIn 3s ease-out 2s 1 normal forwards;
+  }
+
+  .Heading2 {
+    visibility: hidden;
+    top: 270px;
+    left: 85px;
+    animation: fadeIn 3s ease-out 5s 1 normal forwards;
+  }
+
+  .Heading3 {
+    visibility: hidden;
+    top: 390px;
+    left: 85px;
+    animation: fadeIn 3s ease-out 6s 1 normal forwards;
+  }
+
+  .Heading4 {
+    visibility: hidden;
+    top: 510px;
+    left: 85px;
+    animation: fadeIn 3s ease-out 7s 1 normal forwards;
+  }
+
+  .Heading5 {
+    visibility: hidden;
+    top: 630px;
+    left: 85px;
+    animation: fadeIn 3s ease-out 8s 1 normal forwards;
+  }
+
+  .Heading6 {
+    visibility: hidden;
+    top: 750px;
+    left: 85px;
+    animation: fadeIn 3s ease-out 9s 1 normal forwards;
+  }
 }
 
-.Background4 {
+.Page4 {
+  animation: fadeIn 3s ease-in-out 0s 1 normal forwards;
   background-image: url("/img/rewind-backgrounds/background-3.jpeg");
   background-size: cover;
+
+  .Heading1 {
+    visibility: hidden;
+    top: 180px;
+    // animation: fadeIn 3s ease-out 2s 1 normal forwards;
+  }
 }
 
 .Background5 {
@@ -159,19 +208,16 @@
 
 @keyframes fadeIn {
   0% {
-    display: none;
     opacity: 0;
   }
 
   1% {
     visibility: visible;
-    display: block;
     opacity: 0;
   }
 
   100% {
     visibility: visible;
-    display: block;
     opacity: 1;
   }
 }
