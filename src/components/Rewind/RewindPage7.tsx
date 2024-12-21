@@ -10,7 +10,7 @@ type OwnProps = {
   decks: DbDeck[];
 };
 
-// Comparative t1 sol rings
+// End card
 export function RewindPage7({ viewer, players, games, decks }: OwnProps) {
-  return <div className="Background7 w-full h-full"></div>;
+  return <div className="Page7 w-full h-full"></div>;
 }

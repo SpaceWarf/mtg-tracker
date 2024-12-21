@@ -39,14 +39,15 @@ export function RewindPage2({ viewer, games }: OwnProps) {
         align="center"
         size="8"
       >
-        Playing these games brings us closer and creates memories,
+        Playing these games is fun, it brings us closer, and creates
+        unforgettable memories,
       </Heading>
       <Heading
         className="RewindHeading Heading2 w-full"
         align="center"
         size="8"
       >
-        But that's not the most important part,
+        But that's not what's important,
       </Heading>
       <Heading
         className="RewindHeading Heading3 w-full"

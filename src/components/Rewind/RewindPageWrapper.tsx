@@ -21,7 +21,7 @@ const TIMINGS: { [key: number]: number } = {
   0: 5000,
   1: 5000,
   2: 8000,
-  3: 5000,
+  3: 10000,
 };
 
 export function RewindPageWrapper({

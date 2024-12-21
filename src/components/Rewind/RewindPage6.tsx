@@ -10,7 +10,7 @@ type OwnProps = {
   decks: DbDeck[];
 };
 
-// T1 Sol Rings
+// deck played ranking
 export function RewindPage6({ viewer, players, games, decks }: OwnProps) {
-  return <div className="Background6 w-full h-full"></div>;
+  return <div className="Page6 w-full h-full"></div>;
 }

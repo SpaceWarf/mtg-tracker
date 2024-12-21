@@ -10,7 +10,7 @@ type OwnProps = {
   decks: DbDeck[];
 };
 
-// Comparative games started
+// most played deck
 export function RewindPage5({ viewer, players, games, decks }: OwnProps) {
-  return <div className="Background5 w-full h-full"></div>;
+  return <div className="Page5 w-full h-full"></div>;
 }

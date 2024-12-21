@@ -99,7 +99,7 @@
 
   .Heading2 {
     visibility: hidden;
-    top: 375px;
+    top: 400px;
     animation: fadeIn 3s ease-out 6s 1 normal forwards,
       leaveToLeft 2s ease-in-out 12s 1 normal forwards;
   }
@@ -185,24 +185,50 @@
 }
 
 .Page4 {
-  animation: fadeIn 3s ease-in-out 0s 1 normal forwards;
+  animation: fadeIn 3s ease-in-out 0s 1 normal forwards,
+    fadeOut 3s ease-in-out 24s 1 normal forwards;
   background-image: url("/img/rewind-backgrounds/background-3.jpeg");
   background-size: cover;
 
   .Heading1 {
     visibility: hidden;
-    top: 180px;
-    // animation: fadeIn 3s ease-out 2s 1 normal forwards;
+    top: 250px;
+    animation: comeInFromRight 2s ease-out 2s 1 normal forwards;
+  }
+
+  .Heading2 {
+    visibility: hidden;
+    top: 300px;
+    animation: fadeIn 3s ease-out 4s 1 normal forwards;
+  }
+
+  .Heading3 {
+    visibility: hidden;
+    top: 390px;
+    animation: fadeIn 3s ease-out 9s 1 normal forwards;
+  }
+
+  .Heading4 {
+    visibility: hidden;
+    top: 485px;
+    animation: fadeIn 3s ease-out 14s 1 normal forwards;
   }
 }
 
-.Background5 {
+.Page5 {
+  animation: fadeIn 3s ease-in-out 0s 1 normal forwards;
+  background-image: url("/img/rewind-backgrounds/background-4.jpeg");
+  background-size: cover;
+}
+
+.Page6 {
   background-image: url("/img/rewind-backgrounds/background-numbered-2.jpeg");
   background-size: cover;
 }
 
-.Background6 {
-  background-image: url("/img/rewind-backgrounds/background-6.jpeg");
+.Page7 {
+  // TODO
+  background-image: url("/img/rewind-backgrounds/background-numbered-2.jpeg");
   background-size: cover;
 }
 

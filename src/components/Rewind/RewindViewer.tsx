@@ -14,7 +14,6 @@ import { RewindPage4 } from "./RewindPage4";
 import { RewindPage5 } from "./RewindPage5";
 import { RewindPage6 } from "./RewindPage6";
 import { RewindPage7 } from "./RewindPage7";
-import { RewindPage8 } from "./RewindPage8";
 import { RewindPageWrapper } from "./RewindPageWrapper";
 
 const PAGES = [
@@ -25,7 +24,6 @@ const PAGES = [
   RewindPage5,
   RewindPage6,
   RewindPage7,
-  RewindPage8,
 ];
 
 export function RewindViewer() {
