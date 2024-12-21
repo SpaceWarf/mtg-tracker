@@ -4,9 +4,12 @@ import {
   Cross2Icon,
   DotFilledIcon,
   DotIcon,
+  SpeakerLoudIcon,
+  SpeakerOffIcon,
 } from "@radix-ui/react-icons";
 import { Flex, IconButton } from "@radix-ui/themes";
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect, useState } from "react";
+import soundfile from "/audio/last-christmas.mp3";
 
 type OwnProps = {
   page: number;
@@ -34,6 +37,27 @@ export function RewindPageWrapper({
   onNext,
   children,
 }: OwnProps) {
+  const [canStart, setCanStart] = useState<boolean>(false);
+  const [audio] = useState(new Audio(soundfile));
+  const [mute, setMute] = useState<boolean>(false);
+
+  useEffect(() => {
+    audio.volume = 0.02;
+    audio.play().then(() => setTimeout(() => setCanStart(true), 1500));
+
+    return () => {
+      audio.pause();
+    };
+  }, [audio]);
+
+  useEffect(() => {
+    if (mute) {
+      audio.volume = 0;
+    } else {
+      audio.volume = 0.02;
+    }
+  }, [mute, audio]);
+
   useEffect(() => {
     const lastEl = document.getElementById("AnimationEndTrigger");
 
@@ -44,12 +68,40 @@ export function RewindPageWrapper({
     }
   }, [page, onNext]);
 
+  function handleCancel() {
+    audio.pause();
+    onCancel();
+  }
+
+  function toggleMute() {
+    setMute(!mute);
+  }
+
   return (
     <div className="RewindPageWrapper relative">
       <div className="absolute right-3 top-3 z-10">
-        <IconButton onClick={onCancel} variant="surface" size="1" radius="full">
-          <Cross2Icon width="15" height="15" />
-        </IconButton>
+        <Flex gap="2">
+          <IconButton
+            onClick={toggleMute}
+            variant="surface"
+            size="1"
+            radius="full"
+          >
+            {mute ? (
+              <SpeakerOffIcon width="12" height="12" />
+            ) : (
+              <SpeakerLoudIcon width="12" height="12" />
+            )}
+          </IconButton>
+          <IconButton
+            onClick={handleCancel}
+            variant="surface"
+            size="1"
+            radius="full"
+          >
+            <Cross2Icon width="15" height="15" />
+          </IconButton>
+        </Flex>
       </div>
       <Flex
         className="RewindPaginator absolute bottom-0 w-full px-3 py-1 z-10"
@@ -84,7 +136,7 @@ export function RewindPageWrapper({
           <CaretRightIcon width="18" height="18" />
         </IconButton>
       </Flex>
-      {children}
+      {canStart && children}
     </div>
   );
 }
