@@ -78,10 +78,10 @@ export function GamesViewer() {
   }, [dbGames, getDeckByIdFromContext, getPlayerByIdFromContext]);
 
   useEffect(() => {
-    if (!loadingGames) {
+    if (!loadingGames && !loadingDecks && !loadingPlayers) {
       populateGames();
     }
-  }, [loadingGames, populateGames]);
+  }, [loadingGames, loadingDecks, loadingPlayers, populateGames]);
 
   useEffect(() => {
     const filtered = cloneDeep(populatedGames).filter((game) => {

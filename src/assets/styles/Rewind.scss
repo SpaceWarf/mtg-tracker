@@ -216,9 +216,46 @@
 }
 
 .Page5 {
-  animation: fadeIn 3s ease-in-out 0s 1 normal forwards;
+  animation: fadeIn 3s ease-in-out 0s 1 normal forwards,
+    fadeOut 3s ease-in-out 19s 1 normal forwards;
   background-image: url("/img/rewind-backgrounds/background-4.jpeg");
   background-size: cover;
+
+  .Heading1 {
+    visibility: hidden;
+    top: 225px;
+    animation: fadeIn 2s ease-out 3s 1 normal forwards;
+  }
+
+  .Heading2 {
+    visibility: hidden;
+    top: 275px;
+    animation: fadeIn 2s ease-out 5s 1 normal forwards;
+  }
+
+  .Heading3 {
+    visibility: hidden;
+    top: 325px;
+    animation: fadeIn 2s ease-out 7s 1 normal forwards;
+  }
+
+  .Heading4 {
+    visibility: hidden;
+    top: 375px;
+    animation: fadeIn 2s ease-out 9s 1 normal forwards;
+  }
+
+  .Heading5 {
+    visibility: hidden;
+    --endPosition: 335px;
+    animation: comeInFromBottom 2s ease-out 12s 1 normal forwards;
+  }
+
+  .Heading6 {
+    visibility: hidden;
+    top: 575px;
+    animation: fadeIn 2s ease-out 14s 1 normal forwards;
+  }
 }
 
 .Page6 {

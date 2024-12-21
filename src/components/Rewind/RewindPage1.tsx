@@ -5,7 +5,7 @@ import { Avatar, Heading } from "@radix-ui/themes";
 import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { DbPlayer } from "../../state/Player";
-import { getAllGamesWithPlayer } from "../../utils/Player";
+import { getAllGamesWithPlayer } from "../../utils/Game";
 
 type OwnProps = {
   viewer: DbPlayer;

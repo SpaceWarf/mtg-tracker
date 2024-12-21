@@ -92,8 +92,11 @@ export function RewindViewer() {
       gap="5"
     >
       <Flex direction="column" justify="center">
-        <Heading size="6" className="mb-1">
-          Who is watching?
+        <Heading size="8" className="mb-6">
+          Le Calice de Rewind
+        </Heading>
+        <Heading size="5" className="mb-1">
+          who is watching?
         </Heading>
         <Select.Root
           size="3"
@@ -116,7 +119,7 @@ export function RewindViewer() {
       </Flex>
       <Button size="3" disabled={!player} onClick={handleStartRewind}>
         <FontAwesomeIcon icon={faFilm} />
-        Watch!
+        Let's Start!
       </Button>
     </Flex>
   );

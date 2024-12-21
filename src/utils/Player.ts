@@ -1,50 +1,6 @@
-import { DbGame, GamePlayer } from "../state/Game";
+import { DbGame } from "../state/Game";
 import { DbPlayer } from "../state/Player";
-
-export function getAllGamesWithPlayer(
-  player: DbPlayer,
-  games: DbGame[]
-): DbGame[] {
-  return games.reduce((games: DbGame[], nextGame: DbGame) => {
-    if (
-      [
-        nextGame.player1.player,
-        nextGame.player2.player,
-        nextGame.player3.player,
-        nextGame.player4.player,
-      ].includes(player.id)
-    ) {
-      return [...games, nextGame];
-    }
-
-    return games;
-  }, []);
-}
-
-export function getAllGamesForPlayer(
-  player: DbPlayer,
-  games: DbGame[]
-): GamePlayer[] {
-  return games.reduce((games: GamePlayer[], nextGame: DbGame) => {
-    if (nextGame.player1.player === player.id) {
-      return [...games, nextGame.player1];
-    }
-
-    if (nextGame.player2.player === player.id) {
-      return [...games, nextGame.player2];
-    }
-
-    if (nextGame.player3.player === player.id) {
-      return [...games, nextGame.player3];
-    }
-
-    if (nextGame.player4.player === player.id) {
-      return [...games, nextGame.player4];
-    }
-
-    return games;
-  }, []);
-}
+import { getAllGamesForPlayer } from "./Game";
 
 export function getPlayerGamesCount(player: DbPlayer, games: DbGame[]): number {
   return getAllGamesForPlayer(player, games).length;
@@ -137,4 +93,21 @@ export function getPlayerGrandSlamCount(
   return getAllGamesForPlayer(player, games).filter(
     (game) => game.started && game.t1SolRing && game.won
   ).length;
+}
+
+export function getPlayerDecksPlayedMap(
+  player: DbPlayer,
+  games: DbGame[]
+): Map<string, number> {
+  const map = new Map<string, number>();
+  const gamesPlayed = getAllGamesForPlayer(player, games);
+  gamesPlayed.forEach((game) => {
+    const entry = map.get(game.deck);
+    if (entry) {
+      map.set(game.deck, entry + 1);
+    } else {
+      map.set(game.deck, 1);
+    }
+  });
+  return map;
 }
