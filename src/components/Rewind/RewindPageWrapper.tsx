@@ -37,13 +37,12 @@ export function RewindPageWrapper({
   onNext,
   children,
 }: OwnProps) {
-  const [canStart, setCanStart] = useState<boolean>(false);
   const [audio] = useState(new Audio(soundfile));
   const [mute, setMute] = useState<boolean>(false);
 
   useEffect(() => {
     audio.volume = 0.02;
-    audio.play().then(() => setTimeout(() => setCanStart(true), 1500));
+    audio.play();
 
     return () => {
       audio.pause();
@@ -136,7 +135,7 @@ export function RewindPageWrapper({
           <CaretRightIcon width="18" height="18" />
         </IconButton>
       </Flex>
-      {canStart && children}
+      {children}
     </div>
   );
 }
