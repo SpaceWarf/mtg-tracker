@@ -21,4 +21,8 @@ export enum PlayerSortFctKey {
   SOL_RING_TO_WIN_RATE_DESC = "sol-ring-to-win-rate-desc",
   GRAND_SLAM_COUNT_ASC = "grand-slam-count-asc",
   GRAND_SLAM_COUNT_DESC = "grand-slam-count-desc",
+  UNIQUE_DECKS_PLAYED_ASC = "unique-decks-played-asc",
+  UNIQUE_DECKS_PLAYED_DESC = "unique-decks-played-desc",
+  UNIQUE_DECKS_WON_ASC = "unique-decks-won-asc",
+  UNIQUE_DECKS_WON_DESC = "unique-decks-won-desc",
 }

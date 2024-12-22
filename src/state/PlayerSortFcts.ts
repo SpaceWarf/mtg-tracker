@@ -155,4 +155,36 @@ export const PLAYER_SORT_FCTS: SortFct<PlayerWithStats> = {
     highlightedKey: "grandSlamCount",
     highlightedDirection: "desc",
   },
+  [PlayerSortFctKey.UNIQUE_DECKS_PLAYED_ASC]: {
+    name: "Unique decks played - ASC",
+    sortFct: (a: PlayerWithStats, b: PlayerWithStats) =>
+      [...a.deckPlayedMap.values()].filter((value) => value > 0).length -
+      [...b.deckPlayedMap.values()].filter((value) => value > 0).length,
+    highlightedKey: "uniqueDecksPlayed",
+    highlightedDirection: "asc",
+  },
+  [PlayerSortFctKey.UNIQUE_DECKS_PLAYED_DESC]: {
+    name: "Unique decks played - DESC",
+    sortFct: (a: PlayerWithStats, b: PlayerWithStats) =>
+      [...b.deckPlayedMap.values()].filter((value) => value > 0).length -
+      [...a.deckPlayedMap.values()].filter((value) => value > 0).length,
+    highlightedKey: "uniqueDecksPlayed",
+    highlightedDirection: "desc",
+  },
+  [PlayerSortFctKey.UNIQUE_DECKS_WON_ASC]: {
+    name: "Unique decks won with - ASC",
+    sortFct: (a: PlayerWithStats, b: PlayerWithStats) =>
+      [...a.deckWonMap.values()].filter((value) => value > 0).length -
+      [...b.deckWonMap.values()].filter((value) => value > 0).length,
+    highlightedKey: "uniqueDecksWon",
+    highlightedDirection: "asc",
+  },
+  [PlayerSortFctKey.UNIQUE_DECKS_WON_DESC]: {
+    name: "Unique decks won with - DESC",
+    sortFct: (a: PlayerWithStats, b: PlayerWithStats) =>
+      [...b.deckWonMap.values()].filter((value) => value > 0).length -
+      [...a.deckWonMap.values()].filter((value) => value > 0).length,
+    highlightedKey: "uniqueDecksWon",
+    highlightedDirection: "desc",
+  },
 };

@@ -3,6 +3,7 @@ import { Heading } from "@radix-ui/themes";
 import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { DbPlayer } from "../../state/Player";
+import { DeckPlayStats } from "../../state/PlayerDeckStats";
 import { getAllGamesForPlayerAndDeck } from "../../utils/Game";
 import { getAmountIntlString } from "../../utils/Intl";
 import { getPlayerDecksPlayedMap } from "../../utils/Player";
@@ -13,12 +14,6 @@ type OwnProps = {
   games: DbGame[];
   decks: DbDeck[];
 };
-
-interface DeckStats {
-  deck: DbDeck;
-  gamesPlayed: number;
-  gamesWon: number;
-}
 
 export function RewindPage6({ viewer, games, decks }: OwnProps) {
   const deckMap = getPlayerDecksPlayedMap(viewer, games);
@@ -44,7 +39,7 @@ export function RewindPage6({ viewer, games, decks }: OwnProps) {
     return {} as DbDeck;
   }
 
-  function getStatsForDeckAtIndex(idx: number): DeckStats {
+  function getStatsForDeckAtIndex(idx: number): DeckPlayStats {
     const deck = getMostPlayedDeckAtIndex(idx);
     const gamesPlayed = getAllGamesForPlayerAndDeck(viewer, deck, games);
     const gamesWon = gamesPlayed.filter((games) => games.won).length;

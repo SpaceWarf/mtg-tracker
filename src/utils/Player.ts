@@ -111,3 +111,22 @@ export function getPlayerDecksPlayedMap(
   });
   return map;
 }
+
+export function getPlayerDecksWonMap(
+  player: DbPlayer,
+  games: DbGame[]
+): Map<string, number> {
+  const map = new Map<string, number>();
+  const gamesPlayed = getAllGamesForPlayer(player, games);
+  gamesPlayed
+    .filter((game) => game.won)
+    .forEach((game) => {
+      const entry = map.get(game.deck);
+      if (entry) {
+        map.set(game.deck, entry + 1);
+      } else {
+        map.set(game.deck, 1);
+      }
+    });
+  return map;
+}
