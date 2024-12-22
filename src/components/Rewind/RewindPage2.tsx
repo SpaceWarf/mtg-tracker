@@ -3,6 +3,7 @@ import { Heading } from "@radix-ui/themes";
 import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { DbPlayer } from "../../state/Player";
+import { getAmountIntlString } from "../../utils/Intl";
 import { getPlayerWinCount, getPlayerWinRate } from "../../utils/Player";
 
 type OwnProps = {
@@ -68,7 +69,9 @@ export function RewindPage2({ viewer, games }: OwnProps) {
         align="center"
         size="9"
       >
-        <b>{winCount} wins!</b>
+        <b>
+          {winCount} {getAmountIntlString(winCount, "win", "wins")}!
+        </b>
       </Heading>
       <Heading
         className="RewindHeading Heading6 w-full"

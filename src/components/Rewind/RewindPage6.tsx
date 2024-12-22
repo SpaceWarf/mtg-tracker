@@ -4,6 +4,7 @@ import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { DbPlayer } from "../../state/Player";
 import { getAllGamesForPlayerAndDeck } from "../../utils/Game";
+import { getAmountIntlString } from "../../utils/Intl";
 import { getPlayerDecksPlayedMap } from "../../utils/Player";
 
 type OwnProps = {
@@ -13,65 +14,27 @@ type OwnProps = {
   decks: DbDeck[];
 };
 
+interface DeckStats {
+  deck: DbDeck;
+  gamesPlayed: number;
+  gamesWon: number;
+}
+
 export function RewindPage6({ viewer, games, decks }: OwnProps) {
   const deckMap = getPlayerDecksPlayedMap(viewer, games);
-  const deck1 = getXMostPlayedDeck(0);
-  const gamesPlayedWithDeck1 = getAllGamesForPlayerAndDeck(
-    viewer,
-    deck1,
-    games
-  );
-  const winsWithDeck1 = gamesPlayedWithDeck1.filter(
-    (games) => games.won
-  ).length;
+  const deck1Stats = getStatsForDeckAtIndex(0);
+  const deck2Stats = getStatsForDeckAtIndex(1);
+  const deck3Stats = getStatsForDeckAtIndex(2);
+  const deck4Stats = getStatsForDeckAtIndex(3);
+  const deck5Stats = getStatsForDeckAtIndex(4);
 
-  const deck2 = getXMostPlayedDeck(1);
-  const gamesPlayedWithDeck2 = getAllGamesForPlayerAndDeck(
-    viewer,
-    deck2,
-    games
-  );
-  const winsWithDeck2 = gamesPlayedWithDeck2.filter(
-    (games) => games.won
-  ).length;
-
-  const deck3 = getXMostPlayedDeck(2);
-  const gamesPlayedWithDeck3 = getAllGamesForPlayerAndDeck(
-    viewer,
-    deck3,
-    games
-  );
-  const winsWithDeck3 = gamesPlayedWithDeck3.filter(
-    (games) => games.won
-  ).length;
-
-  const deck4 = getXMostPlayedDeck(3);
-  const gamesPlayedWithDeck4 = getAllGamesForPlayerAndDeck(
-    viewer,
-    deck4,
-    games
-  );
-  const winsWithDeck4 = gamesPlayedWithDeck4.filter(
-    (games) => games.won
-  ).length;
-
-  const deck5 = getXMostPlayedDeck(4);
-  const gamesPlayedWithDeck5 = getAllGamesForPlayerAndDeck(
-    viewer,
-    deck5,
-    games
-  );
-  const winsWithDeck5 = gamesPlayedWithDeck5.filter(
-    (games) => games.won
-  ).length;
-
-  function getXMostPlayedDeckId(x: number): string {
-    const entry = [...deckMap.entries()].sort((a, b) => b[1] - a[1])[x];
+  function getMostPlayedDeckIdAtIndex(idx: number): string {
+    const entry = [...deckMap.entries()].sort((a, b) => b[1] - a[1])[idx];
     return entry ? entry[0] : "";
   }
 
-  function getXMostPlayedDeck(x: number): DbDeck {
-    const id = getXMostPlayedDeckId(x);
+  function getMostPlayedDeckAtIndex(idx: number): DbDeck {
+    const id = getMostPlayedDeckIdAtIndex(idx);
     const deck = decks.find((deck) => deck.id === id);
 
     if (deck) {
@@ -79,6 +42,18 @@ export function RewindPage6({ viewer, games, decks }: OwnProps) {
     }
 
     return {} as DbDeck;
+  }
+
+  function getStatsForDeckAtIndex(idx: number): DeckStats {
+    const deck = getMostPlayedDeckAtIndex(idx);
+    const gamesPlayed = getAllGamesForPlayerAndDeck(viewer, deck, games);
+    const gamesWon = gamesPlayed.filter((games) => games.won).length;
+
+    return {
+      deck,
+      gamesPlayed: gamesPlayed.length,
+      gamesWon,
+    };
   }
 
   return (
@@ -91,40 +66,55 @@ export function RewindPage6({ viewer, games, decks }: OwnProps) {
         What other decks have you loved this year?
       </Heading>
       <div className="RewindHeading Heading2 w-full">
-        <Heading size="6">{deck1.name}</Heading>
-        <Heading size="4">{deck1.commander}</Heading>
+        <Heading size="6">{deck1Stats.deck.name}</Heading>
+        <Heading size="4">{deck1Stats.deck.commander}</Heading>
         <Heading size="3">
-          {gamesPlayedWithDeck1.length} games played, {winsWithDeck1} wins
+          {deck1Stats.gamesPlayed}{" "}
+          {getAmountIntlString(deck1Stats.gamesPlayed, "game", "games")} played,{" "}
+          {deck1Stats.gamesWon}{" "}
+          {getAmountIntlString(deck1Stats.gamesWon, "win", "wins")}
         </Heading>
       </div>
       <div className="RewindHeading Heading3 w-full">
-        <Heading size="6">{deck2.name}</Heading>
-        <Heading size="4">{deck2.commander}</Heading>
+        <Heading size="6">{deck2Stats.deck.name}</Heading>
+        <Heading size="4">{deck2Stats.deck.commander}</Heading>
         <Heading size="3">
-          {gamesPlayedWithDeck2.length} games played, {winsWithDeck2} wins
+          {deck2Stats.gamesPlayed}{" "}
+          {getAmountIntlString(deck2Stats.gamesPlayed, "game", "games")} played,{" "}
+          {deck2Stats.gamesWon}{" "}
+          {getAmountIntlString(deck2Stats.gamesWon, "win", "wins")}
         </Heading>
       </div>
       <div className="RewindHeading Heading4 w-full">
-        <Heading size="6">{deck3.name}</Heading>
-        <Heading size="4">{deck3.commander}</Heading>
+        <Heading size="6">{deck3Stats.deck.name}</Heading>
+        <Heading size="4">{deck3Stats.deck.commander}</Heading>
         <Heading size="3">
-          {gamesPlayedWithDeck3.length} games played, {winsWithDeck3} wins
+          {deck3Stats.gamesPlayed}{" "}
+          {getAmountIntlString(deck3Stats.gamesPlayed, "game", "games")} played,{" "}
+          {deck3Stats.gamesWon}{" "}
+          {getAmountIntlString(deck3Stats.gamesWon, "win", "wins")}
         </Heading>
       </div>
       <div className="RewindHeading Heading5 w-full">
-        <Heading size="6">{deck4.name}</Heading>
-        <Heading size="4">{deck4.commander}</Heading>
+        <Heading size="6">{deck4Stats.deck.name}</Heading>
+        <Heading size="4">{deck4Stats.deck.commander}</Heading>
         <Heading size="3">
-          {gamesPlayedWithDeck4.length} games played, {winsWithDeck4} wins
+          {deck4Stats.gamesPlayed}{" "}
+          {getAmountIntlString(deck4Stats.gamesPlayed, "game", "games")} played,{" "}
+          {deck4Stats.gamesWon}{" "}
+          {getAmountIntlString(deck4Stats.gamesWon, "win", "wins")}
         </Heading>
       </div>
       <div id="AnimationEndTrigger" className="RewindHeading Heading6 w-full">
-        {deck5.name && (
+        {deck5Stats.deck.name && (
           <>
-            <Heading size="6">{deck5.name}</Heading>
-            <Heading size="4">{deck5.commander}</Heading>
+            <Heading size="6">{deck5Stats.deck.name}</Heading>
+            <Heading size="4">{deck5Stats.deck.commander}</Heading>
             <Heading size="3">
-              {gamesPlayedWithDeck5.length} games played, {winsWithDeck5} wins
+              {deck5Stats.gamesPlayed}{" "}
+              {getAmountIntlString(deck5Stats.gamesPlayed, "game", "games")}{" "}
+              played, {deck5Stats.gamesWon}{" "}
+              {getAmountIntlString(deck5Stats.gamesWon, "win", "wins")}
             </Heading>
           </>
         )}

@@ -4,6 +4,7 @@ import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { DbPlayer } from "../../state/Player";
 import { getAllGamesForPlayerAndDeck } from "../../utils/Game";
+import { getAmountIntlString } from "../../utils/Intl";
 import { getPlayerDecksPlayedMap } from "../../utils/Player";
 
 type OwnProps = {
@@ -16,6 +17,7 @@ type OwnProps = {
 export function RewindPage5({ viewer, games, decks }: OwnProps) {
   const deckMap = getPlayerDecksPlayedMap(viewer, games);
   const mostPlayedDeck = getMostPlayedDeck();
+  const mostPlayedDeckPlayCount = getMostPlayedDeckPlayCount();
   const gamesPlayedWithDeck = getAllGamesForPlayerAndDeck(
     viewer,
     mostPlayedDeck,
@@ -57,7 +59,8 @@ export function RewindPage5({ viewer, games, decks }: OwnProps) {
         align="center"
         size="7"
       >
-        {deckMap.size} unique ones to be precise.
+        {deckMap.size} unique {getAmountIntlString(deckMap.size, "one", "ones")}{" "}
+        to be precise.
       </Heading>
       <Heading
         className="RewindHeading Heading3 w-full"
@@ -87,8 +90,14 @@ export function RewindPage5({ viewer, games, decks }: OwnProps) {
         align="center"
         size="5"
       >
-        which you've played {getMostPlayedDeckPlayCount()} different times and
-        won {winsWithDeck} times with.
+        which you've played {mostPlayedDeckPlayCount}{" "}
+        {getAmountIntlString(
+          mostPlayedDeckPlayCount,
+          "time",
+          "different times"
+        )}{" "}
+        and won {winsWithDeck}{" "}
+        {getAmountIntlString(winsWithDeck, "time", "times")} with.
       </Heading>
     </div>
   );

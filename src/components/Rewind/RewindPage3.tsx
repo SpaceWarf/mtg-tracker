@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { DbPlayer } from "../../state/Player";
+import { getAmountIntlString } from "../../utils/Intl";
 import {
   getPlayerGamesCount,
   getPlayerWinCount,
@@ -124,10 +125,12 @@ function WinRateRanking({
       <Flex direction="column">
         <Heading color="blue">{player?.name}</Heading>
         <Heading color="blue" size="4">
-          {gamesCount} games played
+          {gamesCount} {getAmountIntlString(gamesCount ?? 0, "game", "games")}{" "}
+          played
         </Heading>
         <Heading color="blue" size="4">
-          {winCount} wins / {Math.round((winRate ?? 0) * 100)}% win rate
+          {winCount} {getAmountIntlString(winCount ?? 0, "win", "wins")} /{" "}
+          {Math.round((winRate ?? 0) * 100)}% win rate
         </Heading>
       </Flex>
     </Flex>

@@ -3,6 +3,7 @@ import { Heading } from "@radix-ui/themes";
 import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { DbPlayer } from "../../state/Player";
+import { getAmountIntlString } from "../../utils/Intl";
 import {
   getPlayerGamesStarted,
   getPlayerGamesStartedAndWon,
@@ -69,13 +70,16 @@ export function RewindPage4({ viewer, games }: OwnProps) {
         Here's some other stats that might interest you
       </Heading>
       <Heading className="RewindHeading Heading2" align="center" size="4">
-        You started {startCount} games, {Math.round(startRate * 100)}% of all
-        your games, and converted {startToWinCount} of those starts into wins (a
-        rate of {Math.round(startToWinRate * 100)}%). {getStartEndLabel()}
+        You started {startCount}{" "}
+        {getAmountIntlString(startCount, "game", "games")},{" "}
+        {Math.round(startRate * 100)}% of all your games, and converted{" "}
+        {startToWinCount} of those starts into wins (a rate of{" "}
+        {Math.round(startToWinRate * 100)}%). {getStartEndLabel()}
       </Heading>
       <Heading className="RewindHeading Heading3" align="center" size="4">
-        You first turn was blessed by a Sol Ring {solRingCount} times and led to
-        a win {solRingToWinCount} of those times! That's a{" "}
+        You first turn was blessed by a Sol Ring {solRingCount}{" "}
+        {getAmountIntlString(solRingCount, "time", "times")} and led to a win{" "}
+        {solRingToWinCount} of those times! That's a{" "}
         {Math.round(solRingRate * 100)}% Sol Ring rate, and a win conversion
         rate of {Math.round(solRingToWinRate * 100)}%. {getSolRingEndLabel()}
       </Heading>
@@ -88,9 +92,10 @@ export function RewindPage4({ viewer, games }: OwnProps) {
           size="4"
         >
           You are one of the lucky (or skilled) few who managed to get a Grand
-          Slam this year! You had {grandSlamCount} game where you started,
-          played a Sol Ring on your first turn, and won. Talk about hitting it
-          out of the park.
+          Slam this year! You had {grandSlamCount}{" "}
+          {getAmountIntlString(grandSlamCount, "game", "games")} where you
+          started, played a Sol Ring on your first turn, and won. Talk about
+          hitting it out of the park.
         </Heading>
       ) : (
         <Heading

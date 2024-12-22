@@ -6,6 +6,7 @@ import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { DbPlayer } from "../../state/Player";
 import { getAllGamesWithPlayer } from "../../utils/Game";
+import { getAmountIntlString } from "../../utils/Intl";
 
 type OwnProps = {
   viewer: DbPlayer;
@@ -60,14 +61,21 @@ export function RewindPage1({ viewer, games }: OwnProps) {
         align="center"
         size="8"
       >
-        You've played a whopping <b>{gamesPlayed.length} games</b> this year!
+        You've played a whopping{" "}
+        <b>
+          {gamesPlayed.length}{" "}
+          {getAmountIntlString(gamesPlayed.length, "game", "games")}
+        </b>{" "}
+        this year!
       </Heading>
       <Heading
         className="RewindHeading Heading5 w-full"
         align="center"
         size="5"
       >
-        That's {uniqueDays} different days you spent around the people you love
+        That's {uniqueDays}{" "}
+        {getAmountIntlString(uniqueDays, "day", "different days")} you spent
+        around the people you love
       </Heading>
       <Heading
         className="RewindHeading Heading6 w-full"
