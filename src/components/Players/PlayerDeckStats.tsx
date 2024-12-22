@@ -68,7 +68,7 @@ export function PlayerDeckStats({
       <Table.Root className="mb-5" variant="surface" size="1" layout="fixed">
         <Table.Body>
           <Table.Row>
-            <Table.RowHeaderCell>Different decks played</Table.RowHeaderCell>
+            <Table.RowHeaderCell>Unique decks played</Table.RowHeaderCell>
             <Table.Cell>
               <Flex gap="3" align="center">
                 <Text size="4">
@@ -82,7 +82,7 @@ export function PlayerDeckStats({
             </Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.RowHeaderCell>Different decks won with</Table.RowHeaderCell>
+            <Table.RowHeaderCell>Unique deck wins</Table.RowHeaderCell>
             <Table.Cell>
               <Flex gap="3" align="center">
                 <Text size="4">
