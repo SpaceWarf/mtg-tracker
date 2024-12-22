@@ -57,6 +57,10 @@ export function RewindPage4({ viewer, games }: OwnProps) {
       return "Are you sure you only have a single copy in there?";
     }
 
+    if (solRingToWinRate === 0) {
+      return "If Sol Ring can't carry you to victory, I don't know what will!";
+    }
+
     return "Nothing to bat an eye about.";
   }
 
