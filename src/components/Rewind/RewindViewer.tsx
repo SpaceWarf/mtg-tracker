@@ -1,7 +1,14 @@
 import "@assets/styles/Rewind.scss";
-import { faFilm } from "@fortawesome/free-solid-svg-icons";
+import { faFilm, faPersonDigging } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Flex, Heading, Select, Spinner } from "@radix-ui/themes";
+import {
+  Button,
+  Callout,
+  Flex,
+  Heading,
+  Select,
+  Spinner,
+} from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useDecks } from "../../hooks/useDecks";
@@ -35,7 +42,7 @@ export function RewindViewer() {
   const [page, setPage] = useState<number>(0);
 
   function handleStartRewind() {
-    setStarted(true);
+    // setStarted(true);
   }
 
   function handlePreviousPage() {
@@ -101,6 +108,7 @@ export function RewindViewer() {
         <Select.Root
           size="3"
           value={player}
+          disabled={true}
           onValueChange={(value) => setPlayer(value)}
         >
           <Select.Trigger />
@@ -121,6 +129,12 @@ export function RewindViewer() {
         <FontAwesomeIcon icon={faFilm} />
         Let's Start!
       </Button>
+      <Callout.Root size="3" color="yellow">
+        <Callout.Icon>
+          <FontAwesomeIcon icon={faPersonDigging} size="lg" />
+        </Callout.Icon>
+        <Callout.Text>UNDER CONSTRUCTION - COMING SOON</Callout.Text>
+      </Callout.Root>
     </Flex>
   );
 }
