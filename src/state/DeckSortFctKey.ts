@@ -9,4 +9,6 @@ export enum DeckSortFctKey {
   WIN_COUNT_DESC = "win-count-desc",
   WIN_RATE_ASC = "win-rate-asc",
   WIN_RATE_DESC = "win-rate-desc",
+  BUILDER_ASC = "builder-asc",
+  BUILDER_DESC = "builder-desc",
 }

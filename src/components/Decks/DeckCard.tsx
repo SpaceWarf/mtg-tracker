@@ -8,6 +8,7 @@ import {
   Table,
   Text,
 } from "@radix-ui/themes";
+import { usePlayers } from "../../hooks/usePlayers";
 import { DbDeck } from "../../state/Deck";
 import { SortHighlightIcon } from "../Icons/SortHighlightIcon";
 import { DeckEditModal } from "./DeckEditModal";
@@ -31,6 +32,12 @@ export function DeckCard({
   winCount,
   winRate,
 }: OwnProps) {
+  const { dbPlayers } = usePlayers();
+
+  function getPlayerName(id: string): string {
+    return (dbPlayers || []).find((player) => player.id === id)?.name ?? "-";
+  }
+
   return (
     <Card size="3">
       <Flex gap="3" className="absolute right-3 top-5" justify="end">
@@ -87,6 +94,20 @@ export function DeckCard({
                 </Text>
                 <SortHighlightIcon
                   highlighted={highlightedKey === "winRate"}
+                  direction={highlightedDirection}
+                />
+              </Flex>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.RowHeaderCell>Built By</Table.RowHeaderCell>
+            <Table.Cell>
+              <Flex gap="3" align="center">
+                <Text size="4">
+                  <Strong>{getPlayerName(deck.builder ?? "")}</Strong>
+                </Text>
+                <SortHighlightIcon
+                  highlighted={highlightedKey === "builder"}
                   direction={highlightedDirection}
                 />
               </Flex>

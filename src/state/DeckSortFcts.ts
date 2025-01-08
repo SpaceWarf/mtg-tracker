@@ -69,4 +69,18 @@ export const DECK_SORT_FCTS: SortFct<DeckWithStats> = {
     highlightedKey: "winRate",
     highlightedDirection: "desc",
   },
+  [DeckSortFctKey.BUILDER_ASC]: {
+    name: "Built By - ASC",
+    sortFct: (a: DeckWithStats, b: DeckWithStats) =>
+      (a.builder ?? "-").localeCompare(b.builder ?? "-"),
+    highlightedKey: "builder",
+    highlightedDirection: "asc",
+  },
+  [DeckSortFctKey.BUILDER_DESC]: {
+    name: "Built By - DESC",
+    sortFct: (a: DeckWithStats, b: DeckWithStats) =>
+      (b.builder ?? "-").localeCompare(a.builder ?? "-"),
+    highlightedKey: "builder",
+    highlightedDirection: "desc",
+  },
 };

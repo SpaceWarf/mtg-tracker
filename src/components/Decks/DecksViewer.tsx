@@ -1,10 +1,22 @@
-import { Flex, Heading, Select, Spinner, TextField } from "@radix-ui/themes";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  Avatar,
+  CheckboxCards,
+  Flex,
+  Heading,
+  Select,
+  Spinner,
+  Text,
+  TextField,
+} from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
+import { usePlayers } from "../../hooks/usePlayers";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckSortFctKey } from "../../state/DeckSortFctKey";
 import { DECK_SORT_FCTS } from "../../state/DeckSortFcts";
@@ -21,10 +33,12 @@ export function DecksViewer() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { dbDecks, loadingDecks } = useDecks();
   const { dbGames, loadingGames } = useGames();
+  const { dbPlayers, loadingPlayers } = usePlayers();
   const [search, setSearch] = useState<string>("");
   const [sortFctKey, setSortFctKey] = useState<DeckSortFctKey>(
     DeckSortFctKey.NAME_ASC
   );
+  const [visiblePlayers, setVisiblePlayers] = useState<string[]>([]);
   const [decksWithStats, setDecksWithStats] = useState<DeckWithStats[]>([]);
   const [filteredDecks, setFilteredDecks] = useState<DeckWithStats[]>([]);
 
@@ -44,15 +58,18 @@ export function DecksViewer() {
   }, [dbDecks, dbGames]);
 
   useEffect(() => {
-    const filtered = cloneDeep(decksWithStats).filter(
-      (deck) =>
+    const filtered = cloneDeep(decksWithStats).filter((deck) => {
+      const nameFilter =
         deck.name.toLowerCase().includes(search.toLowerCase()) ||
-        deck.commander.toLowerCase().includes(search.toLowerCase())
-    );
+        deck.commander.toLowerCase().includes(search.toLowerCase());
+      const builderFilter =
+        !visiblePlayers.length || visiblePlayers.includes(deck.builder ?? "");
+      return nameFilter && builderFilter;
+    });
     const sortFct = DECK_SORT_FCTS[sortFctKey].sortFct;
     const sorted = filtered.sort(sortFct);
     setFilteredDecks(sorted);
-  }, [decksWithStats, sortFctKey, search]);
+  }, [decksWithStats, sortFctKey, search, visiblePlayers]);
 
   useEffect(() => {
     if (!loadingDecks && !loadingGames) {
@@ -71,7 +88,7 @@ export function DecksViewer() {
   }, [searchParams]);
 
   function loading(): boolean {
-    return loadingGames || loadingDecks;
+    return loadingGames || loadingDecks || loadingPlayers;
   }
 
   function handleSort(sortKey: DeckSortFctKey) {
@@ -80,7 +97,15 @@ export function DecksViewer() {
     });
   }
 
-  if (loading() || !dbDecks?.length || !dbGames?.length) {
+  function handleVisiblePlayerToggle(id: string) {
+    if (visiblePlayers.includes(id)) {
+      setVisiblePlayers(visiblePlayers.filter((player) => player !== id));
+    } else {
+      setVisiblePlayers([...visiblePlayers, id]);
+    }
+  }
+
+  if (loading() || !dbDecks?.length || !dbGames?.length || !dbPlayers?.length) {
     return <Spinner className="mt-5" size="3" />;
   }
 
@@ -117,6 +142,36 @@ export function DecksViewer() {
                 </Select.Group>
               </Select.Content>
             </Select.Root>
+          </div>
+
+          <div>
+            <Heading className="mb-1" size="3">
+              Include players
+            </Heading>
+            <CheckboxCards.Root
+              value={visiblePlayers}
+              columns={{ initial: "1", sm: "5" }}
+              size="1"
+            >
+              {dbPlayers?.map((player) => (
+                <CheckboxCards.Item
+                  key={player.id}
+                  value={player.id}
+                  onClick={() => handleVisiblePlayerToggle(player.id)}
+                >
+                  <Flex gap="2" align="center" width="100%">
+                    <Avatar
+                      className="mt-1"
+                      src={`/img/pfp/${player.id}.webp`}
+                      fallback={<FontAwesomeIcon icon={faUser} />}
+                      radius="full"
+                      size="1"
+                    />
+                    <Text>{player.name}</Text>
+                  </Flex>
+                </CheckboxCards.Item>
+              ))}
+            </CheckboxCards.Root>
           </div>
         </Flex>
         <div>{auth.user && <DeckCreateModal />}</div>
