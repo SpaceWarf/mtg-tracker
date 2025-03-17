@@ -57,9 +57,9 @@ export function Header({ children }: OwnProps) {
             <TabNav.Link asChild active={location.pathname === "/decks"}>
               <Link to="/decks">Decks</Link>
             </TabNav.Link>
-            <TabNav.Link asChild active={location.pathname === "/rewind"}>
+            {/* <TabNav.Link `asChild active={location.pathname === "/rewind"}>
               <Link to="/rewind">Rewind</Link>
-            </TabNav.Link>
+            </TabNav.Link>` */}
           </TabNav.Root>
         </nav>
         <Flex flexBasis="25%" justify="end">
