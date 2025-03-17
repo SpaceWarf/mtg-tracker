@@ -30,7 +30,7 @@ export function Header({ children }: OwnProps) {
   return (
     <>
       <Flex className="Header p-3 bg-gray-800" align="center" justify="between">
-        <Flex align="center">
+        <Flex align="center" justify="start" flexBasis="25%">
           <img width="40px" src="/img/chalice.png"></img>
           <p>Calice de Marbre</p>
           <div className="mt-2 ml-3">
@@ -62,9 +62,9 @@ export function Header({ children }: OwnProps) {
             </TabNav.Link>
           </TabNav.Root>
         </nav>
-        <div>
+        <Flex flexBasis="25%" justify="end">
           <LoginModal />
-        </div>
+        </Flex>
       </Flex>
       {children}
     </>
