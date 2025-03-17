@@ -7,10 +7,8 @@ import { getItems } from "../utils/Firestore";
 
 export function useDecks() {
   const currentData = useContext(DataContext);
-  const { data: dbDecks, isLoading: loadingDecks } = useQuery(
-    "getDecks",
-    () => getItems<DbDeck>(DatabaseTable.DECKS),
-    { enabled: !currentData?.decks.length }
+  const { data: dbDecks, isLoading: loadingDecks } = useQuery("getDecks", () =>
+    getItems<DbDeck>(DatabaseTable.DECKS)
   );
 
   useEffect(() => {

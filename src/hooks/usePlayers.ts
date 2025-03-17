@@ -9,8 +9,7 @@ export function usePlayers() {
   const currentData = useContext(DataContext);
   const { data: dbPlayers, isLoading: loadingPlayers } = useQuery(
     "getPlayers",
-    () => getItems<DbPlayer>(DatabaseTable.PLAYERS),
-    { enabled: !currentData?.players.length }
+    () => getItems<DbPlayer>(DatabaseTable.PLAYERS)
   );
 
   useEffect(() => {

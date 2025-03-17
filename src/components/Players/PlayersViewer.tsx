@@ -1,3 +1,4 @@
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Flex, Heading, Select, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
@@ -97,9 +98,8 @@ export function PlayersViewer() {
   }
 
   function handleSort(sortKey: PlayerSortFctKey) {
-    setSearchParams({
-      sort: sortKey,
-    });
+    searchParams.set("sort", sortKey);
+    setSearchParams(searchParams);
   }
 
   if (loading() || !dbPlayers?.length || !dbGames?.length) {
@@ -118,7 +118,11 @@ export function PlayersViewer() {
               placeholder="Search…"
               value={search}
               onChange={({ target }) => setSearch(target.value)}
-            ></TextField.Root>
+            >
+              <TextField.Slot>
+                <MagnifyingGlassIcon height="16" width="16" />
+              </TextField.Slot>
+            </TextField.Root>
           </div>
           <div>
             <Heading className="mb-1" size="3">

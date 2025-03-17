@@ -3,8 +3,11 @@ import { createContext } from "react";
 import { DbDeck } from "../state/Deck";
 import { DbGame } from "../state/Game";
 import { DbPlayer } from "../state/Player";
+import { Year } from "../state/Year";
 
 type DataContextType = {
+  year: Year;
+  setYear: (year: Year) => void;
   games: DbGame[];
   setGames: (games: DbGame[]) => void;
   players: DbPlayer[];
@@ -13,4 +16,13 @@ type DataContextType = {
   setDecks: (decks: DbDeck[]) => void;
 };
 
-export const DataContext = createContext<DataContextType | null>(null);
+export const DataContext = createContext<DataContextType>({
+  year: Year.Y2025,
+  setYear: () => {},
+  games: [],
+  setGames: () => {},
+  players: [],
+  setPlayers: () => {},
+  decks: [],
+  setDecks: () => {},
+});

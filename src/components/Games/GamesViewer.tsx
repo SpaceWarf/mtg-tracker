@@ -118,9 +118,8 @@ export function GamesViewer() {
   }
 
   function handleSort(sortKey: GameSortFctKey) {
-    setSearchParams({
-      sort: sortKey,
-    });
+    searchParams.set("sort", sortKey);
+    setSearchParams(searchParams);
   }
 
   function handleVisiblePlayerToggle(id: string) {

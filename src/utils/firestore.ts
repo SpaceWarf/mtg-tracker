@@ -14,15 +14,32 @@ import {
 } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { DatabaseTable } from "../state/DatabaseTable";
+import { Year } from "../state/Year";
 
-export async function getItems<T>(
+export async function getItems<T>(table: DatabaseTable): Promise<T[]> {
+  const snapshot = await getDocs(collection(db, table));
+  const items: T[] = [];
+  snapshot.forEach((doc: DocumentData) => {
+    if (!doc.data().deleted) {
+      items.push({ id: doc.id, ...doc.data() });
+    }
+  });
+  return items;
+}
+
+export async function getFilteredItems<T>(
   table: DatabaseTable,
-  orderKey?: string
+  year: Year,
+  orderKey: string
 ): Promise<T[]> {
-  const q = orderKey
-    ? query(collection(db, table), orderBy(orderKey))
-    : query(collection(db, table));
-  const snapshot = await getDocs(q);
+  console.log("update", year);
+  const yearClause =
+    year == Year.ALL
+      ? []
+      : [where("date", ">=", year), where("date", "<=", `${Number(year) + 1}`)];
+  const snapshot = await getDocs(
+    query(collection(db, table), ...yearClause, orderBy(orderKey))
+  );
   const items: T[] = [];
   snapshot.forEach((doc: DocumentData) => {
     if (!doc.data().deleted) {

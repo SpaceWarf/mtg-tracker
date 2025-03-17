@@ -1,5 +1,6 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import {
   Avatar,
   CheckboxCards,
@@ -92,9 +93,8 @@ export function DecksViewer() {
   }
 
   function handleSort(sortKey: DeckSortFctKey) {
-    setSearchParams({
-      sort: sortKey,
-    });
+    searchParams.set("sort", sortKey);
+    setSearchParams(searchParams);
   }
 
   function handleVisiblePlayerToggle(id: string) {
@@ -121,7 +121,11 @@ export function DecksViewer() {
               placeholder="Search…"
               value={search}
               onChange={({ target }) => setSearch(target.value)}
-            ></TextField.Root>
+            >
+              <TextField.Slot>
+                <MagnifyingGlassIcon height="16" width="16" />
+              </TextField.Slot>
+            </TextField.Root>
           </div>
           <div>
             <Heading className="mb-1" size="3">
