@@ -188,3 +188,7 @@ export const PLAYER_SORT_FCTS: SortFct<PlayerWithStats> = {
     highlightedDirection: "desc",
   },
 };
+
+export function getPlayerSortFctName(key: PlayerSortFctKey): string {
+  return PLAYER_SORT_FCTS[key].name;
+}

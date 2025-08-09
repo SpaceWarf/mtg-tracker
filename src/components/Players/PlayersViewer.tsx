@@ -1,15 +1,20 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { Flex, Heading, Select, Spinner, TextField } from "@radix-ui/themes";
+import { Flex, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
+import ReactSelect, { SingleValue } from "react-select";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
 import { usePlayers } from "../../hooks/usePlayers";
 import { PlayerWithStats } from "../../state/Player";
 import { PlayerSortFctKey } from "../../state/PlayerSortFctKey";
-import { PLAYER_SORT_FCTS } from "../../state/PlayerSortFcts";
+import {
+  getPlayerSortFctName,
+  PLAYER_SORT_FCTS,
+} from "../../state/PlayerSortFcts";
+import { SelectOption } from "../../state/SelectOption";
 import {
   getPlayerDecksPlayedMap,
   getPlayerDecksWonMap,
@@ -34,13 +39,21 @@ export function PlayersViewer() {
   const { dbDecks, loadingDecks } = useDecks();
   const { dbGames, loadingGames } = useGames();
   const [search, setSearch] = useState<string>("");
-  const [sortFctKey, setSortFctKey] = useState<PlayerSortFctKey>(
-    PlayerSortFctKey.NAME_ASC
-  );
+  const [sortFctKey, setSortFctKey] = useState<SelectOption>({
+    value: PlayerSortFctKey.NAME_ASC,
+    label: getPlayerSortFctName(PlayerSortFctKey.NAME_ASC),
+  });
   const [playersWithStats, setPlayersWithStats] = useState<PlayerWithStats[]>(
     []
   );
   const [filteredPlayers, setFilteredPlayers] = useState<PlayerWithStats[]>([]);
+
+  const sortFctOptions = useMemo(() => {
+    return Object.values(PlayerSortFctKey).map((key) => ({
+      value: key,
+      label: getPlayerSortFctName(key),
+    }));
+  }, []);
 
   const populatePlayerStats = useCallback(() => {
     if (dbPlayers && dbGames) {
@@ -72,7 +85,7 @@ export function PlayersViewer() {
     const filtered = cloneDeep(playersWithStats).filter((player) =>
       player.name.toLowerCase().includes(search.toLowerCase())
     );
-    const sortFct = PLAYER_SORT_FCTS[sortFctKey].sortFct;
+    const sortFct = PLAYER_SORT_FCTS[sortFctKey.value].sortFct;
     const sorted = filtered.sort(sortFct);
     setFilteredPlayers(sorted);
   }, [playersWithStats, sortFctKey, search]);
@@ -89,7 +102,10 @@ export function PlayersViewer() {
       urlSortKey &&
       Object.values<string>(PlayerSortFctKey).includes(urlSortKey)
     ) {
-      setSortFctKey(urlSortKey as PlayerSortFctKey);
+      setSortFctKey({
+        value: urlSortKey as PlayerSortFctKey,
+        label: getPlayerSortFctName(urlSortKey as PlayerSortFctKey),
+      });
     }
   }, [searchParams]);
 
@@ -97,8 +113,12 @@ export function PlayersViewer() {
     return loadingGames || loadingPlayers || loadingDecks;
   }
 
-  function handleSort(sortKey: PlayerSortFctKey) {
-    searchParams.set("sort", sortKey);
+  function handleSort(sortKey: SingleValue<SelectOption>) {
+    if (!sortKey) {
+      searchParams.delete("sort");
+    } else {
+      searchParams.set("sort", sortKey.value);
+    }
     setSearchParams(searchParams);
   }
 
@@ -125,24 +145,19 @@ export function PlayersViewer() {
             </TextField.Root>
           </div>
           <div>
-            <Heading className="mb-1" size="3">
-              Sort by
-            </Heading>
-            <Select.Root
-              value={sortFctKey}
-              onValueChange={(value) => handleSort(value as PlayerSortFctKey)}
-            >
-              <Select.Trigger />
-              <Select.Content>
-                <Select.Group>
-                  {Object.values(PlayerSortFctKey).map((key) => (
-                    <Select.Item key={key} value={key}>
-                      {PLAYER_SORT_FCTS[key].name}
-                    </Select.Item>
-                  ))}
-                </Select.Group>
-              </Select.Content>
-            </Select.Root>
+            <div>
+              <Heading className="mb-1" size="3">
+                Sort by
+              </Heading>
+              <ReactSelect
+                className="react-select-container min-w-40"
+                classNamePrefix="react-select"
+                name="sortFct"
+                options={sortFctOptions}
+                value={sortFctKey}
+                onChange={handleSort}
+              />
+            </div>
           </div>
         </Flex>
         <div>{auth.user && <PlayerCreateModal />}</div>
@@ -151,9 +166,9 @@ export function PlayersViewer() {
         <PlayersCardView
           players={filteredPlayers}
           decks={dbDecks}
-          highlightedKey={PLAYER_SORT_FCTS[sortFctKey].highlightedKey}
+          highlightedKey={PLAYER_SORT_FCTS[sortFctKey.value].highlightedKey}
           highlightedDirection={
-            PLAYER_SORT_FCTS[sortFctKey].highlightedDirection
+            PLAYER_SORT_FCTS[sortFctKey.value].highlightedDirection
           }
         />
       ) : (
