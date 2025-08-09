@@ -4,16 +4,6 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react()],
-  css: {
-    preprocessorOptions: {
-      scss: {
-        api: "modern-compiler",
-        postcss: {
-          config: "./postcss.config.js",
-        },
-      },
-    },
-  },
   resolve: {
     alias: [
       { find: "@assets", replacement: path.resolve(__dirname, "./src/assets") },

@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Routes } from "react-router";
 import "./assets/styles/index.scss";
+import "./assets/styles/tailwind.css";
 import { AuthProvider } from "./contexts/AuthProvider.tsx";
 import { DataProvider } from "./contexts/DataProvider.tsx";
 import { Decks } from "./pages/Decks.tsx";

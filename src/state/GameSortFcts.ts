@@ -16,3 +16,7 @@ export const GAME_SORT_FCTS: SortFct<DbGame> = {
     highlightedDirection: "desc",
   },
 };
+
+export function getSortFctName(key: GameSortFctKey): string {
+  return GAME_SORT_FCTS[key].name;
+}

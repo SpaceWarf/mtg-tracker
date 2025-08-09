@@ -1,18 +1,8 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  Avatar,
-  CheckboxCards,
-  Flex,
-  Heading,
-  Select,
-  Spinner,
-  Switch,
-  Text,
-} from "@radix-ui/themes";
+import { Flex, Heading, Spinner, Switch, Text } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
+import ReactSelect, { MultiValue, SingleValue } from "react-select";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
@@ -20,9 +10,10 @@ import { usePlayers } from "../../hooks/usePlayers";
 import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { GameSortFctKey } from "../../state/GameSortFctKey";
-import { GAME_SORT_FCTS } from "../../state/GameSortFcts";
+import { GAME_SORT_FCTS, getSortFctName } from "../../state/GameSortFcts";
 import { GameViewType } from "../../state/GameViewType";
 import { DbPlayer } from "../../state/Player";
+import { SelectOption } from "../../state/SelectOption";
 import { GameCreateModal } from "./GameCreateModal";
 import { GamesCardView } from "./GamesCardView";
 import { GamesTableView } from "./GamesTableView";
@@ -36,11 +27,33 @@ export function GamesViewer() {
   const [populatingGames, setPopulatingGames] = useState<boolean>(true);
   const [populatedGames, setPopulatedGames] = useState<DbGame[]>([]);
   const [viewType, setViewType] = useState<GameViewType>(GameViewType.CARDS);
-  const [visiblePlayers, setVisiblePlayers] = useState<string[]>([]);
-  const [sortFctKey, setSortFctKey] = useState<GameSortFctKey>(
-    GameSortFctKey.DATE_DESC
-  );
+  const [visiblePlayers, setVisiblePlayers] = useState<
+    MultiValue<SelectOption>
+  >([]);
+  const [excludedPlayers, setExcludedPlayers] = useState<
+    MultiValue<SelectOption>
+  >([]);
+  const [sortFctKey, setSortFctKey] = useState<SelectOption>({
+    value: GameSortFctKey.DATE_DESC,
+    label: getSortFctName(GameSortFctKey.DATE_DESC),
+  });
   const [filteredGames, setFilteredGames] = useState<DbGame[]>([]);
+
+  const sortFctOptions = useMemo(() => {
+    return Object.values(GameSortFctKey).map((key) => ({
+      value: key,
+      label: getSortFctName(key),
+    }));
+  }, []);
+
+  const playerSelectOptions = useMemo(() => {
+    return (
+      dbPlayers?.map((player) => ({
+        value: player.id,
+        label: player.name,
+      })) ?? []
+    );
+  }, [dbPlayers]);
 
   const getPlayerByIdFromContext = useCallback(
     (id: string): DbPlayer | undefined => {
@@ -85,23 +98,28 @@ export function GamesViewer() {
 
   useEffect(() => {
     const filtered = cloneDeep(populatedGames).filter((game) => {
-      if (visiblePlayers.length) {
-        const gamePlayers = [
-          game.player1.player,
-          game.player2.player,
-          game.player3.player,
-          game.player4.player,
-        ];
-        return visiblePlayers.every((visiblePlayer) =>
-          gamePlayers.includes(visiblePlayer)
-        );
-      }
-      return game;
+      const gamePlayers = [
+        game.player1.player,
+        game.player2.player,
+        game.player3.player,
+        game.player4.player,
+      ];
+      const hasVisiblePlayers = visiblePlayers.length
+        ? visiblePlayers.every((visiblePlayer) =>
+            gamePlayers.includes(visiblePlayer.value)
+          )
+        : true;
+      const hasExcludedPlayers = excludedPlayers.length
+        ? excludedPlayers.some((excludedPlayer) =>
+            gamePlayers.includes(excludedPlayer.value)
+          )
+        : false;
+      return hasVisiblePlayers && !hasExcludedPlayers;
     });
-    const sortFct = GAME_SORT_FCTS[sortFctKey].sortFct;
+    const sortFct = GAME_SORT_FCTS[sortFctKey.value].sortFct;
     const sorted = cloneDeep(filtered).sort(sortFct);
     setFilteredGames(sorted);
-  }, [populatedGames, sortFctKey, visiblePlayers]);
+  }, [populatedGames, sortFctKey, visiblePlayers, excludedPlayers]);
 
   useEffect(() => {
     const urlSortKey = searchParams.get("sort");
@@ -109,7 +127,10 @@ export function GamesViewer() {
       urlSortKey &&
       Object.values<string>(GameSortFctKey).includes(urlSortKey)
     ) {
-      setSortFctKey(urlSortKey as GameSortFctKey);
+      setSortFctKey({
+        value: urlSortKey as GameSortFctKey,
+        label: getSortFctName(urlSortKey as GameSortFctKey),
+      });
     }
   }, [searchParams]);
 
@@ -117,17 +138,13 @@ export function GamesViewer() {
     return loadingGames || loadingPlayers || loadingDecks || populatingGames;
   }
 
-  function handleSort(sortKey: GameSortFctKey) {
-    searchParams.set("sort", sortKey);
-    setSearchParams(searchParams);
-  }
-
-  function handleVisiblePlayerToggle(id: string) {
-    if (visiblePlayers.includes(id)) {
-      setVisiblePlayers(visiblePlayers.filter((player) => player !== id));
+  function handleSort(sortOption: SingleValue<SelectOption>) {
+    if (!sortOption) {
+      searchParams.delete("sort");
     } else {
-      setVisiblePlayers([...visiblePlayers, id]);
+      searchParams.set("sort", sortOption.value);
     }
+    setSearchParams(searchParams);
   }
 
   if (loading()) {
@@ -164,50 +181,44 @@ export function GamesViewer() {
             <Heading className="mb-1" size="3">
               Sort by
             </Heading>
-            <Select.Root
+            <ReactSelect
+              className="react-select-container min-w-40"
+              classNamePrefix="react-select"
+              name="sortFct"
+              options={sortFctOptions}
               value={sortFctKey}
-              onValueChange={(value) => handleSort(value as GameSortFctKey)}
-            >
-              <Select.Trigger />
-              <Select.Content>
-                <Select.Group>
-                  {Object.values(GameSortFctKey).map((key) => (
-                    <Select.Item key={key} value={key}>
-                      {GAME_SORT_FCTS[key].name}
-                    </Select.Item>
-                  ))}
-                </Select.Group>
-              </Select.Content>
-            </Select.Root>
+              onChange={(value) => handleSort(value)}
+            />
           </div>
           <div>
             <Heading className="mb-1" size="3">
               Include players
             </Heading>
-            <CheckboxCards.Root
+            <ReactSelect
+              className="react-select-container min-w-60"
+              classNamePrefix="react-select"
+              name="visiblePlayers"
+              options={playerSelectOptions}
               value={visiblePlayers}
-              columns={{ initial: "1", sm: "5" }}
-              size="1"
-            >
-              {dbPlayers?.map((player) => (
-                <CheckboxCards.Item
-                  key={player.id}
-                  value={player.id}
-                  onClick={() => handleVisiblePlayerToggle(player.id)}
-                >
-                  <Flex gap="2" align="center" width="100%">
-                    <Avatar
-                      className="mt-1"
-                      src={`/img/pfp/${player.id}.webp`}
-                      fallback={<FontAwesomeIcon icon={faUser} />}
-                      radius="full"
-                      size="1"
-                    />
-                    <Text>{player.name}</Text>
-                  </Flex>
-                </CheckboxCards.Item>
-              ))}
-            </CheckboxCards.Root>
+              onChange={setVisiblePlayers}
+              isMulti
+              closeMenuOnSelect={false}
+            />
+          </div>
+          <div>
+            <Heading className="mb-1" size="3">
+              Exclude players
+            </Heading>
+            <ReactSelect
+              className="react-select-container min-w-60"
+              classNamePrefix="react-select"
+              name="excludedPlayers"
+              options={playerSelectOptions}
+              value={excludedPlayers}
+              onChange={setExcludedPlayers}
+              closeMenuOnSelect={false}
+              isMulti
+            />
           </div>
         </Flex>
         <div>{auth.user && <GameCreateModal />}</div>
