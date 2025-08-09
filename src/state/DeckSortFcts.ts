@@ -84,3 +84,7 @@ export const DECK_SORT_FCTS: SortFct<DeckWithStats> = {
     highlightedDirection: "desc",
   },
 };
+
+export function getDeckSortFctName(key: DeckSortFctKey): string {
+  return DECK_SORT_FCTS[key].name;
+}

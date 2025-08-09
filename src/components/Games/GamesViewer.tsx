@@ -187,7 +187,7 @@ export function GamesViewer() {
               name="sortFct"
               options={sortFctOptions}
               value={sortFctKey}
-              onChange={(value) => handleSort(value)}
+              onChange={handleSort}
             />
           </div>
           <div>
