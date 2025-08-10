@@ -78,6 +78,7 @@ export function LoginModal() {
             Username
           </Heading>
           <TextField.Root
+            className="input-field"
             placeholder="Username..."
             value={username}
             onChange={({ target }) => setUsername(target.value)}
@@ -89,6 +90,7 @@ export function LoginModal() {
             Password
           </Heading>
           <TextField.Root
+            className="input-field"
             type="password"
             placeholder="Password..."
             value={password}

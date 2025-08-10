@@ -59,6 +59,7 @@ export function PlayerEditModal({ player }: OwnProps) {
             Name
           </Heading>
           <TextField.Root
+            className="input-field"
             placeholder="Name..."
             value={name}
             onChange={({ target }) => setName(target.value)}

@@ -123,6 +123,7 @@ export function DecksViewer() {
               Search
             </Heading>
             <TextField.Root
+              className="input-field"
               placeholder="Search…"
               value={search}
               onChange={({ target }) => setSearch(target.value)}

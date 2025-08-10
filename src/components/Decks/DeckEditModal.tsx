@@ -76,6 +76,7 @@ export function DeckEditModal({ deck }: OwnProps) {
             Name
           </Heading>
           <TextField.Root
+            className="input-field"
             placeholder="Name..."
             value={name}
             onChange={({ target }) => setName(target.value)}
@@ -87,6 +88,7 @@ export function DeckEditModal({ deck }: OwnProps) {
             Commander
           </Heading>
           <TextField.Root
+            className="input-field"
             placeholder="Commander..."
             value={commander}
             onChange={({ target }) => setCommander(target.value)}
@@ -98,6 +100,7 @@ export function DeckEditModal({ deck }: OwnProps) {
             Url
           </Heading>
           <TextField.Root
+            className="input-field"
             placeholder="Url..."
             value={url}
             onChange={({ target }) => setUrl(target.value)}

@@ -109,6 +109,7 @@ export function GameCreateModal() {
             Date
           </Heading>
           <TextField.Root
+            className="input-field"
             placeholder="Date…"
             value={date}
             onChange={({ target }) => setDate(target.value)}
@@ -153,6 +154,7 @@ export function GameCreateModal() {
             Comments
           </Heading>
           <TextArea
+            className="area-field"
             placeholder="Comments…"
             value={comments}
             onChange={({ target }) => setComments(target.value)}

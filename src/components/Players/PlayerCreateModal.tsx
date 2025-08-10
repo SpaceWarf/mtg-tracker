@@ -42,6 +42,7 @@ export function PlayerCreateModal() {
             Name
           </Heading>
           <TextField.Root
+            className="input-field"
             placeholder="Name..."
             value={name}
             onChange={({ target }) => setName(target.value)}

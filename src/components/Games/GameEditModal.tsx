@@ -90,6 +90,7 @@ export function GameEditModal({ game }: OwnProps) {
             Date
           </Heading>
           <TextField.Root
+            className="input-field"
             placeholder="Date…"
             value={date}
             onChange={({ target }) => setDate(target.value)}

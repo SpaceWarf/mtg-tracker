@@ -41,4 +41,33 @@
     @apply fixed top-0 left-0 right-0;
     z-index: 9999;
   }
+
+  .input-field.rt-TextFieldRoot,
+  .area-field.rt-TextAreaRoot {
+    @apply bg-neutral-700 border-2 border-neutral-300 dark:border-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-500;
+    box-shadow: none;
+    padding: 0;
+    outline: none;
+    height: 40px;
+  }
+
+  .input-field.rt-TextFieldRoot:focus-within,
+  .area-field.rt-TextAreaRoot:focus-within {
+    @apply border-neutral-500 hover:border-neutral-500 dark:border-neutral-400 dark:hover:border-neutral-400 shadow-none;
+  }
+
+  .input-field.rt-TextFieldRoot .rt-TextFieldInput,
+  .area-field.rt-TextAreaRoot .rt-TextAreaInput {
+    @apply dark:text-neutral-100 dark:placeholder:text-neutral-100;
+    outline: none;
+  }
+
+  .input-field.rt-TextFieldRoot .rt-TextFieldInput:focus,
+  .area-field.rt-TextAreaRoot .rt-TextAreaInput:focus {
+    @apply border-neutral-500 hover:border-neutral-500 dark:border-neutral-400 dark:hover:border-neutral-400 shadow-none;
+  }
+
+  .input-field.rt-TextFieldRoot .rt-TextFieldSlot {
+    @apply dark:text-neutral-100;
+  }
 }
