@@ -40,20 +40,22 @@ export function DeckCard({
 
   return (
     <Card size="3">
-      <Flex gap="3" className="absolute right-3 top-5" justify="end">
-        {deck.url && (
-          <IconButton
-            variant="soft"
-            onClick={() => window.open(deck.url, "_blank")}
-          >
-            <ExternalLinkIcon />
-          </IconButton>
-        )}
-        {editable && <DeckEditModal deck={deck} />}
-      </Flex>
-      <Flex className="mb-3" direction="column">
-        <Heading>{deck.name}</Heading>
-        <Heading size="3">({deck.commander})</Heading>
+      <Flex>
+        <Flex className="mb-3" direction="column" flexGrow={"1"}>
+          <Heading>{deck.name}</Heading>
+          <Heading size="3">({deck.commander})</Heading>
+        </Flex>
+        <Flex gap="3">
+          {deck.url && (
+            <IconButton
+              variant="soft"
+              onClick={() => window.open(deck.url, "_blank")}
+            >
+              <ExternalLinkIcon />
+            </IconButton>
+          )}
+          {editable && <DeckEditModal deck={deck} />}
+        </Flex>
       </Flex>
       <Table.Root variant="surface" size="1" layout="fixed">
         <Table.Body>
