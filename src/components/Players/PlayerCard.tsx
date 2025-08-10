@@ -1,16 +1,24 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Avatar, Card, Flex, Heading, Tabs } from "@radix-ui/themes";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import {
+  Avatar,
+  Card,
+  Flex,
+  Heading,
+  IconButton,
+  Tabs,
+} from "@radix-ui/themes";
 import { useState } from "react";
 import { DbDeck } from "../../state/Deck";
-import { DbPlayer } from "../../state/Player";
+import { PlayerWithStats } from "../../state/Player";
 import { PlayerCardView } from "../../state/PlayerCardView";
 import { PlayerDeckStats } from "./PlayerDeckStats";
 import { PlayerEditModal } from "./PlayerEditModal";
 import { PlayerGameStats } from "./PlayerGameStats";
 
 type OwnProps = {
-  player: DbPlayer;
+  player: PlayerWithStats;
   decks: DbDeck[];
   editable?: boolean;
   highlightedKey: string;
@@ -52,19 +60,27 @@ export function PlayerCard({
 
   return (
     <Card size="3">
-      {editable && (
-        <Flex gap="3" className="absolute right-3 top-5" justify="end">
-          <PlayerEditModal player={player} />
+      <Flex>
+        <Flex className="mb-1" gap="3" align="center" flexGrow={"1"}>
+          <Avatar
+            src={`/img/pfp/${player.id}.webp`}
+            fallback={<FontAwesomeIcon icon={faUser} />}
+            radius="full"
+            size="5"
+          />
+          <Heading>{player.name}</Heading>
         </Flex>
-      )}
-      <Flex className="mb-1" gap="3" align="center">
-        <Avatar
-          src={`/img/pfp/${player.id}.webp`}
-          fallback={<FontAwesomeIcon icon={faUser} />}
-          radius="full"
-          size="5"
-        />
-        <Heading>{player.name}</Heading>
+        <Flex gap="3" justify="end">
+          {player.archidektUrl && (
+            <IconButton
+              variant="soft"
+              onClick={() => window.open(player.archidektUrl, "_blank")}
+            >
+              <ExternalLinkIcon />
+            </IconButton>
+          )}
+          {editable && <PlayerEditModal player={player} />}
+        </Flex>
       </Flex>
       <Tabs.Root className="mb-2" value={view}>
         <Tabs.List size="2">

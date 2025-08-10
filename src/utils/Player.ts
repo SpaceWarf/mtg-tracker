@@ -1,6 +1,29 @@
+import { cloneDeep, omit } from "lodash";
 import { DbGame } from "../state/Game";
-import { DbPlayer } from "../state/Player";
+import { DbPlayer, PlayerWithStats } from "../state/Player";
 import { getAllGamesForPlayer } from "./Game";
+
+export function getDbPlayerFromPlayerWithStats(
+  player: PlayerWithStats
+): DbPlayer {
+  return cloneDeep(
+    omit(
+      player,
+      "gamesPlayed",
+      "winCount",
+      "winRate",
+      "startCount",
+      "startRate",
+      "startToWinRate",
+      "solRingCount",
+      "solRingRate",
+      "solRingToWinRate",
+      "grandSlamCount",
+      "deckPlayedMap",
+      "deckWonMap"
+    )
+  );
+}
 
 export function getPlayerGamesCount(player: DbPlayer, games: DbGame[]): number {
   return getAllGamesForPlayer(player, games).length;

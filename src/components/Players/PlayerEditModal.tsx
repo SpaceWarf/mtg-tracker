@@ -7,24 +7,26 @@ import {
   IconButton,
   TextField,
 } from "@radix-ui/themes";
-import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { PlayerService } from "../../services/Player";
-import { DbPlayer } from "../../state/Player";
+import { DbPlayer, PlayerWithStats } from "../../state/Player";
+import { getDbPlayerFromPlayerWithStats } from "../../utils/Player";
 
 type OwnProps = {
-  player: DbPlayer;
+  player: PlayerWithStats;
 };
 
 export function PlayerEditModal({ player }: OwnProps) {
   const navigate = useNavigate();
   const [name, setName] = useState<string>(player.name);
+  const [archidektUrl, setArchidektUrl] = useState<string>(player.archidektUrl);
 
   async function handleSave() {
     const update: DbPlayer = {
-      ...cloneDeep(player),
+      ...getDbPlayerFromPlayerWithStats(player),
       name,
+      archidektUrl,
     };
     await PlayerService.update(player.id, update);
     navigate(0);
@@ -38,7 +40,12 @@ export function PlayerEditModal({ player }: OwnProps) {
   function handleOpenChange(open: boolean) {
     if (!open) {
       setName(player.name);
+      setArchidektUrl(player.archidektUrl);
     }
+  }
+
+  function canSave(): boolean {
+    return !!name;
   }
 
   return (
@@ -66,6 +73,18 @@ export function PlayerEditModal({ player }: OwnProps) {
           ></TextField.Root>
         </div>
 
+        <div className="mb-5">
+          <Heading className="mb-1" size="3">
+            Archidekt URL
+          </Heading>
+          <TextField.Root
+            className="input-field"
+            placeholder="Archidekt URL..."
+            value={archidektUrl}
+            onChange={({ target }) => setArchidektUrl(target.value)}
+          ></TextField.Root>
+        </div>
+
         <Flex gap="3" mt="4" justify="between">
           <Dialog.Close onClick={handleDelete}>
             <Button color="red">Delete</Button>
@@ -76,7 +95,7 @@ export function PlayerEditModal({ player }: OwnProps) {
                 Cancel
               </Button>
             </Dialog.Close>
-            <Dialog.Close disabled={!name.length} onClick={handleSave}>
+            <Dialog.Close disabled={!canSave()} onClick={handleSave}>
               <Button>Save</Button>
             </Dialog.Close>
           </Flex>

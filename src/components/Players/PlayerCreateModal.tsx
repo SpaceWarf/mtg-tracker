@@ -8,10 +8,12 @@ import { Player } from "../../state/Player";
 export function PlayerCreateModal() {
   const navigate = useNavigate();
   const [name, setName] = useState<string>("");
+  const [archidektUrl, setArchidektUrl] = useState<string>("");
 
   async function handleCreate() {
     const player: Player = {
       name,
+      archidektUrl,
     };
     await PlayerService.create(player);
     navigate(0);
@@ -20,7 +22,12 @@ export function PlayerCreateModal() {
   function handleOpenChange(open: boolean) {
     if (!open) {
       setName("");
+      setArchidektUrl("");
     }
+  }
+
+  function canCreate(): boolean {
+    return !!name;
   }
 
   return (
@@ -49,13 +56,25 @@ export function PlayerCreateModal() {
           ></TextField.Root>
         </div>
 
+        <div className="mb-5">
+          <Heading className="mb-1" size="3">
+            Archidekt URL
+          </Heading>
+          <TextField.Root
+            className="input-field"
+            placeholder="Archidekt URL..."
+            value={archidektUrl}
+            onChange={({ target }) => setArchidektUrl(target.value)}
+          ></TextField.Root>
+        </div>
+
         <Flex gap="3" mt="4" justify="end">
           <Dialog.Close>
             <Button variant="soft" color="gray">
               Cancel
             </Button>
           </Dialog.Close>
-          <Dialog.Close disabled={!name.length} onClick={handleCreate}>
+          <Dialog.Close disabled={!canCreate()} onClick={handleCreate}>
             <Button>Create</Button>
           </Dialog.Close>
         </Flex>
