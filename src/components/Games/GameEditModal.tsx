@@ -133,6 +133,7 @@ export function GameEditModal({ game }: OwnProps) {
             Comments
           </Heading>
           <TextArea
+            className="area-field"
             placeholder="Comments…"
             value={comments}
             onChange={({ target }) => setComments(target.value)}
