@@ -1,5 +1,5 @@
 @import "@radix-ui/themes/styles.css";
 
-.rt-Flex .rt-Text {
+.rt-Flex p.rt-Text[id^="radix-"] {
   display: none;
 }
