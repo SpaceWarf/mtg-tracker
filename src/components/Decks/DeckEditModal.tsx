@@ -5,29 +5,32 @@ import {
   Flex,
   Heading,
   IconButton,
-  Select,
   TextField,
 } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import ReactSelect, { SingleValue } from "react-select";
 import { usePlayers } from "../../hooks/usePlayers";
+import { useSelectOptions } from "../../hooks/useSelectOptions";
 import { DeckService } from "../../services/Deck";
 import { DbDeck } from "../../state/Deck";
+import { SelectOption } from "../../state/SelectOption";
 
 type OwnProps = {
   deck: DbDeck;
 };
 
-const EMPTY_OPTION = "empty-option";
-
 export function DeckEditModal({ deck }: OwnProps) {
   const navigate = useNavigate();
   const { dbPlayers } = usePlayers();
+  const playerSelectOptions = useSelectOptions(dbPlayers ?? [], "id", "name");
   const [name, setName] = useState<string>(deck.name);
   const [commander, setCommander] = useState<string>(deck.commander);
   const [url, setUrl] = useState<string>(deck.url ?? "");
-  const [builder, setBuilder] = useState<string>(deck.builder ?? EMPTY_OPTION);
+  const [builder, setBuilder] = useState<SingleValue<SelectOption>>(
+    playerSelectOptions.find((option) => option.value === deck.builder) || null
+  );
 
   async function handleSave() {
     const update: DbDeck = {
@@ -35,7 +38,7 @@ export function DeckEditModal({ deck }: OwnProps) {
       name,
       commander,
       url,
-      builder: builder === EMPTY_OPTION ? "" : builder,
+      builder: builder?.value ?? "",
     };
     await DeckService.update(deck.id, update);
     navigate(0);
@@ -111,24 +114,15 @@ export function DeckEditModal({ deck }: OwnProps) {
           <Heading className="mb-1" size="3">
             Built By
           </Heading>
-          <Select.Root
+          <ReactSelect
+            className="react-select-container min-w-60"
+            classNamePrefix="react-select"
+            name="player"
+            options={playerSelectOptions}
             value={builder}
-            onValueChange={(value) => setBuilder(value)}
-          >
-            <Select.Trigger />
-            <Select.Content>
-              <Select.Group>
-                <Select.Item value={EMPTY_OPTION}>-</Select.Item>
-                {cloneDeep(dbPlayers)
-                  ?.sort((a, b) => a.name.localeCompare(b.name))
-                  .map((player) => (
-                    <Select.Item key={player.id} value={player.id}>
-                      {player.name}
-                    </Select.Item>
-                  ))}
-              </Select.Group>
-            </Select.Content>
-          </Select.Root>
+            onChange={setBuilder}
+            menuPlacement="top"
+          />
         </div>
 
         <Flex gap="3" mt="4" justify="between">

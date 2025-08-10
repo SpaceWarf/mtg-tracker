@@ -2,16 +2,23 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { Button, Dialog, Flex, Heading, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import ReactSelect, { SingleValue } from "react-select";
+import { usePlayers } from "../../hooks/usePlayers";
+import { useSelectOptions } from "../../hooks/useSelectOptions";
 import { DeckService } from "../../services/Deck";
 import { Deck } from "../../state/Deck";
+import { SelectOption } from "../../state/SelectOption";
 
 export function DeckCreateModal() {
   const navigate = useNavigate();
+  const { dbPlayers } = usePlayers();
+  const playerSelectOptions = useSelectOptions(dbPlayers ?? [], "id", "name");
   const [name, setName] = useState<string>("");
   const [commander, setCommander] = useState<string>("");
   const [url, setUrl] = useState<string>("");
+  const [builder, setBuilder] = useState<SingleValue<SelectOption>>();
 
-  async function handleCReate() {
+  async function handleCreate() {
     const deck: Deck = {
       name,
       commander,
@@ -83,13 +90,28 @@ export function DeckCreateModal() {
           ></TextField.Root>
         </div>
 
+        <div className="mb-5">
+          <Heading className="mb-1" size="3">
+            Built By
+          </Heading>
+          <ReactSelect
+            className="react-select-container min-w-60"
+            classNamePrefix="react-select"
+            name="player"
+            options={playerSelectOptions}
+            value={builder}
+            onChange={setBuilder}
+            menuPlacement="top"
+          />
+        </div>
+
         <Flex gap="3" mt="4" justify="between">
           <Dialog.Close>
             <Button variant="soft" color="gray">
               Cancel
             </Button>
           </Dialog.Close>
-          <Dialog.Close disabled={!canSave()} onClick={handleCReate}>
+          <Dialog.Close disabled={!canSave()} onClick={handleCreate}>
             <Button>Save</Button>
           </Dialog.Close>
         </Flex>
