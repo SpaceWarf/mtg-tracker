@@ -15,6 +15,12 @@ import { GAME_SORT_FCTS, getSortFctName } from "../../state/GameSortFcts";
 import { GameViewType } from "../../state/GameViewType";
 import { DbPlayer } from "../../state/Player";
 import { SelectOption } from "../../state/SelectOption";
+import {
+  gameHasAllDecks,
+  gameHasAllPlayers,
+  gameHasSomeDecks,
+  gameHasSomePlayers,
+} from "../../utils/Game";
 import { GameCreateModal } from "./GameCreateModal";
 import { GamesCardView } from "./GamesCardView";
 import { GamesTableView } from "./GamesTableView";
@@ -23,23 +29,37 @@ export function GamesViewer() {
   const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const { dbGames, loadingGames } = useGames();
-  const { dbPlayers, loadingPlayers } = usePlayers();
-  const { dbDecks, loadingDecks } = useDecks();
   const [populatingGames, setPopulatingGames] = useState<boolean>(true);
   const [populatedGames, setPopulatedGames] = useState<DbGame[]>([]);
   const [viewType, setViewType] = useState<GameViewType>(GameViewType.CARDS);
+  const [sortFctKey, setSortFctKey] = useState<SelectOption>({
+    value: GameSortFctKey.DATE_DESC,
+    label: getSortFctName(GameSortFctKey.DATE_DESC),
+  });
+  const [filteredGames, setFilteredGames] = useState<DbGame[]>([]);
+
+  const { dbPlayers, loadingPlayers } = usePlayers();
+  const playerSelectOptions = useSelectOptions(dbPlayers ?? [], "id", "name");
   const [visiblePlayers, setVisiblePlayers] = useState<
     MultiValue<SelectOption>
   >([]);
   const [excludedPlayers, setExcludedPlayers] = useState<
     MultiValue<SelectOption>
   >([]);
-  const [sortFctKey, setSortFctKey] = useState<SelectOption>({
-    value: GameSortFctKey.DATE_DESC,
-    label: getSortFctName(GameSortFctKey.DATE_DESC),
-  });
-  const [filteredGames, setFilteredGames] = useState<DbGame[]>([]);
-  const playerSelectOptions = useSelectOptions(dbPlayers ?? [], "id", "name");
+
+  const { dbDecks, loadingDecks } = useDecks();
+  const deckSelectOptions = useSelectOptions(
+    dbDecks ?? [],
+    "id",
+    "name",
+    "commander"
+  );
+  const [visibleDecks, setVisibleDecks] = useState<MultiValue<SelectOption>>(
+    []
+  );
+  const [excludedDecks, setExcludedDecks] = useState<MultiValue<SelectOption>>(
+    []
+  );
 
   const sortFctOptions = useMemo(() => {
     return Object.values(GameSortFctKey).map((key) => ({
@@ -91,28 +111,34 @@ export function GamesViewer() {
 
   useEffect(() => {
     const filtered = cloneDeep(populatedGames).filter((game) => {
-      const gamePlayers = [
-        game.player1.player,
-        game.player2.player,
-        game.player3.player,
-        game.player4.player,
-      ];
-      const hasVisiblePlayers = visiblePlayers.length
-        ? visiblePlayers.every((visiblePlayer) =>
-            gamePlayers.includes(visiblePlayer.value)
-          )
-        : true;
-      const hasExcludedPlayers = excludedPlayers.length
-        ? excludedPlayers.some((excludedPlayer) =>
-            gamePlayers.includes(excludedPlayer.value)
-          )
-        : false;
-      return hasVisiblePlayers && !hasExcludedPlayers;
+      const visiblePlayerIds = visiblePlayers.map((player) => player.value);
+      const excludedPlayerIds = excludedPlayers.map((player) => player.value);
+      const hasVisiblePlayers = gameHasAllPlayers(game, visiblePlayerIds);
+      const hasExcludedPlayers = gameHasSomePlayers(game, excludedPlayerIds);
+
+      const visibleDeckIds = visibleDecks.map((deck) => deck.value);
+      const excludedDeckIds = excludedDecks.map((deck) => deck.value);
+      const hasVisibleDecks = gameHasAllDecks(game, visibleDeckIds);
+      const hasExcludedDecks = gameHasSomeDecks(game, excludedDeckIds);
+
+      return (
+        hasVisiblePlayers &&
+        !hasExcludedPlayers &&
+        hasVisibleDecks &&
+        !hasExcludedDecks
+      );
     });
     const sortFct = GAME_SORT_FCTS[sortFctKey.value].sortFct;
     const sorted = cloneDeep(filtered).sort(sortFct);
     setFilteredGames(sorted);
-  }, [populatedGames, sortFctKey, visiblePlayers, excludedPlayers]);
+  }, [
+    populatedGames,
+    sortFctKey,
+    visiblePlayers,
+    excludedPlayers,
+    visibleDecks,
+    excludedDecks,
+  ]);
 
   useEffect(() => {
     const urlSortKey = searchParams.get("sort");
@@ -146,8 +172,8 @@ export function GamesViewer() {
 
   return (
     <div className="p-5 w-full" style={{ maxWidth: "1750px" }}>
-      <Flex className="mb-5" justify="between" align="end">
-        <Flex gap="5">
+      <Flex className="mb-5" justify="between">
+        <Flex gap="5" wrap="wrap">
           <div>
             <Heading className="mb-2" size="3">
               View type
@@ -213,8 +239,40 @@ export function GamesViewer() {
               isMulti
             />
           </div>
+          <div className="max-w-96">
+            <Heading className="mb-1" size="3">
+              Include decks
+            </Heading>
+            <ReactSelect
+              className="react-select-container min-w-60"
+              classNamePrefix="react-select"
+              name="visibleDecks"
+              options={deckSelectOptions}
+              value={visibleDecks}
+              onChange={setVisibleDecks}
+              isMulti
+              closeMenuOnSelect={false}
+            />
+          </div>
+          <div className="max-w-96">
+            <Heading className="mb-1" size="3">
+              Exclude decks
+            </Heading>
+            <ReactSelect
+              className="react-select-container min-w-60"
+              classNamePrefix="react-select"
+              name="excludedDecks"
+              options={deckSelectOptions}
+              value={excludedDecks}
+              onChange={setExcludedDecks}
+              closeMenuOnSelect={false}
+              isMulti
+            />
+          </div>
         </Flex>
-        <div>{auth.user && <GameCreateModal />}</div>
+        <Flex className="w-60" justify="end">
+          <div>{auth.user && <GameCreateModal />}</div>
+        </Flex>
       </Flex>
 
       {filteredGames.length ? (

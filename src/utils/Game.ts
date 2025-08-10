@@ -109,3 +109,55 @@ export function getAllGamesForPlayerAndDeck(
     return games;
   }, []);
 }
+
+export function gameHasAllPlayers(game: DbGame, playerIds: string[]): boolean {
+  return playerIds.length
+    ? playerIds.every((playerId) =>
+        [
+          game.player1.player,
+          game.player2.player,
+          game.player3.player,
+          game.player4.player,
+        ].includes(playerId)
+      )
+    : true;
+}
+
+export function gameHasSomePlayers(game: DbGame, playerIds: string[]): boolean {
+  return playerIds.length
+    ? playerIds.some((playerId) =>
+        [
+          game.player1.player,
+          game.player2.player,
+          game.player3.player,
+          game.player4.player,
+        ].includes(playerId)
+      )
+    : false;
+}
+
+export function gameHasAllDecks(game: DbGame, deckIds: string[]): boolean {
+  return deckIds.length
+    ? deckIds.every((deckId) =>
+        [
+          game.player1.deck,
+          game.player2.deck,
+          game.player3.deck,
+          game.player4.deck,
+        ].includes(deckId)
+      )
+    : true;
+}
+
+export function gameHasSomeDecks(game: DbGame, deckIds: string[]): boolean {
+  return deckIds.length
+    ? deckIds.some((deckId) =>
+        [
+          game.player1.deck,
+          game.player2.deck,
+          game.player3.deck,
+          game.player4.deck,
+        ].includes(deckId)
+      )
+    : false;
+}
