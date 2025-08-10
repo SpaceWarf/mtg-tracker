@@ -71,10 +71,10 @@ export function PlayerCard({
           <Heading>{player.name}</Heading>
         </Flex>
         <Flex gap="3" justify="end">
-          {player.archidektUrl && (
+          {player.profileUrl && (
             <IconButton
               variant="soft"
-              onClick={() => window.open(player.archidektUrl, "_blank")}
+              onClick={() => window.open(player.profileUrl, "_blank")}
             >
               <ExternalLinkIcon />
             </IconButton>

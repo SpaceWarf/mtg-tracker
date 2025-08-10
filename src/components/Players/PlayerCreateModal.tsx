@@ -8,12 +8,12 @@ import { Player } from "../../state/Player";
 export function PlayerCreateModal() {
   const navigate = useNavigate();
   const [name, setName] = useState<string>("");
-  const [archidektUrl, setArchidektUrl] = useState<string>("");
+  const [profileUrl, setProfileUrl] = useState<string>("");
 
   async function handleCreate() {
     const player: Player = {
       name,
-      archidektUrl,
+      profileUrl,
     };
     await PlayerService.create(player);
     navigate(0);
@@ -22,7 +22,7 @@ export function PlayerCreateModal() {
   function handleOpenChange(open: boolean) {
     if (!open) {
       setName("");
-      setArchidektUrl("");
+      setProfileUrl("");
     }
   }
 
@@ -58,13 +58,13 @@ export function PlayerCreateModal() {
 
         <div className="mb-5">
           <Heading className="mb-1" size="3">
-            Archidekt URL
+            Profile URL
           </Heading>
           <TextField.Root
             className="input-field"
-            placeholder="Archidekt URL..."
-            value={archidektUrl}
-            onChange={({ target }) => setArchidektUrl(target.value)}
+            placeholder="Profile URL..."
+            value={profileUrl}
+            onChange={({ target }) => setProfileUrl(target.value)}
           ></TextField.Root>
         </div>
 

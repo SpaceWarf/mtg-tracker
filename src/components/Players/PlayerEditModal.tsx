@@ -20,13 +20,13 @@ type OwnProps = {
 export function PlayerEditModal({ player }: OwnProps) {
   const navigate = useNavigate();
   const [name, setName] = useState<string>(player.name);
-  const [archidektUrl, setArchidektUrl] = useState<string>(player.archidektUrl);
+  const [profileUrl, setProfileUrl] = useState<string>(player.profileUrl);
 
   async function handleSave() {
     const update: DbPlayer = {
       ...getDbPlayerFromPlayerWithStats(player),
       name,
-      archidektUrl,
+      profileUrl,
     };
     await PlayerService.update(player.id, update);
     navigate(0);
@@ -40,7 +40,7 @@ export function PlayerEditModal({ player }: OwnProps) {
   function handleOpenChange(open: boolean) {
     if (!open) {
       setName(player.name);
-      setArchidektUrl(player.archidektUrl);
+      setProfileUrl(player.profileUrl);
     }
   }
 
@@ -75,13 +75,13 @@ export function PlayerEditModal({ player }: OwnProps) {
 
         <div className="mb-5">
           <Heading className="mb-1" size="3">
-            Archidekt URL
+            Profile URL
           </Heading>
           <TextField.Root
             className="input-field"
-            placeholder="Archidekt URL..."
-            value={archidektUrl}
-            onChange={({ target }) => setArchidektUrl(target.value)}
+            placeholder="Profile URL..."
+            value={profileUrl}
+            onChange={({ target }) => setProfileUrl(target.value)}
           ></TextField.Root>
         </div>
 
