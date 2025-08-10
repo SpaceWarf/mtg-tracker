@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Routes } from "react-router";
 import "./assets/styles/index.scss";
 import "./assets/styles/tailwind.css";
+import { Alert } from "./components/Alert.tsx";
+import { AlertProvider } from "./contexts/AlertProvider.tsx";
 import { AuthProvider } from "./contexts/AuthProvider.tsx";
 import { DataProvider } from "./contexts/DataProvider.tsx";
 import { Decks } from "./pages/Decks.tsx";
@@ -24,16 +26,19 @@ export function Main() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <DataProvider>
-            <div id="mtg-tracker">
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Games />} />
-                  <Route path="/players" element={<Players />} />
-                  <Route path="/decks" element={<Decks />} />
-                  {/* <Route path="/rewind" element={<Rewind />} /> */}
-                </Routes>
-              </BrowserRouter>
-            </div>
+            <AlertProvider>
+              <div id="mtg-tracker">
+                <Alert />
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Games />} />
+                    <Route path="/players" element={<Players />} />
+                    <Route path="/decks" element={<Decks />} />
+                    {/* <Route path="/rewind" element={<Rewind />} /> */}
+                  </Routes>
+                </BrowserRouter>
+              </div>
+            </AlertProvider>
           </DataProvider>
         </AuthProvider>
       </QueryClientProvider>

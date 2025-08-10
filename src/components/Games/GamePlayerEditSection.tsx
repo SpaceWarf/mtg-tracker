@@ -10,6 +10,7 @@ type OwnProps = {
   playerIndex: number;
   playerSelectOptions: SelectOption[];
   deckSelectOptions: SelectOption[];
+  invertDropdownLayout?: boolean;
   onChange: (update: GamePlayer) => void;
 };
 
@@ -18,6 +19,7 @@ export function GamePlayerEditSection({
   playerIndex,
   playerSelectOptions,
   deckSelectOptions,
+  invertDropdownLayout,
   onChange,
 }: OwnProps) {
   const currentPlayerOption = useMemo(() => {
@@ -97,6 +99,7 @@ export function GamePlayerEditSection({
           name="deck"
           options={deckSelectOptions}
           value={currentDeckOption}
+          menuPlacement={invertDropdownLayout ? "top" : "bottom"}
           onChange={handleDeckChange}
         />
         <Flex gap="3">

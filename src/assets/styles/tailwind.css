@@ -36,4 +36,9 @@
   .react-select-container .react-select__multi-value__label {
     @apply text-neutral-800 dark:text-neutral-100;
   }
+
+  .alert {
+    @apply fixed top-0 left-0 right-0;
+    z-index: 9999;
+  }
 }

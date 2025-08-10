@@ -43,8 +43,15 @@ export function GameCreateModal() {
   const [player3, setPlayer3] = useState<GamePlayer>(cloneDeep(newGamePlayer));
   const [player4, setPlayer4] = useState<GamePlayer>(cloneDeep(newGamePlayer));
   const [comments, setComments] = useState<string>("");
+  const [creating, setCreating] = useState<boolean>(false);
+
+  async function handleCreateOne() {
+    await handleCreate();
+    navigate(0);
+  }
 
   async function handleCreate() {
+    setCreating(true);
     const update: Game = {
       date,
       player1,
@@ -54,7 +61,7 @@ export function GameCreateModal() {
       comments,
     };
     await GameService.create(update);
-    navigate(0);
+    setCreating(false);
   }
 
   function handleOpenChange(open: boolean) {
@@ -74,6 +81,7 @@ export function GameCreateModal() {
 
   function canCreate(): boolean {
     return (
+      !creating &&
       isDateValid(date) &&
       isValidPlayer(player1) &&
       isValidPlayer(player2) &&
@@ -127,6 +135,7 @@ export function GameCreateModal() {
             playerIndex={3}
             playerSelectOptions={playerSelectOptions}
             deckSelectOptions={deckSelectOptions}
+            invertDropdownLayout={true}
             onChange={(update) => setPlayer3(update)}
           />
           <GamePlayerEditSection
@@ -134,6 +143,7 @@ export function GameCreateModal() {
             playerIndex={4}
             playerSelectOptions={playerSelectOptions}
             deckSelectOptions={deckSelectOptions}
+            invertDropdownLayout={true}
             onChange={(update) => setPlayer4(update)}
           />
         </Grid>
@@ -155,9 +165,16 @@ export function GameCreateModal() {
               Cancel
             </Button>
           </Dialog.Close>
-          <Dialog.Close disabled={!canCreate()} onClick={handleCreate}>
-            <Button>Create</Button>
+          <Dialog.Close disabled={!canCreate()} onClick={handleCreateOne}>
+            <Button>Create One</Button>
           </Dialog.Close>
+          <Button
+            disabled={!canCreate()}
+            onClick={handleCreate}
+            loading={creating}
+          >
+            Create More
+          </Button>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
