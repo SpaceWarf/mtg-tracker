@@ -7,6 +7,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
 import { usePlayers } from "../../hooks/usePlayers";
+import { useSelectOptions } from "../../hooks/useSelectOptions";
 import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { GameSortFctKey } from "../../state/GameSortFctKey";
@@ -38,6 +39,7 @@ export function GamesViewer() {
     label: getSortFctName(GameSortFctKey.DATE_DESC),
   });
   const [filteredGames, setFilteredGames] = useState<DbGame[]>([]);
+  const playerSelectOptions = useSelectOptions(dbPlayers ?? [], "id", "name");
 
   const sortFctOptions = useMemo(() => {
     return Object.values(GameSortFctKey).map((key) => ({
@@ -45,15 +47,6 @@ export function GamesViewer() {
       label: getSortFctName(key),
     }));
   }, []);
-
-  const playerSelectOptions = useMemo(() => {
-    return (
-      dbPlayers?.map((player) => ({
-        value: player.id,
-        label: player.name,
-      })) ?? []
-    );
-  }, [dbPlayers]);
 
   const getPlayerByIdFromContext = useCallback(
     (id: string): DbPlayer | undefined => {

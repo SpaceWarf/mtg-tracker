@@ -11,12 +11,24 @@ import {
 import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useDecks } from "../../hooks/useDecks";
+import { usePlayers } from "../../hooks/usePlayers";
+import { useSelectOptions } from "../../hooks/useSelectOptions";
 import { GameService } from "../../services/Game";
 import { Game, GamePlayer } from "../../state/Game";
 import { getShortDateString, isDateValid } from "../../utils/Date";
 import { GamePlayerEditSection } from "./GamePlayerEditSection";
 
 export function GameCreateModal() {
+  const { dbPlayers } = usePlayers();
+  const playerSelectOptions = useSelectOptions(dbPlayers ?? [], "id", "name");
+  const { dbDecks } = useDecks();
+  const deckSelectOptions = useSelectOptions(
+    dbDecks ?? [],
+    "id",
+    "name",
+    "commander"
+  );
   const navigate = useNavigate();
   const newGamePlayer: GamePlayer = {
     player: "",
@@ -99,21 +111,29 @@ export function GameCreateModal() {
           <GamePlayerEditSection
             gamePlayer={player1}
             playerIndex={1}
+            playerSelectOptions={playerSelectOptions}
+            deckSelectOptions={deckSelectOptions}
             onChange={(update) => setPlayer1(update)}
           />
           <GamePlayerEditSection
             gamePlayer={player2}
             playerIndex={2}
+            playerSelectOptions={playerSelectOptions}
+            deckSelectOptions={deckSelectOptions}
             onChange={(update) => setPlayer2(update)}
           />
           <GamePlayerEditSection
             gamePlayer={player3}
             playerIndex={3}
+            playerSelectOptions={playerSelectOptions}
+            deckSelectOptions={deckSelectOptions}
             onChange={(update) => setPlayer3(update)}
           />
           <GamePlayerEditSection
             gamePlayer={player4}
             playerIndex={4}
+            playerSelectOptions={playerSelectOptions}
+            deckSelectOptions={deckSelectOptions}
             onChange={(update) => setPlayer4(update)}
           />
         </Grid>

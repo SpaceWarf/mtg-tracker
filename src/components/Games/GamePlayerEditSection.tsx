@@ -1,36 +1,56 @@
-import { Flex, Heading, Select, Switch, Text } from "@radix-ui/themes";
+import { Flex, Heading, Switch, Text } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useDecks } from "../../hooks/useDecks";
-import { usePlayers } from "../../hooks/usePlayers";
+import { useMemo } from "react";
+import ReactSelect, { SingleValue } from "react-select";
 import { GamePlayer } from "../../state/Game";
+import { SelectOption } from "../../state/SelectOption";
 
 type OwnProps = {
   gamePlayer: GamePlayer;
   playerIndex: number;
+  playerSelectOptions: SelectOption[];
+  deckSelectOptions: SelectOption[];
   onChange: (update: GamePlayer) => void;
 };
 
 export function GamePlayerEditSection({
   gamePlayer,
   playerIndex,
+  playerSelectOptions,
+  deckSelectOptions,
   onChange,
 }: OwnProps) {
-  const { dbPlayers } = usePlayers();
-  const { dbDecks } = useDecks();
+  const currentPlayerOption = useMemo(() => {
+    return playerSelectOptions.find(
+      (option) => option.value === gamePlayer.player
+    );
+  }, [gamePlayer.player, playerSelectOptions]);
 
-  function handlePlayerChange(value: string) {
+  const currentDeckOption = useMemo(() => {
+    return deckSelectOptions.find((option) => option.value === gamePlayer.deck);
+  }, [gamePlayer.deck, deckSelectOptions]);
+
+  function handlePlayerChange(option: SingleValue<SelectOption>) {
+    if (!option) {
+      return;
+    }
+
     const update: GamePlayer = {
       ...cloneDeep(gamePlayer),
-      player: value,
+      player: option.value,
     };
     delete update.playerObj;
     onChange(update);
   }
 
-  function handleDeckChange(value: string) {
+  function handleDeckChange(option: SingleValue<SelectOption>) {
+    if (!option) {
+      return;
+    }
+
     const update: GamePlayer = {
       ...cloneDeep(gamePlayer),
-      deck: value,
+      deck: option.value,
     };
     delete update.deckObj;
     onChange(update);
@@ -63,37 +83,22 @@ export function GamePlayerEditSection({
         Player {playerIndex}
       </Heading>
       <Flex direction="column" gap="3">
-        <Select.Root
-          value={gamePlayer.player}
-          onValueChange={handlePlayerChange}
-        >
-          <Select.Trigger />
-          <Select.Content>
-            <Select.Group>
-              {cloneDeep(dbPlayers)
-                ?.sort((a, b) => a.name.localeCompare(b.name))
-                .map((player) => (
-                  <Select.Item key={player.id} value={player.id}>
-                    {player.name}
-                  </Select.Item>
-                ))}
-            </Select.Group>
-          </Select.Content>
-        </Select.Root>
-        <Select.Root value={gamePlayer.deck} onValueChange={handleDeckChange}>
-          <Select.Trigger />
-          <Select.Content>
-            <Select.Group>
-              {cloneDeep(dbDecks)
-                ?.sort((a, b) => a.name.localeCompare(b.name))
-                .map((deck) => (
-                  <Select.Item key={deck.id} value={deck.id}>
-                    {deck.name} ({deck.commander})
-                  </Select.Item>
-                ))}
-            </Select.Group>
-          </Select.Content>
-        </Select.Root>
+        <ReactSelect
+          className="react-select-container min-w-60"
+          classNamePrefix="react-select"
+          name="player"
+          options={playerSelectOptions}
+          value={currentPlayerOption}
+          onChange={handlePlayerChange}
+        />
+        <ReactSelect
+          className="react-select-container min-w-60"
+          classNamePrefix="react-select"
+          name="deck"
+          options={deckSelectOptions}
+          value={currentDeckOption}
+          onChange={handleDeckChange}
+        />
         <Flex gap="3">
           <Text as="label" size="2">
             <Flex gap="2">

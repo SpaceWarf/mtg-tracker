@@ -8,6 +8,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
 import { usePlayers } from "../../hooks/usePlayers";
+import { useSelectOptions } from "../../hooks/useSelectOptions";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckSortFctKey } from "../../state/DeckSortFctKey";
 import { DECK_SORT_FCTS, getDeckSortFctName } from "../../state/DeckSortFcts";
@@ -36,6 +37,7 @@ export function DecksViewer() {
   >([]);
   const [decksWithStats, setDecksWithStats] = useState<DeckWithStats[]>([]);
   const [filteredDecks, setFilteredDecks] = useState<DeckWithStats[]>([]);
+  const playerSelectOptions = useSelectOptions(dbPlayers ?? [], "id", "name");
 
   const sortFctOptions = useMemo(() => {
     return Object.values(DeckSortFctKey).map((key) => ({
@@ -43,15 +45,6 @@ export function DecksViewer() {
       label: getDeckSortFctName(key),
     }));
   }, []);
-
-  const playerSelectOptions = useMemo(() => {
-    return (
-      dbPlayers?.map((player) => ({
-        value: player.id,
-        label: player.name,
-      })) ?? []
-    );
-  }, [dbPlayers]);
 
   const populateDeckStats = useCallback(() => {
     if (dbDecks && dbGames) {
