@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import ReactSelect, { MultiValue, SingleValue } from "react-select";
+import "../../assets/styles/SelectOptions.scss";
 import { usePlayers } from "../../hooks/usePlayers";
 import { usePlayerSelectOptions } from "../../hooks/usePlayerSelectOptions";
 import { SelectOption } from "../../state/SelectOption";
@@ -19,6 +20,24 @@ type SingleProps = {
   isMulti: false;
   onChange: (value: string) => void;
 } & SharedProps;
+
+function CustomOption({
+  data,
+  innerProps,
+}: {
+  data: SelectOption;
+  innerProps: React.HTMLAttributes<HTMLDivElement>;
+}) {
+  return (
+    <div
+      className="select-option-container player-select-option-container "
+      {...innerProps}
+    >
+      <img src={data.image} alt={data.label} className="w-6 h-6 rounded-full" />
+      <span>{data.label}</span>
+    </div>
+  );
+}
 
 export function PlayerSelect({
   value,
@@ -51,6 +70,7 @@ export function PlayerSelect({
       className="react-select-container min-w-60"
       classNamePrefix="react-select"
       name="playerSelect"
+      components={{ Option: CustomOption }}
       options={playerSelectOptions}
       value={optionsValue}
       onChange={handleChangeMulti}
@@ -64,6 +84,7 @@ export function PlayerSelect({
       className="react-select-container min-w-60"
       classNamePrefix="react-select"
       name="playerSelect"
+      components={{ Option: CustomOption }}
       options={playerSelectOptions}
       value={optionsValue}
       onChange={handleChangeSingle}

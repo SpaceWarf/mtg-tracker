@@ -7,7 +7,8 @@ export function useDeckSelectOptions(data: DbDeck[]): SelectOption[] {
     return (
       data.map((item) => ({
         value: item.id,
-        label: `${item.name} (${item.commander})`,
+        label: item.name,
+        detail: item.commander,
       })) ?? []
     );
   }, [data]);

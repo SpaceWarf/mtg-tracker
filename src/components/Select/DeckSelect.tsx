@@ -1,5 +1,9 @@
 import { useMemo } from "react";
-import ReactSelect, { MultiValue, SingleValue } from "react-select";
+import ReactSelect, {
+  createFilter,
+  MultiValue,
+  SingleValue,
+} from "react-select";
 import { useDecks } from "../../hooks/useDecks";
 import { useDeckSelectOptions } from "../../hooks/useDeckSelectOptions";
 import { SelectOption } from "../../state/SelectOption";
@@ -20,6 +24,24 @@ type SingleProps = {
   onChange: (value: string) => void;
 } & SharedProps;
 
+function CustomOption({
+  data,
+  innerProps,
+}: {
+  data: SelectOption;
+  innerProps: React.HTMLAttributes<HTMLDivElement>;
+}) {
+  return (
+    <div
+      className="select-option-container deck-select-option-container"
+      {...innerProps}
+    >
+      <span>{data.label}</span>
+      <span className="detail">{data.detail}</span>
+    </div>
+  );
+}
+
 export function DeckSelect({
   value,
   isMulti,
@@ -36,6 +58,10 @@ export function DeckSelect({
     }
   }, [isMulti, deckSelectOptions, value]);
 
+  const filterOption = createFilter<SelectOption>({
+    stringify: (option) => `${option.label} ${option.data.detail}`,
+  });
+
   function handleChangeMulti(value: MultiValue<SelectOption>) {
     (onChange as (value: string[]) => void)(value.map((v) => v.value));
   }
@@ -49,6 +75,8 @@ export function DeckSelect({
       className="react-select-container min-w-60"
       classNamePrefix="react-select"
       name="deckSelect"
+      components={{ Option: CustomOption }}
+      filterOption={filterOption}
       options={deckSelectOptions}
       value={optionsValue}
       onChange={handleChangeMulti}
@@ -62,6 +90,8 @@ export function DeckSelect({
       className="react-select-container min-w-60"
       classNamePrefix="react-select"
       name="deckSelect"
+      components={{ Option: CustomOption }}
+      filterOption={filterOption}
       options={deckSelectOptions}
       value={optionsValue}
       onChange={handleChangeSingle}
