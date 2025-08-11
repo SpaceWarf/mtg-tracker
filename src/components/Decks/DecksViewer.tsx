@@ -11,6 +11,7 @@ import { DeckWithStats } from "../../state/Deck";
 import { DeckSortFctKey } from "../../state/DeckSortFctKey";
 import { DECK_SORT_FCTS, getDeckSortFctName } from "../../state/DeckSortFcts";
 import { SelectOption } from "../../state/SelectOption";
+import { SortFctType } from "../../state/SortFctType";
 import {
   getDeckGamesCount,
   getDeckWinCount,
@@ -128,7 +129,7 @@ export function DecksViewer() {
               Sort by
             </Heading>
             <SortFctSelect
-              type="deck"
+              type={SortFctType.DECK}
               value={sortFctKey.value}
               onChange={handleSort}
             />

@@ -14,6 +14,7 @@ import {
   PLAYER_SORT_FCTS,
 } from "../../state/PlayerSortFcts";
 import { SelectOption } from "../../state/SelectOption";
+import { SortFctType } from "../../state/SortFctType";
 import {
   getPlayerDecksPlayedMap,
   getPlayerDecksWonMap,
@@ -144,7 +145,7 @@ export function PlayersViewer() {
                 Sort by
               </Heading>
               <SortFctSelect
-                type="player"
+                type={SortFctType.PLAYER}
                 value={sortFctKey.value}
                 onChange={handleSort}
               />

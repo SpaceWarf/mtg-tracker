@@ -13,6 +13,7 @@ import { GAME_SORT_FCTS, getGameSortFctName } from "../../state/GameSortFcts";
 import { GameViewType } from "../../state/GameViewType";
 import { DbPlayer } from "../../state/Player";
 import { SelectOption } from "../../state/SelectOption";
+import { SortFctType } from "../../state/SortFctType";
 import {
   gameHasAllDecks,
   gameHasAllPlayers,
@@ -176,7 +177,7 @@ export function GamesViewer() {
               Sort by
             </Heading>
             <SortFctSelect
-              type="game"
+              type={SortFctType.GAME}
               value={sortFctKey.value}
               onChange={handleSort}
             />
