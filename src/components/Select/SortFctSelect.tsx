@@ -29,7 +29,7 @@ export function SortFctSelect({
 
   return (
     <ReactSelect
-      className="react-select-container min-w-60"
+      className="react-select-container w-40"
       classNamePrefix="react-select"
       name="sortFctSelect"
       options={options}

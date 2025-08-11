@@ -87,7 +87,7 @@ export function DeckSelect({
     />
   ) : (
     <ReactSelect
-      className="react-select-container min-w-60"
+      className="react-select-container"
       classNamePrefix="react-select"
       name="deckSelect"
       components={{ Option: CustomOption }}
