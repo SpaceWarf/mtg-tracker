@@ -12,9 +12,6 @@ import {
 import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useDecks } from "../../hooks/useDecks";
-import { usePlayers } from "../../hooks/usePlayers";
-import { useSelectOptions } from "../../hooks/useSelectOptions";
 import { GameService } from "../../services/Game";
 import { DbGame, GamePlayer } from "../../state/Game";
 import { isDateValid } from "../../utils/Date";
@@ -26,15 +23,6 @@ type OwnProps = {
 
 export function GameEditModal({ game }: OwnProps) {
   const navigate = useNavigate();
-  const { dbPlayers } = usePlayers();
-  const playerSelectOptions = useSelectOptions(dbPlayers ?? [], "id", "name");
-  const { dbDecks } = useDecks();
-  const deckSelectOptions = useSelectOptions(
-    dbDecks ?? [],
-    "id",
-    "name",
-    "commander"
-  );
   const [date, setDate] = useState<string>(game.date);
   const [player1, setPlayer1] = useState<GamePlayer>(game.player1);
   const [player2, setPlayer2] = useState<GamePlayer>(game.player2);
@@ -101,30 +89,24 @@ export function GameEditModal({ game }: OwnProps) {
           <GamePlayerEditSection
             gamePlayer={player1}
             playerIndex={1}
-            playerSelectOptions={playerSelectOptions}
-            deckSelectOptions={deckSelectOptions}
             onChange={(update) => setPlayer1(update)}
           />
           <GamePlayerEditSection
             gamePlayer={player2}
             playerIndex={2}
-            playerSelectOptions={playerSelectOptions}
-            deckSelectOptions={deckSelectOptions}
             onChange={(update) => setPlayer2(update)}
           />
           <GamePlayerEditSection
             gamePlayer={player3}
             playerIndex={3}
-            playerSelectOptions={playerSelectOptions}
-            deckSelectOptions={deckSelectOptions}
             onChange={(update) => setPlayer3(update)}
+            invertDropdownLayout
           />
           <GamePlayerEditSection
             gamePlayer={player4}
             playerIndex={4}
-            playerSelectOptions={playerSelectOptions}
-            deckSelectOptions={deckSelectOptions}
             onChange={(update) => setPlayer4(update)}
+            invertDropdownLayout
           />
         </Grid>
 

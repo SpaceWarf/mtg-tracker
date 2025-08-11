@@ -1,17 +1,15 @@
 import { Flex, Heading, Spinner, Switch, Text } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
-import ReactSelect, { MultiValue, SingleValue } from "react-select";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
 import { usePlayers } from "../../hooks/usePlayers";
-import { useSelectOptions } from "../../hooks/useSelectOptions";
 import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { GameSortFctKey } from "../../state/GameSortFctKey";
-import { GAME_SORT_FCTS, getSortFctName } from "../../state/GameSortFcts";
+import { GAME_SORT_FCTS, getGameSortFctName } from "../../state/GameSortFcts";
 import { GameViewType } from "../../state/GameViewType";
 import { DbPlayer } from "../../state/Player";
 import { SelectOption } from "../../state/SelectOption";
@@ -21,6 +19,9 @@ import {
   gameHasSomeDecks,
   gameHasSomePlayers,
 } from "../../utils/Game";
+import { DeckSelect } from "../Select/DeckSelect";
+import { PlayerSelect } from "../Select/PlayerSelect";
+import { SortFctSelect } from "../Select/SortFctSelect";
 import { GameCreateModal } from "./GameCreateModal";
 import { GamesCardView } from "./GamesCardView";
 import { GamesTableView } from "./GamesTableView";
@@ -28,45 +29,24 @@ import { GamesTableView } from "./GamesTableView";
 export function GamesViewer() {
   const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { dbGames, loadingGames } = useGames();
-  const [populatingGames, setPopulatingGames] = useState<boolean>(true);
-  const [populatedGames, setPopulatedGames] = useState<DbGame[]>([]);
   const [viewType, setViewType] = useState<GameViewType>(GameViewType.CARDS);
   const [sortFctKey, setSortFctKey] = useState<SelectOption>({
     value: GameSortFctKey.DATE_DESC,
-    label: getSortFctName(GameSortFctKey.DATE_DESC),
+    label: getGameSortFctName(GameSortFctKey.DATE_DESC),
   });
+
+  const { dbGames, loadingGames } = useGames();
+  const [populatingGames, setPopulatingGames] = useState<boolean>(true);
+  const [populatedGames, setPopulatedGames] = useState<DbGame[]>([]);
   const [filteredGames, setFilteredGames] = useState<DbGame[]>([]);
 
   const { dbPlayers, loadingPlayers } = usePlayers();
-  const playerSelectOptions = useSelectOptions(dbPlayers ?? [], "id", "name");
-  const [visiblePlayers, setVisiblePlayers] = useState<
-    MultiValue<SelectOption>
-  >([]);
-  const [excludedPlayers, setExcludedPlayers] = useState<
-    MultiValue<SelectOption>
-  >([]);
+  const [visiblePlayers, setVisiblePlayers] = useState<string[]>([]);
+  const [excludedPlayers, setExcludedPlayers] = useState<string[]>([]);
 
   const { dbDecks, loadingDecks } = useDecks();
-  const deckSelectOptions = useSelectOptions(
-    dbDecks ?? [],
-    "id",
-    "name",
-    "commander"
-  );
-  const [visibleDecks, setVisibleDecks] = useState<MultiValue<SelectOption>>(
-    []
-  );
-  const [excludedDecks, setExcludedDecks] = useState<MultiValue<SelectOption>>(
-    []
-  );
-
-  const sortFctOptions = useMemo(() => {
-    return Object.values(GameSortFctKey).map((key) => ({
-      value: key,
-      label: getSortFctName(key),
-    }));
-  }, []);
+  const [visibleDecks, setVisibleDecks] = useState<string[]>([]);
+  const [excludedDecks, setExcludedDecks] = useState<string[]>([]);
 
   const getPlayerByIdFromContext = useCallback(
     (id: string): DbPlayer | undefined => {
@@ -111,15 +91,10 @@ export function GamesViewer() {
 
   useEffect(() => {
     const filtered = cloneDeep(populatedGames).filter((game) => {
-      const visiblePlayerIds = visiblePlayers.map((player) => player.value);
-      const excludedPlayerIds = excludedPlayers.map((player) => player.value);
-      const hasVisiblePlayers = gameHasAllPlayers(game, visiblePlayerIds);
-      const hasExcludedPlayers = gameHasSomePlayers(game, excludedPlayerIds);
-
-      const visibleDeckIds = visibleDecks.map((deck) => deck.value);
-      const excludedDeckIds = excludedDecks.map((deck) => deck.value);
-      const hasVisibleDecks = gameHasAllDecks(game, visibleDeckIds);
-      const hasExcludedDecks = gameHasSomeDecks(game, excludedDeckIds);
+      const hasVisiblePlayers = gameHasAllPlayers(game, visiblePlayers);
+      const hasExcludedPlayers = gameHasSomePlayers(game, excludedPlayers);
+      const hasVisibleDecks = gameHasAllDecks(game, visibleDecks);
+      const hasExcludedDecks = gameHasSomeDecks(game, excludedDecks);
 
       return (
         hasVisiblePlayers &&
@@ -148,7 +123,7 @@ export function GamesViewer() {
     ) {
       setSortFctKey({
         value: urlSortKey as GameSortFctKey,
-        label: getSortFctName(urlSortKey as GameSortFctKey),
+        label: getGameSortFctName(urlSortKey as GameSortFctKey),
       });
     }
   }, [searchParams]);
@@ -157,11 +132,11 @@ export function GamesViewer() {
     return loadingGames || loadingPlayers || loadingDecks || populatingGames;
   }
 
-  function handleSort(sortOption: SingleValue<SelectOption>) {
-    if (!sortOption) {
+  function handleSort(value: string) {
+    if (!value) {
       searchParams.delete("sort");
     } else {
-      searchParams.set("sort", sortOption.value);
+      searchParams.set("sort", value);
     }
     setSearchParams(searchParams);
   }
@@ -200,12 +175,9 @@ export function GamesViewer() {
             <Heading className="mb-1" size="3">
               Sort by
             </Heading>
-            <ReactSelect
-              className="react-select-container min-w-40"
-              classNamePrefix="react-select"
-              name="sortFct"
-              options={sortFctOptions}
-              value={sortFctKey}
+            <SortFctSelect
+              type="game"
+              value={sortFctKey.value}
               onChange={handleSort}
             />
           </div>
@@ -213,29 +185,19 @@ export function GamesViewer() {
             <Heading className="mb-1" size="3">
               Include players
             </Heading>
-            <ReactSelect
-              className="react-select-container min-w-60"
-              classNamePrefix="react-select"
-              name="visiblePlayers"
-              options={playerSelectOptions}
+            <PlayerSelect
               value={visiblePlayers}
               onChange={setVisiblePlayers}
               isMulti
-              closeMenuOnSelect={false}
             />
           </div>
           <div>
             <Heading className="mb-1" size="3">
               Exclude players
             </Heading>
-            <ReactSelect
-              className="react-select-container min-w-60"
-              classNamePrefix="react-select"
-              name="excludedPlayers"
-              options={playerSelectOptions}
+            <PlayerSelect
               value={excludedPlayers}
               onChange={setExcludedPlayers}
-              closeMenuOnSelect={false}
               isMulti
             />
           </div>
@@ -243,29 +205,19 @@ export function GamesViewer() {
             <Heading className="mb-1" size="3">
               Include decks
             </Heading>
-            <ReactSelect
-              className="react-select-container min-w-60"
-              classNamePrefix="react-select"
-              name="visibleDecks"
-              options={deckSelectOptions}
+            <DeckSelect
               value={visibleDecks}
               onChange={setVisibleDecks}
               isMulti
-              closeMenuOnSelect={false}
             />
           </div>
           <div className="max-w-96">
             <Heading className="mb-1" size="3">
               Exclude decks
             </Heading>
-            <ReactSelect
-              className="react-select-container min-w-60"
-              classNamePrefix="react-select"
-              name="excludedDecks"
-              options={deckSelectOptions}
+            <DeckSelect
               value={excludedDecks}
               onChange={setExcludedDecks}
-              closeMenuOnSelect={false}
               isMulti
             />
           </div>

@@ -17,6 +17,6 @@ export const GAME_SORT_FCTS: SortFct<DbGame> = {
   },
 };
 
-export function getSortFctName(key: GameSortFctKey): string {
+export function getGameSortFctName(key: GameSortFctKey): string {
   return GAME_SORT_FCTS[key].name;
 }

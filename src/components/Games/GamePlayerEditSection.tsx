@@ -1,15 +1,12 @@
 import { Flex, Heading, Switch, Text } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useMemo } from "react";
-import ReactSelect, { SingleValue } from "react-select";
 import { GamePlayer } from "../../state/Game";
-import { SelectOption } from "../../state/SelectOption";
+import { DeckSelect } from "../Select/DeckSelect";
+import { PlayerSelect } from "../Select/PlayerSelect";
 
 type OwnProps = {
   gamePlayer: GamePlayer;
   playerIndex: number;
-  playerSelectOptions: SelectOption[];
-  deckSelectOptions: SelectOption[];
   invertDropdownLayout?: boolean;
   onChange: (update: GamePlayer) => void;
 };
@@ -17,42 +14,22 @@ type OwnProps = {
 export function GamePlayerEditSection({
   gamePlayer,
   playerIndex,
-  playerSelectOptions,
-  deckSelectOptions,
   invertDropdownLayout,
   onChange,
 }: OwnProps) {
-  const currentPlayerOption = useMemo(() => {
-    return playerSelectOptions.find(
-      (option) => option.value === gamePlayer.player
-    );
-  }, [gamePlayer.player, playerSelectOptions]);
-
-  const currentDeckOption = useMemo(() => {
-    return deckSelectOptions.find((option) => option.value === gamePlayer.deck);
-  }, [gamePlayer.deck, deckSelectOptions]);
-
-  function handlePlayerChange(option: SingleValue<SelectOption>) {
-    if (!option) {
-      return;
-    }
-
+  function handlePlayerChange(value: string) {
     const update: GamePlayer = {
       ...cloneDeep(gamePlayer),
-      player: option.value,
+      player: value,
     };
     delete update.playerObj;
     onChange(update);
   }
 
-  function handleDeckChange(option: SingleValue<SelectOption>) {
-    if (!option) {
-      return;
-    }
-
+  function handleDeckChange(value: string) {
     const update: GamePlayer = {
       ...cloneDeep(gamePlayer),
-      deck: option.value,
+      deck: value,
     };
     delete update.deckObj;
     onChange(update);
@@ -85,22 +62,16 @@ export function GamePlayerEditSection({
         Player {playerIndex}
       </Heading>
       <Flex direction="column" gap="3">
-        <ReactSelect
-          className="react-select-container min-w-60"
-          classNamePrefix="react-select"
-          name="player"
-          options={playerSelectOptions}
-          value={currentPlayerOption}
+        <PlayerSelect
+          value={gamePlayer.player}
           onChange={handlePlayerChange}
+          isMulti={false}
         />
-        <ReactSelect
-          className="react-select-container min-w-60"
-          classNamePrefix="react-select"
-          name="deck"
-          options={deckSelectOptions}
-          value={currentDeckOption}
-          menuPlacement={invertDropdownLayout ? "top" : "bottom"}
+        <DeckSelect
+          value={gamePlayer.deck}
           onChange={handleDeckChange}
+          isMulti={false}
+          menuPlacement={invertDropdownLayout ? "top" : "bottom"}
         />
         <Flex gap="3">
           <Text as="label" size="2">

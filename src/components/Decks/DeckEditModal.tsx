@@ -10,12 +10,9 @@ import {
 import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import ReactSelect, { SingleValue } from "react-select";
-import { usePlayers } from "../../hooks/usePlayers";
-import { useSelectOptions } from "../../hooks/useSelectOptions";
 import { DeckService } from "../../services/Deck";
 import { DbDeck } from "../../state/Deck";
-import { SelectOption } from "../../state/SelectOption";
+import { PlayerSelect } from "../Select/PlayerSelect";
 
 type OwnProps = {
   deck: DbDeck;
@@ -23,14 +20,10 @@ type OwnProps = {
 
 export function DeckEditModal({ deck }: OwnProps) {
   const navigate = useNavigate();
-  const { dbPlayers } = usePlayers();
-  const playerSelectOptions = useSelectOptions(dbPlayers ?? [], "id", "name");
   const [name, setName] = useState<string>(deck.name);
   const [commander, setCommander] = useState<string>(deck.commander);
   const [url, setUrl] = useState<string>(deck.url ?? "");
-  const [builder, setBuilder] = useState<SingleValue<SelectOption>>(
-    playerSelectOptions.find((option) => option.value === deck.builder) || null
-  );
+  const [builder, setBuilder] = useState<string>(deck.builder ?? "");
 
   async function handleSave() {
     const update: DbDeck = {
@@ -38,7 +31,7 @@ export function DeckEditModal({ deck }: OwnProps) {
       name,
       commander,
       url,
-      builder: builder?.value ?? "",
+      builder: builder ?? "",
     };
     await DeckService.update(deck.id, update);
     navigate(0);
@@ -114,13 +107,10 @@ export function DeckEditModal({ deck }: OwnProps) {
           <Heading className="mb-1" size="3">
             Built By
           </Heading>
-          <ReactSelect
-            className="react-select-container min-w-60"
-            classNamePrefix="react-select"
-            name="player"
-            options={playerSelectOptions}
-            value={builder}
+          <PlayerSelect
+            value={builder as string}
             onChange={setBuilder}
+            isMulti={false}
             menuPlacement="top"
           />
         </div>

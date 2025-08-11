@@ -1,9 +1,8 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Flex, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
-import ReactSelect, { SingleValue } from "react-select";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
@@ -29,6 +28,7 @@ import {
   getPlayerWinCount,
   getPlayerWinRate,
 } from "../../utils/Player";
+import { SortFctSelect } from "../Select/SortFctSelect";
 import { PlayerCreateModal } from "./PlayerCreateModal";
 import { PlayersCardView } from "./PlayersCardView";
 
@@ -47,13 +47,6 @@ export function PlayersViewer() {
     []
   );
   const [filteredPlayers, setFilteredPlayers] = useState<PlayerWithStats[]>([]);
-
-  const sortFctOptions = useMemo(() => {
-    return Object.values(PlayerSortFctKey).map((key) => ({
-      value: key,
-      label: getPlayerSortFctName(key),
-    }));
-  }, []);
 
   const populatePlayerStats = useCallback(() => {
     if (dbPlayers && dbGames) {
@@ -113,11 +106,11 @@ export function PlayersViewer() {
     return loadingGames || loadingPlayers || loadingDecks;
   }
 
-  function handleSort(sortKey: SingleValue<SelectOption>) {
-    if (!sortKey) {
+  function handleSort(value: string) {
+    if (!value) {
       searchParams.delete("sort");
     } else {
-      searchParams.set("sort", sortKey.value);
+      searchParams.set("sort", value);
     }
     setSearchParams(searchParams);
   }
@@ -150,12 +143,9 @@ export function PlayersViewer() {
               <Heading className="mb-1" size="3">
                 Sort by
               </Heading>
-              <ReactSelect
-                className="react-select-container min-w-40"
-                classNamePrefix="react-select"
-                name="sortFct"
-                options={sortFctOptions}
-                value={sortFctKey}
+              <SortFctSelect
+                type="player"
+                value={sortFctKey.value}
                 onChange={handleSort}
               />
             </div>

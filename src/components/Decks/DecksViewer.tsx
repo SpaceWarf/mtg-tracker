@@ -1,14 +1,12 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Flex, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
-import ReactSelect, { MultiValue, SingleValue } from "react-select";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
 import { usePlayers } from "../../hooks/usePlayers";
-import { useSelectOptions } from "../../hooks/useSelectOptions";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckSortFctKey } from "../../state/DeckSortFctKey";
 import { DECK_SORT_FCTS, getDeckSortFctName } from "../../state/DeckSortFcts";
@@ -18,6 +16,8 @@ import {
   getDeckWinCount,
   getDeckWinRate,
 } from "../../utils/Deck";
+import { PlayerSelect } from "../Select/PlayerSelect";
+import { SortFctSelect } from "../Select/SortFctSelect";
 import { DeckCreateModal } from "./DeckCreateModal";
 import { DecksCardView } from "./DecksCardView";
 
@@ -32,19 +32,9 @@ export function DecksViewer() {
     value: DeckSortFctKey.NAME_ASC,
     label: getDeckSortFctName(DeckSortFctKey.NAME_ASC),
   });
-  const [visiblePlayers, setVisiblePlayers] = useState<
-    MultiValue<SelectOption>
-  >([]);
+  const [visiblePlayers, setVisiblePlayers] = useState<string[]>([]);
   const [decksWithStats, setDecksWithStats] = useState<DeckWithStats[]>([]);
   const [filteredDecks, setFilteredDecks] = useState<DeckWithStats[]>([]);
-  const playerSelectOptions = useSelectOptions(dbPlayers ?? [], "id", "name");
-
-  const sortFctOptions = useMemo(() => {
-    return Object.values(DeckSortFctKey).map((key) => ({
-      value: key,
-      label: getDeckSortFctName(key),
-    }));
-  }, []);
 
   const populateDeckStats = useCallback(() => {
     if (dbDecks && dbGames) {
@@ -69,7 +59,7 @@ export function DecksViewer() {
       const builderFilter =
         !visiblePlayers.length ||
         visiblePlayers.some((visiblePlayer) =>
-          deck.builder?.includes(visiblePlayer.value)
+          deck.builder?.includes(visiblePlayer)
         );
       return nameFilter && builderFilter;
     });
@@ -101,11 +91,11 @@ export function DecksViewer() {
     return loadingGames || loadingDecks || loadingPlayers;
   }
 
-  function handleSort(sortKey: SingleValue<SelectOption>) {
-    if (!sortKey) {
+  function handleSort(value: string) {
+    if (!value) {
       searchParams.delete("sort");
     } else {
-      searchParams.set("sort", sortKey.value);
+      searchParams.set("sort", value);
     }
     setSearchParams(searchParams);
   }
@@ -137,12 +127,9 @@ export function DecksViewer() {
             <Heading className="mb-1" size="3">
               Sort by
             </Heading>
-            <ReactSelect
-              className="react-select-container min-w-40"
-              classNamePrefix="react-select"
-              name="sortFct"
-              options={sortFctOptions}
-              value={sortFctKey}
+            <SortFctSelect
+              type="deck"
+              value={sortFctKey.value}
               onChange={handleSort}
             />
           </div>
@@ -150,15 +137,10 @@ export function DecksViewer() {
             <Heading className="mb-1" size="3">
               Include players
             </Heading>
-            <ReactSelect
-              className="react-select-container min-w-60"
-              classNamePrefix="react-select"
-              name="visiblePlayers"
-              options={playerSelectOptions}
+            <PlayerSelect
               value={visiblePlayers}
               onChange={setVisiblePlayers}
               isMulti
-              closeMenuOnSelect={false}
             />
           </div>
         </Flex>
