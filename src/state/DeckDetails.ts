@@ -13,4 +13,5 @@ export interface DeckDetails {
   commanders: string[];
   owner: string;
   ownerId: string;
+  colourIdentity: string[];
 }

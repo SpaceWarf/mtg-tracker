@@ -13,6 +13,7 @@ import { usePlayers } from "../../hooks/usePlayers";
 import { ArchidektService } from "../../services/Archidekt";
 import { DeckService } from "../../services/Deck";
 import { Deck } from "../../state/Deck";
+import { DeckDetails } from "../../state/DeckDetails";
 import { getDeckCommandersString } from "../../utils/Deck";
 import { getPlayerByExternalId } from "../../utils/Player";
 import { PlayerSelect } from "../Select/PlayerSelect";
@@ -24,6 +25,7 @@ export function DeckCreateModal() {
   const [commander, setCommander] = useState<string>("");
   const [externalId, setExternalId] = useState<string>("");
   const [builder, setBuilder] = useState<string>("");
+  const [deckDetails, setDeckDetails] = useState<DeckDetails>();
   const [autofilling, setAutofilling] = useState<boolean>(false);
   const [autofillError, setAutofillError] = useState<string>("");
 
@@ -32,6 +34,16 @@ export function DeckCreateModal() {
       name,
       commander,
       externalId,
+      builder: builder ?? "",
+      featured: deckDetails?.featured ?? "",
+      price: deckDetails?.price ?? "",
+      saltSum: deckDetails?.saltSum ?? "",
+      size: deckDetails?.size ?? "",
+      viewCount: deckDetails?.viewCount ?? "",
+      format: deckDetails?.format ?? "",
+      deckCreatedAt: deckDetails?.createdAt ?? "",
+      deckUpdatedAt: deckDetails?.updatedAt ?? "",
+      colourIdentity: deckDetails?.colourIdentity ?? [],
     };
     await DeckService.create(deck);
     navigate(0);
@@ -54,6 +66,7 @@ export function DeckCreateModal() {
     setAutofilling(true);
     try {
       const deckDetails = await ArchidektService.getDeckDetailsById(externalId);
+      setDeckDetails(deckDetails);
       setName(deckDetails.title);
       setCommander(getDeckCommandersString(deckDetails.commanders));
       const builder = getPlayerByExternalId(deckDetails.owner, dbPlayers ?? []);

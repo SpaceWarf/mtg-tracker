@@ -5,6 +5,15 @@ export interface Deck {
   commander: string;
   externalId?: string;
   builder?: string;
+  featured?: string;
+  price?: string;
+  saltSum?: string;
+  size?: string;
+  viewCount?: string;
+  format?: string;
+  deckCreatedAt?: string;
+  deckUpdatedAt?: string;
+  colourIdentity?: string[];
 }
 
 export interface DbDeck extends Deck, DatabaseItem {}

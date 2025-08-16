@@ -19,7 +19,6 @@ export class ArchidektDeckScraper extends HTMLScraper {
     await super.scrape();
     const reduxData = this.getReduxData();
     this.deckData = reduxData?.deck;
-    console.log(this.deckData);
   }
 
   getDeckDetails(id: string): DeckDetails {
@@ -38,11 +37,8 @@ export class ArchidektDeckScraper extends HTMLScraper {
       commanders: this.getCommanders(),
       owner: this.getOwner(),
       ownerId: this.getOwnerId(),
+      colourIdentity: this.getColourIdentity(),
     };
-  }
-
-  getCommandersString(commanders: string[]): string {
-    return commanders.join(" // ");
   }
 
   private getReduxData(): ArchidektReduxData | undefined {
@@ -98,6 +94,12 @@ export class ArchidektDeckScraper extends HTMLScraper {
 
   private getCommanders(): string[] {
     return this.getPremierCards().map((card) => card.name);
+  }
+
+  private getColourIdentity(): string[] {
+    return this.getPremierCards().reduce((acc, card) => {
+      return [...new Set([...acc, ...card.colorIdentity])];
+    }, [] as string[]);
   }
 
   private getPremierCategories(): ArchidektReduxCategory[] {

@@ -1,8 +1,9 @@
-import { Card, Flex, Heading, Strong, Table, Text } from "@radix-ui/themes";
+import { Card, Flex, Strong, Table, Text } from "@radix-ui/themes";
 import { usePlayers } from "../../hooks/usePlayers";
 import { DbDeck } from "../../state/Deck";
 import { SortHighlightIcon } from "../Icons/SortHighlightIcon";
 import { DeckEditModal } from "./DeckEditModal";
+import { DeckHeader } from "./DeckHeader";
 import { DeckInspectModal } from "./DeckInspectModal";
 
 type OwnProps = {
@@ -32,12 +33,15 @@ export function DeckCard({
 
   return (
     <Card size="3">
-      <Flex>
-        <Flex className="mb-3" direction="column" flexGrow={"1"}>
-          <Heading>{deck.name}</Heading>
-          <Heading size="3">{deck.commander}</Heading>
-        </Flex>
-        <Flex gap="3">
+      <Flex className="mb-3" justify="between">
+        <DeckHeader
+          title={deck.name}
+          commanders={deck.commander}
+          featured={deck.featured ?? ""}
+          colourIdentity={deck.colourIdentity ?? []}
+          size="small"
+        />
+        <Flex className="ml-2" gap="3">
           {deck.externalId && (
             <DeckInspectModal
               deck={deck}

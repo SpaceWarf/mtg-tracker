@@ -36,4 +36,5 @@ export interface ArchidektReduxCard {
   // TODO: complete interface
   name: string;
   categories: string[];
+  colorIdentity: string[];
 }

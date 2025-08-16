@@ -1,12 +1,9 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   ExternalLinkIcon,
   EyeOpenIcon,
   UpdateIcon,
 } from "@radix-ui/react-icons";
 import {
-  Avatar,
   Button,
   Dialog,
   Flex,
@@ -17,11 +14,13 @@ import {
   Table,
   Text,
 } from "@radix-ui/themes";
+import { isEqual } from "lodash";
 import { useState } from "react";
 import { ArchidektService } from "../../services/Archidekt";
 import { DeckService } from "../../services/Deck";
 import { DbDeck } from "../../state/Deck";
 import { DeckDetails } from "../../state/DeckDetails";
+import { DeckHeader } from "./DeckHeader";
 
 type OwnProps = {
   deck: DbDeck;
@@ -89,6 +88,51 @@ export function DeckInspectModal({
         shouldUpdate = true;
       }
 
+      if (deck.featured !== deckDetails.featured) {
+        update.featured = deckDetails.featured;
+        shouldUpdate = true;
+      }
+
+      if (deck.price !== deckDetails.price) {
+        update.price = deckDetails.price;
+        shouldUpdate = true;
+      }
+
+      if (deck.saltSum !== deckDetails.saltSum) {
+        update.saltSum = deckDetails.saltSum;
+        shouldUpdate = true;
+      }
+
+      if (deck.size !== deckDetails.size) {
+        update.size = deckDetails.size;
+        shouldUpdate = true;
+      }
+
+      if (deck.viewCount !== deckDetails.viewCount) {
+        update.viewCount = deckDetails.viewCount;
+        shouldUpdate = true;
+      }
+
+      if (deck.format !== deckDetails.format) {
+        update.format = deckDetails.format;
+        shouldUpdate = true;
+      }
+
+      if (deck.deckCreatedAt !== deckDetails.createdAt) {
+        update.deckCreatedAt = deckDetails.createdAt;
+        shouldUpdate = true;
+      }
+
+      if (deck.deckUpdatedAt !== deckDetails.updatedAt) {
+        update.deckUpdatedAt = deckDetails.updatedAt;
+        shouldUpdate = true;
+      }
+
+      if (!isEqual(deck.colourIdentity, deckDetails.colourIdentity)) {
+        update.colourIdentity = deckDetails.colourIdentity;
+        shouldUpdate = true;
+      }
+
       if (shouldUpdate) {
         await DeckService.update(deck.id, update);
       }
@@ -117,20 +161,12 @@ export function DeckInspectModal({
           <>
             <Dialog.Title>
               <Flex justify="between">
-                <Flex gap="2" align="center">
-                  <Avatar
-                    src={deckDetails.featured}
-                    fallback={<FontAwesomeIcon icon={faUser} />}
-                    radius="full"
-                    size="6"
-                  />
-                  <Flex direction="column">
-                    <span className="text-lg">{deckDetails.title}</span>
-                    <span className="text-sm">
-                      {deckDetails.commanders.join(" // ")}
-                    </span>
-                  </Flex>
-                </Flex>
+                <DeckHeader
+                  title={deckDetails.title}
+                  commanders={deckDetails.commanders.join(" // ")}
+                  featured={deckDetails.featured}
+                  colourIdentity={deckDetails.colourIdentity}
+                />
                 <IconButton
                   variant="soft"
                   onClick={() => window.open(deckDetails.url, "_blank")}
