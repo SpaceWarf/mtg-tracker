@@ -1,6 +1,8 @@
-import { Card, Flex, Tabs } from "@radix-ui/themes";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import { Card, Flex, IconButton, Tabs } from "@radix-ui/themes";
 import { useState } from "react";
 import { usePlayers } from "../../hooks/usePlayers";
+import { ArchidektService } from "../../services/Archidekt";
 import { DbDeck } from "../../state/Deck";
 import { DeckCardView } from "../../state/DeckCardView";
 import { DeckDetailsTable } from "./DeckDetailsTable";
@@ -45,6 +47,19 @@ export function DeckCard({
           size="small"
         />
         <Flex className="ml-2" gap="3">
+          {deck.externalId && (
+            <IconButton
+              variant="soft"
+              onClick={() =>
+                window.open(
+                  ArchidektService.getDeckUrl(deck.externalId ?? ""),
+                  "_blank"
+                )
+              }
+            >
+              <ExternalLinkIcon width="18" height="18" />
+            </IconButton>
+          )}
           {editable && <DeckEditModal deck={deck} />}
         </Flex>
       </Flex>

@@ -32,6 +32,10 @@ export class ArchidektService {
     }
   }
 
+  static getDeckUrl(id: string): string {
+    return `https://archidekt.com/decks/${id}`;
+  }
+
   static getPlayerProfileUrl(id: string): string {
     return `https://archidekt.com/search/decks?orderBy=-updatedAt&ownerUsername=${id}&page=1`;
   }
