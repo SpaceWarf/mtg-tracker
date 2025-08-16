@@ -1,11 +1,20 @@
 import {
+  ExternalLinkIcon,
   ListBulletIcon,
   SketchLogoIcon,
   StarFilledIcon,
 } from "@radix-ui/react-icons";
-import { Button, Dialog, Flex, Heading, Text } from "@radix-ui/themes";
+import {
+  Button,
+  Dialog,
+  Flex,
+  Heading,
+  IconButton,
+  Text,
+} from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import ReactSelect, { SingleValue } from "react-select";
+import { ArchidektService } from "../../services/Archidekt";
 import { CardGroupBy, CardGroupByOptions } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { CARD_SORT_FCTS } from "../../state/CardSortFcts";
@@ -136,41 +145,56 @@ export function DeckCardListModal({ deck }: OwnProps) {
       <Dialog.Description></Dialog.Description>
 
       <Dialog.Content maxWidth="1500px">
-        <Flex className="mb-5" gap="5">
-          <Dialog.Title>
-            <DeckHeader
-              title={deck.name}
-              commanders={deck.commander}
-              featured={deck.featured ?? ""}
-              colourIdentity={deck.colourIdentity ?? []}
-            />
-          </Dialog.Title>
+        <Flex className="mb-5" justify="between">
+          <Flex gap="5">
+            <Dialog.Title>
+              <DeckHeader
+                title={deck.name}
+                commanders={deck.commander}
+                featured={deck.featured ?? ""}
+                colourIdentity={deck.colourIdentity ?? []}
+              />
+            </Dialog.Title>
 
-          <div>
-            <Heading className="mb-1" size="3">
-              Group by
-            </Heading>
-            <ReactSelect
-              className="react-select-container min-w-60"
-              classNamePrefix="react-select"
-              name="groupBySelect"
-              options={Object.values(CardGroupByOptions)}
-              value={groupBy}
-              onChange={(value: SingleValue<SelectOption>) => setGroupBy(value)}
-              menuPlacement="top"
-            />
-          </div>
+            <div>
+              <Heading className="mb-1" size="3">
+                Group by
+              </Heading>
+              <ReactSelect
+                className="react-select-container min-w-60"
+                classNamePrefix="react-select"
+                name="groupBySelect"
+                options={Object.values(CardGroupByOptions)}
+                value={groupBy}
+                onChange={(value: SingleValue<SelectOption>) =>
+                  setGroupBy(value)
+                }
+                menuPlacement="top"
+              />
+            </div>
 
-          <div>
-            <Heading className="mb-1" size="3">
-              Sort by
-            </Heading>
-            <SortFctSelect
-              type={SortFctType.CARD}
-              value={sortBy}
-              onChange={(value: string) => setSortBy(value as CardSortFctKey)}
-            />
-          </div>
+            <div>
+              <Heading className="mb-1" size="3">
+                Sort by
+              </Heading>
+              <SortFctSelect
+                type={SortFctType.CARD}
+                value={sortBy}
+                onChange={(value: string) => setSortBy(value as CardSortFctKey)}
+              />
+            </div>
+          </Flex>
+          <IconButton
+            variant="soft"
+            onClick={() =>
+              window.open(
+                ArchidektService.getDeckUrl(deck.externalId ?? ""),
+                "_blank"
+              )
+            }
+          >
+            <ExternalLinkIcon width="18" height="18" />
+          </IconButton>
         </Flex>
 
         <Flex gap="5">
