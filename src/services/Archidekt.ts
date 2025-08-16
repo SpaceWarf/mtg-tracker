@@ -1,6 +1,6 @@
 import {} from "../state/ArchidektReduxData";
 import { CacheKey } from "../state/CacheKey";
-import { DeckDetails } from "../state/DeckDetails";
+import { DeckCardDetails, DeckDetails } from "../state/DeckDetails";
 import { getCacheKey, getItemFromCache, setCacheKey } from "../utils/Cache";
 import { ArchidektDeckScraper } from "./ArchidektDeckScraper";
 
@@ -38,5 +38,10 @@ export class ArchidektService {
 
   static getPlayerProfileUrl(id: string): string {
     return `https://archidekt.com/search/decks?orderBy=-updatedAt&ownerUsername=${id}&page=1`;
+  }
+
+  static getScryfallCardUrl(card: DeckCardDetails): string {
+    const name = card.name.replace(" ", "-").toLowerCase();
+    return `https://scryfall.com/card/${card.setCode}/${card.collectorNumber}/${name}`;
   }
 }

@@ -46,6 +46,8 @@ export interface ArchidektReduxCard {
   layout: ArchidektReduxCardLayout;
   front: ArchidektReduxCardSide;
   back: ArchidektReduxCardSide;
+  collectorNumber: string;
+  setCode: string;
 }
 
 export enum ArchidektReduxCardLayout {

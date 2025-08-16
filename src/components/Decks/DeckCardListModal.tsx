@@ -10,6 +10,7 @@ import {
   Flex,
   Heading,
   IconButton,
+  Link,
   Text,
 } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
@@ -249,12 +250,14 @@ export function CardListItem({ card }: { card: DeckCardDetails }) {
       <Flex gap="1" align="center">
         <Text size="2">{card.qty}</Text>
         <Flex className="w-40" gap="1" align="center">
-          <Text
+          <Link
             className="overflow-hidden whitespace-nowrap overflow-ellipsis"
             size="2"
+            href={ArchidektService.getScryfallCardUrl(card)}
+            target="_blank"
           >
-            {card.name}
-          </Text>
+            <Text>{card.name}</Text>
+          </Link>
           {card.gameChanger && <SketchLogoIcon width="14" height="14" />}
         </Flex>
       </Flex>

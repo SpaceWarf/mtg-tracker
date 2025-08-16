@@ -3,3 +3,9 @@
 .rt-Flex p.rt-Text[id^="radix-"] {
   display: none;
 }
+
+a {
+  color: white !important;
+  text-decoration-color: white !important;
+  text-underline-offset: 3px !important;
+}

@@ -143,6 +143,8 @@ export class ArchidektDeckScraper extends HTMLScraper {
       text: card.text,
       gameChanger: card.gameChanger,
       qty: card.qty,
+      collectorNumber: card.collectorNumber,
+      setCode: card.setCode,
     }));
   }
 

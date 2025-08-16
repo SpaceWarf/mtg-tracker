@@ -28,6 +28,8 @@ export interface DeckCardDetails {
   text: string;
   gameChanger: boolean;
   qty: number;
+  collectorNumber: string;
+  setCode: string;
 }
 
 export interface DeckCategoryDetails {
