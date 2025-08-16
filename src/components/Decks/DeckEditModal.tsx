@@ -8,7 +8,7 @@ import {
   IconButton,
   TextField,
 } from "@radix-ui/themes";
-import { cloneDeep } from "lodash";
+import { cloneDeep, isEqual } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { usePlayers } from "../../hooks/usePlayers";
@@ -34,6 +34,7 @@ export function DeckEditModal({ deck }: OwnProps) {
   const [deckDetails, setDeckDetails] = useState<DeckDetails>();
   const [autofilling, setAutofilling] = useState<boolean>(false);
   const [autofillError, setAutofillError] = useState<string>("");
+  const [syncing, setSyncing] = useState<boolean>(false);
 
   async function handleSave() {
     const update: DbDeck = {
@@ -71,8 +72,9 @@ export function DeckEditModal({ deck }: OwnProps) {
   }
 
   function canSave(): boolean {
-    return !!name && !!commander && !autofilling;
+    return !!name && !!commander && !autofilling && !syncing;
   }
+
   async function handleAutofill() {
     setAutofilling(true);
     try {
@@ -88,6 +90,89 @@ export function DeckEditModal({ deck }: OwnProps) {
       setAutofillError("Invalid External ID.");
     } finally {
       setAutofilling(false);
+    }
+  }
+
+  async function handleSync() {
+    setSyncing(true);
+    try {
+      const deckDetails = await ArchidektService.getDeckDetailsById(
+        deck.externalId ?? "",
+        true
+      );
+      await syncDeckDetails(deckDetails);
+      navigate(0);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setSyncing(false);
+    }
+  }
+
+  async function syncDeckDetails(deckDetails: DeckDetails) {
+    if (deck && deckDetails) {
+      const update: DbDeck = { ...deck };
+      let shouldUpdate = false;
+
+      if (deck.name !== deckDetails.title) {
+        update.name = deckDetails.title;
+        shouldUpdate = true;
+      }
+
+      const commandersStr = deckDetails.commanders.join(" // ");
+      if (deck.commander !== commandersStr) {
+        update.commander = commandersStr;
+        shouldUpdate = true;
+      }
+
+      if (deck.featured !== deckDetails.featured) {
+        update.featured = deckDetails.featured;
+        shouldUpdate = true;
+      }
+
+      if (deck.price !== deckDetails.price) {
+        update.price = deckDetails.price;
+        shouldUpdate = true;
+      }
+
+      if (deck.saltSum !== deckDetails.saltSum) {
+        update.saltSum = deckDetails.saltSum;
+        shouldUpdate = true;
+      }
+
+      if (deck.size !== deckDetails.size) {
+        update.size = deckDetails.size;
+        shouldUpdate = true;
+      }
+
+      if (deck.viewCount !== deckDetails.viewCount) {
+        update.viewCount = deckDetails.viewCount;
+        shouldUpdate = true;
+      }
+
+      if (deck.format !== deckDetails.format) {
+        update.format = deckDetails.format;
+        shouldUpdate = true;
+      }
+
+      if (deck.deckCreatedAt !== deckDetails.createdAt) {
+        update.deckCreatedAt = deckDetails.createdAt;
+        shouldUpdate = true;
+      }
+
+      if (deck.deckUpdatedAt !== deckDetails.updatedAt) {
+        update.deckUpdatedAt = deckDetails.updatedAt;
+        shouldUpdate = true;
+      }
+
+      if (!isEqual(deck.colourIdentity, deckDetails.colourIdentity)) {
+        update.colourIdentity = deckDetails.colourIdentity;
+        shouldUpdate = true;
+      }
+
+      if (shouldUpdate) {
+        await DeckService.update(deck.id, update);
+      }
     }
   }
 
@@ -112,7 +197,7 @@ export function DeckEditModal({ deck }: OwnProps) {
             className="input-field"
             placeholder="External ID..."
             value={externalId}
-            disabled={autofilling}
+            disabled={autofilling || syncing}
             onChange={({ target }) => setExternalId(target.value)}
           ></TextField.Root>
           {autofillError && (
@@ -129,7 +214,7 @@ export function DeckEditModal({ deck }: OwnProps) {
           <Button
             className="h-10"
             onClick={handleAutofill}
-            disabled={!externalId || autofilling}
+            disabled={!externalId || autofilling || syncing}
           >
             <Pencil1Icon width="18" height="18" />
             Autofill Details
@@ -144,6 +229,7 @@ export function DeckEditModal({ deck }: OwnProps) {
             className="input-field"
             placeholder="Name..."
             value={name}
+            disabled={autofilling || syncing}
             onChange={({ target }) => setName(target.value)}
           ></TextField.Root>
         </div>
@@ -156,6 +242,7 @@ export function DeckEditModal({ deck }: OwnProps) {
             className="input-field"
             placeholder="Commander..."
             value={commander}
+            disabled={autofilling || syncing}
             onChange={({ target }) => setCommander(target.value)}
           ></TextField.Root>
         </div>
@@ -169,13 +256,28 @@ export function DeckEditModal({ deck }: OwnProps) {
             onChange={setBuilder}
             isMulti={false}
             menuPlacement="top"
+            disabled={autofilling || syncing}
           />
         </div>
 
         <Flex gap="3" mt="4" justify="between">
-          <Dialog.Close onClick={handleDelete}>
-            <Button color="red">Delete</Button>
-          </Dialog.Close>
+          <Flex gap="3">
+            <Dialog.Close
+              disabled={autofilling || syncing}
+              onClick={handleDelete}
+            >
+              <Button color="red">Delete</Button>
+            </Dialog.Close>
+            <Button
+              disabled={syncing}
+              loading={syncing}
+              variant="soft"
+              color="gray"
+              onClick={handleSync}
+            >
+              Sync Data
+            </Button>
+          </Flex>
           <Flex gap="3">
             <Dialog.Close>
               <Button variant="soft" color="gray">

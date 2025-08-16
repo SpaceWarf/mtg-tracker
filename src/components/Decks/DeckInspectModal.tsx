@@ -10,9 +10,6 @@ import {
   Heading,
   IconButton,
   Spinner,
-  Strong,
-  Table,
-  Text,
 } from "@radix-ui/themes";
 import { isEqual } from "lodash";
 import { useState } from "react";
@@ -20,7 +17,9 @@ import { ArchidektService } from "../../services/Archidekt";
 import { DeckService } from "../../services/Deck";
 import { DbDeck } from "../../state/Deck";
 import { DeckDetails } from "../../state/DeckDetails";
+import { DeckDetailsTable } from "./DeckDetailsTable";
 import { DeckHeader } from "./DeckHeader";
+import { DeckStatsTable } from "./DeckStatsTable";
 
 type OwnProps = {
   deck: DbDeck;
@@ -176,111 +175,28 @@ export function DeckInspectModal({
               </Flex>
             </Dialog.Title>
 
-            <Heading size="3" className="mb-2 mt-3">
-              Deck Details
-            </Heading>
-            <Table.Root variant="surface" size="1" layout="fixed">
-              <Table.Body>
-                <Table.Row>
-                  <Table.RowHeaderCell>Format</Table.RowHeaderCell>
-                  <Table.Cell>
-                    <Text size="4">
-                      <Strong>{deckDetails.format}</Strong>
-                    </Text>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.RowHeaderCell>
-                    Estimated Price (USD)
-                  </Table.RowHeaderCell>
-                  <Table.Cell>
-                    <Text size="4">
-                      <Strong>{deckDetails.price}</Strong>
-                    </Text>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.RowHeaderCell>Salt sum</Table.RowHeaderCell>
-                  <Table.Cell>
-                    <Text size="4">
-                      <Strong>{deckDetails.saltSum}</Strong>
-                    </Text>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.RowHeaderCell>Size</Table.RowHeaderCell>
-                  <Table.Cell>
-                    <Text size="4">
-                      <Strong>{deckDetails.size}</Strong>
-                    </Text>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.RowHeaderCell>View count</Table.RowHeaderCell>
-                  <Table.Cell>
-                    <Text size="4">
-                      <Strong>{deckDetails.viewCount}</Strong>
-                    </Text>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.RowHeaderCell>Created at</Table.RowHeaderCell>
-                  <Table.Cell>
-                    <Text size="4">
-                      <Strong>{deckDetails.createdAt.split("T")[0]}</Strong>
-                    </Text>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.RowHeaderCell>Last updated at</Table.RowHeaderCell>
-                  <Table.Cell>
-                    <Text size="4">
-                      <Strong>{deckDetails.updatedAt.split("T")[0]}</Strong>
-                    </Text>
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            </Table.Root>
-
             <Heading size="3" className="mb-2 mt-5">
               Deck Stats
             </Heading>
-            <Table.Root variant="surface" size="1" layout="fixed">
-              <Table.Body>
-                <Table.Row>
-                  <Table.RowHeaderCell>Games played</Table.RowHeaderCell>
-                  <Table.Cell>
-                    <Text size="4">
-                      <Strong>{gamesPlayed}</Strong>
-                    </Text>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.RowHeaderCell>Games won</Table.RowHeaderCell>
-                  <Table.Cell>
-                    <Text size="4">
-                      <Strong>{winCount}</Strong>
-                    </Text>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.RowHeaderCell>Win rate</Table.RowHeaderCell>
-                  <Table.Cell>
-                    <Text size="4">
-                      <Strong>{`${Math.round(winRate * 100)}%`}</Strong>
-                    </Text>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.RowHeaderCell>Built by</Table.RowHeaderCell>
-                  <Table.Cell>
-                    <Text size="4">
-                      <Strong>{builder}</Strong>
-                    </Text>
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            </Table.Root>
+            <DeckStatsTable
+              gamesPlayed={gamesPlayed}
+              winCount={winCount}
+              winRate={winRate}
+              builder={builder}
+            />
+
+            <Heading size="3" className="mb-2 mt-3">
+              Deck Details
+            </Heading>
+            <DeckDetailsTable
+              format={deckDetails.format}
+              price={deckDetails.price}
+              saltSum={deckDetails.saltSum}
+              size={deckDetails.size}
+              viewCount={deckDetails.viewCount}
+              deckCreatedAt={deckDetails.createdAt}
+              deckUpdatedAt={deckDetails.updatedAt}
+            />
           </>
         )}
 

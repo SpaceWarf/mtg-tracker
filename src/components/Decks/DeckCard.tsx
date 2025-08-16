@@ -1,10 +1,12 @@
-import { Card, Flex, Strong, Table, Text } from "@radix-ui/themes";
+import { Card, Flex, Tabs } from "@radix-ui/themes";
+import { useState } from "react";
 import { usePlayers } from "../../hooks/usePlayers";
 import { DbDeck } from "../../state/Deck";
-import { SortHighlightIcon } from "../Icons/SortHighlightIcon";
+import { DeckCardView } from "../../state/DeckCardView";
+import { DeckDetailsTable } from "./DeckDetailsTable";
 import { DeckEditModal } from "./DeckEditModal";
 import { DeckHeader } from "./DeckHeader";
-import { DeckInspectModal } from "./DeckInspectModal";
+import { DeckStatsTable } from "./DeckStatsTable";
 
 type OwnProps = {
   deck: DbDeck;
@@ -26,6 +28,7 @@ export function DeckCard({
   winRate,
 }: OwnProps) {
   const { dbPlayers } = usePlayers();
+  const [view, setView] = useState<DeckCardView>(DeckCardView.DECK_STATS);
 
   function getPlayerName(id: string): string {
     return (dbPlayers || []).find((player) => player.id === id)?.name ?? "-";
@@ -42,78 +45,51 @@ export function DeckCard({
           size="small"
         />
         <Flex className="ml-2" gap="3">
-          {deck.externalId && (
-            <DeckInspectModal
-              deck={deck}
-              gamesPlayed={gamesPlayed}
-              winCount={winCount}
-              winRate={winRate}
-              builder={getPlayerName(deck.builder ?? "")}
-            />
-          )}
           {editable && <DeckEditModal deck={deck} />}
         </Flex>
       </Flex>
-      <Table.Root variant="surface" size="1" layout="fixed">
-        <Table.Body>
-          <Table.Row>
-            <Table.RowHeaderCell>Games played</Table.RowHeaderCell>
-            <Table.Cell>
-              <Flex gap="3" align="center">
-                <Text size="4">
-                  <Strong>{gamesPlayed}</Strong>
-                </Text>
-                <SortHighlightIcon
-                  highlighted={highlightedKey === "gamesPlayed"}
-                  direction={highlightedDirection}
-                />
-              </Flex>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.RowHeaderCell>Games won</Table.RowHeaderCell>
-            <Table.Cell>
-              <Flex gap="3" align="center">
-                <Text size="4">
-                  <Strong>{winCount}</Strong>
-                </Text>
-                <SortHighlightIcon
-                  highlighted={highlightedKey === "winCount"}
-                  direction={highlightedDirection}
-                />
-              </Flex>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.RowHeaderCell>Win rate</Table.RowHeaderCell>
-            <Table.Cell>
-              <Flex gap="3" align="center">
-                <Text size="4">
-                  <Strong>{`${Math.round(winRate * 100)}%`}</Strong>
-                </Text>
-                <SortHighlightIcon
-                  highlighted={highlightedKey === "winRate"}
-                  direction={highlightedDirection}
-                />
-              </Flex>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.RowHeaderCell>Built by</Table.RowHeaderCell>
-            <Table.Cell>
-              <Flex gap="3" align="center">
-                <Text size="4">
-                  <Strong>{getPlayerName(deck.builder ?? "")}</Strong>
-                </Text>
-                <SortHighlightIcon
-                  highlighted={highlightedKey === "builder"}
-                  direction={highlightedDirection}
-                />
-              </Flex>
-            </Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table.Root>
+
+      <Tabs.Root className="mb-2" value={view}>
+        <Tabs.List size="2">
+          <Tabs.Trigger
+            value={DeckCardView.DECK_STATS}
+            onClick={() => setView(DeckCardView.DECK_STATS)}
+          >
+            Stats
+          </Tabs.Trigger>
+          {deck.externalId && (
+            <Tabs.Trigger
+              value={DeckCardView.DECK_DETAILS}
+              onClick={() => setView(DeckCardView.DECK_DETAILS)}
+            >
+              Details
+            </Tabs.Trigger>
+          )}
+        </Tabs.List>
+      </Tabs.Root>
+
+      {view === DeckCardView.DECK_STATS && (
+        <DeckStatsTable
+          highlightedKey={highlightedKey}
+          highlightedDirection={highlightedDirection}
+          gamesPlayed={gamesPlayed}
+          winCount={winCount}
+          winRate={winRate}
+          builder={getPlayerName(deck.builder ?? "")}
+        />
+      )}
+
+      {view === DeckCardView.DECK_DETAILS && (
+        <DeckDetailsTable
+          format={deck.format ?? ""}
+          price={deck.price ?? ""}
+          saltSum={deck.saltSum ?? ""}
+          size={deck.size ?? ""}
+          viewCount={deck.viewCount ?? ""}
+          deckCreatedAt={deck.deckCreatedAt ?? ""}
+          deckUpdatedAt={deck.deckUpdatedAt ?? ""}
+        />
+      )}
     </Card>
   );
 }
