@@ -7,7 +7,7 @@ export async function run() {
   for (let i = 0; i < PLAYERS.length; i++) {
     await createItem<Player, DbPlayer>(DatabaseTable.PLAYERS, {
       name: PLAYERS[i],
-      profileUrl: "",
+      externalId: "",
     });
   }
 }

@@ -8,12 +8,12 @@ import { Player } from "../../state/Player";
 export function PlayerCreateModal() {
   const navigate = useNavigate();
   const [name, setName] = useState<string>("");
-  const [profileUrl, setProfileUrl] = useState<string>("");
+  const [externalId, setExternalId] = useState<string>("");
 
   async function handleCreate() {
     const player: Player = {
       name,
-      profileUrl,
+      externalId,
     };
     await PlayerService.create(player);
     navigate(0);
@@ -22,7 +22,7 @@ export function PlayerCreateModal() {
   function handleOpenChange(open: boolean) {
     if (!open) {
       setName("");
-      setProfileUrl("");
+      setExternalId("");
     }
   }
 
@@ -58,13 +58,13 @@ export function PlayerCreateModal() {
 
         <div className="mb-5">
           <Heading className="mb-1" size="3">
-            Profile URL
+            External ID
           </Heading>
           <TextField.Root
             className="input-field"
-            placeholder="Profile URL..."
-            value={profileUrl}
-            onChange={({ target }) => setProfileUrl(target.value)}
+            placeholder="External ID..."
+            value={externalId}
+            onChange={({ target }) => setExternalId(target.value)}
           ></TextField.Root>
         </div>
 

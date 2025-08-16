@@ -10,6 +10,7 @@ import {
   Tabs,
 } from "@radix-ui/themes";
 import { useState } from "react";
+import { ArchidektService } from "../../services/Archidekt";
 import { DbDeck } from "../../state/Deck";
 import { PlayerWithStats } from "../../state/Player";
 import { PlayerCardView } from "../../state/PlayerCardView";
@@ -71,10 +72,15 @@ export function PlayerCard({
           <Heading>{player.name}</Heading>
         </Flex>
         <Flex gap="3" justify="end">
-          {player.profileUrl && (
+          {player.externalId && (
             <IconButton
               variant="soft"
-              onClick={() => window.open(player.profileUrl, "_blank")}
+              onClick={() =>
+                window.open(
+                  ArchidektService.getPlayerProfileUrl(player.externalId),
+                  "_blank"
+                )
+              }
             >
               <ExternalLinkIcon />
             </IconButton>

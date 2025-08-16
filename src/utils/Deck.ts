@@ -15,3 +15,7 @@ export function getDeckWinRate(deck: DbDeck, games: DbGame[]): number {
   const winCount = getDeckWinCount(deck, games);
   return winCount / gamesCount || 0;
 }
+
+export function getDeckCommandersString(commanders: string[]): string {
+  return commanders.join(" // ");
+}

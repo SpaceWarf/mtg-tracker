@@ -1,6 +1,10 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ExternalLinkIcon, EyeOpenIcon } from "@radix-ui/react-icons";
+import {
+  ExternalLinkIcon,
+  EyeOpenIcon,
+  UpdateIcon,
+} from "@radix-ui/react-icons";
 import {
   Avatar,
   Button,
@@ -13,7 +17,7 @@ import {
   Table,
   Text,
 } from "@radix-ui/themes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ArchidektService } from "../../services/Archidekt";
 import { DeckService } from "../../services/Deck";
 import { DbDeck } from "../../state/Deck";
@@ -37,11 +41,39 @@ export function DeckInspectModal({
   const [deckDetails, setDeckDetails] = useState<DeckDetails>();
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    async function updateDeck(update: DbDeck) {
-      await DeckService.update(deck.id, update);
+  async function handleOpenChange(open: boolean) {
+    if (open) {
+      setLoading(true);
+      try {
+        const deckDetails = await ArchidektService.getDeckDetailsById(
+          deck.externalId ?? ""
+        );
+        setDeckDetails(deckDetails);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
     }
+  }
 
+  async function handleSync() {
+    setLoading(true);
+    try {
+      const deckDetails = await ArchidektService.getDeckDetailsById(
+        deck.externalId ?? "",
+        true
+      );
+      await syncDeckDetails(deckDetails);
+      setDeckDetails(deckDetails);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function syncDeckDetails(deckDetails: DeckDetails) {
     if (deck && deckDetails) {
       const update: DbDeck = { ...deck };
       let shouldUpdate = false;
@@ -49,41 +81,18 @@ export function DeckInspectModal({
       if (deck.name !== deckDetails.title) {
         update.name = deckDetails.title;
         shouldUpdate = true;
-        console.log("updating name", update.name);
       }
 
       const commandersStr = deckDetails.commanders.join(" // ");
       if (deck.commander !== commandersStr) {
         update.commander = commandersStr;
         shouldUpdate = true;
-        console.log("updating commander", update.commander);
       }
 
       if (shouldUpdate) {
-        updateDeck(update);
+        await DeckService.update(deck.id, update);
       }
     }
-  }, [deck, deckDetails]);
-
-  async function handleOpenChange(open: boolean) {
-    if (open) {
-      setLoading(true);
-      const deckDetails = await ArchidektService.getDeckDetailsById(
-        deck.externalId ?? ""
-      );
-      setDeckDetails(deckDetails);
-      setLoading(false);
-    }
-  }
-
-  async function handleRefetch() {
-    setLoading(true);
-    const deckDetails = await ArchidektService.getDeckDetailsById(
-      deck.externalId ?? "",
-      true
-    );
-    setDeckDetails(deckDetails);
-    setLoading(false);
   }
 
   return (
@@ -244,9 +253,10 @@ export function DeckInspectModal({
             disabled={loading}
             variant="soft"
             color="gray"
-            onClick={handleRefetch}
+            onClick={handleSync}
           >
-            Refetch Data
+            <UpdateIcon width="18" height="18" />
+            Sync Data
           </Button>
           <Dialog.Close>
             <Button>Close</Button>

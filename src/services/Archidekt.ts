@@ -2,7 +2,7 @@ import {} from "../state/ArchidektRedux";
 import { CacheKey } from "../state/CacheKey";
 import { DeckDetails } from "../state/DeckDetails";
 import { getCacheKey, getItemFromCache, setCacheKey } from "../utils/Cache";
-import { ArchidektScrapper } from "./ArchidektScrapper";
+import { ArchidektDeckScraper } from "./ArchidektDeckScraper";
 
 export class ArchidektService {
   static async getDeckDetailsById(
@@ -16,15 +16,23 @@ export class ArchidektService {
       return Promise.resolve(cachedDeckDetails);
     }
 
-    const scrapper = new ArchidektScrapper(`https://archidekt.com/decks/${id}`);
-    await scrapper.scrape();
-    const deckDetails = scrapper.getDeckDetails(id);
+    try {
+      const scraper = new ArchidektDeckScraper(id);
+      await scraper.scrape();
+      const deckDetails = scraper.getDeckDetails(id);
 
-    cache.set(deckDetails.id, {
-      value: deckDetails,
-      expiry: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 days
-    });
-    setCacheKey(CacheKey.DECKS_DETAILS, cache);
-    return Promise.resolve(deckDetails);
+      cache.set(deckDetails.id, {
+        value: deckDetails,
+        expiry: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 days
+      });
+      setCacheKey(CacheKey.DECKS_DETAILS, cache);
+      return Promise.resolve(deckDetails);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  static getPlayerProfileUrl(id: string): string {
+    return `https://archidekt.com/search/decks?orderBy=-updatedAt&ownerUsername=${id}&page=1`;
   }
 }

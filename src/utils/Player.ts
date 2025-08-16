@@ -153,3 +153,10 @@ export function getPlayerDecksWonMap(
     });
   return map;
 }
+
+export function getPlayerByExternalId(
+  externalId: string,
+  players: DbPlayer[]
+): DbPlayer | undefined {
+  return players.find((player) => player.externalId === externalId);
+}

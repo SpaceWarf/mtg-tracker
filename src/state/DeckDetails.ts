@@ -11,4 +11,6 @@ export interface DeckDetails {
   createdAt: string;
   updatedAt: string;
   commanders: string[];
+  owner: string;
+  ownerId: string;
 }

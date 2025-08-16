@@ -1,6 +1,7 @@
-import { Pencil1Icon } from "@radix-ui/react-icons";
+import { InfoCircledIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import {
   Button,
+  Callout,
   Dialog,
   Flex,
   Heading,
@@ -10,8 +11,12 @@ import {
 import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { usePlayers } from "../../hooks/usePlayers";
+import { ArchidektService } from "../../services/Archidekt";
 import { DeckService } from "../../services/Deck";
 import { DbDeck } from "../../state/Deck";
+import { getDeckCommandersString } from "../../utils/Deck";
+import { getPlayerByExternalId } from "../../utils/Player";
 import { PlayerSelect } from "../Select/PlayerSelect";
 
 type OwnProps = {
@@ -20,10 +25,13 @@ type OwnProps = {
 
 export function DeckEditModal({ deck }: OwnProps) {
   const navigate = useNavigate();
+  const { dbPlayers } = usePlayers();
   const [name, setName] = useState<string>(deck.name);
   const [commander, setCommander] = useState<string>(deck.commander);
   const [externalId, setExternalId] = useState<string>(deck.externalId ?? "");
   const [builder, setBuilder] = useState<string>(deck.builder ?? "");
+  const [autofilling, setAutofilling] = useState<boolean>(false);
+  const [autofillError, setAutofillError] = useState<string>("");
 
   async function handleSave() {
     const update: DbDeck = {
@@ -46,12 +54,29 @@ export function DeckEditModal({ deck }: OwnProps) {
     if (!open) {
       setName(deck.name);
       setCommander(deck.commander);
+      setBuilder(deck.builder ?? "");
       setExternalId(deck.externalId ?? "");
     }
   }
 
   function canSave(): boolean {
-    return !!name && !!commander;
+    return !!name && !!commander && !autofilling;
+  }
+  async function handleAutofill() {
+    setAutofilling(true);
+    try {
+      const deckDetails = await ArchidektService.getDeckDetailsById(externalId);
+      setName(deckDetails.title);
+      setCommander(getDeckCommandersString(deckDetails.commanders));
+      const builder = getPlayerByExternalId(deckDetails.owner, dbPlayers ?? []);
+      setBuilder(builder?.id ?? "");
+      setAutofillError("");
+    } catch (error) {
+      console.error(error);
+      setAutofillError("Invalid External ID.");
+    } finally {
+      setAutofilling(false);
+    }
   }
 
   return (
@@ -66,6 +91,38 @@ export function DeckEditModal({ deck }: OwnProps) {
 
       <Dialog.Content>
         <Dialog.Title>Edit deck</Dialog.Title>
+
+        <div className="mb-3">
+          <Heading className="mb-1" size="3">
+            External ID
+          </Heading>
+          <TextField.Root
+            className="input-field"
+            placeholder="External ID..."
+            value={externalId}
+            disabled={autofilling}
+            onChange={({ target }) => setExternalId(target.value)}
+          ></TextField.Root>
+          {autofillError && (
+            <Callout.Root color="red" className="mt-2">
+              <Callout.Icon>
+                <InfoCircledIcon />
+              </Callout.Icon>
+              <Callout.Text>{autofillError}</Callout.Text>
+            </Callout.Root>
+          )}
+        </div>
+
+        <Flex className="mb-5" justify="center">
+          <Button
+            className="h-10"
+            onClick={handleAutofill}
+            disabled={!externalId || autofilling}
+          >
+            <Pencil1Icon width="18" height="18" />
+            Autofill Details
+          </Button>
+        </Flex>
 
         <div className="mb-5">
           <Heading className="mb-1" size="3">
@@ -88,18 +145,6 @@ export function DeckEditModal({ deck }: OwnProps) {
             placeholder="Commander..."
             value={commander}
             onChange={({ target }) => setCommander(target.value)}
-          ></TextField.Root>
-        </div>
-
-        <div className="mb-5">
-          <Heading className="mb-1" size="3">
-            External ID
-          </Heading>
-          <TextField.Root
-            className="input-field"
-            placeholder="External ID..."
-            value={externalId}
-            onChange={({ target }) => setExternalId(target.value)}
           ></TextField.Root>
         </div>
 

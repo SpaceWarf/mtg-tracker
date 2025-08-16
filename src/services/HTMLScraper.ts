@@ -1,6 +1,6 @@
 import { serverSideGet } from "./Functions";
 
-export class HTMLScrapper {
+export class HTMLScraper {
   private readonly url: string;
   private doc: Document | null = null;
 

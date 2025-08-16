@@ -7,6 +7,7 @@ import { SelectOption } from "../../state/SelectOption";
 
 type SharedProps = {
   menuPlacement?: "top" | "bottom";
+  clearable?: boolean;
 };
 
 type MultiProps = {
@@ -44,6 +45,7 @@ export function PlayerSelect({
   isMulti,
   onChange,
   menuPlacement = "bottom",
+  clearable = true,
 }: MultiProps | SingleProps) {
   const { dbPlayers, loadingPlayers } = usePlayers();
   const playerSelectOptions = usePlayerSelectOptions(dbPlayers ?? []);
@@ -77,6 +79,7 @@ export function PlayerSelect({
       closeMenuOnSelect={false}
       isLoading={loadingPlayers}
       menuPlacement={menuPlacement}
+      isClearable={clearable}
       isMulti
     />
   ) : (
@@ -90,6 +93,7 @@ export function PlayerSelect({
       onChange={handleChangeSingle}
       isLoading={loadingPlayers}
       menuPlacement={menuPlacement}
+      isClearable={clearable}
     />
   );
 }

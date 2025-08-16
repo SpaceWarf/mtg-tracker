@@ -24,9 +24,11 @@
   }
 
   .react-select-container .react-select__input-container,
-  .react-select-container .react-select__placeholder,
   .react-select-container .react-select__single-value {
     @apply text-neutral-600 dark:text-neutral-200;
+  }
+  .react-select-container .react-select__placeholder {
+    @apply dark:placeholder:text-neutral-500;
   }
 
   .react-select-container .react-select__multi-value {
@@ -65,6 +67,11 @@
   .input-field.rt-TextFieldRoot .rt-TextFieldInput:focus,
   .area-field.rt-TextAreaRoot .rt-TextAreaInput:focus {
     @apply border-neutral-500 hover:border-neutral-500 dark:border-neutral-400 dark:hover:border-neutral-400 shadow-none;
+  }
+
+  .input-field.rt-TextFieldRoot .rt-TextFieldInput:placeholder-shown,
+  .area-field.rt-TextAreaRoot .rt-TextAreaInput:placeholder-shown {
+    @apply dark:placeholder:text-neutral-500;
   }
 
   .input-field.rt-TextFieldRoot .rt-TextFieldSlot {
