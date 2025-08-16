@@ -20,7 +20,6 @@ export class ArchidektService {
       const scraper = new ArchidektDeckScraper(id);
       await scraper.scrape();
       const deckDetails = scraper.getDeckDetails(id);
-      console.log(deckDetails);
 
       cache.set(deckDetails.id, {
         value: deckDetails,

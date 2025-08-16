@@ -32,7 +32,6 @@ export async function getFilteredItems<T>(
   year: Year,
   orderKey: string
 ): Promise<T[]> {
-  console.log("update", year);
   const yearClause =
     year == Year.ALL
       ? []
