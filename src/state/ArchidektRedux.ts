@@ -1,4 +1,4 @@
-export interface ArchidektRedux {
+export interface ArchidektReduxData {
   deck: ArchidektReduxDeck;
 }
 

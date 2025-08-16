@@ -1,27 +1,33 @@
+import { serverSideGet } from "./Functions";
+
 export class HTMLScrapper {
-  static getDocumentFromHTML(html: string): Document {
-    const parser = new DOMParser();
-    return parser.parseFromString(html, "text/html");
+  private readonly url: string;
+  private doc: Document | null = null;
+
+  constructor(url: string) {
+    this.url = url;
   }
 
-  static getTextFromElementByClass(doc: Document, className: string): string {
-    const el = HTMLScrapper.getElementByClass(doc, className);
+  async scrape(): Promise<void> {
+    const html = await serverSideGet<string>(this.url);
+    const parser = new DOMParser();
+    this.doc = parser.parseFromString(html.data, "text/html");
+  }
+
+  getUrl(): string {
+    return this.url;
+  }
+
+  getElementTextByClass(className: string): string {
+    const el = this.getElementByClass(className);
     return el?.textContent ?? "";
   }
 
-  static getElementByClass(doc: Document, className: string): Element | null {
-    return doc.querySelector(`[class^='${className}']`);
+  getElementByClass(className: string): Element | null {
+    return this.doc?.querySelector(`[class^='${className}']`) ?? null;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static getReduxDataFromHTML(html: string): any | undefined {
-    const doc = this.getDocumentFromHTML(html);
-    const nextData = doc.querySelector("script#__NEXT_DATA__")?.childNodes[0]
-      ?.textContent;
-
-    if (nextData) {
-      const nextDataJson = JSON.parse(nextData);
-      return nextDataJson.props.pageProps.redux;
-    }
+  querySelector(selector: string): Element | null {
+    return this.doc?.querySelector(selector) ?? null;
   }
 }

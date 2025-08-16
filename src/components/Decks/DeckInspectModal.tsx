@@ -13,8 +13,9 @@ import {
   Table,
   Text,
 } from "@radix-ui/themes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArchidektService } from "../../services/Archidekt";
+import { DeckService } from "../../services/Deck";
 import { DbDeck } from "../../state/Deck";
 import { DeckDetails } from "../../state/DeckDetails";
 
@@ -36,6 +37,34 @@ export function DeckInspectModal({
   const [deckDetails, setDeckDetails] = useState<DeckDetails>();
   const [loading, setLoading] = useState<boolean>(false);
 
+  useEffect(() => {
+    async function updateDeck(update: DbDeck) {
+      await DeckService.update(deck.id, update);
+    }
+
+    if (deck && deckDetails) {
+      const update: DbDeck = { ...deck };
+      let shouldUpdate = false;
+
+      if (deck.name !== deckDetails.title) {
+        update.name = deckDetails.title;
+        shouldUpdate = true;
+        console.log("updating name", update.name);
+      }
+
+      const commandersStr = deckDetails.commanders.join(" // ");
+      if (deck.commander !== commandersStr) {
+        update.commander = commandersStr;
+        shouldUpdate = true;
+        console.log("updating commander", update.commander);
+      }
+
+      if (shouldUpdate) {
+        updateDeck(update);
+      }
+    }
+  }, [deck, deckDetails]);
+
   async function handleOpenChange(open: boolean) {
     if (open) {
       setLoading(true);
@@ -45,6 +74,16 @@ export function DeckInspectModal({
       setDeckDetails(deckDetails);
       setLoading(false);
     }
+  }
+
+  async function handleRefetch() {
+    setLoading(true);
+    const deckDetails = await ArchidektService.getDeckDetailsById(
+      deck.externalId ?? "",
+      true
+    );
+    setDeckDetails(deckDetails);
+    setLoading(false);
   }
 
   return (
@@ -200,7 +239,15 @@ export function DeckInspectModal({
           </>
         )}
 
-        <Flex gap="3" mt="4" justify="end">
+        <Flex gap="3" mt="4" justify="between">
+          <Button
+            disabled={loading}
+            variant="soft"
+            color="gray"
+            onClick={handleRefetch}
+          >
+            Refetch Data
+          </Button>
           <Dialog.Close>
             <Button>Close</Button>
           </Dialog.Close>
