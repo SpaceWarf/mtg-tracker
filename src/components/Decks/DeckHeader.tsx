@@ -32,6 +32,7 @@ export function DeckHeader({
         </span>
         <span className="text-sm">{commanders}</span>
         <Flex className="mt-1" gap="1">
+          {!colourIdentity.length && <ManaIcon colour="C" size={size} />}
           {colourIdentity.map((colour) => (
             <ManaIcon key={colour} colour={colour} size={size} />
           ))}

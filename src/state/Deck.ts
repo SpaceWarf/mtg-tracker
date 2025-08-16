@@ -1,4 +1,5 @@
 import { DatabaseItem } from "./DatabaseItem";
+import { DeckCardDetails, DeckCategoryDetails } from "./DeckDetails";
 
 export interface Deck {
   name: string;
@@ -14,6 +15,8 @@ export interface Deck {
   deckCreatedAt?: string;
   deckUpdatedAt?: string;
   colourIdentity?: string[];
+  cards?: DeckCardDetails[];
+  categories?: DeckCategoryDetails[];
 }
 
 export interface DbDeck extends Deck, DatabaseItem {}

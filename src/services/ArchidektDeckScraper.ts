@@ -1,11 +1,16 @@
 import { ArchidektClasses } from "../state/ArchidektClasses";
 import {
   ArchidektReduxCard,
+  ArchidektReduxCardLayout,
   ArchidektReduxCategory,
   ArchidektReduxData,
   ArchidektReduxDeck,
-} from "../state/ArchidektRedux";
-import { DeckDetails } from "../state/DeckDetails";
+} from "../state/ArchidektReduxData";
+import {
+  DeckCardDetails,
+  DeckCategoryDetails,
+  DeckDetails,
+} from "../state/DeckDetails";
 import { HTMLScraper } from "./HTMLScraper";
 
 export class ArchidektDeckScraper extends HTMLScraper {
@@ -38,6 +43,8 @@ export class ArchidektDeckScraper extends HTMLScraper {
       owner: this.getOwner(),
       ownerId: this.getOwnerId(),
       colourIdentity: this.getColourIdentity(),
+      cards: this.getCards(),
+      categories: this.getCategories(),
     };
   }
 
@@ -123,5 +130,63 @@ export class ArchidektDeckScraper extends HTMLScraper {
 
   private getOwnerId(): string {
     return `${this.deckData?.ownerId ?? ""}`;
+  }
+
+  private getCards(): DeckCardDetails[] {
+    return Object.values(this.deckData?.cardMap ?? {}).map((card) => ({
+      name: card.name,
+      category: card.categories[0],
+      colourIdentity: card.colorIdentity.join(","),
+      cmc: card.cmc,
+      castingCost: this.getCardCastingCost(card),
+      types: card.types.join(","),
+      text: card.text,
+      gameChanger: card.gameChanger,
+      qty: card.qty,
+    }));
+  }
+
+  private getCardCastingCost(card: ArchidektReduxCard): string {
+    switch (card.layout) {
+      case ArchidektReduxCardLayout.MODAL_DFC:
+        return this.getMDFCLayoutCardCastingCost(card);
+      case ArchidektReduxCardLayout.SPLIT:
+      case ArchidektReduxCardLayout.NORMAL:
+        return this.getNormalLayoutCardCastingCost(card);
+      default:
+        return "";
+    }
+  }
+
+  private getMDFCLayoutCardCastingCost(card: ArchidektReduxCard): string {
+    const frontCost = this.getFlatCastingCost(card.front.castingCost);
+    const backCost = this.getFlatCastingCost(card.back.castingCost);
+    return `${frontCost},/,${backCost}`;
+  }
+
+  private getNormalLayoutCardCastingCost(card: ArchidektReduxCard): string {
+    return this.getFlatCastingCost(card.castingCost);
+  }
+
+  private getFlatCastingCost(castingCost: (string | string[])[]): string {
+    const cost: string[] = [];
+    castingCost.forEach((costFragment) => {
+      if (costFragment instanceof Array) {
+        cost.push(costFragment.join(""));
+      } else {
+        cost.push(costFragment);
+      }
+    });
+    return cost.join(",");
+  }
+
+  private getCategories(): DeckCategoryDetails[] {
+    return Object.values(this.deckData?.categories ?? {}).map((category) => ({
+      id: category.id,
+      name: category.name,
+      isPremier: category.isPremier,
+      includedInDeck: category.includedInDeck,
+      includedInPrice: category.includedInPrice,
+    }));
   }
 }

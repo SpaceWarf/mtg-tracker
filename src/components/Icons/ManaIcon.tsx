@@ -1,36 +1,39 @@
-import { useMemo } from "react";
-import black from "/img/mana/B.png";
-import green from "/img/mana/G.png";
-import red from "/img/mana/R.png";
-import blue from "/img/mana/U.png";
-import white from "/img/mana/W.png";
-
 type OwnProps = {
   colour: string;
   size?: "large" | "small";
 };
 
 export function ManaIcon({ colour, size = "large" }: OwnProps) {
-  const src = useMemo(() => {
+  function getSrc() {
     switch (colour) {
       case "White":
-        return white;
+        return "/img/mana/W.svg";
       case "Blue":
-        return blue;
+        return "/img/mana/U.svg";
       case "Black":
-        return black;
+        return "/img/mana/B.svg";
       case "Red":
-        return red;
+        return "/img/mana/R.svg";
       case "Green":
-        return green;
+        return "/img/mana/G.svg";
+      default:
+        return `/img/mana/${colour}.svg`;
     }
-  }, [colour]);
+  }
+
+  if (colour === "") {
+    return <></>;
+  }
+
+  if (colour === "/") {
+    return <span>//</span>;
+  }
 
   return (
     <img
       width={size === "large" ? "18" : "14"}
       height={size === "large" ? "18" : "14"}
-      src={src}
+      src={getSrc()}
       alt={colour}
     />
   );

@@ -6,9 +6,10 @@ import {
   Flex,
   Heading,
   IconButton,
+  Text,
   TextField,
 } from "@radix-ui/themes";
-import { cloneDeep, isEqual } from "lodash";
+import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { usePlayers } from "../../hooks/usePlayers";
@@ -52,6 +53,8 @@ export function DeckEditModal({ deck }: OwnProps) {
       deckCreatedAt: deckDetails?.createdAt ?? "",
       deckUpdatedAt: deckDetails?.updatedAt ?? "",
       colourIdentity: deckDetails?.colourIdentity ?? [],
+      cards: deckDetails?.cards ?? [],
+      categories: deckDetails?.categories ?? [],
     };
     await DeckService.update(deck.id, update);
     navigate(0);
@@ -111,68 +114,24 @@ export function DeckEditModal({ deck }: OwnProps) {
 
   async function syncDeckDetails(deckDetails: DeckDetails) {
     if (deck && deckDetails) {
-      const update: DbDeck = { ...deck };
-      let shouldUpdate = false;
+      const update: DbDeck = {
+        ...deck,
+        name: deckDetails.title,
+        commander: getDeckCommandersString(deckDetails.commanders),
+        featured: deckDetails.featured,
+        price: deckDetails.price,
+        saltSum: deckDetails.saltSum,
+        size: deckDetails.size,
+        viewCount: deckDetails.viewCount,
+        format: deckDetails.format,
+        deckCreatedAt: deckDetails.createdAt,
+        deckUpdatedAt: deckDetails.updatedAt,
+        colourIdentity: deckDetails.colourIdentity,
+        cards: deckDetails.cards,
+        categories: deckDetails.categories,
+      };
 
-      if (deck.name !== deckDetails.title) {
-        update.name = deckDetails.title;
-        shouldUpdate = true;
-      }
-
-      const commandersStr = deckDetails.commanders.join(" // ");
-      if (deck.commander !== commandersStr) {
-        update.commander = commandersStr;
-        shouldUpdate = true;
-      }
-
-      if (deck.featured !== deckDetails.featured) {
-        update.featured = deckDetails.featured;
-        shouldUpdate = true;
-      }
-
-      if (deck.price !== deckDetails.price) {
-        update.price = deckDetails.price;
-        shouldUpdate = true;
-      }
-
-      if (deck.saltSum !== deckDetails.saltSum) {
-        update.saltSum = deckDetails.saltSum;
-        shouldUpdate = true;
-      }
-
-      if (deck.size !== deckDetails.size) {
-        update.size = deckDetails.size;
-        shouldUpdate = true;
-      }
-
-      if (deck.viewCount !== deckDetails.viewCount) {
-        update.viewCount = deckDetails.viewCount;
-        shouldUpdate = true;
-      }
-
-      if (deck.format !== deckDetails.format) {
-        update.format = deckDetails.format;
-        shouldUpdate = true;
-      }
-
-      if (deck.deckCreatedAt !== deckDetails.createdAt) {
-        update.deckCreatedAt = deckDetails.createdAt;
-        shouldUpdate = true;
-      }
-
-      if (deck.deckUpdatedAt !== deckDetails.updatedAt) {
-        update.deckUpdatedAt = deckDetails.updatedAt;
-        shouldUpdate = true;
-      }
-
-      if (!isEqual(deck.colourIdentity, deckDetails.colourIdentity)) {
-        update.colourIdentity = deckDetails.colourIdentity;
-        shouldUpdate = true;
-      }
-
-      if (shouldUpdate) {
-        await DeckService.update(deck.id, update);
-      }
+      await DeckService.update(deck.id, update);
     }
   }
 
@@ -260,7 +219,7 @@ export function DeckEditModal({ deck }: OwnProps) {
           />
         </div>
 
-        <Flex gap="3" mt="4" justify="between">
+        <Flex gap="3" mt="4" mb="2" justify="between">
           <Flex gap="3">
             <Dialog.Close
               disabled={autofilling || syncing}
@@ -289,6 +248,12 @@ export function DeckEditModal({ deck }: OwnProps) {
             </Dialog.Close>
           </Flex>
         </Flex>
+
+        <Text size="1" color="gray">
+          <i>
+            Last synced: {deck?.updatedAt?.split(/T|\./).slice(0, 2).join(" ")}
+          </i>
+        </Text>
       </Dialog.Content>
     </Dialog.Root>
   );

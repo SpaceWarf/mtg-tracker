@@ -1,4 +1,4 @@
-import {} from "../state/ArchidektRedux";
+import {} from "../state/ArchidektReduxData";
 import { CacheKey } from "../state/CacheKey";
 import { DeckDetails } from "../state/DeckDetails";
 import { getCacheKey, getItemFromCache, setCacheKey } from "../utils/Cache";
@@ -20,6 +20,7 @@ export class ArchidektService {
       const scraper = new ArchidektDeckScraper(id);
       await scraper.scrape();
       const deckDetails = scraper.getDeckDetails(id);
+      console.log(deckDetails);
 
       cache.set(deckDetails.id, {
         value: deckDetails,

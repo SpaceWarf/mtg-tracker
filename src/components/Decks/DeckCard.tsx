@@ -1,10 +1,11 @@
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
-import { Card, Flex, IconButton, Tabs } from "@radix-ui/themes";
+import { Card, Flex, IconButton, Tabs, Text } from "@radix-ui/themes";
 import { useState } from "react";
 import { usePlayers } from "../../hooks/usePlayers";
 import { ArchidektService } from "../../services/Archidekt";
 import { DbDeck } from "../../state/Deck";
 import { DeckCardView } from "../../state/DeckCardView";
+import { DeckCardListModal } from "./DeckCardListModal";
 import { DeckDetailsTable } from "./DeckDetailsTable";
 import { DeckEditModal } from "./DeckEditModal";
 import { DeckHeader } from "./DeckHeader";
@@ -83,28 +84,42 @@ export function DeckCard({
         </Tabs.List>
       </Tabs.Root>
 
-      {view === DeckCardView.DECK_STATS && (
-        <DeckStatsTable
-          highlightedKey={highlightedKey}
-          highlightedDirection={highlightedDirection}
-          gamesPlayed={gamesPlayed}
-          winCount={winCount}
-          winRate={winRate}
-          builder={getPlayerName(deck.builder ?? "")}
-        />
-      )}
+      <div className="mb-2">
+        {view === DeckCardView.DECK_STATS && (
+          <DeckStatsTable
+            highlightedKey={highlightedKey}
+            highlightedDirection={highlightedDirection}
+            gamesPlayed={gamesPlayed}
+            winCount={winCount}
+            winRate={winRate}
+            builder={getPlayerName(deck.builder ?? "")}
+          />
+        )}
 
-      {view === DeckCardView.DECK_DETAILS && (
-        <DeckDetailsTable
-          format={deck.format ?? ""}
-          price={deck.price ?? ""}
-          saltSum={deck.saltSum ?? ""}
-          size={deck.size ?? ""}
-          viewCount={deck.viewCount ?? ""}
-          deckCreatedAt={deck.deckCreatedAt ?? ""}
-          deckUpdatedAt={deck.deckUpdatedAt ?? ""}
-        />
-      )}
+        {view === DeckCardView.DECK_DETAILS && (
+          <DeckDetailsTable
+            format={deck.format ?? ""}
+            price={deck.price ?? ""}
+            saltSum={deck.saltSum ?? ""}
+            size={deck.size ?? ""}
+            viewCount={deck.viewCount ?? ""}
+            deckCreatedAt={deck.deckCreatedAt ?? ""}
+            deckUpdatedAt={deck.deckUpdatedAt ?? ""}
+          />
+        )}
+      </div>
+
+      <Flex direction="column" gap="2">
+        {deck.externalId && <DeckCardListModal deck={deck} />}
+
+        {deck.updatedAt && (
+          <Text size="1" color="gray">
+            <i>
+              Last synced: {deck.updatedAt?.split(/T|\./).slice(0, 2).join(" ")}
+            </i>
+          </Text>
+        )}
+      </Flex>
     </Card>
   );
 }

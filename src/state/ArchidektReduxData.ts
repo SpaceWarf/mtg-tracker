@@ -37,4 +37,34 @@ export interface ArchidektReduxCard {
   name: string;
   categories: string[];
   colorIdentity: string[];
+  cmc: number;
+  castingCost: (string | string[])[];
+  text: string;
+  types: string[];
+  gameChanger: boolean;
+  qty: number;
+  layout: ArchidektReduxCardLayout;
+  front: ArchidektReduxCardSide;
+  back: ArchidektReduxCardSide;
+}
+
+export enum ArchidektReduxCardLayout {
+  NORMAL = "normal",
+  MODAL_DFC = "modal_dfc",
+  SPLIT = "split",
+}
+
+export interface ArchidektReduxCardSide {
+  colors: string[];
+  flavor: string;
+  manaCost: string;
+  name: string;
+  power: string;
+  subTypes: string[];
+  superTypes: string[];
+  text: string;
+  toughness: string;
+  types: string[];
+  loyalty?: number;
+  castingCost: (string | string[])[];
 }

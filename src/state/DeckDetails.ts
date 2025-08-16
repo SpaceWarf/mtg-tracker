@@ -14,4 +14,26 @@ export interface DeckDetails {
   owner: string;
   ownerId: string;
   colourIdentity: string[];
+  cards: DeckCardDetails[];
+  categories: DeckCategoryDetails[];
+}
+
+export interface DeckCardDetails {
+  name: string;
+  category: string;
+  colourIdentity: string;
+  cmc: number;
+  castingCost: string;
+  types: string;
+  text: string;
+  gameChanger: boolean;
+  qty: number;
+}
+
+export interface DeckCategoryDetails {
+  id: number;
+  name: string;
+  isPremier: boolean;
+  includedInDeck: boolean;
+  includedInPrice: boolean;
 }

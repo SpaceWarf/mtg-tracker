@@ -44,6 +44,8 @@ export function DeckCreateModal() {
       deckCreatedAt: deckDetails?.createdAt ?? "",
       deckUpdatedAt: deckDetails?.updatedAt ?? "",
       colourIdentity: deckDetails?.colourIdentity ?? [],
+      cards: deckDetails?.cards ?? [],
+      categories: deckDetails?.categories ?? [],
     };
     await DeckService.create(deck);
     navigate(0);
