@@ -1,4 +1,3 @@
 export enum CacheKey {
-  PLAYERS = "players-cache",
-  DECKS = "decks-cache",
+  DECKS_DETAILS = "decks-details-cache",
 }

@@ -10,14 +10,14 @@ export function DeckCreateModal() {
   const navigate = useNavigate();
   const [name, setName] = useState<string>("");
   const [commander, setCommander] = useState<string>("");
-  const [url, setUrl] = useState<string>("");
+  const [externalId, setExternalId] = useState<string>("");
   const [builder, setBuilder] = useState<string>("");
 
   async function handleCreate() {
     const deck: Deck = {
       name,
       commander,
-      url,
+      externalId,
     };
     await DeckService.create(deck);
     navigate(0);
@@ -27,7 +27,7 @@ export function DeckCreateModal() {
     if (!open) {
       setName("");
       setCommander("");
-      setUrl("");
+      setExternalId("");
     }
   }
 
@@ -75,13 +75,13 @@ export function DeckCreateModal() {
 
         <div className="mb-5">
           <Heading className="mb-1" size="3">
-            Url
+            External ID
           </Heading>
           <TextField.Root
             className="input-field"
-            placeholder="Url..."
-            value={url}
-            onChange={({ target }) => setUrl(target.value)}
+            placeholder="External ID..."
+            value={externalId}
+            onChange={({ target }) => setExternalId(target.value)}
           ></TextField.Root>
         </div>
 

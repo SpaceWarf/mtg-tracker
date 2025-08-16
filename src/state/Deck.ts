@@ -3,7 +3,7 @@ import { DatabaseItem } from "./DatabaseItem";
 export interface Deck {
   name: string;
   commander: string;
-  url?: string;
+  externalId?: string;
   builder?: string;
 }
 

@@ -1,17 +1,9 @@
-import { ExternalLinkIcon } from "@radix-ui/react-icons";
-import {
-  Card,
-  Flex,
-  Heading,
-  IconButton,
-  Strong,
-  Table,
-  Text,
-} from "@radix-ui/themes";
+import { Card, Flex, Heading, Strong, Table, Text } from "@radix-ui/themes";
 import { usePlayers } from "../../hooks/usePlayers";
 import { DbDeck } from "../../state/Deck";
 import { SortHighlightIcon } from "../Icons/SortHighlightIcon";
 import { DeckEditModal } from "./DeckEditModal";
+import { DeckInspectModal } from "./DeckInspectModal";
 
 type OwnProps = {
   deck: DbDeck;
@@ -43,16 +35,17 @@ export function DeckCard({
       <Flex>
         <Flex className="mb-3" direction="column" flexGrow={"1"}>
           <Heading>{deck.name}</Heading>
-          <Heading size="3">({deck.commander})</Heading>
+          <Heading size="3">{deck.commander}</Heading>
         </Flex>
         <Flex gap="3">
-          {deck.url && (
-            <IconButton
-              variant="soft"
-              onClick={() => window.open(deck.url, "_blank")}
-            >
-              <ExternalLinkIcon />
-            </IconButton>
+          {deck.externalId && (
+            <DeckInspectModal
+              deck={deck}
+              gamesPlayed={gamesPlayed}
+              winCount={winCount}
+              winRate={winRate}
+              builder={getPlayerName(deck.builder ?? "")}
+            />
           )}
           {editable && <DeckEditModal deck={deck} />}
         </Flex>
@@ -102,7 +95,7 @@ export function DeckCard({
             </Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.RowHeaderCell>Built By</Table.RowHeaderCell>
+            <Table.RowHeaderCell>Built by</Table.RowHeaderCell>
             <Table.Cell>
               <Flex gap="3" align="center">
                 <Text size="4">

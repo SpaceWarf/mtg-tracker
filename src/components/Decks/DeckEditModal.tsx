@@ -22,7 +22,7 @@ export function DeckEditModal({ deck }: OwnProps) {
   const navigate = useNavigate();
   const [name, setName] = useState<string>(deck.name);
   const [commander, setCommander] = useState<string>(deck.commander);
-  const [url, setUrl] = useState<string>(deck.url ?? "");
+  const [externalId, setExternalId] = useState<string>(deck.externalId ?? "");
   const [builder, setBuilder] = useState<string>(deck.builder ?? "");
 
   async function handleSave() {
@@ -30,7 +30,7 @@ export function DeckEditModal({ deck }: OwnProps) {
       ...cloneDeep(deck),
       name,
       commander,
-      url,
+      externalId,
       builder: builder ?? "",
     };
     await DeckService.update(deck.id, update);
@@ -46,7 +46,7 @@ export function DeckEditModal({ deck }: OwnProps) {
     if (!open) {
       setName(deck.name);
       setCommander(deck.commander);
-      setUrl(deck.url ?? "");
+      setExternalId(deck.externalId ?? "");
     }
   }
 
@@ -93,13 +93,13 @@ export function DeckEditModal({ deck }: OwnProps) {
 
         <div className="mb-5">
           <Heading className="mb-1" size="3">
-            Url
+            External ID
           </Heading>
           <TextField.Root
             className="input-field"
-            placeholder="Url..."
-            value={url}
-            onChange={({ target }) => setUrl(target.value)}
+            placeholder="External ID..."
+            value={externalId}
+            onChange={({ target }) => setExternalId(target.value)}
           ></TextField.Root>
         </div>
 

@@ -11,3 +11,16 @@ export function getCacheKey(key: CacheKey): Map<string, any> {
 export function setCacheKey(key: CacheKey, value: Map<string, any>) {
   localStorage.setItem(`${key}`, JSON.stringify(Object.fromEntries(value)));
 }
+
+export function getItemFromCache<T>(
+  cache: Map<string, any>,
+  id: string
+): T | null {
+  const item = cache.get(id);
+
+  if (!item || new Date(item.expiry) < new Date()) {
+    return null;
+  }
+
+  return item.value as T;
+}
