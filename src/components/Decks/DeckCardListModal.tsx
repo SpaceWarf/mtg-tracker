@@ -23,8 +23,10 @@ import { ScryfallCardObject, ScryfallService } from "../../services/Scryfall";
 import { CardGroupBy, CardGroupByOptions } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { CARD_SORT_FCTS } from "../../state/CardSortFcts";
+import { CategoryCardList } from "../../state/CategoryCardList";
 import { DbDeck } from "../../state/Deck";
 import { DeckCardDetails, DeckCategoryDetails } from "../../state/DeckDetails";
+import { MousePosition } from "../../state/MousePosition";
 import { SelectOption } from "../../state/SelectOption";
 import { SortFctType } from "../../state/SortFctType";
 import { ManaIcon } from "../Icons/ManaIcon";
@@ -35,11 +37,6 @@ type OwnProps = {
   deck: DbDeck;
 };
 
-interface CategoryCardList {
-  category: DeckCategoryDetails;
-  cards: DeckCardDetails[];
-}
-
 export function DeckCardListModal({ deck }: OwnProps) {
   const [open, setOpen] = useState(false);
   const [groupBy, setGroupBy] = useState<SingleValue<SelectOption>>(
@@ -47,7 +44,11 @@ export function DeckCardListModal({ deck }: OwnProps) {
   );
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
   const [search, setSearch] = useState<string>("");
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useState<MousePosition>({
+    x: 0,
+    y: 0,
+    distanceToBottom: 0,
+  });
 
   const sortedCategories = useMemo(() => {
     if (!open) {
@@ -142,7 +143,11 @@ export function DeckCardListModal({ deck }: OwnProps) {
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      const windowHeight = window.innerHeight;
+      const mouseY = e.clientY;
+      const distanceToBottom = windowHeight - mouseY;
+
+      setMousePosition({ x: e.clientX, y: e.clientY, distanceToBottom });
     };
 
     window.addEventListener("mousemove", updateMousePosition);
@@ -161,7 +166,7 @@ export function DeckCardListModal({ deck }: OwnProps) {
       <Dialog.Trigger>
         <Button>
           <ListBulletIcon width="18" height="18" />
-          Open Card List
+          Open Decklist
         </Button>
       </Dialog.Trigger>
 
@@ -256,7 +261,7 @@ export function DeckCardListModal({ deck }: OwnProps) {
 
 type CategoryListProps = {
   category: CategoryCardList;
-  mousePosition: { x: number; y: number };
+  mousePosition: MousePosition;
 };
 
 export function CategoryListItem({
@@ -289,7 +294,7 @@ export function CategoryListItem({
 
 type CardListProps = {
   card: DeckCardDetails;
-  mousePosition: { x: number; y: number };
+  mousePosition: MousePosition;
 };
 
 export function CardListItem({ card, mousePosition }: CardListProps) {
@@ -326,6 +331,7 @@ export function CardListItem({ card, mousePosition }: CardListProps) {
   function handleLeave() {
     setHovering(false);
   }
+
   return (
     <div>
       <Flex
@@ -393,7 +399,10 @@ export function CardListItem({ card, mousePosition }: CardListProps) {
         <div
           className="thumbnail-tooltip"
           style={{
-            top: mousePosition.y + 20,
+            top:
+              mousePosition.distanceToBottom <= 300
+                ? mousePosition.y - 280
+                : mousePosition.y + 20,
             left: mousePosition.x + 20,
             transform: `rotate(${flipped ? "180deg" : "0deg"})`,
           }}
