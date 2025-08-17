@@ -1,8 +1,11 @@
 import {} from "../state/ArchidektReduxData";
 import { CacheKey } from "../state/CacheKey";
+import { DbDeck } from "../state/Deck";
 import { DeckCardDetails, DeckDetails } from "../state/DeckDetails";
 import { getCacheKey, getItemFromCache, setCacheKey } from "../utils/Cache";
+import { getDeckCommandersString } from "../utils/Deck";
 import { ArchidektDeckScraper } from "./ArchidektDeckScraper";
+import { DeckService } from "./Deck";
 
 export class ArchidektService {
   static async getDeckDetailsById(
@@ -27,6 +30,40 @@ export class ArchidektService {
       });
       setCacheKey(CacheKey.DECKS_DETAILS, cache);
       return Promise.resolve(deckDetails);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  static async syncDeckDetails(deck: DbDeck) {
+    if (!deck.externalId) {
+      return Promise.reject(new Error("Deck has no external ID"));
+    }
+
+    try {
+      const deckDetails = await ArchidektService.getDeckDetailsById(
+        deck.externalId,
+        true
+      );
+
+      const update: DbDeck = {
+        ...deck,
+        name: deckDetails.title,
+        commander: getDeckCommandersString(deckDetails.commanders),
+        featured: deckDetails.featured,
+        price: deckDetails.price,
+        saltSum: deckDetails.saltSum,
+        size: deckDetails.size,
+        viewCount: deckDetails.viewCount,
+        format: deckDetails.format,
+        deckCreatedAt: deckDetails.createdAt,
+        deckUpdatedAt: deckDetails.updatedAt,
+        colourIdentity: deckDetails.colourIdentity,
+        cards: deckDetails.cards,
+        categories: deckDetails.categories,
+      };
+
+      await DeckService.update(deck.id, update);
     } catch (error) {
       return Promise.reject(error);
     }

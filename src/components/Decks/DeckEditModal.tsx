@@ -29,7 +29,7 @@ export function DeckEditModal({ deck }: OwnProps) {
   const navigate = useNavigate();
   const { dbPlayers } = usePlayers();
   const [name, setName] = useState<string>(deck.name);
-  const [commander, setCommander] = useState<string>(deck.commander);
+  const [commander, setCommander] = useState<string>(deck.commander ?? "");
   const [externalId, setExternalId] = useState<string>(deck.externalId ?? "");
   const [builder, setBuilder] = useState<string>(deck.builder ?? "");
   const [deckDetails, setDeckDetails] = useState<DeckDetails>();
@@ -68,14 +68,14 @@ export function DeckEditModal({ deck }: OwnProps) {
   function handleOpenChange(open: boolean) {
     if (!open) {
       setName(deck.name);
-      setCommander(deck.commander);
+      setCommander(deck.commander ?? "");
       setBuilder(deck.builder ?? "");
       setExternalId(deck.externalId ?? "");
     }
   }
 
   function canSave(): boolean {
-    return !!name && !!commander && !autofilling && !syncing;
+    return !!name && !autofilling && !syncing;
   }
 
   async function handleAutofill() {
@@ -99,39 +99,12 @@ export function DeckEditModal({ deck }: OwnProps) {
   async function handleSync() {
     setSyncing(true);
     try {
-      const deckDetails = await ArchidektService.getDeckDetailsById(
-        deck.externalId ?? "",
-        true
-      );
-      await syncDeckDetails(deckDetails);
+      await ArchidektService.syncDeckDetails(deck);
       navigate(0);
     } catch (error) {
       console.error(error);
     } finally {
       setSyncing(false);
-    }
-  }
-
-  async function syncDeckDetails(deckDetails: DeckDetails) {
-    if (deck && deckDetails) {
-      const update: DbDeck = {
-        ...deck,
-        name: deckDetails.title,
-        commander: getDeckCommandersString(deckDetails.commanders),
-        featured: deckDetails.featured,
-        price: deckDetails.price,
-        saltSum: deckDetails.saltSum,
-        size: deckDetails.size,
-        viewCount: deckDetails.viewCount,
-        format: deckDetails.format,
-        deckCreatedAt: deckDetails.createdAt,
-        deckUpdatedAt: deckDetails.updatedAt,
-        colourIdentity: deckDetails.colourIdentity,
-        cards: deckDetails.cards,
-        categories: deckDetails.categories,
-      };
-
-      await DeckService.update(deck.id, update);
     }
   }
 

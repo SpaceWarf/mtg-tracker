@@ -61,7 +61,7 @@ export function DeckCreateModal() {
   }
 
   function canSave(): boolean {
-    return !!name && !!commander && !autofilling;
+    return !!name && !autofilling;
   }
 
   async function handleAutofill() {

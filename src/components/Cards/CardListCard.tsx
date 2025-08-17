@@ -1,0 +1,153 @@
+import { SketchLogoIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { Flex, IconButton, Link, Text } from "@radix-ui/themes";
+import { useMemo, useState } from "react";
+import { ScryfallCardObject, ScryfallService } from "../../services/Scryfall";
+import { ArchidektReduxCardLayout } from "../../state/ArchidektReduxData";
+import { DeckCardDetails } from "../../state/DeckDetails";
+import { MousePosition } from "../../state/MousePosition";
+import { ManaIcon } from "../Icons/ManaIcon";
+
+type OwnProps = {
+  card: DeckCardDetails;
+  mousePosition: MousePosition;
+};
+
+export function CardListCard({ card, mousePosition }: OwnProps) {
+  const [cardObject, setCardObject] = useState<ScryfallCardObject>();
+  const [hovering, setHovering] = useState(false);
+  const [flipped, setFlipped] = useState(false);
+
+  const flippableCardLayouts = [
+    ArchidektReduxCardLayout.MODAL_DFC as string,
+    ArchidektReduxCardLayout.TRANSFORM as string,
+    ArchidektReduxCardLayout.REVERSIBLE_CARD as string,
+    ArchidektReduxCardLayout.FLIP as string,
+    ArchidektReduxCardLayout.SPLIT as string,
+  ];
+
+  const transformRotation = useMemo(() => {
+    if (flipped) {
+      if (card.layout === ArchidektReduxCardLayout.FLIP) {
+        return "180deg";
+      }
+
+      if (card.layout === ArchidektReduxCardLayout.SPLIT) {
+        return "-90deg";
+      }
+    }
+    return "0deg";
+  }, [flipped, card.layout]);
+
+  const thumbnail: string = useMemo(() => {
+    if (cardObject?.image_uris) {
+      return cardObject.image_uris.border_crop;
+    }
+
+    if (cardObject?.card_faces?.length) {
+      const reversed =
+        flipped &&
+        [
+          ArchidektReduxCardLayout.MODAL_DFC as string,
+          ArchidektReduxCardLayout.TRANSFORM as string,
+          ArchidektReduxCardLayout.REVERSIBLE_CARD as string,
+        ].includes(card.layout);
+      return cardObject.card_faces[reversed ? 1 : 0].image_uris.border_crop;
+    }
+
+    return "";
+  }, [card, cardObject, flipped]);
+
+  async function handleHover() {
+    setHovering(true);
+
+    if (!cardObject) {
+      try {
+        const cardObject = await ScryfallService.getCardObject(card);
+        setCardObject(cardObject);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
+  function handleLeave() {
+    setHovering(false);
+  }
+
+  return (
+    <div>
+      <Flex
+        className="h-6 border-solid border-t border-gray-600"
+        justify="between"
+        align="center"
+        onMouseEnter={handleHover}
+        onMouseLeave={handleLeave}
+        style={{
+          cursor: cardObject ? "default" : "wait",
+        }}
+      >
+        <Flex gap="1" align="center">
+          <Text size="2">{card.qty}</Text>
+          <Flex className="w-48" gap="1" align="center">
+            {cardObject ? (
+              <Link
+                className="overflow-hidden whitespace-nowrap overflow-ellipsis"
+                size="2"
+                href={cardObject.scryfall_uri}
+                target="_blank"
+              >
+                <Text>{card.name}</Text>
+              </Link>
+            ) : (
+              <Text
+                className="overflow-hidden whitespace-nowrap overflow-ellipsis"
+                size="2"
+              >
+                {card.name}
+              </Text>
+            )}
+            {card.gameChanger && (
+              <div className="mr-1">
+                <SketchLogoIcon width="14" height="14" />
+              </div>
+            )}
+            {flippableCardLayouts.includes(card.layout) && (
+              <IconButton
+                variant="ghost"
+                color="gray"
+                size="1"
+                onClick={() => setFlipped(!flipped)}
+              >
+                <UpdateIcon width="14" height="14" />
+              </IconButton>
+            )}
+          </Flex>
+        </Flex>
+        <Flex align="center" gap="1">
+          {card.castingCost.split(",").map((cost, index) => (
+            <ManaIcon
+              key={`${card.name}-${cost}-${index}`}
+              colour={cost}
+              size="small"
+            />
+          ))}
+        </Flex>
+      </Flex>
+      {hovering && cardObject && (
+        <div
+          className="thumbnail-tooltip"
+          style={{
+            top:
+              mousePosition.distanceToBottom <= 300
+                ? mousePosition.y - 300
+                : mousePosition.y + 20,
+            left: mousePosition.x + 20,
+            transform: `rotate(${transformRotation})`,
+          }}
+        >
+          <img src={thumbnail} />
+        </div>
+      )}
+    </div>
+  );
+}

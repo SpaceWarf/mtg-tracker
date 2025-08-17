@@ -40,14 +40,16 @@ export function DecksViewer() {
   const populateDeckStats = useCallback(() => {
     if (dbDecks && dbGames) {
       const populatedDecks: DeckWithStats[] = [];
-      dbDecks.forEach((deck) => {
-        populatedDecks.push({
-          ...cloneDeep(deck),
-          gamesPlayed: getDeckGamesCount(deck, dbGames),
-          winCount: getDeckWinCount(deck, dbGames),
-          winRate: getDeckWinRate(deck, dbGames),
+      dbDecks
+        .filter((deck) => !deck.gameChangersDeck)
+        .forEach((deck) => {
+          populatedDecks.push({
+            ...cloneDeep(deck),
+            gamesPlayed: getDeckGamesCount(deck, dbGames),
+            winCount: getDeckWinCount(deck, dbGames),
+            winRate: getDeckWinRate(deck, dbGames),
+          });
         });
-      });
       setDecksWithStats(populatedDecks);
     }
   }, [dbDecks, dbGames]);
@@ -56,7 +58,7 @@ export function DecksViewer() {
     const filtered = cloneDeep(decksWithStats).filter((deck) => {
       const nameFilter =
         deck.name.toLowerCase().includes(search.toLowerCase()) ||
-        deck.commander.toLowerCase().includes(search.toLowerCase());
+        deck.commander?.toLowerCase().includes(search.toLowerCase());
       const builderFilter =
         !visiblePlayers.length ||
         visiblePlayers.some((visiblePlayer) =>

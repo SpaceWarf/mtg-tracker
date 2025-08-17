@@ -5,7 +5,7 @@ import { ManaIcon } from "../Icons/ManaIcon";
 
 interface OwnProps {
   title: string;
-  commanders: string;
+  commanders?: string;
   featured: string;
   colourIdentity: string[];
   size?: "large" | "small";
@@ -30,7 +30,7 @@ export function DeckHeader({
         <span>
           <b>{title}</b>
         </span>
-        <span className="text-sm">{commanders}</span>
+        {commanders && <span className="text-sm">{commanders}</span>}
         <Flex className="mt-1" gap="1">
           {!colourIdentity.length && <ManaIcon colour="C" size={size} />}
           {colourIdentity.map((colour) => (

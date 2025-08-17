@@ -1,37 +1,12 @@
-import {
-  ExternalLinkIcon,
-  ListBulletIcon,
-  MagnifyingGlassIcon,
-  SketchLogoIcon,
-  StarFilledIcon,
-  UpdateIcon,
-} from "@radix-ui/react-icons";
-import {
-  Button,
-  Dialog,
-  Flex,
-  Heading,
-  IconButton,
-  Link,
-  Text,
-  TextField,
-} from "@radix-ui/themes";
-import { useEffect, useMemo, useState } from "react";
-import ReactSelect, { SingleValue } from "react-select";
+import { ExternalLinkIcon, ListBulletIcon } from "@radix-ui/react-icons";
+import { Button, Dialog, Flex, IconButton } from "@radix-ui/themes";
+import { useState } from "react";
 import { ArchidektService } from "../../services/Archidekt";
-import { ScryfallCardObject, ScryfallService } from "../../services/Scryfall";
-import { ArchidektReduxCardLayout } from "../../state/ArchidektReduxData";
-import { CardGroupBy, CardGroupByOptions } from "../../state/CardGroupBy";
+import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
-import { CARD_SORT_FCTS } from "../../state/CardSortFcts";
-import { CategoryCardList } from "../../state/CategoryCardList";
 import { DbDeck } from "../../state/Deck";
-import { DeckCardDetails, DeckCategoryDetails } from "../../state/DeckDetails";
-import { MousePosition } from "../../state/MousePosition";
-import { SelectOption } from "../../state/SelectOption";
-import { SortFctType } from "../../state/SortFctType";
-import { ManaIcon } from "../Icons/ManaIcon";
-import { SortFctSelect } from "../Select/SortFctSelect";
+import { CardList } from "../Cards/CardList";
+import { CardListFilters } from "../Cards/CardListFilters";
 import { DeckHeader } from "./DeckHeader";
 
 type OwnProps = {
@@ -40,130 +15,22 @@ type OwnProps = {
 
 export function DeckCardListModal({ deck }: OwnProps) {
   const [open, setOpen] = useState(false);
-  const [groupBy, setGroupBy] = useState<SingleValue<SelectOption>>(
-    CardGroupByOptions[CardGroupBy.CATEGORY]
-  );
+  const [groupBy, setGroupBy] = useState<CardGroupBy>(CardGroupBy.CATEGORY);
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
   const [search, setSearch] = useState<string>("");
-  const [mousePosition, setMousePosition] = useState<MousePosition>({
-    x: 0,
-    y: 0,
-    distanceToBottom: 0,
-  });
 
-  const sortedCategories = useMemo(() => {
-    if (!open) {
-      return [];
-    }
-
-    const premierCategories = (deck.categories ?? []).filter(
-      (category) => category.isPremier && category.includedInDeck
-    );
-    const outOfDeckCategories = (deck.categories ?? []).filter(
-      (category) => !category.includedInDeck
-    );
-    let regularCategories: DeckCategoryDetails[] = [];
-
-    switch (groupBy?.value) {
-      case CardGroupBy.CATEGORY:
-        regularCategories = (deck.categories ?? []).filter(
-          (category) => !category.isPremier && category.includedInDeck
-        );
-        break;
-      case CardGroupBy.TYPE:
-        regularCategories = [
-          ...new Set(deck.cards?.map((card) => card.types.split(",")).flat()),
-        ].map((type, index) => ({
-          id: index,
-          name: type,
-          isPremier: false,
-          includedInDeck: true,
-          includedInPrice: true,
-        }));
-        break;
-    }
-
-    return [
-      ...premierCategories.sort((a, b) => a.name.localeCompare(b.name)),
-      ...regularCategories.sort((a, b) => a.name.localeCompare(b.name)),
-    ]
-      .map((category) => ({
-        category,
-        cards:
-          deck.cards
-            ?.filter((card) => {
-              const isSearched = search
-                ? card.name.toLowerCase().includes(search.toLowerCase())
-                : true;
-              switch (groupBy?.value) {
-                case CardGroupBy.CATEGORY:
-                  return card.category === category.name && isSearched;
-                case CardGroupBy.TYPE:
-                  if (category.isPremier) {
-                    return card.category === category.name && isSearched;
-                  } else {
-                    return (
-                      card.types.split(",")[0] === category.name &&
-                      isSearched &&
-                      [...premierCategories, ...outOfDeckCategories].every(
-                        (category) => category.name !== card.category
-                      )
-                    );
-                  }
-                default:
-                  return false;
-              }
-            })
-            .sort(
-              (a, b) =>
-                CARD_SORT_FCTS[sortBy].sortFct(a, b) ||
-                a.name.localeCompare(b.name)
-            ) ?? [],
-      }))
-      .filter((category) => category.cards.length > 0);
-  }, [deck, open, sortBy, groupBy, search]);
-
-  const categoryColumns = useMemo(() => {
-    if (!open) {
-      return [];
-    }
-
-    return sortedCategories.reduce(
-      (acc, category, index) => {
-        acc[index % 4].push(category);
-        return acc;
-      },
-      [
-        [] as CategoryCardList[],
-        [] as CategoryCardList[],
-        [] as CategoryCardList[],
-        [] as CategoryCardList[],
-      ]
-    );
-  }, [sortedCategories, open]);
-
-  useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      const windowHeight = window.innerHeight;
-      const mouseY = e.clientY;
-      const distanceToBottom = windowHeight - mouseY;
-
-      setMousePosition({ x: e.clientX, y: e.clientY, distanceToBottom });
-    };
-
-    window.addEventListener("mousemove", updateMousePosition);
-
-    return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
-    };
-  }, []);
-
-  function handleOpenChange(open: boolean) {
-    setOpen(open);
+  function handleCardListFiltersChange(
+    groupBy: CardGroupBy,
+    sortBy: CardSortFctKey,
+    search: string
+  ) {
+    setGroupBy(groupBy);
+    setSortBy(sortBy);
+    setSearch(search);
   }
 
   return (
-    <Dialog.Root onOpenChange={handleOpenChange}>
+    <Dialog.Root onOpenChange={setOpen}>
       <Dialog.Trigger>
         <Button>
           <ListBulletIcon width="18" height="18" />
@@ -185,49 +52,7 @@ export function DeckCardListModal({ deck }: OwnProps) {
               />
             </Dialog.Title>
 
-            <div className="w-60">
-              <Heading className="mb-1" size="3">
-                Search
-              </Heading>
-              <TextField.Root
-                className="input-field"
-                placeholder="Search…"
-                value={search}
-                onChange={({ target }) => setSearch(target.value)}
-              >
-                <TextField.Slot>
-                  <MagnifyingGlassIcon height="16" width="16" />
-                </TextField.Slot>
-              </TextField.Root>
-            </div>
-
-            <div>
-              <Heading className="mb-1" size="3">
-                Group by
-              </Heading>
-              <ReactSelect
-                className="react-select-container min-w-60"
-                classNamePrefix="react-select"
-                name="groupBySelect"
-                options={Object.values(CardGroupByOptions)}
-                value={groupBy}
-                onChange={(value: SingleValue<SelectOption>) =>
-                  setGroupBy(value)
-                }
-                menuPlacement="top"
-              />
-            </div>
-
-            <div>
-              <Heading className="mb-1" size="3">
-                Sort by
-              </Heading>
-              <SortFctSelect
-                type={SortFctType.CARD}
-                value={sortBy}
-                onChange={(value: string) => setSortBy(value as CardSortFctKey)}
-              />
-            </div>
+            <CardListFilters onChange={handleCardListFiltersChange} />
           </Flex>
           <IconButton
             variant="soft"
@@ -242,192 +67,16 @@ export function DeckCardListModal({ deck }: OwnProps) {
           </IconButton>
         </Flex>
 
-        <Flex gap="5">
-          {categoryColumns.map((column, index) => (
-            <Flex key={index} direction="column" gap="5" flexBasis="25%">
-              {column.map((category) => (
-                <CategoryListItem
-                  key={category.category.id}
-                  category={category}
-                  mousePosition={mousePosition}
-                />
-              ))}
-            </Flex>
-          ))}
-        </Flex>
+        {open && (
+          <CardList
+            groupBy={groupBy}
+            sortBy={sortBy}
+            search={search}
+            cards={deck.cards ?? []}
+            categories={deck.categories ?? []}
+          />
+        )}
       </Dialog.Content>
     </Dialog.Root>
-  );
-}
-
-type CategoryListProps = {
-  category: CategoryCardList;
-  mousePosition: MousePosition;
-};
-
-export function CategoryListItem({
-  category,
-  mousePosition,
-}: CategoryListProps) {
-  return (
-    <div key={category.category.id}>
-      <Flex align="center" justify="between">
-        <Flex gap="1" align="center">
-          {category.category.isPremier && (
-            <StarFilledIcon width="16" height="16" />
-          )}
-          <Heading size="3">{category.category.name}</Heading>
-        </Flex>
-        <Text className="text-gray-400" size="2">
-          Qty: {category.cards.reduce((acc, card) => acc + card.qty, 0)}
-        </Text>
-      </Flex>
-      {category.cards.map((card) => (
-        <CardListItem
-          key={card.name}
-          card={card}
-          mousePosition={mousePosition}
-        />
-      ))}
-    </div>
-  );
-}
-
-type CardListProps = {
-  card: DeckCardDetails;
-  mousePosition: MousePosition;
-};
-
-export function CardListItem({ card, mousePosition }: CardListProps) {
-  const [cardObject, setCardObject] = useState<ScryfallCardObject>();
-  const [hovering, setHovering] = useState(false);
-  const [flipped, setFlipped] = useState(false);
-
-  const flippableCardLayouts = [
-    ArchidektReduxCardLayout.MODAL_DFC as string,
-    ArchidektReduxCardLayout.TRANSFORM as string,
-    ArchidektReduxCardLayout.REVERSIBLE_CARD as string,
-    ArchidektReduxCardLayout.FLIP as string,
-    ArchidektReduxCardLayout.SPLIT as string,
-  ];
-
-  const transformRotation = useMemo(() => {
-    if (flipped) {
-      if (card.layout === ArchidektReduxCardLayout.FLIP) {
-        return "180deg";
-      }
-
-      if (card.layout === ArchidektReduxCardLayout.SPLIT) {
-        return "-90deg";
-      }
-    }
-    return "0deg";
-  }, [flipped, card.layout]);
-
-  const thumbnail: string = useMemo(() => {
-    if (cardObject?.image_uris) {
-      return cardObject.image_uris.border_crop;
-    }
-
-    if (cardObject?.card_faces?.length) {
-      const reversed =
-        flipped &&
-        [
-          ArchidektReduxCardLayout.MODAL_DFC as string,
-          ArchidektReduxCardLayout.TRANSFORM as string,
-          ArchidektReduxCardLayout.REVERSIBLE_CARD as string,
-        ].includes(card.layout);
-      return cardObject.card_faces[reversed ? 1 : 0].image_uris.border_crop;
-    }
-
-    return "";
-  }, [card, cardObject, flipped]);
-
-  async function handleHover() {
-    setHovering(true);
-
-    if (!cardObject) {
-      try {
-        const cardObject = await ScryfallService.getCardObject(card);
-        setCardObject(cardObject);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }
-
-  function handleLeave() {
-    setHovering(false);
-  }
-
-  return (
-    <div>
-      <Flex
-        className="h-6 border-solid border-t border-gray-600"
-        justify="between"
-        align="center"
-        onMouseEnter={handleHover}
-        onMouseLeave={handleLeave}
-        style={{
-          cursor: cardObject ? "default" : "wait",
-        }}
-      >
-        <Flex gap="1" align="center">
-          <Text size="2">{card.qty}</Text>
-          <Flex className="w-48" gap="1" align="center">
-            {cardObject ? (
-              <Link
-                className="overflow-hidden whitespace-nowrap overflow-ellipsis"
-                size="2"
-                href={cardObject.scryfall_uri}
-                target="_blank"
-              >
-                <Text>{card.name}</Text>
-              </Link>
-            ) : (
-              <Text
-                className="overflow-hidden whitespace-nowrap overflow-ellipsis"
-                size="2"
-              >
-                {card.name}
-              </Text>
-            )}
-            {card.gameChanger && <SketchLogoIcon width="14" height="14" />}
-            {flippableCardLayouts.includes(card.layout) && (
-              <IconButton
-                variant="ghost"
-                color="gray"
-                size="1"
-                onClick={() => setFlipped(!flipped)}
-              >
-                <UpdateIcon width="14" height="14" />
-              </IconButton>
-            )}
-          </Flex>
-        </Flex>
-        <Flex align="center" gap="1">
-          {card.castingCost.split(",").map((cost) => (
-            <div>
-              <ManaIcon colour={cost} size="small" />
-            </div>
-          ))}
-        </Flex>
-      </Flex>
-      {hovering && cardObject && (
-        <div
-          className="thumbnail-tooltip"
-          style={{
-            top:
-              mousePosition.distanceToBottom <= 300
-                ? mousePosition.y - 300
-                : mousePosition.y + 20,
-            left: mousePosition.x + 20,
-            transform: `rotate(${transformRotation})`,
-          }}
-        >
-          <img src={thumbnail} />
-        </div>
-      )}
-    </div>
   );
 }

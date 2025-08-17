@@ -3,7 +3,7 @@ import { DeckCardDetails, DeckCategoryDetails } from "./DeckDetails";
 
 export interface Deck {
   name: string;
-  commander: string;
+  commander?: string;
   externalId?: string;
   builder?: string;
   featured?: string;
@@ -17,6 +17,7 @@ export interface Deck {
   colourIdentity?: string[];
   cards?: DeckCardDetails[];
   categories?: DeckCategoryDetails[];
+  gameChangersDeck?: boolean;
 }
 
 export interface DbDeck extends Deck, DatabaseItem {}
