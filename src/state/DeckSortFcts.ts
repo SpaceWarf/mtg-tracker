@@ -20,14 +20,14 @@ export const DECK_SORT_FCTS: SortFct<DeckWithStats> = {
   [DeckSortFctKey.COMMANDER_ASC]: {
     name: "Commander - ASC",
     sortFct: (a: DeckWithStats, b: DeckWithStats) =>
-      a.commander.localeCompare(b.commander),
+      a.commander?.localeCompare(b.commander ?? "") ?? 0,
     highlightedKey: "commander",
     highlightedDirection: "asc",
   },
   [DeckSortFctKey.COMMANDER_DESC]: {
     name: "Commander - DESC",
     sortFct: (a: DeckWithStats, b: DeckWithStats) =>
-      b.commander.localeCompare(a.commander),
+      b.commander?.localeCompare(a.commander ?? "") ?? 0,
     highlightedKey: "commander",
     highlightedDirection: "desc",
   },
