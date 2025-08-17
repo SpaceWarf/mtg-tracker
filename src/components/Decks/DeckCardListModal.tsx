@@ -20,6 +20,7 @@ import { useEffect, useMemo, useState } from "react";
 import ReactSelect, { SingleValue } from "react-select";
 import { ArchidektService } from "../../services/Archidekt";
 import { ScryfallCardObject, ScryfallService } from "../../services/Scryfall";
+import { ArchidektReduxCardLayout } from "../../state/ArchidektReduxData";
 import { CardGroupBy, CardGroupByOptions } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { CARD_SORT_FCTS } from "../../state/CardSortFcts";
@@ -300,8 +301,28 @@ type CardListProps = {
 export function CardListItem({ card, mousePosition }: CardListProps) {
   const [cardObject, setCardObject] = useState<ScryfallCardObject>();
   const [hovering, setHovering] = useState(false);
-  const [reversed, setReversed] = useState(false);
   const [flipped, setFlipped] = useState(false);
+
+  const flippableCardLayouts = [
+    ArchidektReduxCardLayout.MODAL_DFC as string,
+    ArchidektReduxCardLayout.TRANSFORM as string,
+    ArchidektReduxCardLayout.REVERSIBLE_CARD as string,
+    ArchidektReduxCardLayout.FLIP as string,
+    ArchidektReduxCardLayout.SPLIT as string,
+  ];
+
+  const transformRotation = useMemo(() => {
+    if (flipped) {
+      if (card.layout === ArchidektReduxCardLayout.FLIP) {
+        return "180deg";
+      }
+
+      if (card.layout === ArchidektReduxCardLayout.SPLIT) {
+        return "-90deg";
+      }
+    }
+    return "0deg";
+  }, [flipped, card.layout]);
 
   const thumbnail: string = useMemo(() => {
     if (cardObject?.image_uris) {
@@ -309,11 +330,18 @@ export function CardListItem({ card, mousePosition }: CardListProps) {
     }
 
     if (cardObject?.card_faces?.length) {
+      const reversed =
+        flipped &&
+        [
+          ArchidektReduxCardLayout.MODAL_DFC as string,
+          ArchidektReduxCardLayout.TRANSFORM as string,
+          ArchidektReduxCardLayout.REVERSIBLE_CARD as string,
+        ].includes(card.layout);
       return cardObject.card_faces[reversed ? 1 : 0].image_uris.border_crop;
     }
 
     return "";
-  }, [cardObject, reversed]);
+  }, [card, cardObject, flipped]);
 
   async function handleHover() {
     setHovering(true);
@@ -365,17 +393,7 @@ export function CardListItem({ card, mousePosition }: CardListProps) {
               </Text>
             )}
             {card.gameChanger && <SketchLogoIcon width="14" height="14" />}
-            {card.canReverse && (
-              <IconButton
-                variant="ghost"
-                color="gray"
-                size="1"
-                onClick={() => setReversed(!reversed)}
-              >
-                <UpdateIcon width="14" height="14" />
-              </IconButton>
-            )}
-            {card.canFlip && (
+            {flippableCardLayouts.includes(card.layout) && (
               <IconButton
                 variant="ghost"
                 color="gray"
@@ -401,10 +419,10 @@ export function CardListItem({ card, mousePosition }: CardListProps) {
           style={{
             top:
               mousePosition.distanceToBottom <= 300
-                ? mousePosition.y - 280
+                ? mousePosition.y - 300
                 : mousePosition.y + 20,
             left: mousePosition.x + 20,
-            transform: `rotate(${flipped ? "180deg" : "0deg"})`,
+            transform: `rotate(${transformRotation})`,
           }}
         >
           <img src={thumbnail} />

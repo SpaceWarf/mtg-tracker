@@ -30,8 +30,7 @@ export interface DeckCardDetails {
   qty: number;
   collectorNumber: string;
   setCode: string;
-  canReverse: boolean;
-  canFlip: boolean;
+  layout: string;
 }
 
 export interface DeckCategoryDetails {

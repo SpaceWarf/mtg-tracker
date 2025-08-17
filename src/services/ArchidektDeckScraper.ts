@@ -145,12 +145,13 @@ export class ArchidektDeckScraper extends HTMLScraper {
       qty: card.qty,
       collectorNumber: card.collectorNumber,
       setCode: card.setCode,
-      canReverse: [
-        ArchidektReduxCardLayout.MODAL_DFC,
-        ArchidektReduxCardLayout.TRANSFORM,
-        ArchidektReduxCardLayout.REVERSIBLE_CARD,
-      ].includes(card.layout),
-      canFlip: [ArchidektReduxCardLayout.FLIP].includes(card.layout),
+      layout: card.layout,
+      // canReverse: [
+      //   ArchidektReduxCardLayout.MODAL_DFC,
+      //   ArchidektReduxCardLayout.TRANSFORM,
+      //   ArchidektReduxCardLayout.REVERSIBLE_CARD,
+      // ].includes(card.layout),
+      // canFlip: [ArchidektReduxCardLayout.FLIP].includes(card.layout),
     }));
   }
 
