@@ -1,6 +1,7 @@
 import {
   ExternalLinkIcon,
   ListBulletIcon,
+  MagnifyingGlassIcon,
   SketchLogoIcon,
   StarFilledIcon,
   UpdateIcon,
@@ -13,6 +14,7 @@ import {
   IconButton,
   Link,
   Text,
+  TextField,
 } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import ReactSelect, { SingleValue } from "react-select";
@@ -44,6 +46,7 @@ export function DeckCardListModal({ deck }: OwnProps) {
     CardGroupByOptions[CardGroupBy.CATEGORY]
   );
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
+  const [search, setSearch] = useState<string>("");
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const sortedCategories = useMemo(() => {
@@ -87,15 +90,19 @@ export function DeckCardListModal({ deck }: OwnProps) {
         cards:
           deck.cards
             ?.filter((card) => {
+              const isSearched = search
+                ? card.name.toLowerCase().includes(search.toLowerCase())
+                : true;
               switch (groupBy?.value) {
                 case CardGroupBy.CATEGORY:
-                  return card.category === category.name;
+                  return card.category === category.name && isSearched;
                 case CardGroupBy.TYPE:
                   if (category.isPremier) {
-                    return card.category === category.name;
+                    return card.category === category.name && isSearched;
                   } else {
                     return (
                       card.types.split(",")[0] === category.name &&
+                      isSearched &&
                       [...premierCategories, ...outOfDeckCategories].every(
                         (category) => category.name !== card.category
                       )
@@ -112,7 +119,7 @@ export function DeckCardListModal({ deck }: OwnProps) {
             ) ?? [],
       }))
       .filter((category) => category.cards.length > 0);
-  }, [deck, open, sortBy, groupBy]);
+  }, [deck, open, sortBy, groupBy, search]);
 
   const categoryColumns = useMemo(() => {
     if (!open) {
@@ -171,6 +178,22 @@ export function DeckCardListModal({ deck }: OwnProps) {
                 colourIdentity={deck.colourIdentity ?? []}
               />
             </Dialog.Title>
+
+            <div className="w-60">
+              <Heading className="mb-1" size="3">
+                Search
+              </Heading>
+              <TextField.Root
+                className="input-field"
+                placeholder="Search…"
+                value={search}
+                onChange={({ target }) => setSearch(target.value)}
+              >
+                <TextField.Slot>
+                  <MagnifyingGlassIcon height="16" width="16" />
+                </TextField.Slot>
+              </TextField.Root>
+            </div>
 
             <div>
               <Heading className="mb-1" size="3">
