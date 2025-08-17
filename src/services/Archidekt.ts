@@ -7,7 +7,7 @@ import { ArchidektDeckScraper } from "./ArchidektDeckScraper";
 export class ArchidektService {
   static async getDeckDetailsById(
     id: string,
-    ignoreCache: boolean = false
+    ignoreCache: boolean = true
   ): Promise<DeckDetails> {
     const cache = getCacheKey(CacheKey.DECKS_DETAILS);
     const cachedDeckDetails = getItemFromCache<DeckDetails>(cache, id);
