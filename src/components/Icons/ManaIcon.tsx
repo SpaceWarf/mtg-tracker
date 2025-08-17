@@ -17,7 +17,7 @@ export function ManaIcon({ colour, size = "large" }: OwnProps) {
       case "Green":
         return "/img/mana/G.svg";
       default:
-        return `/img/mana/${colour}.svg`;
+        return `/img/mana/${colour.replace(/{|}/g, "")}.svg`;
     }
   }
 
@@ -25,7 +25,7 @@ export function ManaIcon({ colour, size = "large" }: OwnProps) {
     return <></>;
   }
 
-  if (colour === "/") {
+  if (colour === "//") {
     return <span>//</span>;
   }
 

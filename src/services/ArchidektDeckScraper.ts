@@ -145,25 +145,34 @@ export class ArchidektDeckScraper extends HTMLScraper {
       qty: card.qty,
       collectorNumber: card.collectorNumber,
       setCode: card.setCode,
+      canReverse: [
+        ArchidektReduxCardLayout.MODAL_DFC,
+        ArchidektReduxCardLayout.TRANSFORM,
+        ArchidektReduxCardLayout.REVERSIBLE_CARD,
+      ].includes(card.layout),
+      canFlip: [ArchidektReduxCardLayout.FLIP].includes(card.layout),
     }));
   }
 
   private getCardCastingCost(card: ArchidektReduxCard): string {
     switch (card.layout) {
       case ArchidektReduxCardLayout.MODAL_DFC:
-        return this.getMDFCLayoutCardCastingCost(card);
+      case ArchidektReduxCardLayout.FLIP:
+      case ArchidektReduxCardLayout.TRANSFORM:
+      case ArchidektReduxCardLayout.REVERSIBLE_CARD:
+      case ArchidektReduxCardLayout.ADVENTURE:
+        return this.getMultiCostLayoutCardCastingCost(card);
       case ArchidektReduxCardLayout.SPLIT:
       case ArchidektReduxCardLayout.NORMAL:
-        return this.getNormalLayoutCardCastingCost(card);
       default:
-        return "";
+        return this.getNormalLayoutCardCastingCost(card);
     }
   }
 
-  private getMDFCLayoutCardCastingCost(card: ArchidektReduxCard): string {
+  private getMultiCostLayoutCardCastingCost(card: ArchidektReduxCard): string {
     const frontCost = this.getFlatCastingCost(card.front.castingCost);
     const backCost = this.getFlatCastingCost(card.back.castingCost);
-    return `${frontCost},/,${backCost}`;
+    return `${frontCost},//,${backCost}`;
   }
 
   private getNormalLayoutCardCastingCost(card: ArchidektReduxCard): string {

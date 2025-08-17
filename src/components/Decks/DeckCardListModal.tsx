@@ -3,6 +3,7 @@ import {
   ListBulletIcon,
   SketchLogoIcon,
   StarFilledIcon,
+  UpdateIcon,
 } from "@radix-ui/react-icons";
 import {
   Button,
@@ -13,9 +14,10 @@ import {
   Link,
   Text,
 } from "@radix-ui/themes";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ReactSelect, { SingleValue } from "react-select";
 import { ArchidektService } from "../../services/Archidekt";
+import { ScryfallCardObject, ScryfallService } from "../../services/Scryfall";
 import { CardGroupBy, CardGroupByOptions } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { CARD_SORT_FCTS } from "../../state/CardSortFcts";
@@ -42,6 +44,7 @@ export function DeckCardListModal({ deck }: OwnProps) {
     CardGroupByOptions[CardGroupBy.CATEGORY]
   );
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const sortedCategories = useMemo(() => {
     if (!open) {
@@ -130,6 +133,18 @@ export function DeckCardListModal({ deck }: OwnProps) {
     );
   }, [sortedCategories, open]);
 
+  useEffect(() => {
+    const updateMousePosition = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener("mousemove", updateMousePosition);
+
+    return () => {
+      window.removeEventListener("mousemove", updateMousePosition);
+    };
+  }, []);
+
   function handleOpenChange(open: boolean) {
     setOpen(open);
   }
@@ -205,6 +220,7 @@ export function DeckCardListModal({ deck }: OwnProps) {
                 <CategoryListItem
                   key={category.category.id}
                   category={category}
+                  mousePosition={mousePosition}
                 />
               ))}
             </Flex>
@@ -217,9 +233,13 @@ export function DeckCardListModal({ deck }: OwnProps) {
 
 type CategoryListProps = {
   category: CategoryCardList;
+  mousePosition: { x: number; y: number };
 };
 
-export function CategoryListItem({ category }: CategoryListProps) {
+export function CategoryListItem({
+  category,
+  mousePosition,
+}: CategoryListProps) {
   return (
     <div key={category.category.id}>
       <Flex align="center" justify="between">
@@ -234,40 +254,130 @@ export function CategoryListItem({ category }: CategoryListProps) {
         </Text>
       </Flex>
       {category.cards.map((card) => (
-        <CardListItem key={card.name} card={card} />
+        <CardListItem
+          key={card.name}
+          card={card}
+          mousePosition={mousePosition}
+        />
       ))}
     </div>
   );
 }
 
-export function CardListItem({ card }: { card: DeckCardDetails }) {
+type CardListProps = {
+  card: DeckCardDetails;
+  mousePosition: { x: number; y: number };
+};
+
+export function CardListItem({ card, mousePosition }: CardListProps) {
+  const [cardObject, setCardObject] = useState<ScryfallCardObject>();
+  const [hovering, setHovering] = useState(false);
+  const [reversed, setReversed] = useState(false);
+  const [flipped, setFlipped] = useState(false);
+
+  const thumbnail: string = useMemo(() => {
+    if (cardObject?.image_uris) {
+      return cardObject.image_uris.border_crop;
+    }
+
+    if (cardObject?.card_faces?.length) {
+      return cardObject.card_faces[reversed ? 1 : 0].image_uris.border_crop;
+    }
+
+    return "";
+  }, [cardObject, reversed]);
+
+  async function handleHover() {
+    setHovering(true);
+
+    if (!cardObject) {
+      try {
+        const cardObject = await ScryfallService.getCardObject(card);
+        setCardObject(cardObject);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
+  function handleLeave() {
+    setHovering(false);
+  }
   return (
-    <Flex
-      className="h-6 border-solid border-t border-gray-600"
-      justify="between"
-      align="center"
-    >
-      <Flex gap="1" align="center">
-        <Text size="2">{card.qty}</Text>
-        <Flex className="w-40" gap="1" align="center">
-          <Link
-            className="overflow-hidden whitespace-nowrap overflow-ellipsis"
-            size="2"
-            href={ArchidektService.getScryfallCardUrl(card)}
-            target="_blank"
-          >
-            <Text>{card.name}</Text>
-          </Link>
-          {card.gameChanger && <SketchLogoIcon width="14" height="14" />}
+    <div>
+      <Flex
+        className="h-6 border-solid border-t border-gray-600"
+        justify="between"
+        align="center"
+        onMouseEnter={handleHover}
+        onMouseLeave={handleLeave}
+        style={{
+          cursor: cardObject ? "default" : "wait",
+        }}
+      >
+        <Flex gap="1" align="center">
+          <Text size="2">{card.qty}</Text>
+          <Flex className="w-48" gap="1" align="center">
+            {cardObject ? (
+              <Link
+                className="overflow-hidden whitespace-nowrap overflow-ellipsis"
+                size="2"
+                href={cardObject.scryfall_uri}
+                target="_blank"
+              >
+                <Text>{card.name}</Text>
+              </Link>
+            ) : (
+              <Text
+                className="overflow-hidden whitespace-nowrap overflow-ellipsis"
+                size="2"
+              >
+                {card.name}
+              </Text>
+            )}
+            {card.gameChanger && <SketchLogoIcon width="14" height="14" />}
+            {card.canReverse && (
+              <IconButton
+                variant="ghost"
+                color="gray"
+                size="1"
+                onClick={() => setReversed(!reversed)}
+              >
+                <UpdateIcon width="14" height="14" />
+              </IconButton>
+            )}
+            {card.canFlip && (
+              <IconButton
+                variant="ghost"
+                color="gray"
+                size="1"
+                onClick={() => setFlipped(!flipped)}
+              >
+                <UpdateIcon width="14" height="14" />
+              </IconButton>
+            )}
+          </Flex>
+        </Flex>
+        <Flex align="center" gap="1">
+          {card.castingCost.split(",").map((cost) => (
+            <div>
+              <ManaIcon colour={cost} size="small" />
+            </div>
+          ))}
         </Flex>
       </Flex>
-      <Flex align="center" gap="1">
-        {card.castingCost.split(",").map((cost) => (
-          <div>
-            <ManaIcon colour={cost} size="small" />
-          </div>
-        ))}
-      </Flex>
-    </Flex>
+      {hovering && cardObject && (
+        <div
+          className="thumbnail-tooltip"
+          style={{
+            top: mousePosition.y + 20,
+            left: mousePosition.x + 20,
+            transform: `rotate(${flipped ? "180deg" : "0deg"})`,
+          }}
+        >
+          <img src={thumbnail} />
+        </div>
+      )}
+    </div>
   );
 }
