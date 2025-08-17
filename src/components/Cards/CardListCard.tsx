@@ -4,18 +4,32 @@ import { useMemo, useState } from "react";
 import { ScryfallCardObject, ScryfallService } from "../../services/Scryfall";
 import { ArchidektReduxCardLayout } from "../../state/ArchidektReduxData";
 import { DeckCardDetails } from "../../state/DeckDetails";
+import { GameChangerType } from "../../state/GameChangerType";
 import { MousePosition } from "../../state/MousePosition";
 import { ManaIcon } from "../Icons/ManaIcon";
 
 type OwnProps = {
   card: DeckCardDetails;
   mousePosition: MousePosition;
+  gameChangers?: DeckCardDetails[];
 };
 
-export function CardListCard({ card, mousePosition }: OwnProps) {
+export function CardListCard({ card, mousePosition, gameChangers }: OwnProps) {
   const [cardObject, setCardObject] = useState<ScryfallCardObject>();
   const [hovering, setHovering] = useState(false);
   const [flipped, setFlipped] = useState(false);
+  const gameChangerType = useMemo(() => {
+    const isInHouse = gameChangers?.some((gc) => gc.name === card.name);
+    if (card.gameChanger) {
+      return GameChangerType.WOTC;
+    }
+
+    if (isInHouse) {
+      return GameChangerType.IN_HOUSE;
+    }
+
+    return GameChangerType.NONE;
+  }, [card, gameChangers]);
 
   const flippableCardLayouts = [
     ArchidektReduxCardLayout.MODAL_DFC as string,
@@ -106,10 +120,19 @@ export function CardListCard({ card, mousePosition }: OwnProps) {
                 {card.name}
               </Text>
             )}
-            {card.gameChanger && (
-              <div className="mr-1">
-                <SketchLogoIcon width="14" height="14" />
-              </div>
+            {gameChangerType !== GameChangerType.NONE && (
+              <>
+                {gameChangerType === GameChangerType.WOTC && (
+                  <div className="mr-1">
+                    <SketchLogoIcon width="14" height="14" />
+                  </div>
+                )}
+                {gameChangerType === GameChangerType.IN_HOUSE && (
+                  <div className="mr-1">
+                    <SketchLogoIcon color="orange" width="14" height="14" />
+                  </div>
+                )}
+              </>
             )}
             {flippableCardLayouts.includes(card.layout) && (
               <IconButton

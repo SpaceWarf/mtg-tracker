@@ -1,15 +1,21 @@
 import { StarFilledIcon } from "@radix-ui/react-icons";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 import { CategoryCardList } from "../../state/CategoryCardList";
+import { DeckCardDetails } from "../../state/DeckDetails";
 import { MousePosition } from "../../state/MousePosition";
 import { CardListCard } from "./CardListCard";
 
 type OwnProps = {
   category: CategoryCardList;
   mousePosition: MousePosition;
+  gameChangers?: DeckCardDetails[];
 };
 
-export function CardListCategory({ category, mousePosition }: OwnProps) {
+export function CardListCategory({
+  category,
+  mousePosition,
+  gameChangers,
+}: OwnProps) {
   return (
     <div key={category.category.id}>
       <Flex align="center" justify="between">
@@ -28,6 +34,7 @@ export function CardListCategory({ category, mousePosition }: OwnProps) {
           key={card.name}
           card={card}
           mousePosition={mousePosition}
+          gameChangers={gameChangers}
         />
       ))}
     </div>

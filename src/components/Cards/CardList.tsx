@@ -1,5 +1,6 @@
 import { Flex } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
+import { useDecks } from "../../hooks/useDecks";
 import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { CARD_SORT_FCTS } from "../../state/CardSortFcts";
@@ -25,11 +26,16 @@ export function CardList({
   categories,
   columnCount = 4,
 }: OwnProps) {
+  const { dbDecks } = useDecks();
   const [mousePosition, setMousePosition] = useState<MousePosition>({
     x: 0,
     y: 0,
     distanceToBottom: 0,
   });
+
+  const gameChangers = useMemo(() => {
+    return dbDecks?.find((deck) => deck.gameChangersDeck)?.cards;
+  }, [dbDecks]);
 
   const sortedCategories = useMemo(() => {
     const premierCategories = (categories ?? []).filter(
@@ -141,6 +147,7 @@ export function CardList({
                 key={category.category.id}
                 category={category}
                 mousePosition={mousePosition}
+                gameChangers={gameChangers}
               />
             ))}
           </Flex>
