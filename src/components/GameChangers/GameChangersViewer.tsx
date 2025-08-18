@@ -1,5 +1,9 @@
-import { ExternalLinkIcon, UpdateIcon } from "@radix-ui/react-icons";
-import { Button, Flex, IconButton, Spinner } from "@radix-ui/themes";
+import {
+  ExternalLinkIcon,
+  SketchLogoIcon,
+  UpdateIcon,
+} from "@radix-ui/react-icons";
+import { Button, Flex, IconButton, Spinner, Text } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
@@ -57,7 +61,19 @@ export function GameChangersViewer() {
   return (
     <div className="p-5 w-full" style={{ maxWidth: "1750px" }}>
       <Flex align="center" justify="between">
-        <CardListFilters onChange={handleCardListFiltersChange} />
+        <Flex align="center" gap="5">
+          <CardListFilters onChange={handleCardListFiltersChange} />
+          <Flex direction="column">
+            <Flex align="center" gap="1">
+              <SketchLogoIcon width="14" height="14" />
+              <Text>WOTC Game Changers</Text>
+            </Flex>
+            <Flex align="center" gap="1">
+              <SketchLogoIcon color="orange" width="14" height="14" />
+              <Text>In-House Game Changers</Text>
+            </Flex>
+          </Flex>
+        </Flex>
         <Flex gap="2">
           {auth.user && (
             <Button
