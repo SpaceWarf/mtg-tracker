@@ -85,7 +85,7 @@ export function DeckCreateModal() {
   return (
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
-        <Button className="h-10 mt-6">
+        <Button className="h-10">
           <PlusIcon width="18" height="18" />
           Create new deck
         </Button>

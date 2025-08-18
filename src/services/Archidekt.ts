@@ -37,7 +37,8 @@ export class ArchidektService {
 
   static async syncDeckDetails(deck: DbDeck) {
     if (!deck.externalId) {
-      return Promise.reject(new Error("Deck has no external ID"));
+      console.log("Sync Skipped: Deck has no external ID", deck.name);
+      return;
     }
 
     try {

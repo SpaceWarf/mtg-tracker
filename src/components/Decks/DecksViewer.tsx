@@ -27,6 +27,7 @@ import { PlayerSelect } from "../Select/PlayerSelect";
 import { SortFctSelect } from "../Select/SortFctSelect";
 import { DeckCreateModal } from "./DeckCreateModal";
 import { DecksCardView } from "./DecksCardView";
+import { DeckSyncModal } from "./DeckSyncModal";
 
 export function DecksViewer() {
   const auth = useAuth();
@@ -173,7 +174,12 @@ export function DecksViewer() {
             />
           </div>
         </Flex>
-        <div>{auth.user && <DeckCreateModal />}</div>
+        {auth.user && (
+          <Flex className="mt-6" align="center" gap="3">
+            <DeckSyncModal />
+            <DeckCreateModal />
+          </Flex>
+        )}
       </Flex>
       {filteredDecks.length ? (
         <DecksCardView
