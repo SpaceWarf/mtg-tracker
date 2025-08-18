@@ -11,15 +11,18 @@ import { Bracket } from "../../state/Bracket";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckSortFctKey } from "../../state/DeckSortFctKey";
 import { DECK_SORT_FCTS } from "../../state/DeckSortFcts";
+import { IdentityLabel } from "../../state/IdentityLabel";
 import { SortFctType } from "../../state/SortFctType";
 import {
   getDeckBracket,
   getDeckGameChanger,
   getDeckGamesCount,
+  getDeckIdentityLabel,
   getDeckWinCount,
   getDeckWinRate,
 } from "../../utils/Deck";
 import { BracketSelect } from "../Select/BracketSelect";
+import { IdentitySelect } from "../Select/IdentitySelect";
 import { PlayerSelect } from "../Select/PlayerSelect";
 import { SortFctSelect } from "../Select/SortFctSelect";
 import { DeckCreateModal } from "./DeckCreateModal";
@@ -37,6 +40,7 @@ export function DecksViewer() {
   );
   const [visiblePlayers, setVisiblePlayers] = useState<string[]>([]);
   const [bracket, setBracket] = useState<Bracket>();
+  const [identity, setIdentity] = useState<IdentityLabel>();
   const [decksWithStats, setDecksWithStats] = useState<DeckWithStats[]>([]);
   const [filteredDecks, setFilteredDecks] = useState<DeckWithStats[]>([]);
   const gameChangers = useMemo(() => {
@@ -72,12 +76,14 @@ export function DecksViewer() {
           deck.builder?.includes(visiblePlayer)
         );
       const bracketFilter = !bracket || getDeckBracket(deck) === bracket;
-      return nameFilter && builderFilter && bracketFilter;
+      const identityFilter =
+        !identity || getDeckIdentityLabel(deck) === identity;
+      return nameFilter && builderFilter && bracketFilter && identityFilter;
     });
     const sortFct = DECK_SORT_FCTS[sortFctKey].sortFct;
     const sorted = filtered.sort(sortFct);
     setFilteredDecks(sorted);
-  }, [decksWithStats, sortFctKey, search, visiblePlayers, bracket]);
+  }, [decksWithStats, sortFctKey, search, visiblePlayers, bracket, identity]);
 
   useEffect(() => {
     if (!loadingDecks && !loadingGames) {
@@ -156,6 +162,15 @@ export function DecksViewer() {
               Bracket
             </Heading>
             <BracketSelect value={bracket as Bracket} onChange={setBracket} />
+          </div>
+          <div>
+            <Heading className="mb-1" size="3">
+              Identity
+            </Heading>
+            <IdentitySelect
+              value={identity as IdentityLabel}
+              onChange={setIdentity}
+            />
           </div>
         </Flex>
         <div>{auth.user && <DeckCreateModal />}</div>

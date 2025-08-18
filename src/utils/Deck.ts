@@ -65,5 +65,5 @@ export function getDeckIdentityLabel(deck: DbDeck): IdentityLabel {
 export function getDeckDescriptorString(deck: DeckWithStats): string {
   const bracket = getDeckBracket(deck);
   const identityLabel = getDeckIdentityLabel(deck);
-  return `${bracket} ${identityLabel} ${deck.format} Deck`;
+  return `${bracket} ${identityLabel.split(" ")[0]} ${deck.format} Deck`;
 }
