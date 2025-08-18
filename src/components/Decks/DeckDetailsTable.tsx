@@ -10,7 +10,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
     <Table.Root variant="surface" size="1" layout="fixed">
       <Table.Body>
         <Table.Row>
-          <Table.RowHeaderCell>Format</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">Format</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
               <Strong>{deck.format}</Strong>
@@ -18,7 +18,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell>Game changers</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">Game changers</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
               <Strong style={{ whiteSpace: "pre-line" }}>
@@ -28,7 +28,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell>Estimated price (USD)</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">Est. Price</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
               <Strong>{deck.price}</Strong>
@@ -36,7 +36,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell>Salt sum</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">Salt sum</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
               <Strong>{deck.saltSum}</Strong>
@@ -44,7 +44,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell>Size</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">Size</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
               <Strong>{deck.size}</Strong>
@@ -52,7 +52,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell>View count</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">View count</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
               <Strong>{deck.viewCount}</Strong>
@@ -60,7 +60,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell>Created at</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">Created at</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
               <Strong>{deck.deckCreatedAt?.split("T")[0]}</Strong>
@@ -68,7 +68,9 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell>Last updated at</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">
+            Last updated at
+          </Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
               <Strong>{deck.deckUpdatedAt?.split("T")[0]}</Strong>

@@ -7,17 +7,19 @@ import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
 import { usePlayers } from "../../hooks/usePlayers";
+import { Bracket } from "../../state/Bracket";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckSortFctKey } from "../../state/DeckSortFctKey";
-import { DECK_SORT_FCTS, getDeckSortFctName } from "../../state/DeckSortFcts";
-import { SelectOption } from "../../state/SelectOption";
+import { DECK_SORT_FCTS } from "../../state/DeckSortFcts";
 import { SortFctType } from "../../state/SortFctType";
 import {
+  getDeckBracket,
   getDeckGameChanger,
   getDeckGamesCount,
   getDeckWinCount,
   getDeckWinRate,
 } from "../../utils/Deck";
+import { BracketSelect } from "../Select/BracketSelect";
 import { PlayerSelect } from "../Select/PlayerSelect";
 import { SortFctSelect } from "../Select/SortFctSelect";
 import { DeckCreateModal } from "./DeckCreateModal";
@@ -30,11 +32,11 @@ export function DecksViewer() {
   const { dbGames, loadingGames } = useGames();
   const { dbPlayers, loadingPlayers } = usePlayers();
   const [search, setSearch] = useState<string>("");
-  const [sortFctKey, setSortFctKey] = useState<SelectOption>({
-    value: DeckSortFctKey.NAME_ASC,
-    label: getDeckSortFctName(DeckSortFctKey.NAME_ASC),
-  });
+  const [sortFctKey, setSortFctKey] = useState<DeckSortFctKey>(
+    DeckSortFctKey.NAME_ASC
+  );
   const [visiblePlayers, setVisiblePlayers] = useState<string[]>([]);
+  const [bracket, setBracket] = useState<Bracket>();
   const [decksWithStats, setDecksWithStats] = useState<DeckWithStats[]>([]);
   const [filteredDecks, setFilteredDecks] = useState<DeckWithStats[]>([]);
   const gameChangers = useMemo(() => {
@@ -69,12 +71,13 @@ export function DecksViewer() {
         visiblePlayers.some((visiblePlayer) =>
           deck.builder?.includes(visiblePlayer)
         );
-      return nameFilter && builderFilter;
+      const bracketFilter = !bracket || getDeckBracket(deck) === bracket;
+      return nameFilter && builderFilter && bracketFilter;
     });
-    const sortFct = DECK_SORT_FCTS[sortFctKey.value].sortFct;
+    const sortFct = DECK_SORT_FCTS[sortFctKey].sortFct;
     const sorted = filtered.sort(sortFct);
     setFilteredDecks(sorted);
-  }, [decksWithStats, sortFctKey, search, visiblePlayers]);
+  }, [decksWithStats, sortFctKey, search, visiblePlayers, bracket]);
 
   useEffect(() => {
     if (!loadingDecks && !loadingGames) {
@@ -88,10 +91,7 @@ export function DecksViewer() {
       urlSortKey &&
       Object.values<string>(DeckSortFctKey).includes(urlSortKey)
     ) {
-      setSortFctKey({
-        value: urlSortKey as DeckSortFctKey,
-        label: getDeckSortFctName(urlSortKey as DeckSortFctKey),
-      });
+      setSortFctKey(urlSortKey as DeckSortFctKey);
     }
   }, [searchParams]);
 
@@ -137,7 +137,7 @@ export function DecksViewer() {
             </Heading>
             <SortFctSelect
               type={SortFctType.DECK}
-              value={sortFctKey.value}
+              value={sortFctKey}
               onChange={handleSort}
             />
           </div>
@@ -151,16 +151,20 @@ export function DecksViewer() {
               isMulti
             />
           </div>
+          <div>
+            <Heading className="mb-1" size="3">
+              Bracket
+            </Heading>
+            <BracketSelect value={bracket as Bracket} onChange={setBracket} />
+          </div>
         </Flex>
         <div>{auth.user && <DeckCreateModal />}</div>
       </Flex>
       {filteredDecks.length ? (
         <DecksCardView
           decks={filteredDecks}
-          highlightedKey={DECK_SORT_FCTS[sortFctKey.value].highlightedKey}
-          highlightedDirection={
-            DECK_SORT_FCTS[sortFctKey.value].highlightedDirection
-          }
+          highlightedKey={DECK_SORT_FCTS[sortFctKey].highlightedKey}
+          highlightedDirection={DECK_SORT_FCTS[sortFctKey].highlightedDirection}
         />
       ) : (
         <div>No results for applied filters.</div>

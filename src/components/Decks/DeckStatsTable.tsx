@@ -24,7 +24,7 @@ export function DeckStatsTable({
     <Table.Root variant="surface" size="1" layout="fixed">
       <Table.Body>
         <Table.Row>
-          <Table.RowHeaderCell>Games played</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">Games played</Table.RowHeaderCell>
           <Table.Cell>
             <Flex gap="3" align="center">
               <Text size="4">
@@ -38,7 +38,7 @@ export function DeckStatsTable({
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell>Games won</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">Games won</Table.RowHeaderCell>
           <Table.Cell>
             <Flex gap="3" align="center">
               <Text size="4">
@@ -52,7 +52,7 @@ export function DeckStatsTable({
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell>Win rate</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">Win rate</Table.RowHeaderCell>
           <Table.Cell>
             <Flex gap="3" align="center">
               <Text size="4">
@@ -66,7 +66,7 @@ export function DeckStatsTable({
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell>Built by</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">Built by</Table.RowHeaderCell>
           <Table.Cell>
             <Flex gap="3" align="center">
               <Text size="4">
