@@ -2,6 +2,7 @@ import { ExternalLinkIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { Button, Flex, IconButton, Spinner } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { ArchidektService } from "../../services/Archidekt";
 import { CardGroupBy } from "../../state/CardGroupBy";
@@ -12,6 +13,7 @@ import { CardListFilters } from "../Cards/CardListFilters";
 
 export function GameChangersViewer() {
   const navigate = useNavigate();
+  const auth = useAuth();
   const { dbDecks } = useDecks();
   const [groupBy, setGroupBy] = useState<CardGroupBy>(CardGroupBy.CATEGORY);
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
@@ -57,16 +59,18 @@ export function GameChangersViewer() {
       <Flex align="center" justify="between">
         <CardListFilters onChange={handleCardListFiltersChange} />
         <Flex gap="2">
-          <Button
-            variant="soft"
-            color="gray"
-            onClick={handleSync}
-            disabled={!deck || syncing}
-            loading={syncing}
-          >
-            <UpdateIcon width="18" height="18" />
-            Sync
-          </Button>
+          {auth.user && (
+            <Button
+              variant="soft"
+              color="gray"
+              onClick={handleSync}
+              disabled={!deck || syncing}
+              loading={syncing}
+            >
+              <UpdateIcon width="18" height="18" />
+              Sync
+            </Button>
+          )}
           <IconButton
             variant="soft"
             disabled={!deck}
