@@ -40,7 +40,7 @@ export function DeckCardListModal({ deck }: OwnProps) {
 
       <Dialog.Description></Dialog.Description>
 
-      <Dialog.Content maxWidth="1500px">
+      <Dialog.Content className="max-w-full">
         <Flex className="mb-5" justify="between">
           <Flex gap="5">
             <Dialog.Title>
@@ -69,6 +69,7 @@ export function DeckCardListModal({ deck }: OwnProps) {
             search={search}
             cards={deck.cards ?? []}
             categories={deck.categories ?? []}
+            columnCount={5}
           />
         )}
       </Dialog.Content>
