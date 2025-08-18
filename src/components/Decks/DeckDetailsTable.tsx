@@ -10,14 +10,6 @@ export function DeckDetailsTable({ deck }: OwnProps) {
     <Table.Root variant="surface" size="1" layout="fixed">
       <Table.Body>
         <Table.Row>
-          <Table.RowHeaderCell width="125px">Format</Table.RowHeaderCell>
-          <Table.Cell>
-            <Text size="4">
-              <Strong>{deck.format}</Strong>
-            </Text>
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
           <Table.RowHeaderCell width="125px">Game changers</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
