@@ -1,9 +1,11 @@
+import { uuidv7 } from "uuidv7";
 import {} from "../state/ArchidektReduxData";
 import { CacheKey } from "../state/CacheKey";
 import { DbDeck } from "../state/Deck";
-import { DeckCardDetails, DeckDetails } from "../state/DeckDetails";
+import { DeckDetails } from "../state/DeckDetails";
+import { DeckVersion } from "../state/DeckVersion";
 import { getCacheKey, getItemFromCache, setCacheKey } from "../utils/Cache";
-import { getDeckCommandersString } from "../utils/Deck";
+import { getCardDiff, getDeckCommandersString } from "../utils/Deck";
 import { ArchidektDeckScraper } from "./ArchidektDeckScraper";
 import { DeckService } from "./Deck";
 
@@ -42,10 +44,10 @@ export class ArchidektService {
     }
 
     try {
-      const deckDetails = await ArchidektService.getDeckDetailsById(
-        deck.externalId,
-        true
-      );
+      const deckDetails: DeckDetails =
+        await ArchidektService.getDeckDetailsById(deck.externalId, true);
+      const newVersion = ArchidektService.createDeckVersion(deck, deckDetails);
+      console.log(newVersion);
 
       const update: DbDeck = {
         ...deck,
@@ -62,6 +64,8 @@ export class ArchidektService {
         colourIdentity: deckDetails.colourIdentity,
         cards: deckDetails.cards,
         categories: deckDetails.categories,
+        versions: newVersion ? [...deck.versions, newVersion] : deck.versions,
+        latestVersionId: newVersion?.id ?? deck.latestVersionId,
       };
 
       await DeckService.update(deck.id, update);
@@ -70,16 +74,28 @@ export class ArchidektService {
     }
   }
 
+  static createDeckVersion(
+    deck: DbDeck,
+    syncedDetails: DeckDetails
+  ): DeckVersion | null {
+    const cardDiff = getCardDiff(deck.cards ?? [], syncedDetails.cards);
+
+    if (cardDiff.added.length === 0 && cardDiff.removed.length === 0) {
+      return null;
+    }
+
+    return {
+      id: uuidv7(),
+      createdAt: new Date().toISOString(),
+      cardDiff,
+    };
+  }
+
   static getDeckUrl(id: string): string {
     return `https://archidekt.com/decks/${id}`;
   }
 
   static getPlayerProfileUrl(id: string): string {
     return `https://archidekt.com/search/decks?orderBy=-updatedAt&ownerUsername=${id}&page=1`;
-  }
-
-  static getScryfallCardUrl(card: DeckCardDetails): string {
-    const name = card.name.replace(" ", "-").toLowerCase();
-    return `https://scryfall.com/card/${card.setCode}/${card.collectorNumber}/${name}`;
   }
 }

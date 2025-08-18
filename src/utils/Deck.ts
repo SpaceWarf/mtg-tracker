@@ -1,4 +1,5 @@
 import { Bracket } from "../state/Bracket";
+import { CardDiff } from "../state/CardDiff";
 import { DbDeck, DeckWithStats } from "../state/Deck";
 import { DeckCardDetails } from "../state/DeckDetails";
 import { DbGame } from "../state/Game";
@@ -66,4 +67,17 @@ export function getDeckDescriptorString(deck: DeckWithStats): string {
   const bracket = getDeckBracket(deck);
   const identityLabel = getDeckIdentityLabel(deck);
   return `${bracket} ${identityLabel.split(" ")[0]} ${deck.format} Deck`;
+}
+
+export function getCardDiff(
+  oldCards: DeckCardDetails[],
+  newCards: DeckCardDetails[]
+): CardDiff {
+  const added = newCards.filter(
+    (c) => !oldCards.some((o) => o.name === c.name)
+  );
+  const removed = oldCards.filter(
+    (c) => !newCards.some((n) => n.name === c.name)
+  );
+  return { added, removed };
 }

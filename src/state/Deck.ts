@@ -1,5 +1,6 @@
 import { DatabaseItem } from "./DatabaseItem";
 import { DeckCardDetails, DeckCategoryDetails } from "./DeckDetails";
+import { DeckVersion } from "./DeckVersion";
 
 export interface Deck {
   name: string;
@@ -18,6 +19,8 @@ export interface Deck {
   cards?: DeckCardDetails[];
   categories?: DeckCategoryDetails[];
   gameChangersDeck?: boolean;
+  versions: DeckVersion[];
+  latestVersionId: string;
 }
 
 export interface DbDeck extends Deck, DatabaseItem {}

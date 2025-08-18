@@ -46,6 +46,8 @@ export function DeckCreateModal() {
       colourIdentity: deckDetails?.colourIdentity ?? [],
       cards: deckDetails?.cards ?? [],
       categories: deckDetails?.categories ?? [],
+      versions: [],
+      latestVersionId: "",
     };
     await DeckService.create(deck);
     navigate(0);
