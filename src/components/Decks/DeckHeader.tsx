@@ -1,42 +1,44 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Avatar, Flex } from "@radix-ui/themes";
+import { Avatar, Flex, Text } from "@radix-ui/themes";
+import { DeckWithStats } from "../../state/Deck";
+import { getDeckDescriptorString } from "../../utils/Deck";
 import { ManaIcon } from "../Icons/ManaIcon";
 
 interface OwnProps {
-  title: string;
-  commanders?: string;
-  featured: string;
-  colourIdentity: string[];
+  deck: DeckWithStats;
   size?: "large" | "small";
 }
 
-export function DeckHeader({
-  title,
-  commanders,
-  featured,
-  colourIdentity,
-  size = "large",
-}: OwnProps) {
+export function DeckHeader({ deck, size = "large" }: OwnProps) {
   return (
     <Flex gap="2" align="center">
       <Avatar
-        src={featured}
+        src={deck.featured}
         fallback={<FontAwesomeIcon icon={faUser} />}
         radius="full"
         size={size === "large" ? "6" : "5"}
       />
       <Flex direction="column">
-        <span>
-          <b>{title}</b>
+        <span style={{ lineHeight: "1" }}>
+          <b>{deck.name}</b>
         </span>
-        {commanders && <span className="text-sm">{commanders}</span>}
-        <Flex className="mt-1" gap="1">
-          {!colourIdentity.length && <ManaIcon colour="C" size={size} />}
-          {colourIdentity.map((colour) => (
-            <ManaIcon key={colour} colour={colour} size={size} />
-          ))}
-        </Flex>
+        {deck.commander && <span className="text-sm">{deck.commander}</span>}
+        {deck.externalId && (
+          <>
+            <Text size="1" color="gray">
+              {getDeckDescriptorString(deck)}
+            </Text>
+            <Flex className="mt-1" gap="1">
+              {!deck.colourIdentity?.length && (
+                <ManaIcon colour="C" size={size} />
+              )}
+              {deck.colourIdentity?.map((colour) => (
+                <ManaIcon key={colour} colour={colour} size={size} />
+              ))}
+            </Flex>
+          </>
+        )}
       </Flex>
     </Flex>
   );

@@ -25,9 +25,6 @@ export function DecksCardView({
             editable={!!auth.user}
             highlightedKey={highlightedKey}
             highlightedDirection={highlightedDirection}
-            gamesPlayed={deck.gamesPlayed}
-            winCount={deck.winCount}
-            winRate={deck.winRate}
           />
         </div>
       ))}

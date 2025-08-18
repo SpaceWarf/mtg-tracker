@@ -1,5 +1,8 @@
-import { DbDeck } from "../state/Deck";
+import { Bracket } from "../state/Bracket";
+import { DbDeck, DeckWithStats } from "../state/Deck";
+import { DeckCardDetails } from "../state/DeckDetails";
 import { DbGame } from "../state/Game";
+import { IDENTITY_LABEL_MAP, IdentityLabel } from "../state/IdentityLabel";
 import { getAllGamesForDeck } from "./Game";
 
 export function getDeckGamesCount(deck: DbDeck, games: DbGame[]): number {
@@ -18,4 +21,49 @@ export function getDeckWinRate(deck: DbDeck, games: DbGame[]): number {
 
 export function getDeckCommandersString(commanders: string[]): string {
   return commanders.join(" // ");
+}
+
+export function getDeckGameChanger(
+  deck: DbDeck,
+  gameChangers: DeckCardDetails[]
+): string[] {
+  const visibleCategories = deck.categories?.filter((c) => c.includedInDeck);
+  const visibleCards =
+    deck.cards?.filter((c) =>
+      visibleCategories?.some((cat) => cat.name === c.category)
+    ) ?? [];
+  return gameChangers
+    .filter((gc) => visibleCards.some((c) => c.name === gc.name))
+    .map((gc) => gc.name);
+}
+
+export function getDeckBracket(deck: DeckWithStats): Bracket {
+  if (deck.gameChangers.length === 0) {
+    return Bracket.MID_POWER;
+  }
+
+  if (deck.gameChangers.length <= 3) {
+    return Bracket.HIGH_POWER;
+  }
+
+  return Bracket.ILLEGAL;
+}
+
+export function getDeckIdentityLabel(deck: DbDeck): IdentityLabel {
+  if (!deck.colourIdentity?.length) {
+    return IdentityLabel.COLORLESS;
+  }
+
+  return Object.keys(IDENTITY_LABEL_MAP).find((identity) => {
+    const identityColours = IDENTITY_LABEL_MAP[identity as IdentityLabel];
+    return (
+      identityColours.sort().join(",") === deck.colourIdentity?.sort().join(",")
+    );
+  }) as IdentityLabel;
+}
+
+export function getDeckDescriptorString(deck: DeckWithStats): string {
+  const bracket = getDeckBracket(deck);
+  const identityLabel = getDeckIdentityLabel(deck);
+  return `${bracket} ${identityLabel} ${deck.format} Deck`;
 }

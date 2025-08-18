@@ -26,4 +26,5 @@ export interface DeckWithStats extends DbDeck {
   gamesPlayed: number;
   winCount: number;
   winRate: number;
+  gameChangers: string[];
 }

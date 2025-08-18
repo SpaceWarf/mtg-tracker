@@ -1,7 +1,7 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Flex, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
@@ -13,6 +13,7 @@ import { DECK_SORT_FCTS, getDeckSortFctName } from "../../state/DeckSortFcts";
 import { SelectOption } from "../../state/SelectOption";
 import { SortFctType } from "../../state/SortFctType";
 import {
+  getDeckGameChanger,
   getDeckGamesCount,
   getDeckWinCount,
   getDeckWinRate,
@@ -36,6 +37,9 @@ export function DecksViewer() {
   const [visiblePlayers, setVisiblePlayers] = useState<string[]>([]);
   const [decksWithStats, setDecksWithStats] = useState<DeckWithStats[]>([]);
   const [filteredDecks, setFilteredDecks] = useState<DeckWithStats[]>([]);
+  const gameChangers = useMemo(() => {
+    return dbDecks?.find((deck) => deck.gameChangersDeck)?.cards ?? [];
+  }, [dbDecks]);
 
   const populateDeckStats = useCallback(() => {
     if (dbDecks && dbGames) {
@@ -48,11 +52,12 @@ export function DecksViewer() {
             gamesPlayed: getDeckGamesCount(deck, dbGames),
             winCount: getDeckWinCount(deck, dbGames),
             winRate: getDeckWinRate(deck, dbGames),
+            gameChangers: getDeckGameChanger(deck, gameChangers),
           });
         });
       setDecksWithStats(populatedDecks);
     }
-  }, [dbDecks, dbGames]);
+  }, [dbDecks, dbGames, gameChangers]);
 
   useEffect(() => {
     const filtered = cloneDeep(decksWithStats).filter((deck) => {

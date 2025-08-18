@@ -1,23 +1,25 @@
 import { Flex, Strong, Table, Text } from "@radix-ui/themes";
+import { usePlayers } from "../../hooks/usePlayers";
+import { DeckWithStats } from "../../state/Deck";
 import { SortHighlightIcon } from "../Icons/SortHighlightIcon";
 
 type OwnProps = {
+  deck: DeckWithStats;
   highlightedKey?: string;
   highlightedDirection?: "asc" | "desc";
-  gamesPlayed: number;
-  winCount: number;
-  winRate: number;
-  builder: string;
 };
 
 export function DeckStatsTable({
+  deck,
   highlightedKey,
   highlightedDirection = "asc",
-  gamesPlayed,
-  winCount,
-  winRate,
-  builder,
 }: OwnProps) {
+  const { dbPlayers } = usePlayers();
+
+  function getPlayerName(id: string): string {
+    return (dbPlayers || []).find((player) => player.id === id)?.name ?? "-";
+  }
+
   return (
     <Table.Root variant="surface" size="1" layout="fixed">
       <Table.Body>
@@ -26,7 +28,7 @@ export function DeckStatsTable({
           <Table.Cell>
             <Flex gap="3" align="center">
               <Text size="4">
-                <Strong>{gamesPlayed}</Strong>
+                <Strong>{deck.gamesPlayed}</Strong>
               </Text>
               <SortHighlightIcon
                 highlighted={highlightedKey === "gamesPlayed"}
@@ -40,7 +42,7 @@ export function DeckStatsTable({
           <Table.Cell>
             <Flex gap="3" align="center">
               <Text size="4">
-                <Strong>{winCount}</Strong>
+                <Strong>{deck.winCount}</Strong>
               </Text>
               <SortHighlightIcon
                 highlighted={highlightedKey === "winCount"}
@@ -54,7 +56,7 @@ export function DeckStatsTable({
           <Table.Cell>
             <Flex gap="3" align="center">
               <Text size="4">
-                <Strong>{`${Math.round(winRate * 100)}%`}</Strong>
+                <Strong>{`${Math.round(deck.winRate * 100)}%`}</Strong>
               </Text>
               <SortHighlightIcon
                 highlighted={highlightedKey === "winRate"}
@@ -68,7 +70,7 @@ export function DeckStatsTable({
           <Table.Cell>
             <Flex gap="3" align="center">
               <Text size="4">
-                <Strong>{builder}</Strong>
+                <Strong>{getPlayerName(deck.builder ?? "")}</Strong>
               </Text>
               <SortHighlightIcon
                 highlighted={highlightedKey === "builder"}

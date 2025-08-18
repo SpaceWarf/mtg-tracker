@@ -1,24 +1,11 @@
 import { Strong, Table, Text } from "@radix-ui/themes";
+import { DeckWithStats } from "../../state/Deck";
 
 type OwnProps = {
-  format: string;
-  price: string;
-  saltSum: string;
-  size: string;
-  viewCount: string;
-  deckCreatedAt: string;
-  deckUpdatedAt: string;
+  deck: DeckWithStats;
 };
 
-export function DeckDetailsTable({
-  format,
-  price,
-  saltSum,
-  size,
-  viewCount,
-  deckCreatedAt,
-  deckUpdatedAt,
-}: OwnProps) {
+export function DeckDetailsTable({ deck }: OwnProps) {
   return (
     <Table.Root variant="surface" size="1" layout="fixed">
       <Table.Body>
@@ -26,15 +13,25 @@ export function DeckDetailsTable({
           <Table.RowHeaderCell>Format</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
-              <Strong>{format}</Strong>
+              <Strong>{deck.format}</Strong>
             </Text>
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell>Estimated Price (USD)</Table.RowHeaderCell>
+          <Table.RowHeaderCell>Game changers</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
-              <Strong>{price}</Strong>
+              <Strong style={{ whiteSpace: "pre-line" }}>
+                {deck.gameChangers.length ? deck.gameChangers.join("\n") : "-"}
+              </Strong>
+            </Text>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.RowHeaderCell>Estimated price (USD)</Table.RowHeaderCell>
+          <Table.Cell>
+            <Text size="4">
+              <Strong>{deck.price}</Strong>
             </Text>
           </Table.Cell>
         </Table.Row>
@@ -42,7 +39,7 @@ export function DeckDetailsTable({
           <Table.RowHeaderCell>Salt sum</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
-              <Strong>{saltSum}</Strong>
+              <Strong>{deck.saltSum}</Strong>
             </Text>
           </Table.Cell>
         </Table.Row>
@@ -50,7 +47,7 @@ export function DeckDetailsTable({
           <Table.RowHeaderCell>Size</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
-              <Strong>{size}</Strong>
+              <Strong>{deck.size}</Strong>
             </Text>
           </Table.Cell>
         </Table.Row>
@@ -58,7 +55,7 @@ export function DeckDetailsTable({
           <Table.RowHeaderCell>View count</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
-              <Strong>{viewCount}</Strong>
+              <Strong>{deck.viewCount}</Strong>
             </Text>
           </Table.Cell>
         </Table.Row>
@@ -66,7 +63,7 @@ export function DeckDetailsTable({
           <Table.RowHeaderCell>Created at</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
-              <Strong>{deckCreatedAt?.split("T")[0]}</Strong>
+              <Strong>{deck.deckCreatedAt?.split("T")[0]}</Strong>
             </Text>
           </Table.Cell>
         </Table.Row>
@@ -74,7 +71,7 @@ export function DeckDetailsTable({
           <Table.RowHeaderCell>Last updated at</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
-              <Strong>{deckUpdatedAt?.split("T")[0]}</Strong>
+              <Strong>{deck.deckUpdatedAt?.split("T")[0]}</Strong>
             </Text>
           </Table.Cell>
         </Table.Row>

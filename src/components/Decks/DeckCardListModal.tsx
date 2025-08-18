@@ -4,13 +4,13 @@ import { useState } from "react";
 import { ArchidektService } from "../../services/Archidekt";
 import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
-import { DbDeck } from "../../state/Deck";
+import { DeckWithStats } from "../../state/Deck";
 import { CardList } from "../Cards/CardList";
 import { CardListFilters } from "../Cards/CardListFilters";
 import { DeckHeader } from "./DeckHeader";
 
 type OwnProps = {
-  deck: DbDeck;
+  deck: DeckWithStats;
 };
 
 export function DeckCardListModal({ deck }: OwnProps) {
@@ -44,12 +44,7 @@ export function DeckCardListModal({ deck }: OwnProps) {
         <Flex className="mb-5" justify="between">
           <Flex gap="5">
             <Dialog.Title>
-              <DeckHeader
-                title={deck.name}
-                commanders={deck.commander}
-                featured={deck.featured ?? ""}
-                colourIdentity={deck.colourIdentity ?? []}
-              />
+              <DeckHeader deck={deck} />
             </Dialog.Title>
 
             <CardListFilters onChange={handleCardListFiltersChange} />

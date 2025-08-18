@@ -1,9 +1,8 @@
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
 import { Card, Flex, IconButton, Tabs, Text } from "@radix-ui/themes";
 import { useState } from "react";
-import { usePlayers } from "../../hooks/usePlayers";
 import { ArchidektService } from "../../services/Archidekt";
-import { DbDeck } from "../../state/Deck";
+import { DeckWithStats } from "../../state/Deck";
 import { DeckCardView } from "../../state/DeckCardView";
 import { DeckCardListModal } from "./DeckCardListModal";
 import { DeckDetailsTable } from "./DeckDetailsTable";
@@ -12,13 +11,10 @@ import { DeckHeader } from "./DeckHeader";
 import { DeckStatsTable } from "./DeckStatsTable";
 
 type OwnProps = {
-  deck: DbDeck;
+  deck: DeckWithStats;
   editable?: boolean;
   highlightedKey: string;
   highlightedDirection: "asc" | "desc";
-  gamesPlayed: number;
-  winCount: number;
-  winRate: number;
 };
 
 export function DeckCard({
@@ -26,27 +22,13 @@ export function DeckCard({
   editable,
   highlightedKey,
   highlightedDirection,
-  gamesPlayed,
-  winCount,
-  winRate,
 }: OwnProps) {
-  const { dbPlayers } = usePlayers();
   const [view, setView] = useState<DeckCardView>(DeckCardView.DECK_STATS);
-
-  function getPlayerName(id: string): string {
-    return (dbPlayers || []).find((player) => player.id === id)?.name ?? "-";
-  }
 
   return (
     <Card size="3">
       <Flex className="mb-3" justify="between">
-        <DeckHeader
-          title={deck.name}
-          commanders={deck.commander}
-          featured={deck.featured ?? ""}
-          colourIdentity={deck.colourIdentity ?? []}
-          size="small"
-        />
+        <DeckHeader deck={deck} size="small" />
         <Flex className="ml-2" gap="3">
           {deck.externalId && (
             <IconButton
@@ -87,26 +69,13 @@ export function DeckCard({
       <div className="mb-2">
         {view === DeckCardView.DECK_STATS && (
           <DeckStatsTable
+            deck={deck}
             highlightedKey={highlightedKey}
             highlightedDirection={highlightedDirection}
-            gamesPlayed={gamesPlayed}
-            winCount={winCount}
-            winRate={winRate}
-            builder={getPlayerName(deck.builder ?? "")}
           />
         )}
 
-        {view === DeckCardView.DECK_DETAILS && (
-          <DeckDetailsTable
-            format={deck.format ?? ""}
-            price={deck.price ?? ""}
-            saltSum={deck.saltSum ?? ""}
-            size={deck.size ?? ""}
-            viewCount={deck.viewCount ?? ""}
-            deckCreatedAt={deck.deckCreatedAt ?? ""}
-            deckUpdatedAt={deck.deckUpdatedAt ?? ""}
-          />
-        )}
+        {view === DeckCardView.DECK_DETAILS && <DeckDetailsTable deck={deck} />}
       </div>
 
       <Flex direction="column" gap="2">
