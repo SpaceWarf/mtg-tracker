@@ -33,9 +33,14 @@ export function DeckHeader({ deck, size = "large" }: OwnProps) {
               {!deck.colourIdentity?.length && (
                 <ManaIcon colour="C" size={size} />
               )}
-              {deck.colourIdentity?.map((colour) => (
-                <ManaIcon key={colour} colour={colour} size={size} />
-              ))}
+              {deck.colourIdentity
+                ?.sort((a, b) => {
+                  const sortOrder = ["White", "Blue", "Black", "Red", "Green"];
+                  return sortOrder.indexOf(a) - sortOrder.indexOf(b);
+                })
+                .map((colour) => (
+                  <ManaIcon key={colour} colour={colour} size={size} />
+                ))}
             </Flex>
           </>
         )}
