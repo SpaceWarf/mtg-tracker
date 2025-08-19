@@ -210,11 +210,11 @@ export function CardList({
   }, [populatedPremierCategories, populatedRegularCategories]);
 
   const adjustedColumnCount = useMemo(() => {
-    return columnCount + (versionId !== "latest" ? 1 : 0);
+    return columnCount - (versionId !== "latest" ? 1 : 0);
   }, [columnCount, versionId]);
 
   const columnWidth = useMemo(() => {
-    return Math.max(100 / adjustedColumnCount, 20);
+    return 100 / adjustedColumnCount;
   }, [adjustedColumnCount]);
 
   const categoryColumns: CategoryCardList[][] = useMemo(() => {
@@ -295,9 +295,8 @@ export function CardList({
             ))}
           </Flex>
         ))}
-        {cardDiffFromLatest && (
+        {versionId !== "latest" && (
           <Flex direction="column" gap="3" flexBasis={`${columnWidth}%`}>
-            {/* <Heading size="5">Changelog from latest</Heading> */}
             {cardDiffFromLatest.added.length > 0 && (
               <CardListCategory
                 category={{
