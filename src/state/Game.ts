@@ -15,6 +15,7 @@ export interface GamePlayer {
   player: string;
   playerObj?: DbPlayer;
   deck: string;
+  deckVersion?: string;
   deckObj?: DbDeck;
   started: boolean;
   t1SolRing: boolean;

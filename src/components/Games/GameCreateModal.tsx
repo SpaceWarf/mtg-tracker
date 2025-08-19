@@ -60,6 +60,7 @@ export function GameCreateModal() {
       setPlayer3(cloneDeep(newGamePlayer));
       setPlayer4(cloneDeep(newGamePlayer));
       setComments("");
+      setCreating(false);
     }
   }
 

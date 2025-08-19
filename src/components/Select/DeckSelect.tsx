@@ -21,7 +21,7 @@ type MultiProps = {
 type SingleProps = {
   value: string;
   isMulti: false;
-  onChange: (value: string) => void;
+  onChange: (value: string, version: string) => void;
 } & SharedProps;
 
 function CustomOption({
@@ -67,7 +67,11 @@ export function DeckSelect({
   }
 
   function handleChangeSingle(value: SingleValue<SelectOption>) {
-    (onChange as (value: string) => void)(value?.value ?? "");
+    const deck = dbDecks?.find((deck) => deck.id === value?.value);
+    (onChange as (value: string, version: string) => void)(
+      value?.value ?? "",
+      deck?.versions?.[deck.versions.length - 1]?.id ?? ""
+    );
   }
 
   return isMulti ? (

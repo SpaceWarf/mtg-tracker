@@ -26,10 +26,11 @@ export function GamePlayerEditSection({
     onChange(update);
   }
 
-  function handleDeckChange(value: string) {
+  function handleDeckChange(value: string, version?: string) {
     const update: GamePlayer = {
       ...cloneDeep(gamePlayer),
       deck: value,
+      deckVersion: version,
     };
     delete update.deckObj;
     onChange(update);

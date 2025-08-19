@@ -28,7 +28,12 @@ export function GamePlayerSection({ player }: OwnProps) {
             {player.t1SolRing && <SolRingIcon />}
             {player.started && <GameStartIcon />}
           </Flex>
-          {player.deckObj && <DeckDescriptor deck={player.deckObj} />}
+          {player.deckObj && (
+            <DeckDescriptor
+              deck={player.deckObj}
+              version={player.deckVersion}
+            />
+          )}
         </Flex>
       </Flex>
     </div>
