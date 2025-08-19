@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArchidektService } from "../../services/Archidekt";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckCardView } from "../../state/DeckCardView";
+import { getDateTimeString } from "../../utils/Date";
 import { DeckCardListModal } from "./DeckCardListModal";
 import { DeckDetailsTable } from "./DeckDetailsTable";
 import { DeckEditModal } from "./DeckEditModal";
@@ -83,9 +84,7 @@ export function DeckCard({
 
         {deck.updatedAt && (
           <Text size="1" color="gray">
-            <i>
-              Last synced: {deck.updatedAt?.split(/T|\./).slice(0, 2).join(" ")}
-            </i>
+            <i>Last synced on {getDateTimeString(deck.updatedAt)}</i>
           </Text>
         )}
       </Flex>

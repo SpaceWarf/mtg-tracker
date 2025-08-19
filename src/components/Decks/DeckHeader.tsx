@@ -20,9 +20,14 @@ export function DeckHeader({ deck, size = "large" }: OwnProps) {
         size={size === "large" ? "6" : "5"}
       />
       <Flex direction="column">
-        <span style={{ lineHeight: "1" }}>
-          <b>{deck.name}</b>
-        </span>
+        <Flex gap="1" align="center">
+          <Text style={{ lineHeight: "1" }}>
+            <b>{deck.name}</b>
+          </Text>
+          <Text size="1" color="gray">
+            v{(deck.versions?.length ?? 0) + 1}
+          </Text>
+        </Flex>
         {deck.commander && <span className="text-sm">{deck.commander}</span>}
         {deck.externalId && (
           <>

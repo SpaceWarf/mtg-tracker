@@ -108,7 +108,7 @@ export function GameChangersViewer() {
           search={search}
           cards={deck.cards ?? []}
           categories={deck.categories ?? []}
-          columnCount={5}
+          versions={deck.versions ?? []}
         />
       ) : (
         <Spinner />

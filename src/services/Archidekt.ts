@@ -47,7 +47,6 @@ export class ArchidektService {
       const deckDetails: DeckDetails =
         await ArchidektService.getDeckDetailsById(deck.externalId, true);
       const newVersion = ArchidektService.createDeckVersion(deck, deckDetails);
-      console.log(newVersion);
 
       const update: DbDeck = {
         ...deck,
@@ -64,7 +63,9 @@ export class ArchidektService {
         colourIdentity: deckDetails.colourIdentity,
         cards: deckDetails.cards,
         categories: deckDetails.categories,
-        versions: newVersion ? [...deck.versions, newVersion] : deck.versions,
+        versions: newVersion
+          ? [...(deck.versions ?? []), newVersion]
+          : deck.versions,
         latestVersionId: newVersion?.id ?? deck.latestVersionId,
       };
 
@@ -78,7 +79,7 @@ export class ArchidektService {
     deck: DbDeck,
     syncedDetails: DeckDetails
   ): DeckVersion | null {
-    const cardDiff = getCardDiff(deck.cards ?? [], syncedDetails.cards);
+    const cardDiff = getCardDiff(deck, syncedDetails);
 
     if (cardDiff.added.length === 0 && cardDiff.removed.length === 0) {
       return null;

@@ -19,7 +19,7 @@ export interface Deck {
   cards?: DeckCardDetails[];
   categories?: DeckCategoryDetails[];
   gameChangersDeck?: boolean;
-  versions: DeckVersion[];
+  versions?: DeckVersion[];
   latestVersionId: string;
 }
 

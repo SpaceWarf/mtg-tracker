@@ -1,4 +1,4 @@
-import { Flex } from "@radix-ui/themes";
+import { Flex, Tabs, Text } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import { useDecks } from "../../hooks/useDecks";
 import { CardGroupBy } from "../../state/CardGroupBy";
@@ -6,7 +6,11 @@ import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { CARD_SORT_FCTS } from "../../state/CardSortFcts";
 import { CategoryCardList } from "../../state/CategoryCardList";
 import { DeckCardDetails, DeckCategoryDetails } from "../../state/DeckDetails";
+import { DeckVersion } from "../../state/DeckVersion";
+import { DiffType } from "../../state/DiffType";
 import { MousePosition } from "../../state/MousePosition";
+import { getLongDateString } from "../../utils/Date";
+import { getAggregatedCardDiff } from "../../utils/Deck";
 import { CardListCategory } from "./CardListCategory";
 
 type OwnProps = {
@@ -15,6 +19,7 @@ type OwnProps = {
   search: string;
   cards: DeckCardDetails[];
   categories: DeckCategoryDetails[];
+  versions: DeckVersion[];
   columnCount?: number;
 };
 
@@ -24,7 +29,8 @@ export function CardList({
   search,
   cards,
   categories,
-  columnCount = 4,
+  versions,
+  columnCount = 5,
 }: OwnProps) {
   const { dbDecks } = useDecks();
   const [mousePosition, setMousePosition] = useState<MousePosition>({
@@ -32,82 +38,188 @@ export function CardList({
     y: 0,
     distanceToBottom: 0,
   });
+  const [versionId, setVersionId] = useState<string>("latest");
+
+  const cardDiffFromLatest = useMemo(() => {
+    return getAggregatedCardDiff(versions, versionId);
+  }, [versionId, versions]);
 
   const gameChangers = useMemo(() => {
     return dbDecks?.find((deck) => deck.gameChangersDeck)?.cards;
   }, [dbDecks]);
 
-  const sortedCategories = useMemo(() => {
-    const premierCategories = (categories ?? []).filter(
-      (category) => category.isPremier && category.includedInDeck
+  const addedCardsWithQuantities = useMemo(() => {
+    return (
+      cardDiffFromLatest?.added.map((diff) => ({
+        ...diff.card,
+        qty: diff.qty,
+      })) ?? []
     );
-    const outOfDeckCategories = (categories ?? []).filter(
-      (category) => !category.includedInDeck
-    );
-    let regularCategories: DeckCategoryDetails[] = [];
+  }, [cardDiffFromLatest]);
 
-    switch (groupBy) {
-      case CardGroupBy.CATEGORY:
-        regularCategories = (categories ?? []).filter(
-          (category) => !category.isPremier && category.includedInDeck
+  const removedCardsWithQuantities = useMemo(() => {
+    return (
+      cardDiffFromLatest?.removed.map((diff) => ({
+        ...diff.card,
+        qty: diff.qty,
+      })) ?? []
+    );
+  }, [cardDiffFromLatest]);
+
+  const cardsWithDiff = useMemo(() => {
+    return [...cards, ...removedCardsWithQuantities]
+      .reduce((acc, card) => {
+        const accMatchIdx = acc.findIndex(
+          (accCard) => accCard.name === card.name
         );
-        break;
-      case CardGroupBy.TYPE:
-        regularCategories = [
-          ...new Set(cards?.map((card) => card.types.split(",")).flat()),
-        ].map((type, index) => ({
-          id: index,
-          name: type,
+        if (accMatchIdx !== -1) {
+          return [
+            ...acc.slice(0, accMatchIdx),
+            {
+              ...acc[accMatchIdx],
+              qty: acc[accMatchIdx].qty + card.qty,
+            },
+            ...acc.slice(accMatchIdx + 1),
+          ];
+        }
+        return [...acc, card];
+      }, [] as DeckCardDetails[])
+      .map((card) => {
+        const match = addedCardsWithQuantities.find(
+          (addedCard) => addedCard.name === card.name
+        );
+        if (match) {
+          return {
+            ...card,
+            qty: card.qty - match.qty,
+          };
+        }
+        return card;
+      })
+      .filter((card) => card.qty > 0);
+  }, [cards, addedCardsWithQuantities, removedCardsWithQuantities]);
+
+  const visibleCategories: DeckCategoryDetails[] = useMemo(() => {
+    const deckCategories = categories.filter(
+      (category) => category.includedInDeck
+    );
+    const categoriesFromDiff =
+      cardDiffFromLatest?.removed.map((diff) => {
+        return {
+          name: diff.card.category,
           isPremier: false,
           includedInDeck: true,
           includedInPrice: true,
-        }));
-        break;
-    }
+        };
+      }) ?? [];
+    return [...deckCategories, ...categoriesFromDiff];
+  }, [categories, cardDiffFromLatest]);
 
-    return [
-      ...premierCategories.sort((a, b) => a.name.localeCompare(b.name)),
-      ...regularCategories.sort((a, b) => a.name.localeCompare(b.name)),
-    ]
-      .map((category) => ({
+  const premierCategories: DeckCategoryDetails[] = useMemo(() => {
+    return visibleCategories
+      .filter((category) => category.isPremier)
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [visibleCategories]);
+
+  const populatedPremierCategories: CategoryCardList[] = useMemo(() => {
+    return premierCategories.map((category) => ({
+      category,
+      cards: cardsWithDiff
+        .filter((card) => {
+          const isSearched = search
+            ? card.name.toLowerCase().includes(search.toLowerCase())
+            : true;
+          return card.category === category.name && isSearched;
+        })
+        .sort(
+          (a, b) =>
+            CARD_SORT_FCTS[sortBy].sortFct(a, b) || a.name.localeCompare(b.name)
+        ),
+    }));
+  }, [cardsWithDiff, premierCategories, search, sortBy]);
+
+  const regularCategories: DeckCategoryDetails[] = useMemo(() => {
+    switch (groupBy) {
+      case CardGroupBy.CATEGORY:
+        return visibleCategories
+          .filter((category) => !category.isPremier)
+          .sort((a, b) => a.name.localeCompare(b.name));
+      case CardGroupBy.TYPE:
+        return [
+          ...new Set(
+            cardsWithDiff?.map((card) => card.types.split(",")).flat()
+          ),
+        ]
+          .map((type, index) => ({
+            id: index,
+            name: type,
+            isPremier: false,
+            includedInDeck: true,
+            includedInPrice: true,
+          }))
+          .sort((a, b) => a.name.localeCompare(b.name));
+    }
+  }, [cardsWithDiff, visibleCategories, groupBy]);
+
+  const populatedRegularCategories: CategoryCardList[] = useMemo(() => {
+    return regularCategories.map((category) => {
+      return {
         category,
-        cards:
-          cards
-            ?.filter((card) => {
-              const isSearched = search
-                ? card.name.toLowerCase().includes(search.toLowerCase())
-                : true;
-              switch (groupBy) {
-                case CardGroupBy.CATEGORY:
-                  return card.category === category.name && isSearched;
-                case CardGroupBy.TYPE:
-                  if (category.isPremier) {
-                    return card.category === category.name && isSearched;
-                  } else {
-                    return (
-                      card.types.split(",")[0] === category.name &&
-                      isSearched &&
-                      [...premierCategories, ...outOfDeckCategories].every(
-                        (category) => category.name !== card.category
-                      )
-                    );
-                  }
-                default:
-                  return false;
-              }
-            })
-            .sort(
-              (a, b) =>
-                CARD_SORT_FCTS[sortBy].sortFct(a, b) ||
-                a.name.localeCompare(b.name)
-            ) ?? [],
-      }))
-      .filter((category) => category.cards.length > 0);
-  }, [categories, cards, groupBy, search, sortBy]);
+        cards: cardsWithDiff
+          .filter((card) => {
+            const isSearched = search
+              ? card.name.toLowerCase().includes(search.toLowerCase())
+              : true;
+
+            switch (groupBy) {
+              case CardGroupBy.CATEGORY:
+                return card.category === category.name && isSearched;
+              case CardGroupBy.TYPE:
+                return (
+                  card.types.split(",")[0] === category.name &&
+                  isSearched &&
+                  !premierCategories.some(
+                    (category) => category.name === card.category
+                  )
+                );
+              default:
+                return false;
+            }
+          })
+          .sort(
+            (a, b) =>
+              CARD_SORT_FCTS[sortBy].sortFct(a, b) ||
+              a.name.localeCompare(b.name)
+          ),
+      };
+    });
+  }, [
+    regularCategories,
+    premierCategories,
+    cardsWithDiff,
+    groupBy,
+    search,
+    sortBy,
+  ]);
+
+  const categoryCardLists: CategoryCardList[] = useMemo(() => {
+    return [
+      ...populatedPremierCategories,
+      ...populatedRegularCategories,
+    ].filter((category) => category.cards.length > 0);
+  }, [populatedPremierCategories, populatedRegularCategories]);
+
+  const adjustedColumnCount = useMemo(() => {
+    return columnCount + (versionId !== "latest" ? 1 : 0);
+  }, [columnCount, versionId]);
+
+  const columnWidth = useMemo(() => {
+    return Math.max(100 / adjustedColumnCount, 20);
+  }, [adjustedColumnCount]);
 
   const categoryColumns: CategoryCardList[][] = useMemo(() => {
-    return sortedCategories.reduce((acc, category, index) => {
-      const colIndex = index % columnCount;
+    return categoryCardLists.reduce((acc, category, index) => {
+      const colIndex = index % adjustedColumnCount;
       if (acc[colIndex]) {
         acc[colIndex].push(category);
       } else {
@@ -115,7 +227,7 @@ export function CardList({
       }
       return acc;
     }, [] as CategoryCardList[][]);
-  }, [sortedCategories, columnCount]);
+  }, [categoryCardLists, adjustedColumnCount]);
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
@@ -134,17 +246,48 @@ export function CardList({
 
   return (
     <div>
+      {versions.length > 0 && (
+        <Tabs.Root
+          value={versionId}
+          mb="3"
+          onValueChange={(value) => {
+            setVersionId(value);
+          }}
+        >
+          <Tabs.List>
+            {versions.map((version, index) => (
+              <Tabs.Trigger key={version.id} value={version.id}>
+                <Flex direction="column">
+                  <Text>Version {index + 1}</Text>
+                  <Text size="1" color="gray" mb="2">
+                    {getLongDateString(version.createdAt, false)}
+                  </Text>
+                </Flex>
+              </Tabs.Trigger>
+            ))}
+            <Tabs.Trigger key="latest" value="latest">
+              <Flex direction="column">
+                <Text>Version {versions.length + 1}</Text>
+                <Text size="1" color="gray" mb="2">
+                  Latest
+                </Text>
+              </Flex>
+            </Tabs.Trigger>
+          </Tabs.List>
+        </Tabs.Root>
+      )}
+
       <Flex gap="5">
         {categoryColumns.map((column, index) => (
           <Flex
             key={index}
             direction="column"
             gap="5"
-            flexBasis={`${100 / columnCount}%`}
+            flexBasis={`${columnWidth}%`}
           >
             {column.map((category) => (
               <CardListCategory
-                key={category.category.id}
+                key={category.category.name}
                 category={category}
                 mousePosition={mousePosition}
                 gameChangers={gameChangers}
@@ -152,6 +295,47 @@ export function CardList({
             ))}
           </Flex>
         ))}
+        {cardDiffFromLatest && (
+          <Flex direction="column" gap="3" flexBasis={`${columnWidth}%`}>
+            {/* <Heading size="5">Changelog from latest</Heading> */}
+            {cardDiffFromLatest.added.length > 0 && (
+              <CardListCategory
+                category={{
+                  category: {
+                    name: "Added",
+                    isPremier: false,
+                    includedInDeck: true,
+                    includedInPrice: true,
+                  },
+                  cards: addedCardsWithQuantities,
+                  description:
+                    "Cards that have been added in the latest version",
+                  diffType: DiffType.ADDED,
+                }}
+                mousePosition={mousePosition}
+                gameChangers={gameChangers}
+              />
+            )}
+            {cardDiffFromLatest.removed.length > 0 && (
+              <CardListCategory
+                category={{
+                  category: {
+                    name: "Removed",
+                    isPremier: false,
+                    includedInDeck: true,
+                    includedInPrice: true,
+                  },
+                  cards: removedCardsWithQuantities,
+                  description:
+                    "Cards that have been removed in the latest version",
+                  diffType: DiffType.REMOVED,
+                }}
+                mousePosition={mousePosition}
+                gameChangers={gameChangers}
+              />
+            )}
+          </Flex>
+        )}
       </Flex>
     </div>
   );

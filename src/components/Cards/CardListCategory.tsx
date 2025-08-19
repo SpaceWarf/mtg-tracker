@@ -17,13 +17,20 @@ export function CardListCategory({
   gameChangers,
 }: OwnProps) {
   return (
-    <div key={category.category.id}>
-      <Flex align="center" justify="between">
-        <Flex gap="1" align="center">
-          {category.category.isPremier && (
-            <StarFilledIcon width="16" height="16" />
+    <div key={category.category.name}>
+      <Flex align="end" justify="between">
+        <Flex direction="column">
+          <Flex gap="1" align="center">
+            {category.category.isPremier && (
+              <StarFilledIcon width="16" height="16" />
+            )}
+            <Heading size="3">{category.category.name}</Heading>
+          </Flex>
+          {category.description && (
+            <Text className="text-gray-400" size="2">
+              {category.description}
+            </Text>
           )}
-          <Heading size="3">{category.category.name}</Heading>
         </Flex>
         <Text className="text-gray-400" size="2">
           Qty: {category.cards.reduce((acc, card) => acc + card.qty, 0)}
@@ -35,6 +42,7 @@ export function CardListCategory({
           card={card}
           mousePosition={mousePosition}
           gameChangers={gameChangers}
+          diffType={category.diffType}
         />
       ))}
     </div>

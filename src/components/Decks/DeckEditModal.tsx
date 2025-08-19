@@ -17,6 +17,7 @@ import { ArchidektService } from "../../services/Archidekt";
 import { DeckService } from "../../services/Deck";
 import { DbDeck } from "../../state/Deck";
 import { DeckDetails } from "../../state/DeckDetails";
+import { getDateTimeString } from "../../utils/Date";
 import { getDeckCommandersString } from "../../utils/Deck";
 import { getPlayerByExternalId } from "../../utils/Player";
 import { PlayerSelect } from "../Select/PlayerSelect";
@@ -223,9 +224,7 @@ export function DeckEditModal({ deck }: OwnProps) {
         </Flex>
 
         <Text size="1" color="gray">
-          <i>
-            Last synced: {deck?.updatedAt?.split(/T|\./).slice(0, 2).join(" ")}
-          </i>
+          <i>Last synced on {getDateTimeString(deck?.updatedAt ?? "")}</i>
         </Text>
       </Dialog.Content>
     </Dialog.Root>

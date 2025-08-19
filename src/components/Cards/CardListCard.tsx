@@ -1,9 +1,15 @@
-import { SketchLogoIcon, UpdateIcon } from "@radix-ui/react-icons";
+import {
+  MinusIcon,
+  PlusIcon,
+  SketchLogoIcon,
+  UpdateIcon,
+} from "@radix-ui/react-icons";
 import { Flex, IconButton, Link, Text } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { ScryfallCardObject, ScryfallService } from "../../services/Scryfall";
 import { ArchidektReduxCardLayout } from "../../state/ArchidektReduxData";
 import { DeckCardDetails } from "../../state/DeckDetails";
+import { DiffType } from "../../state/DiffType";
 import { GameChangerType } from "../../state/GameChangerType";
 import { MousePosition } from "../../state/MousePosition";
 import { ManaIcon } from "../Icons/ManaIcon";
@@ -12,9 +18,15 @@ type OwnProps = {
   card: DeckCardDetails;
   mousePosition: MousePosition;
   gameChangers?: DeckCardDetails[];
+  diffType?: DiffType;
 };
 
-export function CardListCard({ card, mousePosition, gameChangers }: OwnProps) {
+export function CardListCard({
+  card,
+  mousePosition,
+  gameChangers,
+  diffType,
+}: OwnProps) {
   const [cardObject, setCardObject] = useState<ScryfallCardObject>();
   const [hovering, setHovering] = useState(false);
   const [flipped, setFlipped] = useState(false);
@@ -101,6 +113,12 @@ export function CardListCard({ card, mousePosition, gameChangers }: OwnProps) {
         }}
       >
         <Flex gap="1" align="center">
+          {diffType === DiffType.ADDED && (
+            <PlusIcon color="green" width="14" height="14" />
+          )}
+          {diffType === DiffType.REMOVED && (
+            <MinusIcon color="red" width="14" height="14" />
+          )}
           <Text size="2">{card.qty}</Text>
           <Flex className="w-48" gap="1" align="center">
             {cardObject ? (

@@ -34,7 +34,7 @@ export interface DeckCardDetails {
 }
 
 export interface DeckCategoryDetails {
-  id: number;
+  id?: number;
   name: string;
   isPremier: boolean;
   includedInDeck: boolean;

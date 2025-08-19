@@ -69,7 +69,7 @@ export function DeckCardListModal({ deck }: OwnProps) {
             search={search}
             cards={deck.cards ?? []}
             categories={deck.categories ?? []}
-            columnCount={5}
+            versions={deck.versions ?? []}
           />
         )}
       </Dialog.Content>
