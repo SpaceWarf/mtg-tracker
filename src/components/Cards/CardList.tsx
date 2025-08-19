@@ -9,6 +9,7 @@ import { DeckCardDetails, DeckCategoryDetails } from "../../state/DeckDetails";
 import { DeckVersion } from "../../state/DeckVersion";
 import { DiffType } from "../../state/DiffType";
 import { MousePosition } from "../../state/MousePosition";
+import { removeDuplicatesByKey } from "../../utils/Array";
 import { getLongDateString } from "../../utils/Date";
 import { getAggregatedCardDiff } from "../../utils/Deck";
 import { CardListCategory } from "./CardListCategory";
@@ -112,7 +113,10 @@ export function CardList({
           includedInPrice: true,
         };
       }) ?? [];
-    return [...deckCategories, ...categoriesFromDiff];
+    return removeDuplicatesByKey(
+      [...deckCategories, ...categoriesFromDiff],
+      "name"
+    );
   }, [categories, cardDiffFromLatest]);
 
   const premierCategories: DeckCategoryDetails[] = useMemo(() => {
