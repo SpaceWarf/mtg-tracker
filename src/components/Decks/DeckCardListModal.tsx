@@ -45,7 +45,6 @@ export function DeckCardListModal({ deck }: OwnProps) {
       searchParams.delete("version");
     } else {
       searchParams.set("decklist", deck.id);
-      searchParams.set("version", deck.latestVersionId || "latest");
     }
     setSearchParams(searchParams);
   }
