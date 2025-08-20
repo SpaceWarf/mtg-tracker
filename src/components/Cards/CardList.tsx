@@ -102,7 +102,7 @@ export function CardList({
 
   const visibleCategories: DeckCategoryDetails[] = useMemo(() => {
     const deckCategories = categories.filter(
-      (category) => category.includedInDeck
+      (category) => category.includedInDeck && category.name !== "Sideboard"
     );
     const categoriesFromDiff =
       cardDiffFromLatest?.removed.map((diff) => {

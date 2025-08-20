@@ -75,14 +75,18 @@ export function getCardDiff(
   syncedDetails: DeckDetails
 ): CardDiff {
   const deckVisibleCategories =
-    deck.categories?.filter((cat) => cat.includedInDeck) ?? [];
+    deck.categories?.filter(
+      (cat) => cat.includedInDeck && cat.name !== "Sideboard"
+    ) ?? [];
   const deckVisibleCards =
     deck.cards?.filter((card) =>
       deckVisibleCategories.some((cat) => cat.name === card.category)
     ) ?? [];
 
   const syncedVisibleCategories =
-    syncedDetails.categories?.filter((cat) => cat.includedInDeck) ?? [];
+    syncedDetails.categories?.filter(
+      (cat) => cat.includedInDeck && cat.name !== "Sideboard"
+    ) ?? [];
   const syncedVisibleCards =
     syncedDetails.cards?.filter((card) =>
       syncedVisibleCategories.some((cat) => cat.name === card.category)

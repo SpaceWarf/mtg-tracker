@@ -27,6 +27,7 @@ export class ArchidektDeckScraper extends HTMLScraper {
   }
 
   getDeckDetails(id: string): DeckDetails {
+    const categories = this.getCategories();
     return {
       id: id,
       url: this.getUrl(),
@@ -43,8 +44,8 @@ export class ArchidektDeckScraper extends HTMLScraper {
       owner: this.getOwner(),
       ownerId: this.getOwnerId(),
       colourIdentity: this.getColourIdentity(),
-      cards: this.getCards(),
-      categories: this.getCategories(),
+      cards: this.getCards(categories),
+      categories: categories,
     };
   }
 
@@ -132,21 +133,26 @@ export class ArchidektDeckScraper extends HTMLScraper {
     return `${this.deckData?.ownerId ?? ""}`;
   }
 
-  private getCards(): DeckCardDetails[] {
-    return Object.values(this.deckData?.cardMap ?? {}).map((card) => ({
-      name: card.name,
-      category: card.categories[0],
-      colourIdentity: card.colorIdentity.join(","),
-      cmc: card.cmc,
-      castingCost: this.getCardCastingCost(card),
-      types: card.types.join(","),
-      text: card.text,
-      gameChanger: card.gameChanger,
-      qty: card.qty,
-      collectorNumber: card.collectorNumber,
-      setCode: card.setCode,
-      layout: card.layout,
-    }));
+  private getCards(categories: DeckCategoryDetails[]): DeckCardDetails[] {
+    const visibleCategories = categories
+      .filter((cat) => cat.includedInDeck && cat.name !== "Sideboard")
+      .map((cat) => cat.name);
+    return Object.values(this.deckData?.cardMap ?? {})
+      .map((card) => ({
+        name: card.name,
+        category: card.categories[0],
+        colourIdentity: card.colorIdentity.join(","),
+        cmc: card.cmc,
+        castingCost: this.getCardCastingCost(card),
+        types: card.types.join(","),
+        text: card.text,
+        gameChanger: card.gameChanger,
+        qty: card.qty,
+        collectorNumber: card.collectorNumber,
+        setCode: card.setCode,
+        layout: card.layout,
+      }))
+      .filter((card) => visibleCategories.includes(card.category));
   }
 
   private getCardCastingCost(card: ArchidektReduxCard): string {
