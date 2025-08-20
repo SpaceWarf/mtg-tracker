@@ -148,6 +148,7 @@ export function DeckEditModal({ deck }: OwnProps) {
             className="h-10"
             onClick={handleAutofill}
             disabled={!externalId || autofilling || syncing}
+            loading={autofilling}
           >
             <Pencil1Icon width="18" height="18" />
             Autofill Details

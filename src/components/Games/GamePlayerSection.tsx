@@ -1,6 +1,6 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Avatar, Flex } from "@radix-ui/themes";
+import { Avatar, Flex, Text } from "@radix-ui/themes";
 import { GamePlayer } from "../../state/Game";
 import { DeckDescriptor } from "../Decks/DeckDescriptor";
 import { GameStartIcon } from "../Icons/GameStartIcon";
@@ -23,7 +23,7 @@ export function GamePlayerSection({ player }: OwnProps) {
         />
         <Flex direction="column">
           <Flex align="center" gap="2">
-            <p>{player.playerObj?.name ?? ""}</p>
+            <Text>{player.playerObj?.name ?? ""}</Text>
             {player.won && <GameWonIcon />}
             {player.t1SolRing && <SolRingIcon />}
             {player.started && <GameStartIcon />}

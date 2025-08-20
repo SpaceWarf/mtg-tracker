@@ -124,6 +124,7 @@ export function DeckCreateModal() {
             className="h-10"
             onClick={handleAutofill}
             disabled={!externalId || autofilling}
+            loading={autofilling}
           >
             <Pencil1Icon width="18" height="18" />
             Autofill Details
