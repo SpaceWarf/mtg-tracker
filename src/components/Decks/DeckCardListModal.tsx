@@ -1,6 +1,7 @@
 import { ExternalLinkIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import { Button, Dialog, Flex, IconButton } from "@radix-ui/themes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
 import { ArchidektService } from "../../services/Archidekt";
 import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
@@ -14,10 +15,18 @@ type OwnProps = {
 };
 
 export function DeckCardListModal({ deck }: OwnProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [groupBy, setGroupBy] = useState<CardGroupBy>(CardGroupBy.CATEGORY);
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
   const [search, setSearch] = useState<string>("");
+
+  useEffect(() => {
+    const decklist = searchParams.get("decklist");
+    if (decklist === deck.id) {
+      setOpen(true);
+    }
+  }, [deck.id, searchParams]);
 
   function handleCardListFiltersChange(
     groupBy: CardGroupBy,
@@ -29,8 +38,20 @@ export function DeckCardListModal({ deck }: OwnProps) {
     setSearch(search);
   }
 
+  function handleOpenChange(open: boolean) {
+    setOpen(open);
+    if (!open) {
+      searchParams.delete("decklist");
+      searchParams.delete("version");
+    } else {
+      searchParams.set("decklist", deck.id);
+      searchParams.set("version", deck.latestVersionId || "latest");
+    }
+    setSearchParams(searchParams);
+  }
+
   return (
-    <Dialog.Root onOpenChange={setOpen}>
+    <Dialog.Root open={open} onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
         <Button>
           <ListBulletIcon width="18" height="18" />

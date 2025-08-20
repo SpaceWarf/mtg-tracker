@@ -1,5 +1,6 @@
 import { Flex, Tabs, Text } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router";
 import { useDecks } from "../../hooks/useDecks";
 import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
@@ -33,6 +34,7 @@ export function CardList({
   versions,
   columnCount = 5,
 }: OwnProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { dbDecks } = useDecks();
   const [mousePosition, setMousePosition] = useState<MousePosition>({
     x: 0,
@@ -248,6 +250,20 @@ export function CardList({
     };
   }, []);
 
+  useEffect(() => {
+    const versionId = searchParams.get("version");
+    const version = versions.find((version) => version.id === versionId);
+    if (versionId && version) {
+      setVersionId(versionId);
+    }
+  }, [searchParams, versions]);
+
+  function handleVersionChange(value: string) {
+    setVersionId(value);
+    searchParams.set("version", value);
+    setSearchParams(searchParams);
+  }
+
   return (
     <div>
       {versions.length > 0 && (
@@ -260,7 +276,11 @@ export function CardList({
         >
           <Tabs.List>
             {versions.map((version, index) => (
-              <Tabs.Trigger key={version.id} value={version.id}>
+              <Tabs.Trigger
+                key={version.id}
+                value={version.id}
+                onClick={() => handleVersionChange(version.id)}
+              >
                 <Flex direction="column">
                   <Text>Version {index + 1}</Text>
                   <Text size="1" color="gray" mb="2">
@@ -269,7 +289,11 @@ export function CardList({
                 </Flex>
               </Tabs.Trigger>
             ))}
-            <Tabs.Trigger key="latest" value="latest">
+            <Tabs.Trigger
+              key="latest"
+              value="latest"
+              onClick={() => handleVersionChange("latest")}
+            >
               <Flex direction="column">
                 <Text>Version {versions.length + 1}</Text>
                 <Text size="1" color="gray" mb="2">
