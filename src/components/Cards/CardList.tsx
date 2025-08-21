@@ -23,6 +23,7 @@ type OwnProps = {
   showVersionGraph: boolean;
   deck: DbDeck;
   columnCount?: number;
+  forcedCategoryOrder?: string[];
 };
 
 export function CardList({
@@ -32,6 +33,7 @@ export function CardList({
   showVersionGraph,
   deck,
   columnCount = 5,
+  forcedCategoryOrder,
 }: OwnProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const { dbDecks } = useDecks();
@@ -221,11 +223,25 @@ export function CardList({
   ]);
 
   const categoryCardLists: CategoryCardList[] = useMemo(() => {
-    return [
+    const categories = [
       ...populatedPremierCategories,
       ...populatedRegularCategories,
     ].filter((category) => category.cards.length > 0);
-  }, [populatedPremierCategories, populatedRegularCategories]);
+
+    if (forcedCategoryOrder) {
+      return categories.sort((a, b) => {
+        const aIndex = forcedCategoryOrder.indexOf(a.category.name);
+        const bIndex = forcedCategoryOrder.indexOf(b.category.name);
+        return aIndex - bIndex;
+      });
+    }
+
+    return categories;
+  }, [
+    populatedPremierCategories,
+    populatedRegularCategories,
+    forcedCategoryOrder,
+  ]);
 
   const adjustedColumnCount = useMemo(() => {
     return columnCount - (versionId !== "latest" ? 1 : 0);

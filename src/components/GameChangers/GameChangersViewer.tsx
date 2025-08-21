@@ -109,6 +109,16 @@ export function GameChangersViewer() {
           search={search}
           showVersionGraph={showVersionGraph}
           deck={deck}
+          forcedCategoryOrder={[
+            "White",
+            "Blue",
+            "Black",
+            "Red",
+            "Green",
+            "Colorless",
+            "Multicolor",
+            "Commanders",
+          ]}
         />
       ) : (
         <Spinner />
