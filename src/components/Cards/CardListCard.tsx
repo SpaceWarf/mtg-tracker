@@ -6,6 +6,7 @@ import {
 } from "@radix-ui/react-icons";
 import { Flex, IconButton, Link, Text } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { ScryfallCardObject, ScryfallService } from "../../services/Scryfall";
 import { ArchidektReduxCardLayout } from "../../state/ArchidektReduxData";
 import { DeckCardDetails } from "../../state/DeckDetails";
@@ -174,21 +175,24 @@ export function CardListCard({
           ))}
         </Flex>
       </Flex>
-      {hovering && cardObject && (
-        <div
-          className="thumbnail-tooltip"
-          style={{
-            top:
-              mousePosition.distanceToBottom <= 300
-                ? mousePosition.y - 300
-                : mousePosition.y + 20,
-            left: mousePosition.x + 20,
-            transform: `rotate(${transformRotation})`,
-          }}
-        >
-          <img src={thumbnail} />
-        </div>
-      )}
+      {hovering &&
+        cardObject &&
+        createPortal(
+          <div
+            className="thumbnail-tooltip"
+            style={{
+              top:
+                mousePosition.distanceToBottom <= 300
+                  ? mousePosition.y - 300
+                  : mousePosition.y + 20,
+              left: mousePosition.x + 20,
+              transform: `rotate(${transformRotation})`,
+            }}
+          >
+            <img src={thumbnail} />
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
