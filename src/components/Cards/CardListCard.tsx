@@ -185,7 +185,10 @@ export function CardListCard({
                 mousePosition.distanceToBottom <= 300
                   ? mousePosition.y - 300
                   : mousePosition.y + 20,
-              left: mousePosition.x + 20,
+              left:
+                mousePosition.distanceToRight <= 250
+                  ? mousePosition.x - 210
+                  : mousePosition.x + 20,
               transform: `rotate(${transformRotation})`,
             }}
           >

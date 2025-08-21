@@ -39,6 +39,7 @@ export function CardList({
     x: 0,
     y: 0,
     distanceToBottom: 0,
+    distanceToRight: 0,
   });
   const [versionId, setVersionId] = useState<string>("latest");
 
@@ -249,9 +250,14 @@ export function CardList({
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
       const windowHeight = window.innerHeight;
-      const mouseY = e.clientY;
-      const distanceToBottom = windowHeight - mouseY;
-      setMousePosition({ x: e.clientX, y: e.clientY, distanceToBottom });
+      const distanceToBottom = windowHeight - e.clientY;
+      const distanceToRight = window.innerWidth - e.clientX;
+      setMousePosition({
+        x: e.clientX,
+        y: e.clientY,
+        distanceToBottom,
+        distanceToRight,
+      });
     };
 
     window.addEventListener("mousemove", updateMousePosition);
