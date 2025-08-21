@@ -20,6 +20,7 @@ export function DeckCardListModal({ deck }: OwnProps) {
   const [groupBy, setGroupBy] = useState<CardGroupBy>(CardGroupBy.CATEGORY);
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
   const [search, setSearch] = useState<string>("");
+  const [showVersionGraph, setShowVersionGraph] = useState<boolean>(false);
 
   useEffect(() => {
     const decklist = searchParams.get("decklist");
@@ -31,11 +32,13 @@ export function DeckCardListModal({ deck }: OwnProps) {
   function handleCardListFiltersChange(
     groupBy: CardGroupBy,
     sortBy: CardSortFctKey,
-    search: string
+    search: string,
+    showVersionGraph: boolean
   ) {
     setGroupBy(groupBy);
     setSortBy(sortBy);
     setSearch(search);
+    setShowVersionGraph(showVersionGraph);
   }
 
   function handleOpenChange(open: boolean) {
@@ -60,14 +63,20 @@ export function DeckCardListModal({ deck }: OwnProps) {
 
       <Dialog.Description></Dialog.Description>
 
-      <Dialog.Content className="max-w-full">
+      <Dialog.Content
+        className="w-[1850px] max-w-[1850px]"
+        style={{ overflow: "hidden" }}
+      >
         <Flex className="mb-5" justify="between">
           <Flex gap="5">
             <Dialog.Title>
               <DeckHeader deck={deck} />
             </Dialog.Title>
 
-            <CardListFilters onChange={handleCardListFiltersChange} />
+            <CardListFilters
+              hasVersions={(deck.versions?.length ?? 0) > 0}
+              onChange={handleCardListFiltersChange}
+            />
           </Flex>
           <IconButton
             variant="soft"
@@ -87,9 +96,8 @@ export function DeckCardListModal({ deck }: OwnProps) {
             groupBy={groupBy}
             sortBy={sortBy}
             search={search}
-            cards={deck.cards ?? []}
-            categories={deck.categories ?? []}
-            versions={deck.versions ?? []}
+            showVersionGraph={showVersionGraph}
+            deck={deck}
           />
         )}
       </Dialog.Content>

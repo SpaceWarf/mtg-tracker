@@ -6,22 +6,22 @@ import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { CARD_SORT_FCTS } from "../../state/CardSortFcts";
 import { CategoryCardList } from "../../state/CategoryCardList";
+import { DbDeck } from "../../state/Deck";
 import { DeckCardDetails, DeckCategoryDetails } from "../../state/DeckDetails";
-import { DeckVersion } from "../../state/DeckVersion";
-import { DiffType } from "../../state/DiffType";
 import { MousePosition } from "../../state/MousePosition";
 import { removeDuplicatesByKey } from "../../utils/Array";
 import { getLongDateString } from "../../utils/Date";
 import { getAggregatedCardDiff } from "../../utils/Deck";
+import { DeckVersionViewer } from "../Decks/DeckVersionViewer";
+import { CardDiffViewer } from "./CardDiffViewer";
 import { CardListCategory } from "./CardListCategory";
 
 type OwnProps = {
   groupBy: CardGroupBy;
   sortBy: CardSortFctKey;
   search: string;
-  cards: DeckCardDetails[];
-  categories: DeckCategoryDetails[];
-  versions: DeckVersion[];
+  showVersionGraph: boolean;
+  deck: DbDeck;
   columnCount?: number;
 };
 
@@ -29,9 +29,8 @@ export function CardList({
   groupBy,
   sortBy,
   search,
-  cards,
-  categories,
-  versions,
+  showVersionGraph,
+  deck,
   columnCount = 5,
 }: OwnProps) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,6 +41,18 @@ export function CardList({
     distanceToBottom: 0,
   });
   const [versionId, setVersionId] = useState<string>("latest");
+
+  const versions = useMemo(() => {
+    return deck.versions ?? [];
+  }, [deck]);
+
+  const cards = useMemo(() => {
+    return deck.cards ?? [];
+  }, [deck]);
+
+  const categories = useMemo(() => {
+    return deck.categories ?? [];
+  }, [deck]);
 
   const cardDiffFromLatest = useMemo(() => {
     return getAggregatedCardDiff(versions, versionId);
@@ -264,12 +275,37 @@ export function CardList({
     setSearchParams(searchParams);
   }
 
+  function getVersionDate(id: string): string {
+    if (id === "latest") {
+      return getLongDateString(versions[versions.length - 1].createdAt, false);
+    }
+
+    const versionIdx = versions.findIndex((v) => v.id === id);
+
+    if (versionIdx === 0) {
+      return getLongDateString(deck.createdAt, false);
+    }
+
+    return getLongDateString(versions[versionIdx - 1].createdAt, false);
+  }
+
   return (
     <div>
+      {showVersionGraph && (
+        <DeckVersionViewer
+          deck={deck}
+          mousePosition={mousePosition}
+          gameChangers={gameChangers ?? []}
+          selectedVersionId={versionId}
+          onClickVersion={handleVersionChange}
+        />
+      )}
+
       {versions.length > 0 && (
         <Tabs.Root
           value={versionId}
           mb="3"
+          mt={showVersionGraph ? "3" : "0"}
           onValueChange={(value) => {
             setVersionId(value);
           }}
@@ -284,7 +320,7 @@ export function CardList({
                 <Flex direction="column">
                   <Text>Version {index + 1}</Text>
                   <Text size="1" color="gray" mb="2">
-                    {getLongDateString(version.createdAt, false)}
+                    {getVersionDate(version.id)}
                   </Text>
                 </Flex>
               </Tabs.Trigger>
@@ -295,9 +331,14 @@ export function CardList({
               onClick={() => handleVersionChange("latest")}
             >
               <Flex direction="column">
-                <Text>Version {versions.length + 1}</Text>
+                <Text>
+                  Version {versions.length + 1}{" "}
+                  <Text size="1" color="gray" mb="2">
+                    latest
+                  </Text>
+                </Text>
                 <Text size="1" color="gray" mb="2">
-                  Latest
+                  {getVersionDate("latest")}
                 </Text>
               </Flex>
             </Tabs.Trigger>
@@ -324,43 +365,14 @@ export function CardList({
           </Flex>
         ))}
         {versionId !== "latest" && (
-          <Flex direction="column" gap="3" flexBasis={`${columnWidth}%`}>
-            {cardDiffFromLatest.added.length > 0 && (
-              <CardListCategory
-                category={{
-                  category: {
-                    name: "Added",
-                    isPremier: false,
-                    includedInDeck: true,
-                    includedInPrice: true,
-                  },
-                  cards: addedCardsWithQuantities,
-                  description:
-                    "Cards that have been added in the latest version",
-                  diffType: DiffType.ADDED,
-                }}
-                mousePosition={mousePosition}
-                gameChangers={gameChangers}
-              />
-            )}
-            {cardDiffFromLatest.removed.length > 0 && (
-              <CardListCategory
-                category={{
-                  category: {
-                    name: "Removed",
-                    isPremier: false,
-                    includedInDeck: true,
-                    includedInPrice: true,
-                  },
-                  cards: removedCardsWithQuantities,
-                  description:
-                    "Cards that have been removed in the latest version",
-                  diffType: DiffType.REMOVED,
-                }}
-                mousePosition={mousePosition}
-                gameChangers={gameChangers}
-              />
-            )}
+          <Flex flexBasis={`${columnWidth}%`}>
+            <CardDiffViewer
+              added={addedCardsWithQuantities}
+              removed={removedCardsWithQuantities}
+              mousePosition={mousePosition}
+              gameChangers={gameChangers ?? []}
+              withDescription
+            />
           </Flex>
         )}
       </Flex>

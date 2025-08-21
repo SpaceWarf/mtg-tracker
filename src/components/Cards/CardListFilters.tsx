@@ -1,5 +1,11 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { Flex, Heading, TextField } from "@radix-ui/themes";
+import {
+  CheckboxCards,
+  Flex,
+  Heading,
+  Text,
+  TextField,
+} from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import ReactSelect, { SingleValue } from "react-select";
 import { CardGroupBy, CardGroupByOptions } from "../../state/CardGroupBy";
@@ -9,27 +15,31 @@ import { SortFctType } from "../../state/SortFctType";
 import { SortFctSelect } from "../Select/SortFctSelect";
 
 type OwnProps = {
+  hasVersions: boolean;
   onChange: (
     groupBy: CardGroupBy,
     sortBy: CardSortFctKey,
-    search: string
+    search: string,
+    showVersionGraph: boolean
   ) => void;
 };
 
-export function CardListFilters({ onChange }: OwnProps) {
+export function CardListFilters({ hasVersions, onChange }: OwnProps) {
   const [groupBy, setGroupBy] = useState<SingleValue<SelectOption>>(
     CardGroupByOptions[CardGroupBy.CATEGORY]
   );
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
   const [search, setSearch] = useState<string>("");
+  const [showVersionGraph, setShowVersionGraph] = useState<boolean>(false);
 
   useEffect(() => {
     onChange(
       (groupBy?.value as CardGroupBy) ?? CardGroupBy.CATEGORY,
       sortBy,
-      search
+      search,
+      showVersionGraph
     );
-  }, [groupBy, sortBy, search, onChange]);
+  }, [groupBy, sortBy, search, showVersionGraph, onChange]);
 
   return (
     <Flex className="mb-5" gap="5">
@@ -73,6 +83,22 @@ export function CardListFilters({ onChange }: OwnProps) {
           onChange={(value: string) => setSortBy(value as CardSortFctKey)}
         />
       </div>
+
+      {hasVersions && (
+        <div>
+          <CheckboxCards.Root
+            className="mt-5"
+            value={showVersionGraph ? ["1"] : []}
+            onValueChange={() => setShowVersionGraph(!showVersionGraph)}
+          >
+            <CheckboxCards.Item value="1">
+              <Flex direction="column" width="100%">
+                <Text weight="bold">Show Version Graph</Text>
+              </Flex>
+            </CheckboxCards.Item>
+          </CheckboxCards.Root>
+        </div>
+      )}
     </Flex>
   );
 }

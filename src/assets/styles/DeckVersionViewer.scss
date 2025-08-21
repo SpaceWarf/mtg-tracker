@@ -1,0 +1,36 @@
+.deck-version-viewer {
+  .selected {
+    background-color: #222;
+    &::after {
+      box-shadow: 0 0 0 1px gray;
+    }
+  }
+
+  .rt-Card > div {
+    cursor: pointer;
+    &:hover > .rt-Heading {
+      text-decoration: underline;
+    }
+  }
+
+  .arrow-connector {
+    position: relative;
+    width: 35px;
+    min-width: 35px;
+    height: 2px;
+    background-color: white;
+    margin-right: 6px;
+  }
+
+  .arrow-connector::after {
+    content: "";
+    position: absolute;
+    right: -5px;
+    top: -3px;
+    width: 0;
+    height: 0;
+    border-top: 4px solid transparent; /* Top part of the arrow */
+    border-bottom: 4px solid transparent; /* Bottom part of the arrow */
+    border-left: 6px solid white; /* The arrow head */
+  }
+}

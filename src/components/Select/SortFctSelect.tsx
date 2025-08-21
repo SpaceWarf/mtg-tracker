@@ -8,6 +8,7 @@ type OwnProps = {
   type: SortFctType;
   value: string;
   menuPlacement?: "top" | "bottom";
+  disabled?: boolean;
   onChange: (value: string) => void;
 };
 
@@ -15,6 +16,7 @@ export function SortFctSelect({
   type,
   value,
   menuPlacement = "bottom",
+  disabled = false,
   onChange,
 }: OwnProps) {
   const options = useSortFctSelectOptions(type);
@@ -36,6 +38,7 @@ export function SortFctSelect({
       value={optionsValue}
       onChange={handleChange}
       menuPlacement={menuPlacement}
+      isDisabled={disabled}
     />
   );
 }

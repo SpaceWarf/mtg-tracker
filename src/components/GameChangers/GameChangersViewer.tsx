@@ -4,14 +4,13 @@ import {
   UpdateIcon,
 } from "@radix-ui/react-icons";
 import { Button, Flex, IconButton, Spinner, Text } from "@radix-ui/themes";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { ArchidektService } from "../../services/Archidekt";
 import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
-import { DbDeck } from "../../state/Deck";
 import { CardList } from "../Cards/CardList";
 import { CardListFilters } from "../Cards/CardListFilters";
 
@@ -22,24 +21,23 @@ export function GameChangersViewer() {
   const [groupBy, setGroupBy] = useState<CardGroupBy>(CardGroupBy.CATEGORY);
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
   const [search, setSearch] = useState<string>("");
-  const [deck, setDeck] = useState<DbDeck>();
+  const [showVersionGraph, setShowVersionGraph] = useState<boolean>(false);
   const [syncing, setSyncing] = useState<boolean>(false);
 
-  useEffect(() => {
-    const deck = dbDecks?.find((deck) => deck.gameChangersDeck);
-    if (deck) {
-      setDeck(deck);
-    }
+  const deck = useMemo(() => {
+    return dbDecks?.find((deck) => deck.gameChangersDeck);
   }, [dbDecks]);
 
   function handleCardListFiltersChange(
     groupBy: CardGroupBy,
     sortBy: CardSortFctKey,
-    search: string
+    search: string,
+    showVersionGraph: boolean
   ) {
     setGroupBy(groupBy);
     setSortBy(sortBy);
     setSearch(search);
+    setShowVersionGraph(showVersionGraph);
   }
 
   async function handleSync() {
@@ -62,7 +60,10 @@ export function GameChangersViewer() {
     <div className="p-5 w-full" style={{ maxWidth: "1750px" }}>
       <Flex align="center" justify="between">
         <Flex align="center" gap="5">
-          <CardListFilters onChange={handleCardListFiltersChange} />
+          <CardListFilters
+            hasVersions={(deck?.versions?.length ?? 0) > 0}
+            onChange={handleCardListFiltersChange}
+          />
           <Flex direction="column">
             <Flex align="center" gap="1">
               <SketchLogoIcon width="14" height="14" />
@@ -106,9 +107,8 @@ export function GameChangersViewer() {
           groupBy={groupBy}
           sortBy={sortBy}
           search={search}
-          cards={deck.cards ?? []}
-          categories={deck.categories ?? []}
-          versions={deck.versions ?? []}
+          showVersionGraph={showVersionGraph}
+          deck={deck}
         />
       ) : (
         <Spinner />
