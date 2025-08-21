@@ -310,7 +310,7 @@ export function CardList({
             setVersionId(value);
           }}
         >
-          <Tabs.List>
+          <Tabs.List style={{ overflowY: "hidden", overflowX: "scroll" }}>
             {versions.map((version, index) => (
               <Tabs.Trigger
                 key={version.id}
@@ -331,12 +331,7 @@ export function CardList({
               onClick={() => handleVersionChange("latest")}
             >
               <Flex direction="column">
-                <Text>
-                  Version {versions.length + 1}{" "}
-                  <Text size="1" color="gray" mb="2">
-                    latest
-                  </Text>
-                </Text>
+                <Text>Version {versions.length + 1} </Text>
                 <Text size="1" color="gray" mb="2">
                   {getVersionDate("latest")}
                 </Text>

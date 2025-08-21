@@ -1,5 +1,5 @@
 import { Card, Flex, Heading, Text } from "@radix-ui/themes";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import "../../assets/styles/DeckVersionViewer.scss";
 import { CardDiff } from "../../state/CardDiff";
 import { DbDeck } from "../../state/Deck";
@@ -37,6 +37,18 @@ export function DeckVersionViewer({
       versions.findIndex((version) => version.id === selectedVersionId) - 1
     );
   }, [versions, selectedVersionId, latestIndex]);
+
+  useEffect(() => {
+    const el = document.querySelectorAll(".deck-version-viewer .rt-Card")[
+      selectedIndex + 1
+    ];
+    if (el) {
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [selectedIndex]);
 
   function getVersionDiff(index: number): CardDiff {
     return versions[index]?.cardDiff ?? { added: [], removed: [] };
