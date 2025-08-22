@@ -80,7 +80,7 @@ export function DeckVersionViewer({
       </div>
       <div className="arrow-connector mt-6" />
       {versions.map((_, index) => (
-        <>
+        <Flex key={`version-${index}`}>
           <div>
             <Card
               className={`w-[350px] ${
@@ -126,7 +126,7 @@ export function DeckVersionViewer({
             </Card>
           </div>
           {index !== latestIndex && <div className="arrow-connector mt-6" />}
-        </>
+        </Flex>
       ))}
     </Flex>
   );
