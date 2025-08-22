@@ -249,8 +249,12 @@ export function CardList({
   }, [columnCount, versionId]);
 
   const columnWidth = useMemo(() => {
-    return 100 / adjustedColumnCount;
-  }, [adjustedColumnCount]);
+    return 100 / columnCount;
+  }, [columnCount]);
+
+  const marginToRemove = useMemo(() => {
+    return (20 * (columnCount - 1)) / columnCount;
+  }, [columnCount]);
 
   const categoryColumns: CategoryCardList[][] = useMemo(() => {
     return categoryCardLists.reduce((acc, category, index) => {
@@ -364,13 +368,13 @@ export function CardList({
         </Tabs.Root>
       )}
 
-      <Flex gap="5">
+      <Flex gap="20px">
         {categoryColumns.map((column, index) => (
           <Flex
             key={index}
             direction="column"
-            gap="5"
-            flexBasis={`${columnWidth}%`}
+            gap="20px"
+            width={`calc(${columnWidth}% - ${marginToRemove}px)`}
           >
             {column.map((category) => (
               <CardListCategory
@@ -383,7 +387,7 @@ export function CardList({
           </Flex>
         ))}
         {versionId !== "latest" && (
-          <Flex flexBasis={`${columnWidth}%`}>
+          <Flex width={`calc(${columnWidth}% - ${marginToRemove}px)`}>
             <CardDiffViewer
               added={addedCardsWithQuantities}
               removed={removedCardsWithQuantities}

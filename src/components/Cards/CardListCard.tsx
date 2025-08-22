@@ -101,11 +101,24 @@ export function CardListCard({
     setHovering(false);
   }
 
+  function getCastingCostWidth(castingCost: string) {
+    const iconSizes: number[] = castingCost.split(",").map((symbol) => {
+      if (symbol === "") {
+        return 0;
+      }
+      if (symbol === "/") {
+        return 8;
+      }
+      return 14;
+    });
+    const marginSize = (iconSizes.length - 1) * 3;
+    return iconSizes.reduce((acc, size) => acc + size, 0) + marginSize;
+  }
+
   return (
     <div>
       <Flex
         className="h-6 border-solid border-t border-gray-600"
-        justify="between"
         align="center"
         onMouseEnter={handleHover}
         onMouseLeave={handleLeave}
@@ -113,7 +126,7 @@ export function CardListCard({
           cursor: cardObject ? "default" : "wait",
         }}
       >
-        <Flex gap="1" align="center">
+        <Flex gap="1" align="center" mr="1">
           {diffType === DiffType.ADDED && (
             <PlusIcon color="green" width="14" height="14" />
           )}
@@ -121,51 +134,59 @@ export function CardListCard({
             <MinusIcon color="red" width="14" height="14" />
           )}
           <Text size="2">{card.qty}</Text>
-          <Flex className="w-48" gap="1" align="center">
-            {cardObject ? (
-              <Link
-                className="overflow-hidden whitespace-nowrap overflow-ellipsis"
-                size="2"
-                href={cardObject.scryfall_uri}
-                target="_blank"
-              >
-                <Text>{card.name}</Text>
-              </Link>
-            ) : (
-              <Text
-                className="overflow-hidden whitespace-nowrap overflow-ellipsis"
-                size="2"
-              >
-                {card.name}
-              </Text>
-            )}
-            {gameChangerType !== GameChangerType.NONE && (
-              <>
-                {gameChangerType === GameChangerType.WOTC && (
-                  <div className="mr-1">
-                    <SketchLogoIcon width="14" height="14" />
-                  </div>
-                )}
-                {gameChangerType === GameChangerType.IN_HOUSE && (
-                  <div className="mr-1">
-                    <SketchLogoIcon color="orange" width="14" height="14" />
-                  </div>
-                )}
-              </>
-            )}
-            {flippableCardLayouts.includes(card.layout) && (
-              <IconButton
-                variant="ghost"
-                color="gray"
-                size="1"
-                onClick={() => setFlipped(!flipped)}
-              >
-                <UpdateIcon width="14" height="14" />
-              </IconButton>
-            )}
-          </Flex>
         </Flex>
-        <Flex align="center" gap="1">
+        <Flex align="center" overflow="hidden" mr="1">
+          {cardObject ? (
+            <Link
+              className="overflow-hidden whitespace-nowrap overflow-ellipsis"
+              size="2"
+              href={cardObject.scryfall_uri}
+              target="_blank"
+            >
+              <Text>{card.name}</Text>
+            </Link>
+          ) : (
+            <Text
+              className="overflow-hidden whitespace-nowrap overflow-ellipsis"
+              size="2"
+            >
+              {card.name}
+            </Text>
+          )}
+        </Flex>
+        <Flex align="center" mr="1" flexGrow="1">
+          {gameChangerType !== GameChangerType.NONE && (
+            <>
+              {gameChangerType === GameChangerType.WOTC && (
+                <div className="mr-1">
+                  <SketchLogoIcon width="14" height="14" />
+                </div>
+              )}
+              {gameChangerType === GameChangerType.IN_HOUSE && (
+                <div className="mr-1">
+                  <SketchLogoIcon color="orange" width="14" height="14" />
+                </div>
+              )}
+            </>
+          )}
+          {flippableCardLayouts.includes(card.layout) && (
+            <IconButton
+              variant="ghost"
+              color="gray"
+              size="1"
+              onClick={() => setFlipped(!flipped)}
+            >
+              <UpdateIcon width="14" height="14" />
+            </IconButton>
+          )}
+        </Flex>
+        <Flex
+          justify="end"
+          align="center"
+          gap="3px"
+          width={`${getCastingCostWidth(card.castingCost)}px`}
+          flexShrink="0"
+        >
           {card.castingCost.split(",").map((cost, index) => (
             <ManaIcon
               key={`${card.name}-${cost}-${index}`}
