@@ -1,5 +1,6 @@
 import "@assets/styles/Header.scss";
-import { Flex, Select, TabNav } from "@radix-ui/themes";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { Flex, IconButton, Select, TabNav, Text } from "@radix-ui/themes";
 import { ReactElement, useContext, useEffect } from "react";
 import { Link, useLocation, useSearchParams } from "react-router";
 import { DataContext } from "../contexts/DataContext";
@@ -32,7 +33,17 @@ export function Header({ children }: OwnProps) {
       <Flex className="Header p-3 bg-gray-800" align="center" justify="between">
         <Flex align="center" justify="start" flexBasis="25%">
           <img width="40px" src="/img/chalice.png"></img>
-          <p>Calice de Marbre</p>
+          <Text>Calice de Marbre</Text>
+          <IconButton
+            className="ml-[1px]"
+            variant="ghost"
+            color="gray"
+            onClick={() =>
+              window.open("https://github.com/SpaceWarf/mtg-tracker", "_blank")
+            }
+          >
+            <GitHubLogoIcon />
+          </IconButton>
           <div className="mt-2 ml-3">
             <Select.Root value={year} onValueChange={handleChangeYear}>
               <Select.Trigger variant="ghost" />
