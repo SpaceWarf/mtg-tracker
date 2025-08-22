@@ -6,7 +6,7 @@
     }
   }
 
-  .rt-Card > div {
+  .rt-Card > div:first-child {
     cursor: pointer;
     &:hover > .rt-Heading {
       text-decoration: underline;
