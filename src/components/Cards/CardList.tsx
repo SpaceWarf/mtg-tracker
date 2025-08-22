@@ -228,7 +228,7 @@ export function CardList({
       ...populatedRegularCategories,
     ].filter((category) => category.cards.length > 0);
 
-    if (forcedCategoryOrder) {
+    if (forcedCategoryOrder && groupBy === CardGroupBy.CATEGORY) {
       return categories.sort((a, b) => {
         const aIndex = forcedCategoryOrder.indexOf(a.category.name);
         const bIndex = forcedCategoryOrder.indexOf(b.category.name);
@@ -241,6 +241,7 @@ export function CardList({
     populatedPremierCategories,
     populatedRegularCategories,
     forcedCategoryOrder,
+    groupBy,
   ]);
 
   const adjustedColumnCount = useMemo(() => {
