@@ -1,5 +1,6 @@
 import { Strong, Table, Text } from "@radix-ui/themes";
 import { DeckWithStats } from "../../state/Deck";
+import { getLongDateString } from "../../utils/Date";
 
 type OwnProps = {
   deck: DeckWithStats;
@@ -20,7 +21,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell width="125px">Est. Price</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">Est. price</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
               <Strong>{deck.price}</Strong>
@@ -55,7 +56,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           <Table.RowHeaderCell width="125px">Created at</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
-              <Strong>{deck.deckCreatedAt?.split("T")[0]}</Strong>
+              <Strong>{getLongDateString(deck.createdAt ?? "", false)}</Strong>
             </Text>
           </Table.Cell>
         </Table.Row>
@@ -65,7 +66,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           </Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
-              <Strong>{deck.deckUpdatedAt?.split("T")[0]}</Strong>
+              <Strong>{getLongDateString(deck.updatedAt ?? "", false)}</Strong>
             </Text>
           </Table.Cell>
         </Table.Row>
