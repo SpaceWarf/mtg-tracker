@@ -2,6 +2,8 @@ import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 import { useEffect, useMemo } from "react";
 import "../../assets/styles/DeckVersionViewer.scss";
 import { CardDiff } from "../../state/CardDiff";
+import { CardSortFctKey } from "../../state/CardSortFctKey";
+import { CARD_SORT_FCTS } from "../../state/CardSortFcts";
 import { DbDeck } from "../../state/Deck";
 import { DeckCardDetails } from "../../state/DeckDetails";
 import { MousePosition } from "../../state/MousePosition";
@@ -10,6 +12,7 @@ import { CardDiffViewer } from "../Cards/CardDiffViewer";
 
 type OwnProps = {
   deck: DbDeck;
+  sortCardsBy: CardSortFctKey;
   mousePosition: MousePosition;
   gameChangers: DeckCardDetails[];
   selectedVersionId: string;
@@ -18,6 +21,7 @@ type OwnProps = {
 
 export function DeckVersionViewer({
   deck,
+  sortCardsBy,
   mousePosition,
   gameChangers,
   selectedVersionId,
@@ -96,14 +100,26 @@ export function DeckVersionViewer({
                 <Text>{getVersionDate(index)}</Text>
               </Flex>
               <CardDiffViewer
-                added={getVersionDiff(index).added.map((diff) => ({
-                  ...diff.card,
-                  qty: diff.qty,
-                }))}
-                removed={getVersionDiff(index).removed.map((diff) => ({
-                  ...diff.card,
-                  qty: diff.qty,
-                }))}
+                added={getVersionDiff(index)
+                  .added.map((diff) => ({
+                    ...diff.card,
+                    qty: diff.qty,
+                  }))
+                  .sort(
+                    (a, b) =>
+                      CARD_SORT_FCTS[sortCardsBy].sortFct(a, b) ||
+                      a.name.localeCompare(b.name)
+                  )}
+                removed={getVersionDiff(index)
+                  .removed.map((diff) => ({
+                    ...diff.card,
+                    qty: diff.qty,
+                  }))
+                  .sort(
+                    (a, b) =>
+                      CARD_SORT_FCTS[sortCardsBy].sortFct(a, b) ||
+                      a.name.localeCompare(b.name)
+                  )}
                 mousePosition={mousePosition}
                 gameChangers={gameChangers}
               />

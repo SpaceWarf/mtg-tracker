@@ -67,21 +67,31 @@ export function CardList({
 
   const addedCardsWithQuantities = useMemo(() => {
     return (
-      cardDiffFromLatest?.added.map((diff) => ({
-        ...diff.card,
-        qty: diff.qty,
-      })) ?? []
+      cardDiffFromLatest?.added
+        .map((diff) => ({
+          ...diff.card,
+          qty: diff.qty,
+        }))
+        .sort(
+          (a, b) =>
+            CARD_SORT_FCTS[sortBy].sortFct(a, b) || a.name.localeCompare(b.name)
+        ) ?? []
     );
-  }, [cardDiffFromLatest]);
+  }, [cardDiffFromLatest, sortBy]);
 
   const removedCardsWithQuantities = useMemo(() => {
     return (
-      cardDiffFromLatest?.removed.map((diff) => ({
-        ...diff.card,
-        qty: diff.qty,
-      })) ?? []
+      cardDiffFromLatest?.removed
+        .map((diff) => ({
+          ...diff.card,
+          qty: diff.qty,
+        }))
+        .sort(
+          (a, b) =>
+            CARD_SORT_FCTS[sortBy].sortFct(a, b) || a.name.localeCompare(b.name)
+        ) ?? []
     );
-  }, [cardDiffFromLatest]);
+  }, [cardDiffFromLatest, sortBy]);
 
   const cardsWithDiff = useMemo(() => {
     return [...cards, ...removedCardsWithQuantities]
@@ -321,6 +331,7 @@ export function CardList({
       {showVersionGraph && (
         <DeckVersionViewer
           deck={deck}
+          sortCardsBy={sortBy}
           mousePosition={mousePosition}
           gameChangers={gameChangers ?? []}
           selectedVersionId={versionId}
