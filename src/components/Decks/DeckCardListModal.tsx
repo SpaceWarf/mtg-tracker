@@ -64,7 +64,8 @@ export function DeckCardListModal({ deck }: OwnProps) {
       <Dialog.Description></Dialog.Description>
 
       <Dialog.Content
-        className="w-[1850px] max-w-[1850px]"
+        width="full"
+        maxWidth="calc(100vw - 45px)"
         style={{ overflow: "hidden" }}
       >
         <Flex className="mb-5" justify="between">
