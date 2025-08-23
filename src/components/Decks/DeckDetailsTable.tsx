@@ -1,6 +1,11 @@
-import { Strong, Table, Text } from "@radix-ui/themes";
-import { useMemo } from "react";
+import { Flex, Strong, Table, Text } from "@radix-ui/themes";
 import { DeckWithStats } from "../../state/Deck";
+import {
+  EXTRA_TURN_LIMIT,
+  GAME_CHANGER_LIMIT,
+  MASS_LAND_DENIAL_LIMIT,
+  TUTOR_LIMIT,
+} from "../../utils/Bracket";
 import { getLongDateString } from "../../utils/Date";
 
 type OwnProps = {
@@ -8,54 +13,89 @@ type OwnProps = {
 };
 
 export function DeckDetailsTable({ deck }: OwnProps) {
-  const tutors = useMemo(() => {
-    return (
-      deck.cards?.filter((card) => card.tutor).map((card) => card.name) ?? []
-    );
-  }, [deck.cards]);
-
-  const massLandDenials = useMemo(() => {
-    return (
-      deck.cards
-        ?.filter((card) => card.massLandDenial)
-        .map((card) => card.name) ?? []
-    );
-  }, [deck.cards]);
-
-  const extraTurns = useMemo(() => {
-    return (
-      deck.cards?.filter((card) => card.extraTurns).map((card) => card.name) ??
-      []
-    );
-  }, [deck.cards]);
-
   return (
     <Table.Root variant="surface" size="1" layout="fixed">
       <Table.Body>
         <Table.Row>
-          <Table.RowHeaderCell width="125px">Game changers</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">
+            <Flex direction="column">
+              <Text>Game changers</Text>
+              {GAME_CHANGER_LIMIT < 9999 && (
+                <Text
+                  size="1"
+                  color={
+                    deck.gameChangers.length > GAME_CHANGER_LIMIT
+                      ? "red"
+                      : "gray"
+                  }
+                >
+                  max. {GAME_CHANGER_LIMIT}
+                </Text>
+              )}
+            </Flex>
+          </Table.RowHeaderCell>
           <Table.Cell>
             <CardNameList names={deck.gameChangers} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell width="125px">Tutors</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">
+            <Flex direction="column">
+              <Text>Tutors</Text>
+              {TUTOR_LIMIT < 9999 && (
+                <Text
+                  size="1"
+                  color={deck.tutors.length > TUTOR_LIMIT ? "red" : "gray"}
+                >
+                  max. {TUTOR_LIMIT}
+                </Text>
+              )}
+            </Flex>
+          </Table.RowHeaderCell>
           <Table.Cell>
-            <CardNameList names={tutors} />
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.RowHeaderCell width="125px">Extra turns</Table.RowHeaderCell>
-          <Table.Cell>
-            <CardNameList names={extraTurns} />
+            <CardNameList names={deck.tutors} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.RowHeaderCell width="125px">
-            Mass land denial
+            <Flex direction="column">
+              <Text>Extra turns</Text>
+              {EXTRA_TURN_LIMIT < 9999 && (
+                <Text
+                  size="1"
+                  color={
+                    deck.extraTurns.length > EXTRA_TURN_LIMIT ? "red" : "gray"
+                  }
+                >
+                  max. {EXTRA_TURN_LIMIT}
+                </Text>
+              )}
+            </Flex>
           </Table.RowHeaderCell>
           <Table.Cell>
-            <CardNameList names={massLandDenials} />
+            <CardNameList names={deck.extraTurns} />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.RowHeaderCell width="125px">
+            <Flex direction="column">
+              <Text>Mass land denials</Text>
+              {MASS_LAND_DENIAL_LIMIT < 9999 && (
+                <Text
+                  size="1"
+                  color={
+                    deck.massLandDenials.length > MASS_LAND_DENIAL_LIMIT
+                      ? "red"
+                      : "gray"
+                  }
+                >
+                  max. {MASS_LAND_DENIAL_LIMIT}
+                </Text>
+              )}
+            </Flex>
+          </Table.RowHeaderCell>
+          <Table.Cell>
+            <CardNameList names={deck.massLandDenials} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -123,7 +163,7 @@ function CardNameList({ names }: { names: string[] }) {
   }
 
   return (
-    <ul style={{ listStyleType: "disc", marginLeft: "10px" }}>
+    <ul>
       {names.map((name) => (
         <li>
           <Text size="2">

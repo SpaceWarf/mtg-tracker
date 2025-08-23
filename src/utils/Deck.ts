@@ -1,10 +1,10 @@
-import { Bracket } from "../state/Bracket";
 import { CardDiff, CardDiffItem } from "../state/CardDiff";
 import { DbDeck, DeckWithStats } from "../state/Deck";
 import { DeckCardDetails, DeckDetails } from "../state/DeckDetails";
 import { DeckVersion } from "../state/DeckVersion";
 import { DbGame } from "../state/Game";
 import { IDENTITY_LABEL_MAP, IdentityLabel } from "../state/IdentityLabel";
+import { getBracket } from "./Bracket";
 import { getAllGamesForDeck } from "./Game";
 
 export function getDeckGamesCount(deck: DbDeck, games: DbGame[]): number {
@@ -25,30 +25,44 @@ export function getDeckCommandersString(commanders: string[]): string {
   return commanders.join(" // ");
 }
 
+export function getVisibleCards(deck: DbDeck): DeckCardDetails[] {
+  const visibleCategories = deck.categories?.filter(
+    (cat) => cat.includedInDeck
+  );
+  return (
+    deck.cards?.filter((card) =>
+      visibleCategories?.some((cat) => cat.name === card.category)
+    ) ?? []
+  );
+}
+
 export function getDeckGameChanger(
   deck: DbDeck,
   gameChangers: DeckCardDetails[]
 ): string[] {
-  const visibleCategories = deck.categories?.filter((c) => c.includedInDeck);
-  const visibleCards =
-    deck.cards?.filter((c) =>
-      visibleCategories?.some((cat) => cat.name === c.category)
-    ) ?? [];
+  const visibleCards = getVisibleCards(deck);
   return gameChangers
-    .filter((gc) => visibleCards.some((c) => c.name === gc.name))
-    .map((gc) => gc.name);
+    .filter((card) => visibleCards.some((c) => c.name === card.name))
+    .map((card) => card.name);
 }
 
-export function getDeckBracket(deck: DeckWithStats): Bracket {
-  if (deck.gameChangers.length === 0) {
-    return Bracket.MID_POWER;
-  }
+export function getDeckMassLandDenial(deck: DbDeck): string[] {
+  const visibleCards = getVisibleCards(deck);
+  return visibleCards
+    .filter((card) => card.massLandDenial)
+    .map((card) => card.name);
+}
 
-  if (deck.gameChangers.length <= 3) {
-    return Bracket.HIGH_POWER;
-  }
+export function getDeckExtraTurn(deck: DbDeck): string[] {
+  const visibleCards = getVisibleCards(deck);
+  return visibleCards
+    .filter((card) => card.extraTurns)
+    .map((card) => card.name);
+}
 
-  return Bracket.ILLEGAL;
+export function getDeckTutor(deck: DbDeck): string[] {
+  const visibleCards = getVisibleCards(deck);
+  return visibleCards.filter((card) => card.tutor).map((card) => card.name);
 }
 
 export function getDeckIdentityLabel(deck: DbDeck): IdentityLabel {
@@ -65,7 +79,7 @@ export function getDeckIdentityLabel(deck: DbDeck): IdentityLabel {
 }
 
 export function getDeckDescriptorString(deck: DeckWithStats): string {
-  const bracket = getDeckBracket(deck);
+  const bracket = getBracket(deck);
   const identityLabel = getDeckIdentityLabel(deck);
   return `${bracket} ${identityLabel.split(" ")[0]} ${deck.format} Deck`;
 }

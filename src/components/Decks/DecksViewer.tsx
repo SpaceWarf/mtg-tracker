@@ -13,11 +13,14 @@ import { DeckSortFctKey } from "../../state/DeckSortFctKey";
 import { DECK_SORT_FCTS } from "../../state/DeckSortFcts";
 import { IdentityLabel } from "../../state/IdentityLabel";
 import { SortFctType } from "../../state/SortFctType";
+import { getBracket } from "../../utils/Bracket";
 import {
-  getDeckBracket,
+  getDeckExtraTurn,
   getDeckGameChanger,
   getDeckGamesCount,
   getDeckIdentityLabel,
+  getDeckMassLandDenial,
+  getDeckTutor,
   getDeckWinCount,
   getDeckWinRate,
 } from "../../utils/Deck";
@@ -60,6 +63,9 @@ export function DecksViewer() {
             winCount: getDeckWinCount(deck, dbGames),
             winRate: getDeckWinRate(deck, dbGames),
             gameChangers: getDeckGameChanger(deck, gameChangers),
+            massLandDenials: getDeckMassLandDenial(deck),
+            extraTurns: getDeckExtraTurn(deck),
+            tutors: getDeckTutor(deck),
           });
         });
       setDecksWithStats(populatedDecks);
@@ -76,7 +82,7 @@ export function DecksViewer() {
         visiblePlayers.some((visiblePlayer) =>
           deck.builder?.includes(visiblePlayer)
         );
-      const bracketFilter = !bracket || getDeckBracket(deck) === bracket;
+      const bracketFilter = !bracket || getBracket(deck) === bracket;
       const identityFilter =
         !identity || getDeckIdentityLabel(deck) === identity;
       return nameFilter && builderFilter && bracketFilter && identityFilter;
