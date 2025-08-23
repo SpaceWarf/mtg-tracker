@@ -1,3 +1,5 @@
+import { ArchidektReduxCardManaProduction } from "./ArchidektReduxData";
+
 export interface DeckDetails {
   id: string;
   url: string;
@@ -31,6 +33,10 @@ export interface DeckCardDetails {
   collectorNumber: string;
   setCode: string;
   layout: string;
+  massLandDenial: boolean;
+  manaProduction: ArchidektReduxCardManaProduction;
+  extraTurns: boolean;
+  tutor: boolean;
 }
 
 export interface DeckCategoryDetails {

@@ -48,6 +48,10 @@ export interface ArchidektReduxCard {
   back: ArchidektReduxCardSide;
   collectorNumber: string;
   setCode: string;
+  massLandDenial: boolean;
+  manaProduction: ArchidektReduxCardManaProduction;
+  extraTurns: boolean;
+  tutor: boolean;
 }
 
 export enum ArchidektReduxCardLayout {
@@ -90,4 +94,13 @@ export interface ArchidektReduxCardSide {
   types: string[];
   loyalty?: number;
   castingCost: (string | string[])[];
+}
+
+export interface ArchidektReduxCardManaProduction {
+  B: number | null;
+  C: number | null;
+  G: number | null;
+  R: number | null;
+  U: number | null;
+  W: number | null;
 }

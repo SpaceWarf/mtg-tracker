@@ -151,6 +151,10 @@ export class ArchidektDeckScraper extends HTMLScraper {
         collectorNumber: card.collectorNumber,
         setCode: card.setCode,
         layout: card.layout,
+        massLandDenial: card.massLandDenial,
+        manaProduction: card.manaProduction,
+        extraTurns: card.extraTurns,
+        tutor: card.tutor,
       }))
       .filter((card) => visibleCategories.includes(card.category));
   }
