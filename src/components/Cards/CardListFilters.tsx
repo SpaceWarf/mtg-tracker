@@ -1,4 +1,8 @@
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import {
+  MagnifyingGlassIcon,
+  SketchLogoIcon,
+  UpdateIcon,
+} from "@radix-ui/react-icons";
 import {
   CheckboxCards,
   Flex,
@@ -99,6 +103,38 @@ export function CardListFilters({ hasVersions, onChange }: OwnProps) {
           </CheckboxCards.Root>
         </div>
       )}
+
+      <div>
+        <Heading className="mb-1" size="3">
+          Legend
+        </Heading>
+        <Flex height="40px" direction="column" wrap="wrap">
+          <Flex height="50%" align="center" gap="1" mr="3">
+            <SketchLogoIcon width="14" height="14" />
+            <Text>WOTC Game Changers</Text>
+          </Flex>
+          <Flex height="50%" align="center" gap="1" mr="3">
+            <SketchLogoIcon color="orange" width="14" height="14" />
+            <Text>In-House Game Changers</Text>
+          </Flex>
+          <Flex height="50%" align="center" gap="1" mr="3">
+            <img src={"/img/icons/tutor.svg"} width="14" height="14" />
+            <Text>Tutor</Text>
+          </Flex>
+          <Flex height="50%" align="center" gap="1" mr="3">
+            <img src={"/img/icons/extra-turn-3.svg"} width="14" height="14" />
+            <Text>Extra Turn</Text>
+          </Flex>
+          <Flex height="50%" align="center" gap="1" mr="3">
+            <img src={"/img/icons/land-denial.svg"} width="14" height="14" />
+            <Text>Mass Land Denial</Text>
+          </Flex>
+          <Flex height="50%" align="center" gap="1" mr="3">
+            <UpdateIcon width="14" height="14" />
+            <Text>Flippable</Text>
+          </Flex>
+        </Flex>
+      </div>
     </Flex>
   );
 }

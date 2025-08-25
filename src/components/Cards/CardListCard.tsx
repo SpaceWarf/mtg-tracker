@@ -112,6 +112,8 @@ export function CardListCard({
     return iconSizes.reduce((acc, size) => acc + size, 0) + marginSize;
   }
 
+  console.log(card);
+
   return (
     <div>
       <Flex
@@ -151,20 +153,29 @@ export function CardListCard({
             </Text>
           )}
         </Flex>
-        <Flex align="center" mr="1" flexGrow="1">
+        <Flex align="center" mr="1" gap="1" flexGrow="1">
           {gameChangerType !== GameChangerType.NONE && (
             <>
               {gameChangerType === GameChangerType.WOTC && (
-                <div className="mr-1">
+                <div>
                   <SketchLogoIcon width="14" height="14" />
                 </div>
               )}
               {gameChangerType === GameChangerType.IN_HOUSE && (
-                <div className="mr-1">
+                <div>
                   <SketchLogoIcon color="orange" width="14" height="14" />
                 </div>
               )}
             </>
+          )}
+          {card.tutor && (
+            <img src={"/img/icons/tutor.svg"} width="14" height="14" />
+          )}
+          {card.extraTurns && (
+            <img src={"/img/icons/extra-turn-3.svg"} width="14" height="14" />
+          )}
+          {card.massLandDenial && (
+            <img src={"/img/icons/land-denial.svg"} width="14" height="14" />
           )}
           {flippableCardLayouts.includes(card.layout) && (
             <IconButton
