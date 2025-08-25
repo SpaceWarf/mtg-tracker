@@ -7,8 +7,9 @@ import {
 import { Flex, IconButton, Link, Text } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { ScryfallCardObject, ScryfallService } from "../../services/Scryfall";
+import { ScryfallService } from "../../services/Scryfall";
 import { ArchidektReduxCardLayout } from "../../state/ArchidektReduxData";
+import { CardUris } from "../../state/CardUris";
 import { DeckCardDetails } from "../../state/DeckDetails";
 import { DiffType } from "../../state/DiffType";
 import { GameChangerType } from "../../state/GameChangerType";
@@ -28,7 +29,7 @@ export function CardListCard({
   gameChangers,
   diffType,
 }: OwnProps) {
-  const [cardObject, setCardObject] = useState<ScryfallCardObject>();
+  const [cardUris, setCardUris] = useState<CardUris>();
   const [hovering, setHovering] = useState(false);
   const [flipped, setFlipped] = useState(false);
   const gameChangerType = useMemo(() => {
@@ -66,11 +67,7 @@ export function CardListCard({
   }, [flipped, card.layout]);
 
   const thumbnail: string = useMemo(() => {
-    if (cardObject?.image_uris) {
-      return cardObject.image_uris.border_crop;
-    }
-
-    if (cardObject?.card_faces?.length) {
+    if (cardUris) {
       const reversed =
         flipped &&
         [
@@ -78,19 +75,19 @@ export function CardListCard({
           ArchidektReduxCardLayout.TRANSFORM as string,
           ArchidektReduxCardLayout.REVERSIBLE_CARD as string,
         ].includes(card.layout);
-      return cardObject.card_faces[reversed ? 1 : 0].image_uris.border_crop;
+      return cardUris.faceUris[reversed ? 1 : 0];
     }
 
     return "";
-  }, [card, cardObject, flipped]);
+  }, [card, cardUris, flipped]);
 
   async function handleHover() {
     setHovering(true);
 
-    if (!cardObject) {
+    if (!cardUris) {
       try {
-        const cardObject = await ScryfallService.getCardObject(card);
-        setCardObject(cardObject);
+        const cardUris = await ScryfallService.getCardObject(card);
+        setCardUris(cardUris);
       } catch (error) {
         console.error(error);
       }
@@ -123,7 +120,7 @@ export function CardListCard({
         onMouseEnter={handleHover}
         onMouseLeave={handleLeave}
         style={{
-          cursor: cardObject ? "default" : "wait",
+          cursor: cardUris ? "default" : "wait",
         }}
       >
         <Flex gap="1" align="center" mr="1">
@@ -136,11 +133,11 @@ export function CardListCard({
           <Text size="2">{card.qty}</Text>
         </Flex>
         <Flex align="center" overflow="hidden" mr="1">
-          {cardObject ? (
+          {cardUris ? (
             <Link
               className="overflow-hidden whitespace-nowrap overflow-ellipsis"
               size="2"
-              href={cardObject.scryfall_uri}
+              href={cardUris.uri}
               target="_blank"
             >
               <Text>{card.name}</Text>
@@ -197,7 +194,7 @@ export function CardListCard({
         </Flex>
       </Flex>
       {hovering &&
-        cardObject &&
+        cardUris &&
         createPortal(
           <div
             className="thumbnail-tooltip"

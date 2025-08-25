@@ -1,54 +1,39 @@
 import axios from "axios";
 import { CacheKey } from "../state/CacheKey";
+import { CardUris } from "../state/CardUris";
 import { DeckCardDetails } from "../state/DeckDetails";
+import { ScryfallCardObject } from "../state/ScryfallCardObject";
 import { getCacheKey, getItemFromCache, setCacheKey } from "../utils/Cache";
 
-export interface ScryfallCardObject {
-  id: string;
-  image_uris?: ScryfallImageUris;
-  card_faces?: ScryfallCardFace[];
-  scryfall_uri: string;
-}
-
-export interface ScryfallCardFace {
-  name: string;
-  image_uris: ScryfallImageUris;
-}
-
-export interface ScryfallImageUris {
-  small: string;
-  normal: string;
-  large: string;
-  png: string;
-  art_crop: string;
-  border_crop: string;
-}
-
 export class ScryfallService {
-  static async getCardObject(
-    card: DeckCardDetails
-  ): Promise<ScryfallCardObject> {
+  static async getCardObject(card: DeckCardDetails): Promise<CardUris> {
     const cache = getCacheKey(CacheKey.CARD_DETAILS);
-    const cachedCardObject = getItemFromCache<ScryfallCardObject>(
+    const cachedCardUris = getItemFromCache<CardUris>(
       cache,
       `${card.setCode}-${card.collectorNumber}`
     );
 
-    if (cachedCardObject) {
-      return Promise.resolve(cachedCardObject);
+    if (cachedCardUris) {
+      return Promise.resolve(cachedCardUris);
     }
 
     try {
-      const res = await axios.get(
+      const { data } = await axios.get<ScryfallCardObject>(
         `https://api.scryfall.com/cards/${card.setCode}/${card.collectorNumber}`
       );
+      const cardUris: CardUris = {
+        uri: data.scryfall_uri,
+        faceUris: data.image_uris?.border_crop
+          ? [data.image_uris.border_crop]
+          : data.card_faces?.map((face) => face.image_uris.border_crop) ?? [],
+      };
 
       cache.set(`${card.setCode}-${card.collectorNumber}`, {
-        value: res.data,
+        value: cardUris,
         expiry: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 days
       });
       setCacheKey(CacheKey.CARD_DETAILS, cache);
-      return res.data;
+      return cardUris;
     } catch (error) {
       return Promise.reject(error);
     }
