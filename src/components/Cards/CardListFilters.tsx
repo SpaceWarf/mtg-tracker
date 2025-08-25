@@ -122,7 +122,7 @@ export function CardListFilters({ hasVersions, onChange }: OwnProps) {
             <Text>Tutor</Text>
           </Flex>
           <Flex height="50%" align="center" gap="1" mr="3">
-            <img src={"/img/icons/extra-turn-3.svg"} width="14" height="14" />
+            <img src={"/img/icons/extra-turn.svg"} width="14" height="14" />
             <Text>Extra Turn</Text>
           </Flex>
           <Flex height="50%" align="center" gap="1" mr="3">

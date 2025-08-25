@@ -112,8 +112,6 @@ export function CardListCard({
     return iconSizes.reduce((acc, size) => acc + size, 0) + marginSize;
   }
 
-  console.log(card);
-
   return (
     <div>
       <Flex
@@ -172,7 +170,7 @@ export function CardListCard({
             <img src={"/img/icons/tutor.svg"} width="14" height="14" />
           )}
           {card.extraTurns && (
-            <img src={"/img/icons/extra-turn-3.svg"} width="14" height="14" />
+            <img src={"/img/icons/extra-turn.svg"} width="14" height="14" />
           )}
           {card.massLandDenial && (
             <img src={"/img/icons/land-denial.svg"} width="14" height="14" />
