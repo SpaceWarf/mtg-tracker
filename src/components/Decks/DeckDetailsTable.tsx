@@ -1,5 +1,5 @@
 import { Flex, Link, Strong, Table, Text } from "@radix-ui/themes";
-import { Combo } from "../../state/CommanderCombos";
+import { Combo } from "../../state/Combo";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckCardDetails } from "../../state/DeckDetails";
 import {

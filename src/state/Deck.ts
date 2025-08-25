@@ -1,4 +1,4 @@
-import { Combo } from "./CommanderCombos";
+import { Combo } from "./Combo";
 import { DatabaseItem } from "./DatabaseItem";
 import { DeckCardDetails, DeckCategoryDetails } from "./DeckDetails";
 import { DeckVersion } from "./DeckVersion";

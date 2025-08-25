@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Combo } from "../state/CommanderCombos";
+import { Combo } from "../state/Combo";
 import { DbDeck } from "../state/Deck";
 import { EdhRecCombo } from "../state/EdhRecCombos";
 
