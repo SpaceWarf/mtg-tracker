@@ -1,36 +1,20 @@
 import { uuidv7 } from "uuidv7";
 import {} from "../state/ArchidektReduxData";
-import { CacheKey } from "../state/CacheKey";
 import { DbDeck } from "../state/Deck";
 import { DeckDetails } from "../state/DeckDetails";
 import { DeckVersion } from "../state/DeckVersion";
-import { getCacheKey, getItemFromCache, setCacheKey } from "../utils/Cache";
 import { getCardDiff, getDeckCommandersString } from "../utils/Deck";
 import { ArchidektDeckScraper } from "./ArchidektDeckScraper";
 import { DeckService } from "./Deck";
+import { EdhRecService } from "./EdhRec";
 
 export class ArchidektService {
-  static async getDeckDetailsById(
-    id: string,
-    ignoreCache: boolean = true
-  ): Promise<DeckDetails> {
-    const cache = getCacheKey(CacheKey.DECKS_DETAILS);
-    const cachedDeckDetails = getItemFromCache<DeckDetails>(cache, id);
-
-    if (cachedDeckDetails && !ignoreCache) {
-      return Promise.resolve(cachedDeckDetails);
-    }
-
+  static async getDeckDetailsById(id: string): Promise<DeckDetails> {
     try {
       const scraper = new ArchidektDeckScraper(id);
       await scraper.scrape();
       const deckDetails = scraper.getDeckDetails(id);
 
-      cache.set(deckDetails.id, {
-        value: deckDetails,
-        expiry: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 days
-      });
-      setCacheKey(CacheKey.DECKS_DETAILS, cache);
       return Promise.resolve(deckDetails);
     } catch (error) {
       return Promise.reject(error);
@@ -45,7 +29,8 @@ export class ArchidektService {
 
     try {
       const deckDetails: DeckDetails =
-        await ArchidektService.getDeckDetailsById(deck.externalId, true);
+        await ArchidektService.getDeckDetailsById(deck.externalId);
+      const possibleCombos = await EdhRecService.getDeck2CardCombos(deck);
       const newVersion = ArchidektService.createDeckVersion(deck, deckDetails);
 
       const update: DbDeck = {
@@ -67,6 +52,7 @@ export class ArchidektService {
           ? [...(deck.versions ?? []), newVersion]
           : deck.versions,
         latestVersionId: newVersion?.id ?? deck.latestVersionId,
+        possibleCombos,
       };
 
       await DeckService.update(deck.id, update);

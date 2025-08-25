@@ -1,3 +1,4 @@
+import { Combo } from "./CommanderCombos";
 import { DatabaseItem } from "./DatabaseItem";
 import { DeckCardDetails, DeckCategoryDetails } from "./DeckDetails";
 import { DeckVersion } from "./DeckVersion";
@@ -21,6 +22,7 @@ export interface Deck {
   gameChangersDeck?: boolean;
   versions?: DeckVersion[];
   latestVersionId: string;
+  possibleCombos?: Combo[];
 }
 
 export interface DbDeck extends Deck, DatabaseItem {}
@@ -29,8 +31,9 @@ export interface DeckWithStats extends DbDeck {
   gamesPlayed: number;
   winCount: number;
   winRate: number;
-  gameChangers: string[];
-  massLandDenials: string[];
-  extraTurns: string[];
-  tutors: string[];
+  gameChangers: DeckCardDetails[];
+  massLandDenials: DeckCardDetails[];
+  extraTurns: DeckCardDetails[];
+  tutors: DeckCardDetails[];
+  combos: Combo[];
 }

@@ -1,10 +1,13 @@
-import { Flex, Strong, Table, Text } from "@radix-ui/themes";
+import { Flex, Link, Strong, Table, Text } from "@radix-ui/themes";
+import { Combo } from "../../state/CommanderCombos";
 import { DeckWithStats } from "../../state/Deck";
+import { DeckCardDetails } from "../../state/DeckDetails";
 import {
   EXTRA_TURN_LIMIT,
   GAME_CHANGER_LIMIT,
   MASS_LAND_DENIAL_LIMIT,
   TUTOR_LIMIT,
+  TWO_CARD_COMBO_LIMIT,
 } from "../../utils/Bracket";
 import { getLongDateString } from "../../utils/Date";
 
@@ -35,7 +38,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
             </Flex>
           </Table.RowHeaderCell>
           <Table.Cell>
-            <CardNameList names={deck.gameChangers} />
+            <CardNameList cards={deck.gameChangers} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -53,7 +56,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
             </Flex>
           </Table.RowHeaderCell>
           <Table.Cell>
-            <CardNameList names={deck.tutors} />
+            <CardNameList cards={deck.tutors} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -73,7 +76,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
             </Flex>
           </Table.RowHeaderCell>
           <Table.Cell>
-            <CardNameList names={deck.extraTurns} />
+            <CardNameList cards={deck.extraTurns} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -95,9 +98,31 @@ export function DeckDetailsTable({ deck }: OwnProps) {
             </Flex>
           </Table.RowHeaderCell>
           <Table.Cell>
-            <CardNameList names={deck.massLandDenials} />
+            <CardNameList cards={deck.massLandDenials} />
           </Table.Cell>
         </Table.Row>
+
+        <Table.Row>
+          <Table.RowHeaderCell width="125px">
+            <Flex direction="column">
+              <Text>2 card combos</Text>
+              {TWO_CARD_COMBO_LIMIT < 9999 && (
+                <Text
+                  size="1"
+                  color={
+                    deck.combos.length > TWO_CARD_COMBO_LIMIT ? "red" : "gray"
+                  }
+                >
+                  max. {TWO_CARD_COMBO_LIMIT}
+                </Text>
+              )}
+            </Flex>
+          </Table.RowHeaderCell>
+          <Table.Cell>
+            <CardComboList combos={deck.combos} />
+          </Table.Cell>
+        </Table.Row>
+
         <Table.Row>
           <Table.RowHeaderCell width="125px">Est. price</Table.RowHeaderCell>
           <Table.Cell>
@@ -153,8 +178,8 @@ export function DeckDetailsTable({ deck }: OwnProps) {
   );
 }
 
-function CardNameList({ names }: { names: string[] }) {
-  if (names.length === 0) {
+function CardNameList({ cards }: { cards: DeckCardDetails[] }) {
+  if (cards.length === 0) {
     return (
       <Text size="2">
         <Strong>-</Strong>
@@ -164,11 +189,40 @@ function CardNameList({ names }: { names: string[] }) {
 
   return (
     <ul>
-      {names.map((name) => (
-        <li>
-          <Text size="2">
-            <Strong>{name}</Strong>
-          </Text>
+      {cards.map((card) => (
+        <li key={card.name}>
+          <Link
+            href={`https://scryfall.com/card/${card.setCode}/${card.collectorNumber}/`}
+            target="_blank"
+          >
+            <Text size="2">
+              <Strong>{card.name}</Strong>
+            </Text>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function CardComboList({ combos }: { combos: Combo[] }) {
+  if (combos.length === 0) {
+    return (
+      <Text size="2">
+        <Strong>-</Strong>
+      </Text>
+    );
+  }
+
+  return (
+    <ul>
+      {combos.map((combo) => (
+        <li key={combo.name}>
+          <Link href={`https://edhrec.com${combo.href}`} target="_blank">
+            <Text size="2">
+              <Strong>{combo.name.split(" (")[0]}</Strong>
+            </Text>
+          </Link>
         </li>
       ))}
     </ul>

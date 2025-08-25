@@ -1,12 +1,10 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Flex, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
-import { useDecks } from "../../hooks/useDecks";
-import { useGames } from "../../hooks/useGames";
-import { usePlayers } from "../../hooks/usePlayers";
+import { usePopulatedDecks } from "../../hooks/usePopulatedDecks";
 import { Bracket } from "../../state/Bracket";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckSortFctKey } from "../../state/DeckSortFctKey";
@@ -14,16 +12,7 @@ import { DECK_SORT_FCTS } from "../../state/DeckSortFcts";
 import { IdentityLabel } from "../../state/IdentityLabel";
 import { SortFctType } from "../../state/SortFctType";
 import { getBracket } from "../../utils/Bracket";
-import {
-  getDeckExtraTurn,
-  getDeckGameChanger,
-  getDeckGamesCount,
-  getDeckIdentityLabel,
-  getDeckMassLandDenial,
-  getDeckTutor,
-  getDeckWinCount,
-  getDeckWinRate,
-} from "../../utils/Deck";
+import { getDeckIdentityLabel } from "../../utils/Deck";
 import { BracketSelect } from "../Select/BracketSelect";
 import { IdentitySelect } from "../Select/IdentitySelect";
 import { PlayerSelect } from "../Select/PlayerSelect";
@@ -35,9 +24,7 @@ import { DeckSyncModal } from "./DeckSyncModal";
 export function DecksViewer() {
   const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { dbDecks, loadingDecks } = useDecks();
-  const { dbGames, loadingGames } = useGames();
-  const { dbPlayers, loadingPlayers } = usePlayers();
+  const { populatedDecks, populating } = usePopulatedDecks();
   const [search, setSearch] = useState<string>("");
   const [sortFctKey, setSortFctKey] = useState<DeckSortFctKey>(
     DeckSortFctKey.NAME_ASC
@@ -45,35 +32,10 @@ export function DecksViewer() {
   const [visiblePlayers, setVisiblePlayers] = useState<string[]>([]);
   const [bracket, setBracket] = useState<Bracket>();
   const [identity, setIdentity] = useState<IdentityLabel>();
-  const [decksWithStats, setDecksWithStats] = useState<DeckWithStats[]>([]);
   const [filteredDecks, setFilteredDecks] = useState<DeckWithStats[]>([]);
-  const gameChangers = useMemo(() => {
-    return dbDecks?.find((deck) => deck.gameChangersDeck)?.cards ?? [];
-  }, [dbDecks]);
-
-  const populateDeckStats = useCallback(() => {
-    if (dbDecks && dbGames) {
-      const populatedDecks: DeckWithStats[] = [];
-      dbDecks
-        .filter((deck) => !deck.gameChangersDeck)
-        .forEach((deck) => {
-          populatedDecks.push({
-            ...cloneDeep(deck),
-            gamesPlayed: getDeckGamesCount(deck, dbGames),
-            winCount: getDeckWinCount(deck, dbGames),
-            winRate: getDeckWinRate(deck, dbGames),
-            gameChangers: getDeckGameChanger(deck, gameChangers),
-            massLandDenials: getDeckMassLandDenial(deck),
-            extraTurns: getDeckExtraTurn(deck),
-            tutors: getDeckTutor(deck),
-          });
-        });
-      setDecksWithStats(populatedDecks);
-    }
-  }, [dbDecks, dbGames, gameChangers]);
 
   useEffect(() => {
-    const filtered = cloneDeep(decksWithStats).filter((deck) => {
+    const filtered = cloneDeep(populatedDecks).filter((deck) => {
       const nameFilter =
         deck.name.toLowerCase().includes(search.toLowerCase()) ||
         deck.commander?.toLowerCase().includes(search.toLowerCase());
@@ -90,13 +52,7 @@ export function DecksViewer() {
     const sortFct = DECK_SORT_FCTS[sortFctKey].sortFct;
     const sorted = filtered.sort(sortFct);
     setFilteredDecks(sorted);
-  }, [decksWithStats, sortFctKey, search, visiblePlayers, bracket, identity]);
-
-  useEffect(() => {
-    if (!loadingDecks && !loadingGames) {
-      populateDeckStats();
-    }
-  }, [loadingDecks, loadingGames, populateDeckStats]);
+  }, [populatedDecks, sortFctKey, search, visiblePlayers, bracket, identity]);
 
   useEffect(() => {
     const urlSortKey = searchParams.get("sort");
@@ -109,7 +65,7 @@ export function DecksViewer() {
   }, [searchParams]);
 
   function loading(): boolean {
-    return loadingGames || loadingDecks || loadingPlayers;
+    return populating;
   }
 
   function handleSort(value: string) {
@@ -121,7 +77,7 @@ export function DecksViewer() {
     setSearchParams(searchParams);
   }
 
-  if (loading() || !dbDecks?.length || !dbGames?.length || !dbPlayers?.length) {
+  if (loading() || !populatedDecks.length) {
     return <Spinner className="mt-5" size="3" />;
   }
 

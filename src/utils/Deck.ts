@@ -39,30 +39,26 @@ export function getVisibleCards(deck: DbDeck): DeckCardDetails[] {
 export function getDeckGameChanger(
   deck: DbDeck,
   gameChangers: DeckCardDetails[]
-): string[] {
+): DeckCardDetails[] {
   const visibleCards = getVisibleCards(deck);
-  return gameChangers
-    .filter((card) => visibleCards.some((c) => c.name === card.name))
-    .map((card) => card.name);
+  return gameChangers.filter((card) =>
+    visibleCards.some((c) => c.name === card.name)
+  );
 }
 
-export function getDeckMassLandDenial(deck: DbDeck): string[] {
+export function getDeckMassLandDenial(deck: DbDeck): DeckCardDetails[] {
   const visibleCards = getVisibleCards(deck);
-  return visibleCards
-    .filter((card) => card.massLandDenial)
-    .map((card) => card.name);
+  return visibleCards.filter((card) => card.massLandDenial);
 }
 
-export function getDeckExtraTurn(deck: DbDeck): string[] {
+export function getDeckExtraTurn(deck: DbDeck): DeckCardDetails[] {
   const visibleCards = getVisibleCards(deck);
-  return visibleCards
-    .filter((card) => card.extraTurns)
-    .map((card) => card.name);
+  return visibleCards.filter((card) => card.extraTurns);
 }
 
-export function getDeckTutor(deck: DbDeck): string[] {
+export function getDeckTutor(deck: DbDeck): DeckCardDetails[] {
   const visibleCards = getVisibleCards(deck);
-  return visibleCards.filter((card) => card.tutor).map((card) => card.name);
+  return visibleCards.filter((card) => card.tutor);
 }
 
 export function getDeckIdentityLabel(deck: DbDeck): IdentityLabel {
