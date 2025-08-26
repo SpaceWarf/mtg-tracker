@@ -1,4 +1,10 @@
-import { AvatarIcon, ExitIcon, InfoCircledIcon } from "@radix-ui/react-icons";
+import {
+  AvatarIcon,
+  CheckIcon,
+  Cross2Icon,
+  ExitIcon,
+  InfoCircledIcon,
+} from "@radix-ui/react-icons";
 import {
   Button,
   Callout,
@@ -107,13 +113,19 @@ export function LoginModal() {
           </Callout.Root>
         )}
 
-        <Flex gap="3" mt="4" justify="end">
+        <Flex gap="3" mt="4" justify="between">
           <Dialog.Close>
-            <Button variant="soft" color="gray">
+            <Button className="h-10" variant="outline">
+              <Cross2Icon />
               Cancel
             </Button>
           </Dialog.Close>
-          <Button disabled={!canSubmit()} onClick={handleLogin}>
+          <Button
+            className="h-10"
+            disabled={!canSubmit()}
+            onClick={handleLogin}
+          >
+            <CheckIcon />
             Login
           </Button>
         </Flex>
