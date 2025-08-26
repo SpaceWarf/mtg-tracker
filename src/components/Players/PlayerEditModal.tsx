@@ -1,12 +1,5 @@
-import { Pencil1Icon } from "@radix-ui/react-icons";
-import {
-  Button,
-  Dialog,
-  Flex,
-  Heading,
-  IconButton,
-  TextField,
-} from "@radix-ui/themes";
+import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
+import { Button, Dialog, Flex, Heading, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { PlayerService } from "../../services/Player";
@@ -14,10 +7,12 @@ import { DbPlayer, PlayerWithStats } from "../../state/Player";
 import { getDbPlayerFromPlayerWithStats } from "../../utils/Player";
 
 type OwnProps = {
+  open: boolean;
   player: PlayerWithStats;
+  onClose: () => void;
 };
 
-export function PlayerEditModal({ player }: OwnProps) {
+export function PlayerEditModal({ open, player, onClose }: OwnProps) {
   const navigate = useNavigate();
   const [name, setName] = useState<string>(player.name);
   const [externalId, setExternalId] = useState<string>(player.externalId);
@@ -32,15 +27,11 @@ export function PlayerEditModal({ player }: OwnProps) {
     navigate(0);
   }
 
-  async function handleDelete() {
-    await PlayerService.delete(player.id);
-    navigate(0);
-  }
-
   function handleOpenChange(open: boolean) {
     if (!open) {
       setName(player.name);
       setExternalId(player.externalId);
+      onClose();
     }
   }
 
@@ -49,13 +40,7 @@ export function PlayerEditModal({ player }: OwnProps) {
   }
 
   return (
-    <Dialog.Root onOpenChange={handleOpenChange}>
-      <Dialog.Trigger>
-        <IconButton variant="soft">
-          <Pencil1Icon width="18" height="18" />
-        </IconButton>
-      </Dialog.Trigger>
-
+    <Dialog.Root open={open} onOpenChange={handleOpenChange}>
       <Dialog.Description></Dialog.Description>
 
       <Dialog.Content>
@@ -86,19 +71,18 @@ export function PlayerEditModal({ player }: OwnProps) {
         </div>
 
         <Flex gap="3" mt="4" justify="between">
-          <Dialog.Close onClick={handleDelete}>
-            <Button color="red">Delete</Button>
+          <Dialog.Close>
+            <Button className="h-10" variant="outline">
+              <Cross2Icon />
+              Cancel
+            </Button>
           </Dialog.Close>
-          <Flex gap="3">
-            <Dialog.Close>
-              <Button variant="soft" color="gray">
-                Cancel
-              </Button>
-            </Dialog.Close>
-            <Dialog.Close disabled={!canSave()} onClick={handleSave}>
-              <Button>Save</Button>
-            </Dialog.Close>
-          </Flex>
+          <Dialog.Close disabled={!canSave()} onClick={handleSave}>
+            <Button className="h-10">
+              <CheckIcon />
+              Save
+            </Button>
+          </Dialog.Close>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>

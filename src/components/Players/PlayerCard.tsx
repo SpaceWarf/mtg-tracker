@@ -1,9 +1,15 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import {
+  DotsVerticalIcon,
+  ExternalLinkIcon,
+  Pencil1Icon,
+  TrashIcon,
+} from "@radix-ui/react-icons";
 import {
   Avatar,
   Card,
+  DropdownMenu,
   Flex,
   Heading,
   IconButton,
@@ -15,6 +21,7 @@ import { DbDeck } from "../../state/Deck";
 import { PlayerWithStats } from "../../state/Player";
 import { PlayerCardView } from "../../state/PlayerCardView";
 import { PlayerDeckStats } from "./PlayerDeckStats";
+import { PlayerDeleteModal } from "./PlayerDeleteModal";
 import { PlayerEditModal } from "./PlayerEditModal";
 import { PlayerGameStats } from "./PlayerGameStats";
 
@@ -58,79 +65,130 @@ export function PlayerCard({
   deckWonMap,
 }: OwnProps) {
   const [view, setView] = useState<PlayerCardView>(PlayerCardView.GAME_STATS);
+  const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   return (
-    <Card size="3">
-      <Flex>
-        <Flex className="mb-1" gap="3" align="center" flexGrow={"1"}>
-          <Avatar
-            src={`/img/pfp/${player.id}.webp`}
-            fallback={<FontAwesomeIcon icon={faUser} />}
-            radius="full"
-            size="5"
-          />
-          <Heading>{player.name}</Heading>
+    <>
+      {editModalOpen && (
+        <PlayerEditModal
+          open={editModalOpen}
+          player={player}
+          onClose={() => setEditModalOpen(false)}
+        />
+      )}
+      {deleteModalOpen && (
+        <PlayerDeleteModal
+          open={deleteModalOpen}
+          player={player}
+          onClose={() => setDeleteModalOpen(false)}
+        />
+      )}
+      <Card size="3">
+        <Flex>
+          <Flex className="mb-1" gap="3" align="center" flexGrow={"1"}>
+            <Avatar
+              src={`/img/pfp/${player.id}.webp`}
+              fallback={<FontAwesomeIcon icon={faUser} />}
+              radius="full"
+              size="5"
+            />
+            <Heading>{player.name}</Heading>
+          </Flex>
+          <Flex gap="3" justify="end">
+            {/* {editable && <PlayerEditModal player={player} />} */}
+            {(editable || player.externalId) && (
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  <IconButton variant="soft">
+                    <DotsVerticalIcon width="18" height="18" />
+                  </IconButton>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                  {player.externalId && (
+                    <DropdownMenu.Item
+                      className="mb-1"
+                      onClick={() =>
+                        window.open(
+                          ArchidektService.getPlayerProfileUrl(
+                            player.externalId
+                          ),
+                          "_blank"
+                        )
+                      }
+                    >
+                      <ExternalLinkIcon width="18" height="18" />
+                      Open in Archidekt
+                    </DropdownMenu.Item>
+                  )}
+                  {editable && (
+                    <DropdownMenu.Item
+                      className="mb-1"
+                      onClick={() => setEditModalOpen(true)}
+                    >
+                      <Pencil1Icon width="18" height="18" />
+                      Edit
+                    </DropdownMenu.Item>
+                  )}
+                  {editable && <DropdownMenu.Separator />}
+                  {editable && (
+                    <DropdownMenu.Item
+                      color="red"
+                      onClick={() => setDeleteModalOpen(true)}
+                    >
+                      <TrashIcon width="18" height="18" />
+                      Delete
+                    </DropdownMenu.Item>
+                  )}
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
+            )}
+          </Flex>
         </Flex>
-        <Flex gap="3" justify="end">
-          {player.externalId && (
-            <IconButton
-              variant="soft"
-              onClick={() =>
-                window.open(
-                  ArchidektService.getPlayerProfileUrl(player.externalId),
-                  "_blank"
-                )
-              }
+        <Tabs.Root className="mb-2" value={view}>
+          <Tabs.List size="2">
+            <Tabs.Trigger
+              value={PlayerCardView.GAME_STATS}
+              onClick={() => setView(PlayerCardView.GAME_STATS)}
             >
-              <ExternalLinkIcon />
-            </IconButton>
-          )}
-          {editable && <PlayerEditModal player={player} />}
-        </Flex>
-      </Flex>
-      <Tabs.Root className="mb-2" value={view}>
-        <Tabs.List size="2">
-          <Tabs.Trigger
-            value={PlayerCardView.GAME_STATS}
-            onClick={() => setView(PlayerCardView.GAME_STATS)}
-          >
-            Game Stats
-          </Tabs.Trigger>
-          <Tabs.Trigger
-            value={PlayerCardView.DECK_STATS}
-            onClick={() => setView(PlayerCardView.DECK_STATS)}
-          >
-            Deck Stats
-          </Tabs.Trigger>
-        </Tabs.List>
-      </Tabs.Root>
+              Game Stats
+            </Tabs.Trigger>
+            <Tabs.Trigger
+              value={PlayerCardView.DECK_STATS}
+              onClick={() => setView(PlayerCardView.DECK_STATS)}
+            >
+              Deck Stats
+            </Tabs.Trigger>
+          </Tabs.List>
+        </Tabs.Root>
 
-      {view === PlayerCardView.GAME_STATS && (
-        <PlayerGameStats
-          highlightedKey={highlightedKey}
-          highlightedDirection={highlightedDirection}
-          gamesPlayed={gamesPlayed}
-          winCount={winCount}
-          winRate={winRate}
-          startCount={startCount}
-          startRate={startRate}
-          startToWinRate={startToWinRate}
-          solRingCount={solRingCount}
-          solRingRate={solRingRate}
-          solRingToWinRate={solRingToWinRate}
-          grandSlamCount={grandSlamCount}
-        />
-      )}
+        {view === PlayerCardView.GAME_STATS && (
+          <PlayerGameStats
+            highlightedKey={highlightedKey}
+            highlightedDirection={highlightedDirection}
+            gamesPlayed={gamesPlayed}
+            winCount={winCount}
+            winRate={winRate}
+            startCount={startCount}
+            startRate={startRate}
+            startToWinRate={startToWinRate}
+            solRingCount={solRingCount}
+            solRingRate={solRingRate}
+            solRingToWinRate={solRingToWinRate}
+            grandSlamCount={grandSlamCount}
+          />
+        )}
 
-      {view === PlayerCardView.DECK_STATS && (
-        <PlayerDeckStats
-          decks={decks}
-          highlightedKey={highlightedKey}
-          highlightedDirection={highlightedDirection}
-          deckPlayedMap={deckPlayedMap}
-          deckWonMap={deckWonMap}
-        />
-      )}
-    </Card>
+        {view === PlayerCardView.DECK_STATS && (
+          <PlayerDeckStats
+            decks={decks}
+            highlightedKey={highlightedKey}
+            highlightedDirection={highlightedDirection}
+            deckPlayedMap={deckPlayedMap}
+            deckWonMap={deckWonMap}
+          />
+        )}
+      </Card>
+    </>
   );
 }
