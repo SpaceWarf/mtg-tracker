@@ -1,4 +1,4 @@
-import { PlusIcon } from "@radix-ui/react-icons";
+import { CheckIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { Button, Dialog, Flex, Heading, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -68,14 +68,16 @@ export function PlayerCreateModal() {
           ></TextField.Root>
         </div>
 
-        <Flex gap="3" mt="4" justify="end">
+        <Flex gap="3" justify="between">
           <Dialog.Close>
-            <Button variant="soft" color="gray">
-              Cancel
+            <Button className="h-10" variant="outline">
+              <Cross2Icon /> Cancel
             </Button>
           </Dialog.Close>
           <Dialog.Close disabled={!canCreate()} onClick={handleCreate}>
-            <Button>Create</Button>
+            <Button className="h-10">
+              <CheckIcon /> Create
+            </Button>
           </Dialog.Close>
         </Flex>
       </Dialog.Content>

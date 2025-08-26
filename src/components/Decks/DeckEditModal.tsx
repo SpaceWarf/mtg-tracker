@@ -1,12 +1,15 @@
-import { InfoCircledIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import {
+  CheckIcon,
+  Cross2Icon,
+  InfoCircledIcon,
+  Pencil1Icon,
+} from "@radix-ui/react-icons";
 import {
   Button,
   Callout,
   Dialog,
   Flex,
   Heading,
-  IconButton,
-  Text,
   TextField,
 } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
@@ -17,16 +20,17 @@ import { ArchidektService } from "../../services/Archidekt";
 import { DeckService } from "../../services/Deck";
 import { DbDeck } from "../../state/Deck";
 import { DeckDetails } from "../../state/DeckDetails";
-import { getDateTimeString } from "../../utils/Date";
 import { getDeckCommandersString } from "../../utils/Deck";
 import { getPlayerByExternalId } from "../../utils/Player";
 import { PlayerSelect } from "../Select/PlayerSelect";
 
 type OwnProps = {
+  open: boolean;
   deck: DbDeck;
+  onClose: () => void;
 };
 
-export function DeckEditModal({ deck }: OwnProps) {
+export function DeckEditModal({ open, deck, onClose }: OwnProps) {
   const navigate = useNavigate();
   const { dbPlayers } = usePlayers();
   const [name, setName] = useState<string>(deck.name);
@@ -36,7 +40,6 @@ export function DeckEditModal({ deck }: OwnProps) {
   const [deckDetails, setDeckDetails] = useState<DeckDetails>();
   const [autofilling, setAutofilling] = useState<boolean>(false);
   const [autofillError, setAutofillError] = useState<string>("");
-  const [syncing, setSyncing] = useState<boolean>(false);
 
   async function handleSave() {
     const update: DbDeck = {
@@ -61,22 +64,18 @@ export function DeckEditModal({ deck }: OwnProps) {
     navigate(0);
   }
 
-  async function handleDelete() {
-    await DeckService.delete(deck.id);
-    navigate(0);
-  }
-
   function handleOpenChange(open: boolean) {
     if (!open) {
       setName(deck.name);
       setCommander(deck.commander ?? "");
       setBuilder(deck.builder ?? "");
       setExternalId(deck.externalId ?? "");
+      onClose();
     }
   }
 
   function canSave(): boolean {
-    return !!name && !autofilling && !syncing;
+    return !!name && !autofilling;
   }
 
   async function handleAutofill() {
@@ -97,26 +96,8 @@ export function DeckEditModal({ deck }: OwnProps) {
     }
   }
 
-  async function handleSync() {
-    setSyncing(true);
-    try {
-      await ArchidektService.syncDeckDetails(deck);
-      navigate(0);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setSyncing(false);
-    }
-  }
-
   return (
-    <Dialog.Root onOpenChange={handleOpenChange}>
-      <Dialog.Trigger>
-        <IconButton variant="soft">
-          <Pencil1Icon width="18" height="18" />
-        </IconButton>
-      </Dialog.Trigger>
-
+    <Dialog.Root open={open} onOpenChange={handleOpenChange}>
       <Dialog.Description></Dialog.Description>
 
       <Dialog.Content>
@@ -130,7 +111,7 @@ export function DeckEditModal({ deck }: OwnProps) {
             className="input-field"
             placeholder="External ID..."
             value={externalId}
-            disabled={autofilling || syncing}
+            disabled={autofilling}
             onChange={({ target }) => setExternalId(target.value)}
           ></TextField.Root>
           {autofillError && (
@@ -147,7 +128,7 @@ export function DeckEditModal({ deck }: OwnProps) {
           <Button
             className="h-10"
             onClick={handleAutofill}
-            disabled={!externalId || autofilling || syncing}
+            disabled={!externalId || autofilling}
             loading={autofilling}
           >
             <Pencil1Icon width="18" height="18" />
@@ -163,7 +144,7 @@ export function DeckEditModal({ deck }: OwnProps) {
             className="input-field"
             placeholder="Name..."
             value={name}
-            disabled={autofilling || syncing}
+            disabled={autofilling}
             onChange={({ target }) => setName(target.value)}
           ></TextField.Root>
         </div>
@@ -176,7 +157,7 @@ export function DeckEditModal({ deck }: OwnProps) {
             className="input-field"
             placeholder="Commander..."
             value={commander}
-            disabled={autofilling || syncing}
+            disabled={autofilling}
             onChange={({ target }) => setCommander(target.value)}
           ></TextField.Root>
         </div>
@@ -190,43 +171,22 @@ export function DeckEditModal({ deck }: OwnProps) {
             onChange={setBuilder}
             isMulti={false}
             menuPlacement="top"
-            disabled={autofilling || syncing}
+            disabled={autofilling}
           />
         </div>
 
         <Flex gap="3" mt="4" mb="2" justify="between">
-          <Flex gap="3">
-            <Dialog.Close
-              disabled={autofilling || syncing}
-              onClick={handleDelete}
-            >
-              <Button color="red">Delete</Button>
-            </Dialog.Close>
-            <Button
-              disabled={syncing}
-              loading={syncing}
-              variant="soft"
-              color="gray"
-              onClick={handleSync}
-            >
-              Sync Data
+          <Dialog.Close>
+            <Button className="h-10" variant="outline">
+              <Cross2Icon /> Cancel
             </Button>
-          </Flex>
-          <Flex gap="3">
-            <Dialog.Close>
-              <Button variant="soft" color="gray">
-                Cancel
-              </Button>
-            </Dialog.Close>
-            <Dialog.Close disabled={!canSave()} onClick={handleSave}>
-              <Button>Save</Button>
-            </Dialog.Close>
-          </Flex>
+          </Dialog.Close>
+          <Dialog.Close disabled={!canSave()} onClick={handleSave}>
+            <Button className="h-10">
+              <CheckIcon /> Save
+            </Button>
+          </Dialog.Close>
         </Flex>
-
-        <Text size="1" color="gray">
-          <i>Last synced on {getDateTimeString(deck?.updatedAt ?? "")}</i>
-        </Text>
       </Dialog.Content>
     </Dialog.Root>
   );

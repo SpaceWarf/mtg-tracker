@@ -1,4 +1,9 @@
-import { PlusIcon } from "@radix-ui/react-icons";
+import {
+  CheckIcon,
+  Cross2Icon,
+  PlusIcon,
+  ResumeIcon,
+} from "@radix-ui/react-icons";
 import {
   Button,
   Dialog,
@@ -130,7 +135,7 @@ export function GameCreateModal() {
           />
         </Grid>
 
-        <div className="mt-5">
+        <div className="mt-5 mb-4">
           <Heading className="mb-1" size="3">
             Comments
           </Heading>
@@ -142,22 +147,28 @@ export function GameCreateModal() {
           />
         </div>
 
-        <Flex gap="3" mt="4" justify="end">
+        <Flex gap="3" justify="between">
           <Dialog.Close>
-            <Button variant="soft" color="gray">
-              Cancel
+            <Button className="h-10" variant="outline">
+              <Cross2Icon /> Cancel
             </Button>
           </Dialog.Close>
-          <Dialog.Close disabled={!canCreate()} onClick={handleCreateOne}>
-            <Button>Create One</Button>
-          </Dialog.Close>
-          <Button
-            disabled={!canCreate()}
-            onClick={handleCreate}
-            loading={creating}
-          >
-            Create More
-          </Button>
+          <Flex gap="3">
+            <Dialog.Close disabled={!canCreate()} onClick={handleCreateOne}>
+              <Button className="h-10">
+                <CheckIcon /> Create One
+              </Button>
+            </Dialog.Close>
+            <Button
+              className="h-10"
+              disabled={!canCreate()}
+              onClick={handleCreate}
+              loading={creating}
+            >
+              <ResumeIcon />
+              Create More
+            </Button>
+          </Flex>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>

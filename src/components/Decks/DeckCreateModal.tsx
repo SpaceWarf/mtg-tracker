@@ -1,4 +1,10 @@
-import { InfoCircledIcon, Pencil1Icon, PlusIcon } from "@radix-ui/react-icons";
+import {
+  CheckIcon,
+  Cross2Icon,
+  InfoCircledIcon,
+  Pencil1Icon,
+  PlusIcon,
+} from "@radix-ui/react-icons";
 import {
   Button,
   Callout,
@@ -171,12 +177,14 @@ export function DeckCreateModal() {
 
         <Flex gap="3" mt="4" justify="between">
           <Dialog.Close>
-            <Button variant="soft" color="gray">
-              Cancel
+            <Button className="h-10" variant="outline">
+              <Cross2Icon /> Cancel
             </Button>
           </Dialog.Close>
           <Dialog.Close disabled={!canSave()} onClick={handleCreate}>
-            <Button>Save</Button>
+            <Button className="h-10">
+              <CheckIcon /> Save
+            </Button>
           </Dialog.Close>
         </Flex>
       </Dialog.Content>

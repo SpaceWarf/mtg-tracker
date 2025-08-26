@@ -21,10 +21,10 @@ export class ArchidektService {
     }
   }
 
-  static async syncDeckDetails(deck: DbDeck) {
+  static async syncDeckDetails(deck: DbDeck): Promise<DbDeck> {
     if (!deck.externalId) {
       console.log("Sync Skipped: Deck has no external ID", deck.name);
-      return;
+      return Promise.resolve(deck);
     }
 
     try {
@@ -56,6 +56,7 @@ export class ArchidektService {
       };
 
       await DeckService.update(deck.id, update);
+      return Promise.resolve(update);
     } catch (error) {
       return Promise.reject(error);
     }
