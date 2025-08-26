@@ -1,11 +1,10 @@
-import { Pencil1Icon } from "@radix-ui/react-icons";
+import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
 import {
   Button,
   Dialog,
   Flex,
   Grid,
   Heading,
-  IconButton,
   TextArea,
   TextField,
 } from "@radix-ui/themes";
@@ -18,10 +17,12 @@ import { isDateValid } from "../../utils/Date";
 import { GamePlayerEditSection } from "./GamePlayerEditSection";
 
 type OwnProps = {
+  open: boolean;
   game: DbGame;
+  onClose: () => void;
 };
 
-export function GameEditModal({ game }: OwnProps) {
+export function GameEditModal({ open, game, onClose }: OwnProps) {
   const navigate = useNavigate();
   const [date, setDate] = useState<string>(game.date);
   const [player1, setPlayer1] = useState<GamePlayer>(game.player1);
@@ -44,11 +45,6 @@ export function GameEditModal({ game }: OwnProps) {
     navigate(0);
   }
 
-  async function handleDelete() {
-    await GameService.delete(game.id);
-    navigate(0);
-  }
-
   function handleOpenChange(open: boolean) {
     if (!open) {
       setDate(game.date);
@@ -57,17 +53,12 @@ export function GameEditModal({ game }: OwnProps) {
       setPlayer3(game.player3);
       setPlayer4(game.player4);
       setComments(game.comments);
+      onClose();
     }
   }
 
   return (
-    <Dialog.Root onOpenChange={handleOpenChange}>
-      <Dialog.Trigger>
-        <IconButton variant="soft">
-          <Pencil1Icon width="18" height="18" />
-        </IconButton>
-      </Dialog.Trigger>
-
+    <Dialog.Root open={open} onOpenChange={handleOpenChange}>
       <Dialog.Description></Dialog.Description>
 
       <Dialog.Content>
@@ -123,19 +114,18 @@ export function GameEditModal({ game }: OwnProps) {
         </div>
 
         <Flex gap="3" mt="4" justify="between">
-          <Dialog.Close onClick={handleDelete}>
-            <Button color="red">Delete</Button>
+          <Dialog.Close>
+            <Button className="h-10" variant="outline">
+              <Cross2Icon />
+              Cancel
+            </Button>
           </Dialog.Close>
-          <Flex gap="3">
-            <Dialog.Close>
-              <Button variant="soft" color="gray">
-                Cancel
-              </Button>
-            </Dialog.Close>
-            <Dialog.Close disabled={!isDateValid(date)} onClick={handleSave}>
-              <Button>Save</Button>
-            </Dialog.Close>
-          </Flex>
+          <Dialog.Close disabled={!isDateValid(date)} onClick={handleSave}>
+            <Button className="h-10">
+              <CheckIcon />
+              Save
+            </Button>
+          </Dialog.Close>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>

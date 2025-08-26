@@ -1,6 +1,19 @@
-import { Card, Flex, Grid, Separator } from "@radix-ui/themes";
-import { useCallback } from "react";
+import {
+  DotsVerticalIcon,
+  Pencil1Icon,
+  TrashIcon,
+} from "@radix-ui/react-icons";
+import {
+  Card,
+  DropdownMenu,
+  Flex,
+  Grid,
+  IconButton,
+  Separator,
+} from "@radix-ui/themes";
+import { useCallback, useState } from "react";
 import { DbGame, GamePlayer } from "../../state/Game";
+import { GameDeleteModal } from "./GameDeleteModal";
 import { GameEditModal } from "./GameEditModal";
 import { GamePlayerSection } from "./GamePlayerSection";
 
@@ -10,6 +23,9 @@ type OwnProps = {
 };
 
 export function GameCard({ game, editable }: OwnProps) {
+  const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+
   const orderedPlayerNames = [
     game.player1.playerObj?.name ?? "",
     game.player2.playerObj?.name ?? "",
@@ -35,24 +51,73 @@ export function GameCard({ game, editable }: OwnProps) {
   );
 
   return (
-    <Card size="3">
-      {editable && (
-        <Flex gap="3" className="absolute right-3 top-5" justify="end">
-          <GameEditModal game={game} />
+    <>
+      {editModalOpen && (
+        <GameEditModal
+          open={editModalOpen}
+          game={game}
+          onClose={() => setEditModalOpen(false)}
+        />
+      )}
+      {deleteModalOpen && (
+        <GameDeleteModal
+          open={deleteModalOpen}
+          game={game}
+          onClose={() => setDeleteModalOpen(false)}
+        />
+      )}
+      <Card size="3">
+        <Flex gap="3" justify="between">
+          <Flex flexGrow="1">
+            <Grid columns="2" rows="2" width="100%" gap="5">
+              <GamePlayerSection
+                player={getPlayerbyName(orderedPlayerNames[0])}
+              />
+              <GamePlayerSection
+                player={getPlayerbyName(orderedPlayerNames[1])}
+              />
+              <GamePlayerSection
+                player={getPlayerbyName(orderedPlayerNames[2])}
+              />
+              <GamePlayerSection
+                player={getPlayerbyName(orderedPlayerNames[3])}
+              />
+            </Grid>
+          </Flex>
+          {editable && (
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>
+                <IconButton variant="soft">
+                  <DotsVerticalIcon width="18" height="18" />
+                </IconButton>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content>
+                <DropdownMenu.Item
+                  className="mb-1"
+                  onClick={() => setEditModalOpen(true)}
+                >
+                  <Pencil1Icon width="18" height="18" />
+                  Edit
+                </DropdownMenu.Item>
+                <DropdownMenu.Separator />
+                <DropdownMenu.Item
+                  color="red"
+                  onClick={() => setDeleteModalOpen(true)}
+                >
+                  <TrashIcon width="18" height="18" />
+                  Delete
+                </DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+          )}
         </Flex>
-      )}
-      <Grid columns="2" rows="2" width="auto" gap="5">
-        <GamePlayerSection player={getPlayerbyName(orderedPlayerNames[0])} />
-        <GamePlayerSection player={getPlayerbyName(orderedPlayerNames[1])} />
-        <GamePlayerSection player={getPlayerbyName(orderedPlayerNames[2])} />
-        <GamePlayerSection player={getPlayerbyName(orderedPlayerNames[3])} />
-      </Grid>
-      {game.comments && (
-        <>
-          <Separator className="mt-5 mb-3" size="4" />
-          <p>{game.comments}</p>
-        </>
-      )}
-    </Card>
+        {game.comments && (
+          <>
+            <Separator className="mt-5 mb-3" size="4" />
+            <p>{game.comments}</p>
+          </>
+        )}
+      </Card>
+    </>
   );
 }
