@@ -102,6 +102,7 @@ export function GameChangersViewer() {
             "Colorless",
             "Multicolor",
             "Commanders",
+            "Land",
           ]}
         />
       ) : (
