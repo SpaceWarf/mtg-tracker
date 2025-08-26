@@ -239,19 +239,5 @@ export function populateDeckDetails(
     cards: deckDetails.cards,
     categories: deckDetails.categories,
   };
-  return {
-    ...deck,
-    gamesPlayed: 0,
-    winCount: 0,
-    winRate: 0,
-    gameChangers: getDeckGameChanger(deck, gameChangers),
-    massLandDenials: getDeckMassLandDenial(deck),
-    extraTurns: getDeckExtraTurn(deck),
-    tutors: getDeckTutor(deck),
-    combos: (deck.possibleCombos ?? []).filter((possibleCombo) =>
-      possibleCombo.cards.every((comboCard) =>
-        deck.cards?.find((card) => card.name === comboCard)
-      )
-    ),
-  };
+  return populateDeck(deck, [], gameChangers);
 }
