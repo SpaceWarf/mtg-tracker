@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import { CardDiff, CardDiffItem } from "../state/CardDiff";
 import { DbDeck, DeckWithStats } from "../state/Deck";
 import { DeckCardDetails, DeckDetails } from "../state/DeckDetails";
@@ -199,4 +200,58 @@ export function getAggregatedCardDiff(
   }
 
   return aggregatedDiff;
+}
+
+export function populateDeck(
+  deck: DbDeck,
+  games: DbGame[],
+  gameChangers: DeckCardDetails[]
+): DeckWithStats {
+  return {
+    ...cloneDeep(deck),
+    gamesPlayed: getDeckGamesCount(deck, games),
+    winCount: getDeckWinCount(deck, games),
+    winRate: getDeckWinRate(deck, games),
+    gameChangers: getDeckGameChanger(deck, gameChangers),
+    massLandDenials: getDeckMassLandDenial(deck),
+    extraTurns: getDeckExtraTurn(deck),
+    tutors: getDeckTutor(deck),
+    combos: (deck.possibleCombos ?? []).filter((possibleCombo) =>
+      possibleCombo.cards.every((comboCard) =>
+        deck.cards?.find((card) => card.name === comboCard)
+      )
+    ),
+  };
+}
+
+export function populateDeckDetails(
+  deckDetails: DeckDetails,
+  gameChangers: DeckCardDetails[]
+): DeckWithStats {
+  const deck: DbDeck = {
+    ...deckDetails,
+    externalId: deckDetails.id,
+    name: deckDetails.title,
+    gameChangersDeck: false,
+    latestVersionId: "",
+    versions: [],
+    possibleCombos: [],
+    cards: deckDetails.cards,
+    categories: deckDetails.categories,
+  };
+  return {
+    ...deck,
+    gamesPlayed: 0,
+    winCount: 0,
+    winRate: 0,
+    gameChangers: getDeckGameChanger(deck, gameChangers),
+    massLandDenials: getDeckMassLandDenial(deck),
+    extraTurns: getDeckExtraTurn(deck),
+    tutors: getDeckTutor(deck),
+    combos: (deck.possibleCombos ?? []).filter((possibleCombo) =>
+      possibleCombo.cards.every((comboCard) =>
+        deck.cards?.find((card) => card.name === comboCard)
+      )
+    ),
+  };
 }

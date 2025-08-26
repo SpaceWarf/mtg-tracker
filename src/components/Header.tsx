@@ -74,6 +74,12 @@ export function Header({ children }: OwnProps) {
             >
               <Link to="/game-changers">Game Changers</Link>
             </TabNav.Link>
+            <TabNav.Link
+              asChild
+              active={location.pathname === "/deck-validator"}
+            >
+              <Link to="/deck-validator">Deck Validator</Link>
+            </TabNav.Link>
             {/* <TabNav.Link `asChild active={location.pathname === "/rewind"}>
               <Link to="/rewind">Rewind</Link>
             </TabNav.Link>` */}

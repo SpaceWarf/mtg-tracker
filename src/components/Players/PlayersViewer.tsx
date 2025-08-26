@@ -121,7 +121,7 @@ export function PlayersViewer() {
   }
 
   return (
-    <div className="p-5 w-full" style={{ maxWidth: "1750px" }}>
+    <div className="p-5 w-full max-w-[1750px]">
       <Flex className="mb-5" justify="between">
         <Flex gap="5">
           <div className="w-60">

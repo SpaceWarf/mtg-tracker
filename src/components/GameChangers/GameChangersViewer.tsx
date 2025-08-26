@@ -53,7 +53,7 @@ export function GameChangersViewer() {
   }
 
   return (
-    <div className="p-5 w-full" style={{ maxWidth: "1750px" }}>
+    <div className="p-5 w-full max-w-[1750px]">
       <Flex align="center" justify="between">
         <CardListFilters
           hasVersions={(deck?.versions?.length ?? 0) > 0}

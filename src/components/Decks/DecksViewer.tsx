@@ -24,7 +24,7 @@ import { DeckSyncModal } from "./DeckSyncModal";
 export function DecksViewer() {
   const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { populatedDecks, populating } = usePopulatedDecks();
+
   const [search, setSearch] = useState<string>("");
   const [sortFctKey, setSortFctKey] = useState<DeckSortFctKey>(
     DeckSortFctKey.NAME_ASC
@@ -32,6 +32,8 @@ export function DecksViewer() {
   const [visiblePlayers, setVisiblePlayers] = useState<string[]>([]);
   const [bracket, setBracket] = useState<Bracket>();
   const [identity, setIdentity] = useState<IdentityLabel>();
+
+  const { populatedDecks, populating } = usePopulatedDecks();
   const [filteredDecks, setFilteredDecks] = useState<DeckWithStats[]>([]);
 
   useEffect(() => {
@@ -64,10 +66,6 @@ export function DecksViewer() {
     }
   }, [searchParams]);
 
-  function loading(): boolean {
-    return populating;
-  }
-
   function handleSort(value: string) {
     if (!value) {
       searchParams.delete("sort");
@@ -77,12 +75,12 @@ export function DecksViewer() {
     setSearchParams(searchParams);
   }
 
-  if (loading() || !populatedDecks.length) {
+  if (populating || !populatedDecks.length) {
     return <Spinner className="mt-5" size="3" />;
   }
 
   return (
-    <div className="p-5 w-full" style={{ maxWidth: "1750px" }}>
+    <div className="p-5 w-full max-w-[1750px]">
       <Flex className="mb-5" justify="between">
         <Flex gap="5">
           <div className="w-60">
