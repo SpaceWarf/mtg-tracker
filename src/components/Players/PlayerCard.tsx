@@ -1,20 +1,10 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   DotsVerticalIcon,
   ExternalLinkIcon,
   Pencil1Icon,
   TrashIcon,
 } from "@radix-ui/react-icons";
-import {
-  Avatar,
-  Card,
-  DropdownMenu,
-  Flex,
-  Heading,
-  IconButton,
-  Tabs,
-} from "@radix-ui/themes";
+import { Card, DropdownMenu, Flex, IconButton, Tabs } from "@radix-ui/themes";
 import { useState } from "react";
 import { ArchidektService } from "../../services/Archidekt";
 import { DbDeck } from "../../state/Deck";
@@ -24,6 +14,7 @@ import { PlayerDeckStats } from "./PlayerDeckStats";
 import { PlayerDeleteModal } from "./PlayerDeleteModal";
 import { PlayerEditModal } from "./PlayerEditModal";
 import { PlayerGameStats } from "./PlayerGameStats";
+import { PlayerHeader } from "./PlayerHeader";
 
 type OwnProps = {
   player: PlayerWithStats;
@@ -86,17 +77,10 @@ export function PlayerCard({
       )}
       <Card size="3">
         <Flex>
-          <Flex className="mb-1" gap="3" align="center" flexGrow={"1"}>
-            <Avatar
-              src={`/img/pfp/${player.id}.webp`}
-              fallback={<FontAwesomeIcon icon={faUser} />}
-              radius="full"
-              size="5"
-            />
-            <Heading>{player.name}</Heading>
+          <Flex mb="1" flexGrow="1">
+            <PlayerHeader player={player} />
           </Flex>
           <Flex gap="3" justify="end">
-            {/* {editable && <PlayerEditModal player={player} />} */}
             {(editable || player.externalId) && (
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { PlayerService } from "../../services/Player";
 import { PlayerWithStats } from "../../state/Player";
+import { PlayerHeader } from "./PlayerHeader";
 
 type OwnProps = {
   open: boolean;
@@ -38,6 +39,9 @@ export function PlayerDeleteModal({ open, player, onClose }: OwnProps) {
           Are you sure you want to delete this player? This will remove them
           from all associated games and <b>cannot be undone</b>.
         </Text>
+        <Flex mt="5" mb="7" justify="center">
+          <PlayerHeader player={player} />
+        </Flex>
         <Flex gap="3" justify="between" mt="4">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
