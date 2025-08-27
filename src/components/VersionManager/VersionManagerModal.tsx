@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import "../../assets/styles/VersionManagerModal.scss";
 import { useGameChangers } from "../../hooks/useGameChangers";
+import { useGames } from "../../hooks/useGames";
 import { useMousePosition } from "../../hooks/useMousePosition";
 import { DeckService } from "../../services/Deck";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
@@ -28,6 +29,7 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
   const navigate = useNavigate();
   const mousePosition = useMousePosition();
   const { gameChangers } = useGameChangers();
+  const { dbGames } = useGames();
 
   const [merging, setMerging] = useState<boolean>(false);
   const [selectedVersions, setSelectedVersions] = useState<string[]>([]);
@@ -57,8 +59,7 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
     }
 
     const indices: number[] = selectedVersions
-      .map((id) => deck.versions?.findIndex((v) => v.id === id))
-      .filter((idx): idx is number => idx !== -1)
+      .map((id) => (deck.versions || []).findIndex((v) => v.id === id))
       .sort((a, b) => a - b);
 
     for (let i = 1; i < indices.length; i++) {
@@ -70,9 +71,21 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
     return true;
   }, [deck, selectedVersions]);
 
+  const usedVersion = useMemo(() => {
+    return selectedVersions.find((version) =>
+      dbGames?.some(
+        (game) =>
+          game.player1.deckVersion === version ||
+          game.player2.deckVersion === version ||
+          game.player3.deckVersion === version ||
+          game.player4.deckVersion === version
+      )
+    );
+  }, [dbGames, selectedVersions]);
+
   const canMerge = useMemo(() => {
-    return hasVersions && areVersionsContinuous;
-  }, [hasVersions, areVersionsContinuous]);
+    return hasVersions && areVersionsContinuous && !usedVersion;
+  }, [hasVersions, areVersionsContinuous, usedVersion]);
 
   useEffect(() => {
     setPreviewVersions(null);
@@ -161,16 +174,8 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
           <>
             <Flex gap="5">
               <DeckHeader deck={populatedDeck} />
-              <Flex gap="5" align="end" mb="3">
-                <Flex
-                  direction="column"
-                  width="300px"
-                  mb={
-                    !areVersionsContinuous && selectedVersions.length > 1
-                      ? "0"
-                      : "19px"
-                  }
-                >
+              <Flex gap="5" mb="3">
+                <Flex direction="column" width="300px">
                   <Heading className="mb-1" size="3">
                     Version to merge
                   </Heading>
@@ -186,9 +191,18 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
                       Selected versions are not continuous.
                     </Text>
                   )}
+                  {usedVersion && (
+                    <Text size="1" color="red" className="mt-1">
+                      Version{" "}
+                      {(deck.versions || []).findIndex(
+                        (version) => version.id === usedVersion
+                      ) + 2}{" "}
+                      is used in games and cannot be merged.
+                    </Text>
+                  )}
                 </Flex>
                 <Button
-                  className="h-10 mb-[19px]"
+                  className="h-10 mt-[24px]"
                   onClick={handlePreviewMerge}
                   disabled={!canMerge || merging || !!previewVersions}
                 >
@@ -198,7 +212,7 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
                 {previewVersions && (
                   <Flex gap="5">
                     <Button
-                      className="h-10 mb-[19px]"
+                      className="h-10 mt-[24px]"
                       onClick={handleConfirmMerge}
                       disabled={merging}
                       loading={merging}
@@ -207,7 +221,7 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
                       Confirm Merge
                     </Button>
                     <Button
-                      className="h-10 mb-[19px]"
+                      className="h-10 mt-[24px]"
                       variant="outline"
                       onClick={handleCancelMerge}
                       disabled={merging}
