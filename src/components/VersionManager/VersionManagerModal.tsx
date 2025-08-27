@@ -83,6 +83,15 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
       return;
     }
 
+    if (selectedVersions.includes("initial")) {
+      setPreviewVersions(
+        deck.versions.filter(
+          (version) => !selectedVersions.includes(version.id)
+        )
+      );
+      return;
+    }
+
     const versionsToAggregate = deck.versions.filter((v) =>
       selectedVersions.includes(v.id)
     );
