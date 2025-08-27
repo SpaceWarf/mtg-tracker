@@ -6,7 +6,7 @@
     }
   }
 
-  .rt-Card > div:first-child {
+  .rt-Card > div:first-child.selectable {
     cursor: pointer;
     &:hover > .rt-Heading {
       text-decoration: underline;

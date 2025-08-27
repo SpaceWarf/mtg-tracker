@@ -2,13 +2,13 @@ import { Flex, Tabs, Text } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useDecks } from "../../hooks/useDecks";
+import { useMousePosition } from "../../hooks/useMousePosition";
 import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { CARD_SORT_FCTS } from "../../state/CardSortFcts";
 import { CategoryCardList } from "../../state/CategoryCardList";
 import { DbDeck } from "../../state/Deck";
 import { DeckCardDetails, DeckCategoryDetails } from "../../state/DeckDetails";
-import { MousePosition } from "../../state/MousePosition";
 import { removeDuplicatesByKey } from "../../utils/Array";
 import { getLongDateString } from "../../utils/Date";
 import { getAggregatedCardDiff } from "../../utils/Deck";
@@ -37,12 +37,7 @@ export function CardList({
 }: OwnProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const { dbDecks } = useDecks();
-  const [mousePosition, setMousePosition] = useState<MousePosition>({
-    x: 0,
-    y: 0,
-    distanceToBottom: 0,
-    distanceToRight: 0,
-  });
+  const mousePosition = useMousePosition();
   const [versionId, setVersionId] = useState<string>("latest");
 
   const versions = useMemo(() => {
@@ -277,26 +272,6 @@ export function CardList({
       return acc;
     }, [] as CategoryCardList[][]);
   }, [categoryCardLists, adjustedColumnCount]);
-
-  useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      const windowHeight = window.innerHeight;
-      const distanceToBottom = windowHeight - e.clientY;
-      const distanceToRight = window.innerWidth - e.clientX;
-      setMousePosition({
-        x: e.clientX,
-        y: e.clientY,
-        distanceToBottom,
-        distanceToRight,
-      });
-    };
-
-    window.addEventListener("mousemove", updateMousePosition);
-
-    return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
-    };
-  }, []);
 
   useEffect(() => {
     const versionId = searchParams.get("version");

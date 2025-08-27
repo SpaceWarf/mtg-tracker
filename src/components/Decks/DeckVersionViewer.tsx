@@ -15,8 +15,8 @@ type OwnProps = {
   sortCardsBy: CardSortFctKey;
   mousePosition: MousePosition;
   gameChangers: DeckCardDetails[];
-  selectedVersionId: string;
-  onClickVersion: (id: string) => void;
+  selectedVersionId?: string;
+  onClickVersion?: (id: string) => void;
 };
 
 export function DeckVersionViewer({
@@ -67,18 +67,20 @@ export function DeckVersionViewer({
       <div>
         <Card className={`w-[225px] ${selectedIndex === -1 ? "selected" : ""}`}>
           <Flex
+            className={`${onClickVersion ? "selectable" : ""}`}
             align="end"
             gap="2"
             mb="3"
-            onClick={() => onClickVersion(versions[0].id)}
-            style={{ cursor: "pointer" }}
+            onClick={() => onClickVersion?.(versions[0].id)}
           >
             <Heading>Version 1</Heading>
             <Text>{getLongDateString(deck.createdAt, false)}</Text>
           </Flex>
         </Card>
       </div>
-      <div className="arrow-connector mt-6" />
+      {deck.versions && deck.versions.length > 0 && (
+        <div className="arrow-connector mt-6" />
+      )}
       {versions.map((_, index) => (
         <Flex key={`version-${index}`}>
           <div>
@@ -88,13 +90,13 @@ export function DeckVersionViewer({
               }`}
             >
               <Flex
+                className={`${onClickVersion ? "selectable" : ""}`}
                 align="end"
                 gap="2"
                 mb="3"
                 onClick={() =>
-                  onClickVersion(versions[index + 1]?.id ?? "latest")
+                  onClickVersion?.(versions[index + 1]?.id ?? "latest")
                 }
-                style={{ cursor: "pointer" }}
               >
                 <Heading>Version {index + 2}</Heading>
                 <Text>{getVersionDate(index)}</Text>

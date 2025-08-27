@@ -1,4 +1,5 @@
 import { cloneDeep } from "lodash";
+import { uuidv7 } from "uuidv7";
 import { CardDiff, CardDiffItem } from "../state/CardDiff";
 import { DbDeck, DeckWithStats } from "../state/Deck";
 import { DeckCardDetails, DeckDetails } from "../state/DeckDetails";
@@ -154,12 +155,16 @@ export function getAggregatedCardDiff(
   }
 
   const versionsToAggregate = versions.slice(versionIdx, versions.length);
+  return mergeDiffs(versionsToAggregate);
+}
+
+export function mergeDiffs(versions: DeckVersion[]): CardDiff {
   const weightMap = new Map<
     string,
     { card: DeckCardDetails; weight: number }
   >();
 
-  versionsToAggregate.forEach((version) => {
+  versions.forEach((version) => {
     version.cardDiff.added.forEach((diff) => {
       const entry = weightMap.get(diff.card.name);
       if (entry) {
@@ -200,6 +205,14 @@ export function getAggregatedCardDiff(
   }
 
   return aggregatedDiff;
+}
+
+export function mergeVersions(versions: DeckVersion[]): DeckVersion {
+  return {
+    id: uuidv7(),
+    createdAt: versions[versions.length - 1].createdAt,
+    cardDiff: mergeDiffs(versions),
+  };
 }
 
 export function populateDeck(

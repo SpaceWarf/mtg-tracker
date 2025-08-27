@@ -2,6 +2,7 @@ import {
   DotsVerticalIcon,
   ExternalLinkIcon,
   Pencil1Icon,
+  SliderIcon,
   TrashIcon,
   UpdateIcon,
 } from "@radix-ui/react-icons";
@@ -20,6 +21,7 @@ import { ArchidektService } from "../../services/Archidekt";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckCardView } from "../../state/DeckCardView";
 import { getDateTimeString } from "../../utils/Date";
+import { VersionManagerModal } from "../VersionManager/VersionManagerModal";
 import { DeckCardListModal } from "./DeckCardListModal";
 import { DeckDeleteModal } from "./DeckDeleteModal";
 import { DeckDetailsTable } from "./DeckDetailsTable";
@@ -43,6 +45,7 @@ export function DeckCard({
   const navigate = useNavigate();
   const [view, setView] = useState<DeckCardView>(DeckCardView.DECK_STATS);
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
+  const [versionManagerOpen, setVersionManagerOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [syncing, setSyncing] = useState<boolean>(false);
 
@@ -65,6 +68,13 @@ export function DeckCard({
           open={editModalOpen}
           deck={deck}
           onClose={() => setEditModalOpen(false)}
+        />
+      )}
+      {versionManagerOpen && (
+        <VersionManagerModal
+          open={versionManagerOpen}
+          deck={deck}
+          onClose={() => setVersionManagerOpen(false)}
         />
       )}
       {deleteModalOpen && (
@@ -112,6 +122,15 @@ export function DeckCard({
                   <DropdownMenu.Item className="mb-1" onClick={handleSync}>
                     <UpdateIcon width="18" height="18" />
                     Sync
+                  </DropdownMenu.Item>
+                )}
+                {editable && deck.versions && deck.versions.length > 0 && (
+                  <DropdownMenu.Item
+                    className="mb-1"
+                    onClick={() => setVersionManagerOpen(true)}
+                  >
+                    <SliderIcon width="18" height="18" />
+                    Manage versions
                   </DropdownMenu.Item>
                 )}
                 {editable && <DropdownMenu.Separator />}

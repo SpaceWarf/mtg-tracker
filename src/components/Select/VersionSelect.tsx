@@ -5,10 +5,11 @@ import ReactSelect, {
   SingleValue,
 } from "react-select";
 import { useDecks } from "../../hooks/useDecks";
-import { useDeckSelectOptions } from "../../hooks/useDeckSelectOptions";
+import { useVersionSelectOptions } from "../../hooks/useVersionSelectOptions";
 import { SelectOption } from "../../state/SelectOption";
 
 type SharedProps = {
+  deckId: string;
   menuPlacement?: "top" | "bottom";
   disabled?: boolean;
 };
@@ -25,25 +26,8 @@ type SingleProps = {
   onChange: (value: string, version: string) => void;
 } & SharedProps;
 
-function CustomOption({
-  data,
-  innerProps,
-}: {
-  data: SelectOption;
-  innerProps: React.HTMLAttributes<HTMLDivElement>;
-}) {
-  return (
-    <div
-      className="select-option-container deck-select-option-container"
-      {...innerProps}
-    >
-      <span>{data.label}</span>
-      <span className="detail">{data.detail}</span>
-    </div>
-  );
-}
-
-export function DeckSelect({
+export function VersionSelect({
+  deckId,
   value,
   isMulti,
   onChange,
@@ -51,14 +35,19 @@ export function DeckSelect({
   disabled = false,
 }: MultiProps | SingleProps) {
   const { dbDecks, loadingDecks } = useDecks();
-  const deckSelectOptions = useDeckSelectOptions(dbDecks ?? []);
+  const deck = useMemo(() => {
+    return dbDecks?.find((deck) => deck.id === deckId);
+  }, [dbDecks, deckId]);
+  const versionSelectOptions = useVersionSelectOptions(deck?.versions ?? []);
   const optionsValue = useMemo(() => {
     if (isMulti) {
-      return deckSelectOptions.filter((option) => value.includes(option.value));
+      return versionSelectOptions.filter((option) =>
+        value.includes(option.value)
+      );
     } else {
-      return deckSelectOptions.find((option) => option.value === value);
+      return versionSelectOptions.find((option) => option.value === value);
     }
-  }, [isMulti, deckSelectOptions, value]);
+  }, [isMulti, versionSelectOptions, value]);
 
   const filterOption = createFilter<SelectOption>({
     stringify: (option) => `${option.label} ${option.data.detail}`,
@@ -80,10 +69,9 @@ export function DeckSelect({
     <ReactSelect
       className="react-select-container min-w-60"
       classNamePrefix="react-select"
-      name="deckSelect"
-      components={{ Option: CustomOption }}
+      name="versionSelect"
       filterOption={filterOption}
-      options={deckSelectOptions}
+      options={versionSelectOptions}
       value={optionsValue}
       onChange={handleChangeMulti}
       closeMenuOnSelect={false}
@@ -96,10 +84,9 @@ export function DeckSelect({
     <ReactSelect
       className="react-select-container"
       classNamePrefix="react-select"
-      name="deckSelect"
-      components={{ Option: CustomOption }}
+      name="versionSelect"
       filterOption={filterOption}
-      options={deckSelectOptions}
+      options={versionSelectOptions}
       value={optionsValue}
       onChange={handleChangeSingle}
       isLoading={loadingDecks}
