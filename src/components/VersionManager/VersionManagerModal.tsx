@@ -31,7 +31,9 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
 
   const [merging, setMerging] = useState<boolean>(false);
   const [selectedVersions, setSelectedVersions] = useState<string[]>([]);
-  const [previewVersions, setPreviewVersions] = useState<DeckVersion[]>([]);
+  const [previewVersions, setPreviewVersions] = useState<DeckVersion[] | null>(
+    null
+  );
 
   const populatedDeck = useMemo(() => {
     if (!deck) {
@@ -73,7 +75,7 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
   }, [hasVersions, areVersionsContinuous]);
 
   useEffect(() => {
-    setPreviewVersions([]);
+    setPreviewVersions(null);
   }, [selectedVersions]);
 
   function handlePreviewMerge() {
@@ -112,7 +114,7 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
   }
 
   async function handleConfirmMerge() {
-    if (!deck || !deck.versions) {
+    if (!deck || !previewVersions) {
       return;
     }
 
@@ -127,7 +129,7 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
   }
 
   async function handleCancelMerge() {
-    setPreviewVersions([]);
+    setPreviewVersions(null);
   }
 
   function handleOpenChange(open: boolean): void {
@@ -179,12 +181,12 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
                 <Button
                   className="h-10 mb-[19px]"
                   onClick={handlePreviewMerge}
-                  disabled={!canMerge || merging || previewVersions.length > 0}
+                  disabled={!canMerge || merging || !!previewVersions}
                 >
                   <EyeOpenIcon />
                   Preview Merge
                 </Button>
-                {previewVersions.length > 0 && (
+                {previewVersions && (
                   <Flex gap="5">
                     <Button
                       className="h-10 mb-[19px]"
@@ -208,7 +210,7 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
                 )}
               </Flex>
             </Flex>
-            {previewVersions.length > 0 && (
+            {previewVersions && (
               <div className="preview-container mt-5">
                 <Heading className="mb-3">Preview</Heading>
                 <Flex justify="center">
