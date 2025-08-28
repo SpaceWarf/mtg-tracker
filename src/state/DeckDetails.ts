@@ -1,4 +1,5 @@
 import { ArchidektReduxCardManaProduction } from "./ArchidektReduxData";
+import { Combo } from "./Combo";
 
 export interface DeckDetails {
   id: string;
@@ -18,6 +19,7 @@ export interface DeckDetails {
   colourIdentity: string[];
   cards: DeckCardDetails[];
   categories: DeckCategoryDetails[];
+  possibleCombos: Combo[];
 }
 
 export interface DeckCardDetails {

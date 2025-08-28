@@ -248,7 +248,6 @@ export function populateDeckDetails(
     gameChangersDeck: false,
     latestVersionId: "",
     versions: [],
-    possibleCombos: [],
     cards: deckDetails.cards,
     categories: deckDetails.categories,
   };

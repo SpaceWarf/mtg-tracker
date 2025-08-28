@@ -27,7 +27,6 @@ export function DeckValidatorViewer() {
     try {
       const deckDetails = await ArchidektService.getDeckDetailsById(externalId);
       setDeckDetails(deckDetails);
-      console.log(deckDetails);
     } catch (error) {
       console.error(error);
       setError("Invalid External ID.");

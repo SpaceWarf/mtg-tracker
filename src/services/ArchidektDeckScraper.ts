@@ -46,6 +46,7 @@ export class ArchidektDeckScraper extends HTMLScraper {
       colourIdentity: this.getColourIdentity(),
       cards: this.getCards(categories),
       categories: categories,
+      possibleCombos: [],
     };
   }
 

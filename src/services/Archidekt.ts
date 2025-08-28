@@ -14,8 +14,16 @@ export class ArchidektService {
       const scraper = new ArchidektDeckScraper(id);
       await scraper.scrape();
       const deckDetails = scraper.getDeckDetails(id);
+      console.log(deckDetails);
+      const possibleCombos = await EdhRecService.getDeck2CardCombos(
+        deckDetails
+      );
+      console.log(possibleCombos);
 
-      return Promise.resolve(deckDetails);
+      return Promise.resolve({
+        ...deckDetails,
+        possibleCombos,
+      });
     } catch (error) {
       return Promise.reject(error);
     }
@@ -30,7 +38,6 @@ export class ArchidektService {
     try {
       const deckDetails: DeckDetails =
         await ArchidektService.getDeckDetailsById(deck.externalId);
-      const possibleCombos = await EdhRecService.getDeck2CardCombos(deck);
       const newVersion = ArchidektService.createDeckVersion(deck, deckDetails);
 
       const update: DbDeck = {
@@ -52,7 +59,7 @@ export class ArchidektService {
           ? [...(deck.versions ?? []), newVersion]
           : deck.versions,
         latestVersionId: newVersion?.id ?? deck.latestVersionId,
-        possibleCombos,
+        possibleCombos: deckDetails.possibleCombos,
       };
 
       await DeckService.update(deck.id, update);

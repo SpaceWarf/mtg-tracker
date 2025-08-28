@@ -1,15 +1,15 @@
 import axios from "axios";
 import { Combo } from "../state/Combo";
-import { DbDeck } from "../state/Deck";
+import { DeckDetails } from "../state/DeckDetails";
 import { EdhRecCombo } from "../state/EdhRecCombos";
 
 export class EdhRecService {
-  static async getDeck2CardCombos(deck: DbDeck): Promise<Combo[]> {
-    if (!deck.commander) {
+  static async getDeck2CardCombos(deck: DeckDetails): Promise<Combo[]> {
+    if (!deck.commanders || deck.commanders.length === 0) {
       return Promise.resolve([]);
     }
 
-    const commander = deck.commander
+    const commander = deck.commanders[0]
       .split(" // ")[0]
       .replace(/ /g, "-")
       .replace(/(,|'|")/g, "")
