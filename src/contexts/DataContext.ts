@@ -17,7 +17,7 @@ type DataContextType = {
 };
 
 export const DataContext = createContext<DataContextType>({
-  year: Year.Y2025,
+  year: Year.ALL,
   setYear: () => {},
   games: [],
   setGames: () => {},
