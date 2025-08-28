@@ -21,13 +21,13 @@ import { ArchidektService } from "../../services/Archidekt";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckCardView } from "../../state/DeckCardView";
 import { getDateTimeString } from "../../utils/Date";
-import { VersionManagerModal } from "../VersionManager/VersionManagerModal";
 import { DeckCardListModal } from "./DeckCardListModal";
 import { DeckDeleteModal } from "./DeckDeleteModal";
 import { DeckDetailsTable } from "./DeckDetailsTable";
 import { DeckEditModal } from "./DeckEditModal";
 import { DeckHeader } from "./DeckHeader";
 import { DeckStatsTable } from "./DeckStatsTable";
+import { DeckVersionManagerModal } from "./DeckVersionManagerModal";
 
 type OwnProps = {
   deck: DeckWithStats;
@@ -71,7 +71,7 @@ export function DeckCard({
         />
       )}
       {versionManagerOpen && (
-        <VersionManagerModal
+        <DeckVersionManagerModal
           open={versionManagerOpen}
           deck={deck}
           onClose={() => setVersionManagerOpen(false)}

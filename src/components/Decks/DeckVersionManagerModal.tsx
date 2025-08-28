@@ -15,9 +15,9 @@ import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { DbDeck } from "../../state/Deck";
 import { DeckVersion } from "../../state/DeckVersion";
 import { mergeVersions, populateDeck } from "../../utils/Deck";
-import { DeckHeader } from "../Decks/DeckHeader";
-import { DeckVersionViewer } from "../Decks/DeckVersionViewer";
 import { VersionSelect } from "../Select/VersionSelect";
+import { DeckHeader } from "./DeckHeader";
+import { DeckVersionViewer } from "./DeckVersionViewer";
 
 type OwnProps = {
   open: boolean;
@@ -25,7 +25,7 @@ type OwnProps = {
   onClose: () => void;
 };
 
-export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
+export function DeckVersionManagerModal({ open, deck, onClose }: OwnProps) {
   const navigate = useNavigate();
   const mousePosition = useMousePosition();
   const { gameChangers } = useGameChangers();
@@ -172,7 +172,7 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
 
         {deck && populatedDeck && (
           <>
-            <Flex gap="5">
+            <Flex gap="5" mb="5">
               <DeckHeader deck={populatedDeck} />
               <Flex gap="5" mb="3">
                 <Flex direction="column" width="300px">
@@ -234,30 +234,26 @@ export function VersionManagerModal({ open, deck, onClose }: OwnProps) {
               </Flex>
             </Flex>
             {previewVersions && (
-              <div className="preview-container mt-5">
+              <div className="preview-container mb-5">
                 <Heading className="mb-3">Preview</Heading>
-                <Flex justify="center">
-                  <DeckVersionViewer
-                    deck={{
-                      ...deck,
-                      versions: previewVersions,
-                    }}
-                    sortCardsBy={CardSortFctKey.NAME_ASC}
-                    mousePosition={mousePosition}
-                    gameChangers={gameChangers}
-                  />
-                </Flex>
-              </div>
-            )}
-            {deck.versions && (
-              <Flex className="mt-5" justify="center">
                 <DeckVersionViewer
-                  deck={deck}
+                  deck={{
+                    ...deck,
+                    versions: previewVersions,
+                  }}
                   sortCardsBy={CardSortFctKey.NAME_ASC}
                   mousePosition={mousePosition}
                   gameChangers={gameChangers}
                 />
-              </Flex>
+              </div>
+            )}
+            {deck.versions && (
+              <DeckVersionViewer
+                deck={deck}
+                sortCardsBy={CardSortFctKey.NAME_ASC}
+                mousePosition={mousePosition}
+                gameChangers={gameChangers}
+              />
             )}
             {!deck.versions && <Text>No versions to manage.</Text>}
           </>
