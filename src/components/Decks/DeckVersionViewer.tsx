@@ -17,6 +17,7 @@ type OwnProps = {
   mousePosition: MousePosition;
   gameChangers: DeckCardDetails[];
   selectedVersionId?: string;
+  preview?: boolean;
   onClickVersion?: (id: string) => void;
 };
 
@@ -26,6 +27,7 @@ export function DeckVersionViewer({
   mousePosition,
   gameChangers,
   selectedVersionId,
+  preview,
   onClickVersion,
 }: OwnProps) {
   const [overflowActive, setOverflowActive] = useState<boolean>(false);
@@ -96,7 +98,10 @@ export function DeckVersionViewer({
   }
 
   return (
-    <div className="deck-version-viewer-container">
+    <div
+      className={`deck-version-viewer-container ${preview ? "preview" : ""}`}
+    >
+      {preview && <Heading className="preview-heading mb-3">Preview</Heading>}
       <Flex
         ref={overflowingDiv}
         className={`deck-version-viewer ${expanded ? "expanded" : ""}`}

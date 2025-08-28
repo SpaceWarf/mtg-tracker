@@ -1,11 +1,24 @@
 .deck-version-viewer-container {
   position: relative;
 
+  &.preview {
+    .deck-version-viewer {
+      border: 1px solid red;
+      padding-top: 35px;
+    }
+
+    .preview-heading {
+      position: absolute;
+      top: 5px;
+      left: 10px;
+    }
+  }
+
   .deck-version-viewer {
     overflow: scroll;
     border-radius: 10px;
     border: 1px solid #333;
-    padding: 25px;
+    padding: 25px 10px;
 
     &::before,
     &::after {

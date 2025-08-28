@@ -171,8 +171,8 @@ export function DeckVersionManagerModal({ open, deck, onClose }: OwnProps) {
         <Dialog.Title></Dialog.Title>
 
         {deck && populatedDeck && (
-          <>
-            <Flex gap="5" mb="5">
+          <Flex direction="column" gap="5">
+            <Flex gap="5">
               <DeckHeader deck={populatedDeck} />
               <Flex gap="5" mb="3">
                 <Flex direction="column" width="300px">
@@ -234,18 +234,16 @@ export function DeckVersionManagerModal({ open, deck, onClose }: OwnProps) {
               </Flex>
             </Flex>
             {previewVersions && (
-              <div className="preview-container mb-5">
-                <Heading className="mb-3">Preview</Heading>
-                <DeckVersionViewer
-                  deck={{
-                    ...deck,
-                    versions: previewVersions,
-                  }}
-                  sortCardsBy={CardSortFctKey.NAME_ASC}
-                  mousePosition={mousePosition}
-                  gameChangers={gameChangers}
-                />
-              </div>
+              <DeckVersionViewer
+                deck={{
+                  ...deck,
+                  versions: previewVersions,
+                }}
+                sortCardsBy={CardSortFctKey.NAME_ASC}
+                mousePosition={mousePosition}
+                gameChangers={gameChangers}
+                preview
+              />
             )}
             {deck.versions && (
               <DeckVersionViewer
@@ -256,7 +254,7 @@ export function DeckVersionManagerModal({ open, deck, onClose }: OwnProps) {
               />
             )}
             {!deck.versions && <Text>No versions to manage.</Text>}
-          </>
+          </Flex>
         )}
       </Dialog.Content>
     </Dialog.Root>
