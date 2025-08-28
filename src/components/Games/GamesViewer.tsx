@@ -31,10 +31,17 @@ export function GamesViewer() {
   const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [viewType, setViewType] = useState<GameViewType>(GameViewType.CARDS);
-  const [sortFctKey, setSortFctKey] = useState<SelectOption>({
-    value: GameSortFctKey.DATE_DESC,
-    label: getGameSortFctName(GameSortFctKey.DATE_DESC),
-  });
+  const [sortFctKey, setSortFctKey] = useState<SelectOption>(
+    searchParams.get("sort")
+      ? {
+          value: searchParams.get("sort") as GameSortFctKey,
+          label: getGameSortFctName(searchParams.get("sort") as GameSortFctKey),
+        }
+      : {
+          value: GameSortFctKey.DATE_DESC,
+          label: getGameSortFctName(GameSortFctKey.DATE_DESC),
+        }
+  );
 
   const { dbGames, loadingGames } = useGames();
   const [populatingGames, setPopulatingGames] = useState<boolean>(true);
@@ -42,12 +49,20 @@ export function GamesViewer() {
   const [filteredGames, setFilteredGames] = useState<DbGame[]>([]);
 
   const { dbPlayers, loadingPlayers } = usePlayers();
-  const [visiblePlayers, setVisiblePlayers] = useState<string[]>([]);
-  const [excludedPlayers, setExcludedPlayers] = useState<string[]>([]);
+  const [visiblePlayers, setVisiblePlayers] = useState<string[]>(
+    searchParams.get("players")?.split(",") ?? []
+  );
+  const [excludedPlayers, setExcludedPlayers] = useState<string[]>(
+    searchParams.get("excludedPlayers")?.split(",") ?? []
+  );
 
   const { dbDecks, loadingDecks } = useDecks();
-  const [visibleDecks, setVisibleDecks] = useState<string[]>([]);
-  const [excludedDecks, setExcludedDecks] = useState<string[]>([]);
+  const [visibleDecks, setVisibleDecks] = useState<string[]>(
+    searchParams.get("decks")?.split(",") ?? []
+  );
+  const [excludedDecks, setExcludedDecks] = useState<string[]>(
+    searchParams.get("excludedDecks")?.split(",") ?? []
+  );
 
   const getPlayerByIdFromContext = useCallback(
     (id: string): DbPlayer | undefined => {
@@ -116,28 +131,64 @@ export function GamesViewer() {
     excludedDecks,
   ]);
 
-  useEffect(() => {
-    const urlSortKey = searchParams.get("sort");
-    if (
-      urlSortKey &&
-      Object.values<string>(GameSortFctKey).includes(urlSortKey)
-    ) {
-      setSortFctKey({
-        value: urlSortKey as GameSortFctKey,
-        label: getGameSortFctName(urlSortKey as GameSortFctKey),
-      });
-    }
-  }, [searchParams]);
-
   function loading(): boolean {
     return loadingGames || loadingPlayers || loadingDecks || populatingGames;
   }
 
   function handleSort(value: string) {
+    setSortFctKey({
+      value: value as GameSortFctKey,
+      label: getGameSortFctName(value as GameSortFctKey),
+    });
+
     if (!value) {
       searchParams.delete("sort");
     } else {
       searchParams.set("sort", value);
+    }
+    setSearchParams(searchParams);
+  }
+
+  function handleSetVisiblePlayers(value: string[]) {
+    setVisiblePlayers(value);
+
+    if (value.length === 0) {
+      searchParams.delete("players");
+    } else {
+      searchParams.set("players", value.join(","));
+    }
+    setSearchParams(searchParams);
+  }
+
+  function handleSetExcludedPlayers(value: string[]) {
+    setExcludedPlayers(value);
+
+    if (value.length === 0) {
+      searchParams.delete("excludedPlayers");
+    } else {
+      searchParams.set("excludedPlayers", value.join(","));
+    }
+    setSearchParams(searchParams);
+  }
+
+  function handleSetVisibleDecks(value: string[]) {
+    setVisibleDecks(value);
+
+    if (value.length === 0) {
+      searchParams.delete("decks");
+    } else {
+      searchParams.set("decks", value.join(","));
+    }
+    setSearchParams(searchParams);
+  }
+
+  function handleSetExcludedDecks(value: string[]) {
+    setExcludedDecks(value);
+
+    if (value.length === 0) {
+      searchParams.delete("excludedDecks");
+    } else {
+      searchParams.set("excludedDecks", value.join(","));
     }
     setSearchParams(searchParams);
   }
@@ -188,7 +239,7 @@ export function GamesViewer() {
             </Heading>
             <PlayerSelect
               value={visiblePlayers}
-              onChange={setVisiblePlayers}
+              onChange={handleSetVisiblePlayers}
               isMulti
             />
           </div>
@@ -198,7 +249,7 @@ export function GamesViewer() {
             </Heading>
             <PlayerSelect
               value={excludedPlayers}
-              onChange={setExcludedPlayers}
+              onChange={handleSetExcludedPlayers}
               isMulti
             />
           </div>
@@ -208,7 +259,7 @@ export function GamesViewer() {
             </Heading>
             <DeckSelect
               value={visibleDecks}
-              onChange={setVisibleDecks}
+              onChange={handleSetVisibleDecks}
               isMulti
             />
           </div>
@@ -218,7 +269,7 @@ export function GamesViewer() {
             </Heading>
             <DeckSelect
               value={excludedDecks}
-              onChange={setExcludedDecks}
+              onChange={handleSetExcludedDecks}
               isMulti
             />
           </div>
