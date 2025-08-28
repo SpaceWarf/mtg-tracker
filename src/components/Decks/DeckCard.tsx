@@ -1,8 +1,9 @@
 import {
+  CommitIcon,
   DotsVerticalIcon,
   ExternalLinkIcon,
+  MagnifyingGlassIcon,
   Pencil1Icon,
-  SliderIcon,
   TrashIcon,
   UpdateIcon,
 } from "@radix-ui/react-icons";
@@ -87,65 +88,70 @@ export function DeckCard({
       <Card size="3">
         <Flex className="mb-3" justify="between">
           <DeckHeader deck={deck} size="small" />
-          {(editable || deck.externalId) && (
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger disabled={syncing}>
-                <IconButton variant="soft">
-                  <DotsVerticalIcon width="18" height="18" />
-                </IconButton>
-              </DropdownMenu.Trigger>
-              <DropdownMenu.Content>
-                {deck.externalId && (
-                  <DropdownMenu.Item
-                    className="mb-1"
-                    onClick={() =>
-                      window.open(
-                        ArchidektService.getDeckUrl(deck.externalId ?? ""),
-                        "_blank"
-                      )
-                    }
-                  >
-                    <ExternalLinkIcon width="18" height="18" />
-                    Open in Archidekt
-                  </DropdownMenu.Item>
-                )}
-                {editable && (
-                  <DropdownMenu.Item
-                    className="mb-1"
-                    onClick={() => setEditModalOpen(true)}
-                  >
-                    <Pencil1Icon width="18" height="18" />
-                    Edit
-                  </DropdownMenu.Item>
-                )}
-                {editable && (
-                  <DropdownMenu.Item className="mb-1" onClick={handleSync}>
-                    <UpdateIcon width="18" height="18" />
-                    Sync
-                  </DropdownMenu.Item>
-                )}
-                {editable && deck.versions && deck.versions.length > 0 && (
-                  <DropdownMenu.Item
-                    className="mb-1"
-                    onClick={() => setVersionManagerOpen(true)}
-                  >
-                    <SliderIcon width="18" height="18" />
-                    Manage versions
-                  </DropdownMenu.Item>
-                )}
-                {editable && <DropdownMenu.Separator />}
-                {editable && (
-                  <DropdownMenu.Item
-                    color="red"
-                    onClick={() => setDeleteModalOpen(true)}
-                  >
-                    <TrashIcon width="18" height="18" />
-                    Delete
-                  </DropdownMenu.Item>
-                )}
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
-          )}
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger disabled={syncing}>
+              <IconButton variant="soft">
+                <DotsVerticalIcon width="18" height="18" />
+              </IconButton>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content>
+              <DropdownMenu.Item
+                className="mb-1"
+                onClick={() => navigate(`/?decks=${deck.id}`)}
+              >
+                <MagnifyingGlassIcon width="18" height="18" />
+                Search Games
+              </DropdownMenu.Item>
+              {deck.externalId && (
+                <DropdownMenu.Item
+                  className="mb-1"
+                  onClick={() =>
+                    window.open(
+                      ArchidektService.getDeckUrl(deck.externalId ?? ""),
+                      "_blank"
+                    )
+                  }
+                >
+                  <ExternalLinkIcon width="18" height="18" />
+                  Open in Archidekt
+                </DropdownMenu.Item>
+              )}
+              {editable && (
+                <DropdownMenu.Item
+                  className="mb-1"
+                  onClick={() => setEditModalOpen(true)}
+                >
+                  <Pencil1Icon width="18" height="18" />
+                  Edit
+                </DropdownMenu.Item>
+              )}
+              {editable && (
+                <DropdownMenu.Item className="mb-1" onClick={handleSync}>
+                  <UpdateIcon width="18" height="18" />
+                  Sync
+                </DropdownMenu.Item>
+              )}
+              {editable && deck.versions && deck.versions.length > 0 && (
+                <DropdownMenu.Item
+                  className="mb-1"
+                  onClick={() => setVersionManagerOpen(true)}
+                >
+                  <CommitIcon width="18" height="18" />
+                  Manage versions
+                </DropdownMenu.Item>
+              )}
+              {editable && <DropdownMenu.Separator />}
+              {editable && (
+                <DropdownMenu.Item
+                  color="red"
+                  onClick={() => setDeleteModalOpen(true)}
+                >
+                  <TrashIcon width="18" height="18" />
+                  Delete
+                </DropdownMenu.Item>
+              )}
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
         </Flex>
 
         {syncing && (

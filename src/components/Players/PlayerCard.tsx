@@ -1,11 +1,13 @@
 import {
   DotsVerticalIcon,
   ExternalLinkIcon,
+  MagnifyingGlassIcon,
   Pencil1Icon,
   TrashIcon,
 } from "@radix-ui/react-icons";
 import { Card, DropdownMenu, Flex, IconButton, Tabs } from "@radix-ui/themes";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { ArchidektService } from "../../services/Archidekt";
 import { DbDeck } from "../../state/Deck";
 import { PlayerWithStats } from "../../state/Player";
@@ -55,6 +57,7 @@ export function PlayerCard({
   deckPlayedMap,
   deckWonMap,
 }: OwnProps) {
+  const navigate = useNavigate();
   const [view, setView] = useState<PlayerCardView>(PlayerCardView.GAME_STATS);
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
@@ -81,52 +84,55 @@ export function PlayerCard({
             <PlayerHeader player={player} />
           </Flex>
           <Flex gap="3" justify="end">
-            {(editable || player.externalId) && (
-              <DropdownMenu.Root>
-                <DropdownMenu.Trigger>
-                  <IconButton variant="soft">
-                    <DotsVerticalIcon width="18" height="18" />
-                  </IconButton>
-                </DropdownMenu.Trigger>
-                <DropdownMenu.Content>
-                  {player.externalId && (
-                    <DropdownMenu.Item
-                      className="mb-1"
-                      onClick={() =>
-                        window.open(
-                          ArchidektService.getPlayerProfileUrl(
-                            player.externalId
-                          ),
-                          "_blank"
-                        )
-                      }
-                    >
-                      <ExternalLinkIcon width="18" height="18" />
-                      Open in Archidekt
-                    </DropdownMenu.Item>
-                  )}
-                  {editable && (
-                    <DropdownMenu.Item
-                      className="mb-1"
-                      onClick={() => setEditModalOpen(true)}
-                    >
-                      <Pencil1Icon width="18" height="18" />
-                      Edit
-                    </DropdownMenu.Item>
-                  )}
-                  {editable && <DropdownMenu.Separator />}
-                  {editable && (
-                    <DropdownMenu.Item
-                      color="red"
-                      onClick={() => setDeleteModalOpen(true)}
-                    >
-                      <TrashIcon width="18" height="18" />
-                      Delete
-                    </DropdownMenu.Item>
-                  )}
-                </DropdownMenu.Content>
-              </DropdownMenu.Root>
-            )}
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>
+                <IconButton variant="soft">
+                  <DotsVerticalIcon width="18" height="18" />
+                </IconButton>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content>
+                <DropdownMenu.Item
+                  className="mb-1"
+                  onClick={() => navigate(`/?players=${player.id}`)}
+                >
+                  <MagnifyingGlassIcon width="18" height="18" />
+                  Search Games
+                </DropdownMenu.Item>
+                {player.externalId && (
+                  <DropdownMenu.Item
+                    className="mb-1"
+                    onClick={() =>
+                      window.open(
+                        ArchidektService.getPlayerProfileUrl(player.externalId),
+                        "_blank"
+                      )
+                    }
+                  >
+                    <ExternalLinkIcon width="18" height="18" />
+                    Open in Archidekt
+                  </DropdownMenu.Item>
+                )}
+                {editable && (
+                  <DropdownMenu.Item
+                    className="mb-1"
+                    onClick={() => setEditModalOpen(true)}
+                  >
+                    <Pencil1Icon width="18" height="18" />
+                    Edit
+                  </DropdownMenu.Item>
+                )}
+                {editable && <DropdownMenu.Separator />}
+                {editable && (
+                  <DropdownMenu.Item
+                    color="red"
+                    onClick={() => setDeleteModalOpen(true)}
+                  >
+                    <TrashIcon width="18" height="18" />
+                    Delete
+                  </DropdownMenu.Item>
+                )}
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
           </Flex>
         </Flex>
         <Tabs.Root className="mb-2" value={view}>
