@@ -2,11 +2,11 @@ import { IdentityColour } from "./IdentityColour";
 
 export enum IdentityLabel {
   // Mono-Colour
-  WHITE = "Mono-White (W)",
-  BLUE = "Mono-Blue (U)",
-  BLACK = "Mono-Black (B)",
-  RED = "Mono-Red (R)",
-  GREEN = "Mono-Green (G)",
+  WHITE = "White (W)",
+  BLUE = "Blue (U)",
+  BLACK = "Black (B)",
+  RED = "Red (R)",
+  GREEN = "Green (G)",
   COLORLESS = "Colorless (C)",
   // 2-Colour
   AZORIUS = "Azorius (WU)",

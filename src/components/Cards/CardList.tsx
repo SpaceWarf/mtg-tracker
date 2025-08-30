@@ -170,11 +170,11 @@ export function CardList({
   const regularCategories: DeckCategoryDetails[] = useMemo(() => {
     function getColourCategories() {
       const colourSortOrder = [
-        "Mono-White (W)",
-        "Mono-Blue (U)",
-        "Mono-Black (B)",
-        "Mono-Red (R)",
-        "Mono-Green (G)",
+        "White (W)",
+        "Blue (U)",
+        "Black (B)",
+        "Red (R)",
+        "Green (G)",
         "Colorless (C)",
       ];
 
