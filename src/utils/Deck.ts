@@ -63,22 +63,23 @@ export function getDeckTutor(deck: DbDeck): DeckCardDetails[] {
   return visibleCards.filter((card) => card.tutor);
 }
 
-export function getDeckIdentityLabel(deck: DbDeck): IdentityLabel {
-  if (!deck.colourIdentity?.length) {
+export function getColourIdentityLabel(
+  colourIdentity: string[],
+  type?: string
+): IdentityLabel {
+  if (!colourIdentity.length || type?.includes("Land")) {
     return IdentityLabel.COLORLESS;
   }
 
   return Object.keys(IDENTITY_LABEL_MAP).find((identity) => {
     const identityColours = IDENTITY_LABEL_MAP[identity as IdentityLabel];
-    return (
-      identityColours.sort().join(",") === deck.colourIdentity?.sort().join(",")
-    );
+    return identityColours.sort().join(",") === colourIdentity.sort().join(",");
   }) as IdentityLabel;
 }
 
 export function getDeckDescriptorString(deck: DeckWithStats): string {
   const bracket = getBracket(deck);
-  const identityLabel = getDeckIdentityLabel(deck);
+  const identityLabel = getColourIdentityLabel(deck.colourIdentity ?? []);
   return `${bracket} ${identityLabel.split(" ")[0]} ${deck.format} Deck`;
 }
 

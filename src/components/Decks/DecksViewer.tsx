@@ -12,7 +12,7 @@ import { DECK_SORT_FCTS } from "../../state/DeckSortFcts";
 import { IdentityLabel } from "../../state/IdentityLabel";
 import { SortFctType } from "../../state/SortFctType";
 import { getBracket } from "../../utils/Bracket";
-import { getDeckIdentityLabel } from "../../utils/Deck";
+import { getColourIdentityLabel } from "../../utils/Deck";
 import { BracketSelect } from "../Select/BracketSelect";
 import { IdentitySelect } from "../Select/IdentitySelect";
 import { PlayerSelect } from "../Select/PlayerSelect";
@@ -48,7 +48,8 @@ export function DecksViewer() {
         );
       const bracketFilter = !bracket || getBracket(deck) === bracket;
       const identityFilter =
-        !identity || getDeckIdentityLabel(deck) === identity;
+        !identity ||
+        getColourIdentityLabel(deck.colourIdentity ?? []) === identity;
       return nameFilter && builderFilter && bracketFilter && identityFilter;
     });
     const sortFct = DECK_SORT_FCTS[sortFctKey].sortFct;

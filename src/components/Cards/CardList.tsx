@@ -11,7 +11,10 @@ import { DbDeck } from "../../state/Deck";
 import { DeckCardDetails, DeckCategoryDetails } from "../../state/DeckDetails";
 import { removeDuplicatesByKey } from "../../utils/Array";
 import { getLongDateString } from "../../utils/Date";
-import { getAggregatedCardDiff } from "../../utils/Deck";
+import {
+  getAggregatedCardDiff,
+  getColourIdentityLabel,
+} from "../../utils/Deck";
 import { DeckVersionViewer } from "../Decks/DeckVersionViewer";
 import { CardDiffViewer } from "./CardDiffViewer";
 import { CardListCategory } from "./CardListCategory";
@@ -164,6 +167,50 @@ export function CardList({
   }, [cardsWithDiff, premierCategories, search, sortBy]);
 
   const regularCategories: DeckCategoryDetails[] = useMemo(() => {
+    function getColourCategories() {
+      const colourSortOrder = [
+        "Mono-White (W)",
+        "Mono-Blue (U)",
+        "Mono-Black (B)",
+        "Mono-Red (R)",
+        "Mono-Green (G)",
+        "Colorless (C)",
+      ];
+
+      const categories = [
+        ...new Set(
+          cardsWithDiff?.map((card) =>
+            getColourIdentityLabel(card.colourIdentity.split(","), card.types)
+          )
+        ),
+      ].map((colour, index) => ({
+        id: index,
+        name: colour,
+        isPremier: false,
+        includedInDeck: true,
+        includedInPrice: true,
+      }));
+      const monoCategories = categories
+        .filter(
+          (category) =>
+            category.name.startsWith("Mono-") ||
+            category.name === "Colorless (C)"
+        )
+        .sort(
+          (a, b) =>
+            colourSortOrder.indexOf(a.name) - colourSortOrder.indexOf(b.name)
+        );
+      const otherCategories = categories
+        .filter(
+          (category) =>
+            !category.name.startsWith("Mono-") &&
+            category.name !== "Colorless (C)"
+        )
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      return [...monoCategories, ...otherCategories];
+    }
+
     switch (groupBy) {
       case CardGroupBy.CATEGORY:
         return visibleCategories
@@ -183,6 +230,10 @@ export function CardList({
             includedInPrice: true,
           }))
           .sort((a, b) => a.name.localeCompare(b.name));
+      case CardGroupBy.COLOUR:
+        return getColourCategories();
+      default:
+        return [];
     }
   }, [cardsWithDiff, visibleCategories, groupBy]);
 
@@ -202,6 +253,17 @@ export function CardList({
               case CardGroupBy.TYPE:
                 return (
                   card.types.split(",")[0] === category.name &&
+                  isSearched &&
+                  !premierCategories.some(
+                    (category) => category.name === card.category
+                  )
+                );
+              case CardGroupBy.COLOUR:
+                return (
+                  getColourIdentityLabel(
+                    card.colourIdentity.split(","),
+                    card.types
+                  ) === category.name &&
                   isSearched &&
                   !premierCategories.some(
                     (category) => category.name === card.category
