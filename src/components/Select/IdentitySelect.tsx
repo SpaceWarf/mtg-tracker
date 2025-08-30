@@ -25,6 +25,23 @@ export function IdentitySelect({
     return options.find((option) => option.value === value);
   }, [options, value]);
 
+  const groupedOptions = useMemo(() => {
+    function getLabel(size: number) {
+      switch (size) {
+        case 1:
+          return "Mono";
+        default:
+          return `${size}-Colors`;
+      }
+    }
+    return [1, 2, 3, 4, 5].map((size) => ({
+      label: getLabel(size),
+      options: options.filter(
+        (option) => option.value.split(/\(|\)/)[1].split("").length === size
+      ),
+    }));
+  }, [options]);
+
   function handleChange(value: SingleValue<SelectOption>) {
     (onChange as (value: IdentityLabel) => void)(value?.value as IdentityLabel);
   }
@@ -34,7 +51,7 @@ export function IdentitySelect({
       className="react-select-container min-w-60"
       classNamePrefix="react-select"
       name="identitySelect"
-      options={options}
+      options={groupedOptions}
       value={optionsValue}
       onChange={handleChange}
       menuPlacement={menuPlacement}
