@@ -179,9 +179,16 @@ export function CardList({
 
       const categories = [
         ...new Set(
-          cardsWithDiff?.map((card) =>
-            getColourIdentityLabel(card.colourIdentity.split(","), card.types)
-          )
+          cardsWithDiff?.map((card) => {
+            const identity = getColourIdentityLabel(
+              card.colourIdentity.split(","),
+              card.types
+            );
+            if (!identity) {
+              console.log(card, card.colourIdentity);
+            }
+            return identity;
+          })
         ),
       ].map((colour, index) => ({
         id: index,
