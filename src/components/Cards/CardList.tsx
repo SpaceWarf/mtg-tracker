@@ -15,6 +15,7 @@ import {
   getAggregatedCardDiff,
   getColourIdentityLabel,
 } from "../../utils/Deck";
+import { getColourIdentities } from "../../utils/Identity";
 import { DeckVersionViewer } from "../Decks/DeckVersionViewer";
 import { CardDiffViewer } from "./CardDiffViewer";
 import { CardListCategory } from "./CardListCategory";
@@ -197,25 +198,27 @@ export function CardList({
         includedInDeck: true,
         includedInPrice: true,
       }));
-      const monoCategories = categories
-        .filter(
-          (category) =>
-            category.name.startsWith("Mono-") ||
-            category.name === "Colorless (C)"
-        )
-        .sort(
-          (a, b) =>
-            colourSortOrder.indexOf(a.name) - colourSortOrder.indexOf(b.name)
-        );
-      const otherCategories = categories
-        .filter(
-          (category) =>
-            !category.name.startsWith("Mono-") &&
-            category.name !== "Colorless (C)"
-        )
-        .sort((a, b) => a.name.localeCompare(b.name));
 
-      return [...monoCategories, ...otherCategories];
+      const sorted: DeckCategoryDetails[] = [];
+      [1, 2, 3, 4, 5].forEach((size) => {
+        const labels = getColourIdentities(size);
+        const filtered = categories.filter((category) =>
+          labels.includes(category.name)
+        );
+        if (size === 1) {
+          sorted.push(
+            ...filtered.sort(
+              (a, b) =>
+                colourSortOrder.indexOf(a.name) -
+                colourSortOrder.indexOf(b.name)
+            )
+          );
+        } else {
+          sorted.push(...filtered.sort((a, b) => a.name.localeCompare(b.name)));
+        }
+      });
+
+      return sorted;
     }
 
     switch (groupBy) {
