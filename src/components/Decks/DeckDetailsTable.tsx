@@ -3,6 +3,8 @@ import { Combo } from "../../state/Combo";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckCardDetails } from "../../state/DeckDetails";
 import {
+  CARD_COUNT_MAX,
+  CARD_COUNT_MIN,
   EXTRA_TURN_LIMIT,
   GAME_CHANGER_LIMIT,
   MASS_LAND_DENIAL_LIMIT,
@@ -23,7 +25,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           <Table.RowHeaderCell width="125px">
             <Flex direction="column">
               <Text>Game changers</Text>
-              {GAME_CHANGER_LIMIT < 9999 && (
+              {GAME_CHANGER_LIMIT !== 9999 && (
                 <Text
                   size="1"
                   color={
@@ -45,7 +47,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           <Table.RowHeaderCell width="125px">
             <Flex direction="column">
               <Text>Tutors</Text>
-              {TUTOR_LIMIT < 9999 && (
+              {TUTOR_LIMIT !== 9999 && (
                 <Text
                   size="1"
                   color={deck.tutors.length > TUTOR_LIMIT ? "red" : "gray"}
@@ -63,7 +65,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           <Table.RowHeaderCell width="125px">
             <Flex direction="column">
               <Text>Extra turns</Text>
-              {EXTRA_TURN_LIMIT < 9999 && (
+              {EXTRA_TURN_LIMIT !== 9999 && (
                 <Text
                   size="1"
                   color={
@@ -83,7 +85,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           <Table.RowHeaderCell width="125px">
             <Flex direction="column">
               <Text>Mass land denials</Text>
-              {MASS_LAND_DENIAL_LIMIT < 9999 && (
+              {MASS_LAND_DENIAL_LIMIT !== 9999 && (
                 <Text
                   size="1"
                   color={
@@ -106,7 +108,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           <Table.RowHeaderCell width="125px">
             <Flex direction="column">
               <Text>2 card combos</Text>
-              {TWO_CARD_COMBO_LIMIT < 9999 && (
+              {TWO_CARD_COMBO_LIMIT !== 9999 && (
                 <Text
                   size="1"
                   color={
@@ -140,7 +142,31 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.RowHeaderCell width="125px">Size</Table.RowHeaderCell>
+          <Table.RowHeaderCell width="125px">
+            <Flex direction="column">
+              <Text>Card count</Text>
+              {CARD_COUNT_MAX !== 9999 && (
+                <Text
+                  size="1"
+                  color={
+                    parseInt(deck.size || "0") > CARD_COUNT_MAX ? "red" : "gray"
+                  }
+                >
+                  max. {CARD_COUNT_MAX}
+                </Text>
+              )}
+              {CARD_COUNT_MIN !== 9999 && (
+                <Text
+                  size="1"
+                  color={
+                    parseInt(deck.size || "0") < CARD_COUNT_MIN ? "red" : "gray"
+                  }
+                >
+                  min. {CARD_COUNT_MIN}
+                </Text>
+              )}
+            </Flex>
+          </Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
               <Strong>{deck.size}</Strong>

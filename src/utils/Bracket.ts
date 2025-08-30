@@ -6,6 +6,8 @@ export const GAME_CHANGER_LIMIT: number = 3;
 export const TUTOR_LIMIT: number = 9999;
 export const EXTRA_TURN_LIMIT: number = 9999;
 export const TWO_CARD_COMBO_LIMIT: number = 9999;
+export const CARD_COUNT_MAX: number = 100;
+export const CARD_COUNT_MIN: number = 100;
 
 export function getBracket(deck: DeckWithStats) {
   if (deck.gameChangers.length > GAME_CHANGER_LIMIT) {
@@ -25,6 +27,13 @@ export function getBracket(deck: DeckWithStats) {
   }
 
   if (deck.combos.length > TWO_CARD_COMBO_LIMIT) {
+    return Bracket.ILLEGAL;
+  }
+
+  if (
+    parseInt(deck.size ?? "0") > CARD_COUNT_MAX ||
+    parseInt(deck.size ?? "0") < CARD_COUNT_MIN
+  ) {
     return Bracket.ILLEGAL;
   }
 
@@ -61,10 +70,19 @@ export function getBracketDetails(deck: DeckWithStats): string[] {
         `More than ${MASS_LAND_DENIAL_LIMIT} mass land denials (${deck.massLandDenials.length})`
       );
     }
+
     if (deck.combos.length > TWO_CARD_COMBO_LIMIT) {
       details.push(
         `More than ${TWO_CARD_COMBO_LIMIT} two card combos (${deck.combos.length})`
       );
+    }
+
+    if (parseInt(deck.size ?? "0") > CARD_COUNT_MAX) {
+      details.push(`More than ${CARD_COUNT_MAX} cards (${deck.size})`);
+    }
+
+    if (parseInt(deck.size ?? "0") < CARD_COUNT_MIN) {
+      details.push(`Less than ${CARD_COUNT_MIN} cards (${deck.size})`);
     }
   }
 
