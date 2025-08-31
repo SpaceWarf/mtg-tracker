@@ -1,7 +1,13 @@
 import { useMemo } from "react";
-import ReactSelect, { SingleValue } from "react-select";
+import ReactSelect, {
+  components,
+  MultiValue,
+  SingleValue,
+  SingleValueProps,
+} from "react-select";
 import { IdentityLabel } from "../../state/IdentityLabel";
-import { SelectOption } from "../../state/SelectOption";
+import { GroupedOption, SelectOption } from "../../state/SelectOption";
+import { IdentityHeader } from "../Common/IdentityHeader";
 
 type OwnProps = {
   value: IdentityLabel;
@@ -21,11 +27,11 @@ export function IdentitySelect({
     label: identity,
   }));
 
-  const optionsValue = useMemo(() => {
+  const optionsValue: SelectOption | undefined = useMemo(() => {
     return options.find((option) => option.value === value);
   }, [options, value]);
 
-  const groupedOptions = useMemo(() => {
+  const groupedOptions: GroupedOption[] = useMemo(() => {
     function getLabel(size: number) {
       switch (size) {
         case 1:
@@ -42,8 +48,11 @@ export function IdentitySelect({
     }));
   }, [options]);
 
-  function handleChange(value: SingleValue<SelectOption>) {
-    (onChange as (value: IdentityLabel) => void)(value?.value as IdentityLabel);
+  function handleChange(
+    value: SingleValue<SelectOption> | MultiValue<SelectOption>
+  ) {
+    const val = value as SingleValue<SelectOption>;
+    (onChange as (value: IdentityLabel) => void)(val?.value as IdentityLabel);
   }
 
   return (
@@ -56,6 +65,30 @@ export function IdentitySelect({
       onChange={handleChange}
       menuPlacement={menuPlacement}
       isClearable={clearable}
+      components={{ Option: CustomOption, SingleValue: CustomValue }}
     />
   );
 }
+
+function CustomOption({
+  data,
+  innerProps,
+}: {
+  data: SelectOption;
+  innerProps: React.HTMLAttributes<HTMLDivElement>;
+}) {
+  return (
+    <div
+      className="select-option-container identity-select-option-container"
+      {...innerProps}
+    >
+      <IdentityHeader label={data.label} />
+    </div>
+  );
+}
+
+const CustomValue = ({ ...props }: SingleValueProps<SelectOption>) => (
+  <components.SingleValue {...props}>
+    <IdentityHeader label={props.data.label} />
+  </components.SingleValue>
+);

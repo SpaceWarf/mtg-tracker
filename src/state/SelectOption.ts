@@ -4,3 +4,8 @@ export interface SelectOption {
   image?: string;
   detail?: string;
 }
+
+export interface GroupedOption {
+  label: string;
+  options: SelectOption[];
+}

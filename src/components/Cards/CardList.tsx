@@ -440,6 +440,7 @@ export function CardList({
                 category={category}
                 mousePosition={mousePosition}
                 gameChangers={gameChangers}
+                groupBy={groupBy}
               />
             ))}
           </Flex>

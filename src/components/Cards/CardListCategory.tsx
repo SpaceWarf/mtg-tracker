@@ -1,20 +1,24 @@
 import { StarFilledIcon } from "@radix-ui/react-icons";
 import { Flex, Heading, Text } from "@radix-ui/themes";
+import { CardGroupBy } from "../../state/CardGroupBy";
 import { CategoryCardList } from "../../state/CategoryCardList";
 import { DeckCardDetails } from "../../state/DeckDetails";
 import { MousePosition } from "../../state/MousePosition";
+import { IdentityHeader } from "../Common/IdentityHeader";
 import { CardListCard } from "./CardListCard";
 
 type OwnProps = {
   category: CategoryCardList;
   mousePosition: MousePosition;
   gameChangers?: DeckCardDetails[];
+  groupBy: CardGroupBy;
 };
 
 export function CardListCategory({
   category,
   mousePosition,
   gameChangers,
+  groupBy,
 }: OwnProps) {
   return (
     <div key={category.category.name}>
@@ -24,7 +28,13 @@ export function CardListCategory({
             {category.category.isPremier && (
               <StarFilledIcon width="16" height="16" />
             )}
-            <Heading size="3">{category.category.name}</Heading>
+            <Heading size="3">
+              {groupBy === CardGroupBy.COLOUR ? (
+                <IdentityHeader label={category.category.name} />
+              ) : (
+                category.category.name
+              )}
+            </Heading>
           </Flex>
           {category.description && (
             <Text className="text-gray-400" size="2">
