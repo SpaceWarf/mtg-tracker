@@ -67,12 +67,14 @@ export function GamePlayerEditSection({
           value={gamePlayer.player}
           onChange={handlePlayerChange}
           isMulti={false}
+          clearable={false}
         />
         <DeckSelect
           value={gamePlayer.deck}
           onChange={handleDeckChange}
           isMulti={false}
           menuPlacement={invertDropdownLayout ? "top" : "bottom"}
+          clearable={false}
         />
         <Flex gap="3">
           <Text as="label" size="2">

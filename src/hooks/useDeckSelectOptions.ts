@@ -11,6 +11,7 @@ export function useDeckSelectOptions(data: DbDeck[]): SelectOption[] {
           value: item.id,
           label: item.name,
           detail: item.commander,
+          image: item.featured,
         })) ?? []
     );
   }, [data]);

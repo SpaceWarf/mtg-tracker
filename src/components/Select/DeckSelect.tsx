@@ -1,8 +1,14 @@
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Avatar, Flex } from "@radix-ui/themes";
 import { useMemo } from "react";
 import ReactSelect, {
+  components,
   createFilter,
   MultiValue,
+  MultiValueGenericProps,
   SingleValue,
+  SingleValueProps,
 } from "react-select";
 import { useDecks } from "../../hooks/useDecks";
 import { useDeckSelectOptions } from "../../hooks/useDeckSelectOptions";
@@ -10,6 +16,7 @@ import { SelectOption } from "../../state/SelectOption";
 
 type SharedProps = {
   menuPlacement?: "top" | "bottom";
+  clearable?: boolean;
   disabled?: boolean;
 };
 
@@ -25,29 +32,12 @@ type SingleProps = {
   onChange: (value: string, version: string) => void;
 } & SharedProps;
 
-function CustomOption({
-  data,
-  innerProps,
-}: {
-  data: SelectOption;
-  innerProps: React.HTMLAttributes<HTMLDivElement>;
-}) {
-  return (
-    <div
-      className="select-option-container deck-select-option-container"
-      {...innerProps}
-    >
-      <span>{data.label}</span>
-      <span className="detail">{data.detail}</span>
-    </div>
-  );
-}
-
 export function DeckSelect({
   value,
   isMulti,
   onChange,
   menuPlacement = "bottom",
+  clearable = true,
   disabled = false,
 }: MultiProps | SingleProps) {
   const { dbDecks, loadingDecks } = useDecks();
@@ -68,10 +58,13 @@ export function DeckSelect({
     (onChange as (value: string[]) => void)(value.map((v) => v.value));
   }
 
-  function handleChangeSingle(value: SingleValue<SelectOption>) {
-    const deck = dbDecks?.find((deck) => deck.id === value?.value);
+  function handleChangeSingle(
+    value: SingleValue<SelectOption> | MultiValue<SelectOption>
+  ) {
+    const val = value as SingleValue<SelectOption>;
+    const deck = dbDecks?.find((deck) => deck.id === val?.value);
     (onChange as (value: string, version: string) => void)(
-      value?.value ?? "",
+      val?.value ?? "",
       deck?.versions?.[deck.versions.length - 1]?.id ?? ""
     );
   }
@@ -81,7 +74,10 @@ export function DeckSelect({
       className="react-select-container min-w-60"
       classNamePrefix="react-select"
       name="deckSelect"
-      components={{ Option: CustomOption }}
+      components={{
+        Option: CustomOption,
+        MultiValueLabel: CustomMultiValueLabel,
+      }}
       filterOption={filterOption}
       options={deckSelectOptions}
       value={optionsValue}
@@ -90,6 +86,7 @@ export function DeckSelect({
       isLoading={loadingDecks}
       menuPlacement={menuPlacement}
       isMulti
+      isClearable={clearable}
       isDisabled={disabled}
     />
   ) : (
@@ -97,14 +94,73 @@ export function DeckSelect({
       className="react-select-container"
       classNamePrefix="react-select"
       name="deckSelect"
-      components={{ Option: CustomOption }}
+      components={{ Option: CustomOption, SingleValue: CustomValue }}
       filterOption={filterOption}
       options={deckSelectOptions}
       value={optionsValue}
       onChange={handleChangeSingle}
       isLoading={loadingDecks}
       menuPlacement={menuPlacement}
+      isClearable={clearable}
       isDisabled={disabled}
     />
   );
 }
+
+function CustomOption({
+  data,
+  innerProps,
+}: {
+  data: SelectOption;
+  innerProps: React.HTMLAttributes<HTMLDivElement>;
+}) {
+  return (
+    <div
+      className="select-option-container deck-select-option-container"
+      {...innerProps}
+    >
+      <Flex gap="2" align="center">
+        <Avatar
+          src={data.image}
+          fallback={<FontAwesomeIcon icon={faUser} />}
+          radius="full"
+          size="2"
+        />
+        <Flex direction="column">
+          <span>{data.label}</span>
+          <span className="detail">{data.detail}</span>
+        </Flex>
+      </Flex>
+    </div>
+  );
+}
+
+const CustomValue = ({ ...props }: SingleValueProps<SelectOption>) => (
+  <components.SingleValue {...props}>
+    <Flex gap="2" align="center">
+      <Avatar
+        src={props.data.image}
+        fallback={<FontAwesomeIcon icon={faUser} />}
+        radius="full"
+        size="2"
+      />
+      <span>{props.data.label}</span>
+    </Flex>
+  </components.SingleValue>
+);
+
+const CustomMultiValueLabel = (props: MultiValueGenericProps<SelectOption>) => {
+  return (
+    <components.MultiValueLabel {...props}>
+      <Flex gap="2" align="center">
+        <Avatar
+          src={props.data.image}
+          fallback={<FontAwesomeIcon icon={faUser} />}
+          radius="full"
+          size="1"
+        />
+        <span>{props.data.label}</span>
+      </Flex>
+    </components.MultiValueLabel>
+  );
+};
