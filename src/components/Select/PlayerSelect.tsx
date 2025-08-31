@@ -84,7 +84,7 @@ export function PlayerSelect({
     />
   ) : (
     <ReactSelect
-      className="react-select-container"
+      className="react-select-container min-w-60"
       classNamePrefix="react-select"
       name="playerSelect"
       components={{ Option: CustomOption, SingleValue: CustomValue }}
@@ -129,7 +129,7 @@ const CustomValue = ({ ...props }: SingleValueProps<SelectOption>) => (
         src={props.data.image}
         fallback={<FontAwesomeIcon icon={faUser} />}
         radius="full"
-        size="2"
+        size="1"
       />
       <span>{props.data.label}</span>
     </Flex>

@@ -29,7 +29,7 @@ export function DecksViewer() {
   const [sortFctKey, setSortFctKey] = useState<DeckSortFctKey>(
     DeckSortFctKey.NAME_ASC
   );
-  const [visiblePlayers, setVisiblePlayers] = useState<string[]>([]);
+  const [visiblePlayer, setVisiblePlayer] = useState<string>("");
   const [bracket, setBracket] = useState<Bracket>();
   const [identity, setIdentity] = useState<IdentityLabel>();
 
@@ -41,11 +41,7 @@ export function DecksViewer() {
       const nameFilter =
         deck.name.toLowerCase().includes(search.toLowerCase()) ||
         deck.commander?.toLowerCase().includes(search.toLowerCase());
-      const builderFilter =
-        !visiblePlayers.length ||
-        visiblePlayers.some((visiblePlayer) =>
-          deck.builder?.includes(visiblePlayer)
-        );
+      const builderFilter = !visiblePlayer || deck.builder === visiblePlayer;
       const bracketFilter = !bracket || getBracket(deck) === bracket;
       const identityFilter =
         !identity ||
@@ -55,7 +51,7 @@ export function DecksViewer() {
     const sortFct = DECK_SORT_FCTS[sortFctKey].sortFct;
     const sorted = filtered.sort(sortFct);
     setFilteredDecks(sorted);
-  }, [populatedDecks, sortFctKey, search, visiblePlayers, bracket, identity]);
+  }, [populatedDecks, sortFctKey, search, visiblePlayer, bracket, identity]);
 
   useEffect(() => {
     const urlSortKey = searchParams.get("sort");
@@ -111,12 +107,12 @@ export function DecksViewer() {
           </div>
           <div>
             <Heading className="mb-1" size="3">
-              Include players
+              Builder
             </Heading>
             <PlayerSelect
-              value={visiblePlayers}
-              onChange={setVisiblePlayers}
-              isMulti
+              value={visiblePlayer}
+              onChange={setVisiblePlayer}
+              isMulti={false}
             />
           </div>
           <div>
