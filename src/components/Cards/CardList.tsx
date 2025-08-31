@@ -242,6 +242,20 @@ export function CardList({
           .sort((a, b) => a.name.localeCompare(b.name));
       case CardGroupBy.COLOUR:
         return getColourCategories();
+      case CardGroupBy.BRACKET_INFO:
+        return [
+          "Extra Turns",
+          "Tutor",
+          "Mass Land Denial",
+          "Game Changer",
+          "Unlabeled",
+        ].map((type, index) => ({
+          id: index,
+          name: type,
+          isPremier: false,
+          includedInDeck: true,
+          includedInPrice: true,
+        }));
       default:
         return [];
     }
@@ -256,6 +270,9 @@ export function CardList({
             const isSearched = search
               ? card.name.toLowerCase().includes(search.toLowerCase())
               : true;
+            const isPremier = premierCategories.some(
+              (category) => category.name === card.category
+            );
 
             switch (groupBy) {
               case CardGroupBy.CATEGORY:
@@ -264,9 +281,7 @@ export function CardList({
                 return (
                   card.types.split(",")[0] === category.name &&
                   isSearched &&
-                  !premierCategories.some(
-                    (category) => category.name === card.category
-                  )
+                  !isPremier
                 );
               case CardGroupBy.COLOUR:
                 return (
@@ -275,10 +290,35 @@ export function CardList({
                     card.types
                   ) === category.name &&
                   isSearched &&
-                  !premierCategories.some(
-                    (category) => category.name === card.category
-                  )
+                  !isPremier
                 );
+              case CardGroupBy.BRACKET_INFO:
+                switch (category.name) {
+                  case "Extra Turns":
+                    return card.extraTurns && isSearched && !isPremier;
+                  case "Tutor":
+                    return card.tutor && isSearched && !isPremier;
+                  case "Game Changer":
+                    return (
+                      (card.gameChanger ||
+                        gameChangers?.some((gc) => gc.name === card.name)) &&
+                      isSearched &&
+                      !isPremier
+                    );
+                  case "Mass Land Denial":
+                    return card.massLandDenial && isSearched && !isPremier;
+                  case "Unlabeled":
+                  default:
+                    return (
+                      !card.extraTurns &&
+                      !card.tutor &&
+                      !card.gameChanger &&
+                      !gameChangers?.some((gc) => gc.name === card.name) &&
+                      !card.massLandDenial &&
+                      isSearched &&
+                      !isPremier
+                    );
+                }
               default:
                 return false;
             }

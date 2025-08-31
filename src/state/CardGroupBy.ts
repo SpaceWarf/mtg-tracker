@@ -2,6 +2,7 @@ export enum CardGroupBy {
   CATEGORY = "category",
   TYPE = "type",
   COLOUR = "colour",
+  BRACKET_INFO = "bracketInfo",
 }
 
 export const CardGroupByOptions = {
@@ -16,5 +17,9 @@ export const CardGroupByOptions = {
   [CardGroupBy.COLOUR]: {
     label: "Colour",
     value: CardGroupBy.COLOUR,
+  },
+  [CardGroupBy.BRACKET_INFO]: {
+    label: "Bracket Info",
+    value: CardGroupBy.BRACKET_INFO,
   },
 };
