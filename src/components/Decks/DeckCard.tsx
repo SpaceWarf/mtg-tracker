@@ -2,12 +2,14 @@ import {
   CommitIcon,
   DotsVerticalIcon,
   ExternalLinkIcon,
+  ListBulletIcon,
   MagnifyingGlassIcon,
   Pencil1Icon,
   TrashIcon,
   UpdateIcon,
 } from "@radix-ui/react-icons";
 import {
+  Button,
   Card,
   DropdownMenu,
   Flex,
@@ -16,8 +18,8 @@ import {
   Tabs,
   Text,
 } from "@radix-ui/themes";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router";
 import { ArchidektService } from "../../services/Archidekt";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckCardView } from "../../state/DeckCardView";
@@ -44,11 +46,20 @@ export function DeckCard({
   highlightedDirection,
 }: OwnProps) {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [view, setView] = useState<DeckCardView>(DeckCardView.DECK_STATS);
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
   const [versionManagerOpen, setVersionManagerOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+  const [decklistModalOpen, setDecklistModalOpen] = useState<boolean>(false);
   const [syncing, setSyncing] = useState<boolean>(false);
+
+  useEffect(() => {
+    const decklist = searchParams.get("decklist");
+    if (decklist === deck.id) {
+      setDecklistModalOpen(true);
+    }
+  }, [deck.id, searchParams]);
 
   async function handleSync() {
     setSyncing(true);
@@ -60,6 +71,19 @@ export function DeckCard({
     } finally {
       setSyncing(false);
     }
+  }
+
+  function handleOpenDecklistModal() {
+    setDecklistModalOpen(true);
+    searchParams.set("decklist", deck.id);
+    setSearchParams(searchParams);
+  }
+
+  function handleCloseDecklistModal() {
+    setDecklistModalOpen(false);
+    searchParams.delete("decklist");
+    searchParams.delete("version");
+    setSearchParams(searchParams);
   }
 
   return (
@@ -85,6 +109,14 @@ export function DeckCard({
           onClose={() => setDeleteModalOpen(false)}
         />
       )}
+      {decklistModalOpen && (
+        <DeckCardListModal
+          open={decklistModalOpen}
+          deck={deck}
+          onClose={handleCloseDecklistModal}
+        />
+      )}
+
       <Card size="3">
         <Flex className="mb-3" justify="between">
           <DeckHeader deck={deck} size="small" />
@@ -196,7 +228,12 @@ export function DeckCard({
             </div>
 
             <Flex direction="column" gap="2">
-              {deck.externalId && <DeckCardListModal deck={deck} />}
+              {deck.externalId && (
+                <Button onClick={handleOpenDecklistModal}>
+                  <ListBulletIcon width="18" height="18" />
+                  Open Decklist
+                </Button>
+              )}
 
               {deck.updatedAt && (
                 <Text size="1" color="gray">

@@ -1,7 +1,6 @@
-import { ExternalLinkIcon, ListBulletIcon } from "@radix-ui/react-icons";
-import { Button, Dialog, Flex, IconButton } from "@radix-ui/themes";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import { Dialog, Flex, IconButton } from "@radix-ui/themes";
+import { useState } from "react";
 import { ArchidektService } from "../../services/Archidekt";
 import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
@@ -11,23 +10,16 @@ import { CardListFilters } from "../Cards/CardListFilters";
 import { DeckHeader } from "./DeckHeader";
 
 type OwnProps = {
+  open: boolean;
   deck: DeckWithStats;
+  onClose: () => void;
 };
 
-export function DeckCardListModal({ deck }: OwnProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [open, setOpen] = useState(false);
+export function DeckCardListModal({ open, deck, onClose }: OwnProps) {
   const [groupBy, setGroupBy] = useState<CardGroupBy>(CardGroupBy.CATEGORY);
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
   const [search, setSearch] = useState<string>("");
   const [showVersionGraph, setShowVersionGraph] = useState<boolean>(false);
-
-  useEffect(() => {
-    const decklist = searchParams.get("decklist");
-    if (decklist === deck.id) {
-      setOpen(true);
-    }
-  }, [deck.id, searchParams]);
 
   function handleCardListFiltersChange(
     groupBy: CardGroupBy,
@@ -42,25 +34,13 @@ export function DeckCardListModal({ deck }: OwnProps) {
   }
 
   function handleOpenChange(open: boolean) {
-    setOpen(open);
     if (!open) {
-      searchParams.delete("decklist");
-      searchParams.delete("version");
-    } else {
-      searchParams.set("decklist", deck.id);
+      onClose();
     }
-    setSearchParams(searchParams);
   }
 
   return (
     <Dialog.Root open={open} onOpenChange={handleOpenChange}>
-      <Dialog.Trigger>
-        <Button>
-          <ListBulletIcon width="18" height="18" />
-          Open Decklist
-        </Button>
-      </Dialog.Trigger>
-
       <Dialog.Description></Dialog.Description>
 
       <Dialog.Content
@@ -92,15 +72,13 @@ export function DeckCardListModal({ deck }: OwnProps) {
           </IconButton>
         </Flex>
 
-        {open && (
-          <CardList
-            groupBy={groupBy}
-            sortBy={sortBy}
-            search={search}
-            showVersionGraph={showVersionGraph}
-            deck={deck}
-          />
-        )}
+        <CardList
+          groupBy={groupBy}
+          sortBy={sortBy}
+          search={search}
+          showVersionGraph={showVersionGraph}
+          deck={deck}
+        />
       </Dialog.Content>
     </Dialog.Root>
   );
