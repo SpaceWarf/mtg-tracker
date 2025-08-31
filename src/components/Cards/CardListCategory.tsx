@@ -11,7 +11,7 @@ type OwnProps = {
   category: CategoryCardList;
   mousePosition: MousePosition;
   gameChangers?: DeckCardDetails[];
-  groupBy: CardGroupBy;
+  groupBy?: CardGroupBy;
 };
 
 export function CardListCategory({
