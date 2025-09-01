@@ -97,7 +97,7 @@ export function getBracketDetails(deck: DeckWithStats): string[] {
       (combo) => combo.cards.length === 2 && combo.bracket === "4-5"
     );
     if (early2CardCombo.length > 0) {
-      details.push(`Has early 2-card combos (${early2CardCombo.length})`);
+      details.push(`Has early game 2-card combos (${early2CardCombo.length})`);
     }
   }
 
