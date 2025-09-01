@@ -1,4 +1,4 @@
-import { UpdateIcon } from "@radix-ui/react-icons";
+import { ExclamationTriangleIcon, UpdateIcon } from "@radix-ui/react-icons";
 import {
   Button,
   Dialog,
@@ -75,6 +75,15 @@ export function DeckSyncModal() {
         onEscapeKeyDown={(e) => syncing && e.preventDefault()}
       >
         <Dialog.Title>Deck Sync</Dialog.Title>
+
+        <Flex gap="2" mt="4" mb="4" align="center">
+          <ExclamationTriangleIcon width="25" height="25" color="red" />
+          <Text size="2" color="red">
+            This operation is meant to be executed only when the underlying data
+            structure of decks has changed. Please consult with Gab before
+            running.
+          </Text>
+        </Flex>
 
         <Text>
           Syncing all decks takes a couple of minutes. <b>DO NOT</b> close the
