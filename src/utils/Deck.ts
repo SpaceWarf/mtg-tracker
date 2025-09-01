@@ -253,6 +253,8 @@ export function populateDeckDetails(
     versions: [],
     cards: deckDetails.cards,
     categories: deckDetails.categories,
+    deckCreatedAt: deckDetails.createdAt,
+    deckUpdatedAt: deckDetails.updatedAt,
   };
   return populateDeck(deck, [], gameChangers);
 }
