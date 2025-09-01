@@ -259,7 +259,7 @@ function CardComboList({ deck }: { deck: DeckWithStats }) {
           </Text>
           <ul className="mb-2">
             {early2CardCombos.map((combo) => (
-              <CardComboListItem combo={combo} />
+              <CardComboListItem key={combo.name} combo={combo} />
             ))}
           </ul>
         </>
@@ -271,7 +271,7 @@ function CardComboList({ deck }: { deck: DeckWithStats }) {
           </Text>
           <ul className="mb-2">
             {late2CardCombos.map((combo) => (
-              <CardComboListItem combo={combo} />
+              <CardComboListItem key={combo.name} combo={combo} />
             ))}
           </ul>
         </>
@@ -283,7 +283,7 @@ function CardComboList({ deck }: { deck: DeckWithStats }) {
           </Text>
           <ul>
             {otherCombos.map((combo) => (
-              <CardComboListItem combo={combo} />
+              <CardComboListItem key={combo.name} combo={combo} />
             ))}
           </ul>
         </>
