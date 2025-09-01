@@ -255,7 +255,7 @@ function CardComboList({ deck }: { deck: DeckWithStats }) {
       {early2CardCombos.length > 0 && (
         <>
           <Text size="1" color="gray">
-            <Strong>Early 2 card combos</Strong>
+            <Strong>Early game 2 card combos</Strong>
           </Text>
           <ul className="mb-2">
             {early2CardCombos.map((combo) => (
@@ -267,7 +267,7 @@ function CardComboList({ deck }: { deck: DeckWithStats }) {
       {late2CardCombos.length > 0 && (
         <>
           <Text size="1" color="gray">
-            <Strong>Other 2 card combos</Strong>
+            <Strong>Late game 2 card combos</Strong>
           </Text>
           <ul className="mb-2">
             {late2CardCombos.map((combo) => (
