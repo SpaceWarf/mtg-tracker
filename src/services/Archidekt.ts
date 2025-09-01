@@ -14,7 +14,7 @@ export class ArchidektService {
       const scraper = new ArchidektDeckScraper(id);
       await scraper.scrape();
       const deckDetails = scraper.getDeckDetails(id);
-      const possibleCombos = await EdhRecService.getDeck2CardCombos(
+      const possibleCombos = await EdhRecService.getDeckInfiniteCombos(
         deckDetails
       );
 

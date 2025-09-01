@@ -15,7 +15,7 @@ export function IdentityHeader({ label }: OwnProps) {
           .replaceAll(/\(|\)/g, "")
           .split("")
           .map((colour) => (
-            <ManaIcon colour={colour} size="small" />
+            <ManaIcon key={colour} colour={colour} size="small" />
           ))}
       </Flex>
     </Flex>

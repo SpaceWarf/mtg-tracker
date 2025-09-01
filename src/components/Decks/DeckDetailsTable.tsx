@@ -107,7 +107,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
         <Table.Row>
           <Table.RowHeaderCell width="125px">
             <Flex direction="column">
-              <Text>2 card combos</Text>
+              <Text>Infinite combos</Text>
               {TWO_CARD_COMBO_LIMIT !== 9999 && (
                 <Text
                   size="1"

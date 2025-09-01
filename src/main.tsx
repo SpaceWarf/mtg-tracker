@@ -8,6 +8,7 @@ import { Alert } from "./components/Alert.tsx";
 import { AlertProvider } from "./contexts/AlertProvider.tsx";
 import { AuthProvider } from "./contexts/AuthProvider.tsx";
 import { DataProvider } from "./contexts/DataProvider.tsx";
+import { Brackets } from "./pages/Brackets.tsx";
 import { Decks } from "./pages/Decks.tsx";
 import { DeckValidator } from "./pages/DeckValidator.tsx";
 import { GameChangers } from "./pages/GameChangers.tsx";
@@ -38,6 +39,7 @@ export function Main() {
                     <Route path="/decks" element={<Decks />} />
                     <Route path="/game-changers" element={<GameChangers />} />
                     <Route path="/deck-validator" element={<DeckValidator />} />
+                    <Route path="/brackets" element={<Brackets />} />
                     {/* <Route path="/rewind" element={<Rewind />} /> */}
                   </Routes>
                 </BrowserRouter>

@@ -337,6 +337,7 @@ export function CardList({
     groupBy,
     search,
     sortBy,
+    gameChangers,
   ]);
 
   const categoryCardLists: CategoryCardList[] = useMemo(() => {

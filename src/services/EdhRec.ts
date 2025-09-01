@@ -4,7 +4,7 @@ import { DeckDetails } from "../state/DeckDetails";
 import { EdhRecCombo } from "../state/EdhRecCombos";
 
 export class EdhRecService {
-  static async getDeck2CardCombos(deck: DeckDetails): Promise<Combo[]> {
+  static async getDeckInfiniteCombos(deck: DeckDetails): Promise<Combo[]> {
     if (!deck.commanders || deck.commanders.length === 0) {
       return Promise.resolve([]);
     }
@@ -20,17 +20,20 @@ export class EdhRecService {
         `https://json.edhrec.com/pages/combos/${commander}.json`
       );
       const cardList = res.data.container.json_dict.cardlists;
-      const combos: Combo[] = cardList
-        .filter((card) => card.cardviews.length === 2)
-        .map((card) => {
-          return {
-            name: card.header,
-            href: card.href,
-            cards: card.cardviews.map((view) => view.name),
-          };
-        });
+      const combos: Combo[] = cardList.map((card) => {
+        return {
+          name: card.header,
+          href: card.href,
+          cards: card.cardviews.map((view) => view.name),
+          bracket: card.combo.comboVote?.bracket ?? "unavailable",
+          results: card.combo.results.filter(
+            (result) =>
+              result !== "Win the game" && !result.startsWith("Near-infinite")
+          ),
+        };
+      });
 
-      return combos;
+      return combos.filter((combo) => combo.results.length > 0);
     } catch (error) {
       return Promise.reject(error);
     }

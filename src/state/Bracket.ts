@@ -1,5 +1,7 @@
 export enum Bracket {
-  MID_POWER = "Mid-Power",
-  HIGH_POWER = "High-Power",
+  PRECON = "Precon",
+  LOW_POWER = "Core",
+  MID_POWER = "Upgraded",
+  HIGH_POWER = "Optimized",
   ILLEGAL = "Illegal",
 }

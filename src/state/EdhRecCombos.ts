@@ -10,12 +10,15 @@ export interface EdhRecCombo {
 // incomplete interface
 export interface EdhRecComboCard {
   header: string;
-  cardviews: EdhRecComboCardView[];
+  cardviews: {
+    name: string;
+    sanitized: string;
+  }[];
   href: string;
-}
-
-// incomplete interface
-export interface EdhRecComboCardView {
-  name: string;
-  sanitized: string;
+  combo: {
+    comboVote?: {
+      bracket: "any" | "3" | "4-5";
+    };
+    results: string[];
+  };
 }

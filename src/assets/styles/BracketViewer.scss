@@ -1,0 +1,89 @@
+.bracket-viewer {
+  .bracket-container {
+    position: relative;
+    width: 300px;
+    height: 650px;
+    border: 3px solid #a57e5a;
+    border-radius: 20px;
+    padding: 75px 20px 50px 20px;
+
+    .bracket-number-container {
+      position: absolute;
+      width: 150px;
+      top: 0;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      background-color: #111113;
+
+      .bracket-number {
+        font-size: 4rem;
+        font-weight: bold;
+      }
+    }
+
+    .bracket-name {
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      width: 100%;
+      text-transform: uppercase;
+    }
+
+    .bracket-description {
+      font-size: 1rem;
+      font-weight: bold;
+      text-align: center;
+      width: 100%;
+      text-transform: uppercase;
+    }
+
+    .bracket-divider {
+      width: 75px;
+      height: 3px;
+      background-color: #a57e5a;
+    }
+
+    .bracket-rule {
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-transform: uppercase;
+
+      .red {
+        color: #ff0000;
+
+        path {
+          stroke: #ff0000;
+          fill: #ff0000;
+        }
+      }
+
+      .green {
+        color: #00ff00;
+
+        path {
+          stroke: #00ff00;
+          fill: #00ff00;
+        }
+      }
+
+      .yellow {
+        color: #ffff00;
+
+        path {
+          stroke: #ffff00;
+          fill: #ffff00;
+        }
+      }
+    }
+
+    .bracket-bottom-decorator {
+      position: absolute;
+      width: 150px;
+      height: 20px;
+      top: 100%;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      background-color: #111113;
+    }
+  }
+}
