@@ -1,5 +1,6 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { Avatar, Flex, Text, Tooltip } from "@radix-ui/themes";
 import { useMemo } from "react";
 import { Bracket } from "../../state/Bracket";
@@ -37,31 +38,45 @@ export function DeckHeader({ deck, size = "large" }: OwnProps) {
         {deck.externalId && (
           <>
             {bracketDetails.length > 0 ? (
-              <Tooltip
-                content={
-                  <ul>
-                    {bracketDetails.map((detail) => (
-                      <li key={detail}>
-                        <Text size="2">{detail}</Text>
-                      </li>
-                    ))}
-                  </ul>
-                }
-              >
+              <Flex align="center" gap="1">
+                <Tooltip
+                  content={
+                    <ul>
+                      {bracketDetails.map((detail) => (
+                        <li key={detail}>
+                          <Text size="2">{detail}</Text>
+                        </li>
+                      ))}
+                    </ul>
+                  }
+                >
+                  <Text
+                    size="1"
+                    color={bracket === Bracket.ILLEGAL ? "red" : "gray"}
+                  >
+                    {descriptor}
+                  </Text>
+                </Tooltip>
+                {!deck.bracket && (
+                  <Tooltip content="The bracket was automatically determined by the app and may be inaccurate.">
+                    <InfoCircledIcon width="12" height="12" color="gray" />
+                  </Tooltip>
+                )}
+              </Flex>
+            ) : (
+              <Flex align="center" gap="1">
                 <Text
                   size="1"
                   color={bracket === Bracket.ILLEGAL ? "red" : "gray"}
                 >
                   {descriptor}
                 </Text>
-              </Tooltip>
-            ) : (
-              <Text
-                size="1"
-                color={bracket === Bracket.ILLEGAL ? "red" : "gray"}
-              >
-                {descriptor}
-              </Text>
+                {!deck.bracket && (
+                  <Tooltip content="The bracket was automatically determined by the app and may be inaccurate.">
+                    <InfoCircledIcon width="12" height="12" color="gray" />
+                  </Tooltip>
+                )}
+              </Flex>
             )}
             <Flex className="mt-1" gap="1">
               {!deck.colourIdentity?.length && (
