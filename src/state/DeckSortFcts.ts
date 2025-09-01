@@ -83,6 +83,22 @@ export const DECK_SORT_FCTS: SortFct<DeckWithStats> = {
     highlightedKey: "builder",
     highlightedDirection: "desc",
   },
+  [DeckSortFctKey.UPDATED_AT_ASC]: {
+    name: "Updated At - ASC",
+    sortFct: (a: DeckWithStats, b: DeckWithStats) =>
+      new Date(a.deckUpdatedAt ?? "").getTime() -
+      new Date(b.deckUpdatedAt ?? "").getTime(),
+    highlightedKey: "deckUpdatedAt",
+    highlightedDirection: "asc",
+  },
+  [DeckSortFctKey.UPDATED_AT_DESC]: {
+    name: "Updated At - DESC",
+    sortFct: (a: DeckWithStats, b: DeckWithStats) =>
+      new Date(b.deckUpdatedAt ?? "").getTime() -
+      new Date(a.deckUpdatedAt ?? "").getTime(),
+    highlightedKey: "deckUpdatedAt",
+    highlightedDirection: "desc",
+  },
 };
 
 export function getDeckSortFctName(key: DeckSortFctKey): string {

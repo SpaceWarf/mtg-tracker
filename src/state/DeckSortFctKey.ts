@@ -11,4 +11,6 @@ export enum DeckSortFctKey {
   WIN_RATE_DESC = "win-rate-desc",
   BUILDER_ASC = "builder-asc",
   BUILDER_DESC = "builder-desc",
+  UPDATED_AT_ASC = "updated-at-asc",
+  UPDATED_AT_DESC = "updated-at-desc",
 }

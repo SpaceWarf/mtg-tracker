@@ -177,7 +177,9 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           <Table.RowHeaderCell width="125px">Created at</Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
-              <Strong>{getLongDateString(deck.createdAt ?? "", false)}</Strong>
+              <Strong>
+                {getLongDateString(deck.deckCreatedAt ?? "", false)}
+              </Strong>
             </Text>
           </Table.Cell>
         </Table.Row>
@@ -187,7 +189,9 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           </Table.RowHeaderCell>
           <Table.Cell>
             <Text size="4">
-              <Strong>{getLongDateString(deck.updatedAt ?? "", false)}</Strong>
+              <Strong>
+                {getLongDateString(deck.deckUpdatedAt ?? "", false)}
+              </Strong>
             </Text>
           </Table.Cell>
         </Table.Row>
