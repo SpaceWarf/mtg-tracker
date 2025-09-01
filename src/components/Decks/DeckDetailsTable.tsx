@@ -124,23 +124,6 @@ export function DeckDetailsTable({ deck }: OwnProps) {
             <CardComboList deck={deck} />
           </Table.Cell>
         </Table.Row>
-
-        <Table.Row>
-          <Table.RowHeaderCell width="125px">Est. price</Table.RowHeaderCell>
-          <Table.Cell>
-            <Text size="4">
-              <Strong>{deck.price}</Strong>
-            </Text>
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.RowHeaderCell width="125px">Salt sum</Table.RowHeaderCell>
-          <Table.Cell>
-            <Text size="4">
-              <Strong>{deck.saltSum}</Strong>
-            </Text>
-          </Table.Cell>
-        </Table.Row>
         <Table.Row>
           <Table.RowHeaderCell width="125px">
             <Flex direction="column">
@@ -163,6 +146,22 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           <Table.Cell>
             <Text size="4">
               <Strong>{deck.size}</Strong>
+            </Text>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.RowHeaderCell width="125px">Est. price</Table.RowHeaderCell>
+          <Table.Cell>
+            <Text size="4">
+              <Strong>{deck.price}</Strong>
+            </Text>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.RowHeaderCell width="125px">Salt sum</Table.RowHeaderCell>
+          <Table.Cell>
+            <Text size="4">
+              <Strong>{deck.saltSum}</Strong>
             </Text>
           </Table.Cell>
         </Table.Row>
