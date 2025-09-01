@@ -2,6 +2,7 @@ import "@assets/styles/BracketViewer.scss";
 import { CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 import { BRACKET_DATA, BracketRuleIcon } from "../../state/BracketData";
+import { getBracketName } from "../../utils/Bracket";
 
 const ICON_MAP: Record<BracketRuleIcon, React.ReactNode> = {
   [BracketRuleIcon.CROSS_CIRCLE]: <CrossCircledIcon width="18" height="18" />,
@@ -42,7 +43,9 @@ export function BracketsViewer() {
           >
             <Heading className="bracket-number">{index + 1}</Heading>
           </Flex>
-          <Heading className="bracket-name">{bracket.bracket}</Heading>
+          <Heading className="bracket-name">
+            {getBracketName(bracket.bracket)}
+          </Heading>
           <Text className="bracket-description">{bracket.description}</Text>
           <div className="bracket-divider" />
 

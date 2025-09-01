@@ -25,13 +25,31 @@ export function DecksViewer() {
   const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [search, setSearch] = useState<string>("");
-  const [sortFctKey, setSortFctKey] = useState<DeckSortFctKey>(
-    DeckSortFctKey.NAME_ASC
+  const [search, setSearch] = useState<string>(
+    searchParams.get("search") ?? ""
   );
-  const [visiblePlayer, setVisiblePlayer] = useState<string>("");
-  const [bracket, setBracket] = useState<Bracket>();
-  const [identity, setIdentity] = useState<IdentityLabel>();
+  const [sortFctKey, setSortFctKey] = useState<DeckSortFctKey>(
+    Object.values<string>(DeckSortFctKey).includes(
+      searchParams.get("sort") ?? ""
+    )
+      ? (searchParams.get("sort") as DeckSortFctKey)
+      : DeckSortFctKey.NAME_ASC
+  );
+  const [visiblePlayer, setVisiblePlayer] = useState<string>(
+    searchParams.get("builder") ?? ""
+  );
+  const [bracket, setBracket] = useState<Bracket | undefined>(
+    Object.values<string>(Bracket).includes(searchParams.get("bracket") ?? "")
+      ? (searchParams.get("bracket") as Bracket)
+      : undefined
+  );
+  const [identity, setIdentity] = useState<IdentityLabel | undefined>(
+    Object.values<string>(IdentityLabel).includes(
+      searchParams.get("identity") ?? ""
+    )
+      ? (searchParams.get("identity") as IdentityLabel)
+      : undefined
+  );
 
   const { populatedDecks, populating } = usePopulatedDecks();
   const [filteredDecks, setFilteredDecks] = useState<DeckWithStats[]>([]);
@@ -53,21 +71,57 @@ export function DecksViewer() {
     setFilteredDecks(sorted);
   }, [populatedDecks, sortFctKey, search, visiblePlayer, bracket, identity]);
 
-  useEffect(() => {
-    const urlSortKey = searchParams.get("sort");
-    if (
-      urlSortKey &&
-      Object.values<string>(DeckSortFctKey).includes(urlSortKey)
-    ) {
-      setSortFctKey(urlSortKey as DeckSortFctKey);
+  function handleSearch(value: string) {
+    setSearch(value);
+
+    if (!value) {
+      searchParams.delete("search");
+    } else {
+      searchParams.set("search", value);
     }
-  }, [searchParams]);
+    setSearchParams(searchParams);
+  }
 
   function handleSort(value: string) {
+    setSortFctKey(value as DeckSortFctKey);
+
     if (!value) {
       searchParams.delete("sort");
     } else {
       searchParams.set("sort", value);
+    }
+    setSearchParams(searchParams);
+  }
+
+  function handleChangeBuilder(value: string) {
+    setVisiblePlayer(value);
+
+    if (!value) {
+      searchParams.delete("builder");
+    } else {
+      searchParams.set("builder", value);
+    }
+    setSearchParams(searchParams);
+  }
+
+  function handleChangeBracket(value: Bracket) {
+    setBracket(value);
+
+    if (!value) {
+      searchParams.delete("bracket");
+    } else {
+      searchParams.set("bracket", value);
+    }
+    setSearchParams(searchParams);
+  }
+
+  function handleChangeIdentity(value: IdentityLabel) {
+    setIdentity(value);
+
+    if (!value) {
+      searchParams.delete("identity");
+    } else {
+      searchParams.set("identity", value);
     }
     setSearchParams(searchParams);
   }
@@ -88,7 +142,7 @@ export function DecksViewer() {
               className="input-field"
               placeholder="Search…"
               value={search}
-              onChange={({ target }) => setSearch(target.value)}
+              onChange={({ target }) => handleSearch(target.value)}
             >
               <TextField.Slot>
                 <MagnifyingGlassIcon height="16" width="16" />
@@ -111,7 +165,7 @@ export function DecksViewer() {
             </Heading>
             <PlayerSelect
               value={visiblePlayer}
-              onChange={setVisiblePlayer}
+              onChange={handleChangeBuilder}
               isMulti={false}
             />
           </div>
@@ -119,7 +173,10 @@ export function DecksViewer() {
             <Heading className="mb-1" size="3">
               Bracket
             </Heading>
-            <BracketSelect value={bracket as Bracket} onChange={setBracket} />
+            <BracketSelect
+              value={bracket as Bracket}
+              onChange={handleChangeBracket}
+            />
           </div>
           <div>
             <Heading className="mb-1" size="3">
@@ -127,7 +184,7 @@ export function DecksViewer() {
             </Heading>
             <IdentitySelect
               value={identity as IdentityLabel}
-              onChange={setIdentity}
+              onChange={handleChangeIdentity}
             />
           </div>
         </Flex>

@@ -6,7 +6,7 @@ import { DeckCardDetails, DeckDetails } from "../state/DeckDetails";
 import { DeckVersion } from "../state/DeckVersion";
 import { DbGame } from "../state/Game";
 import { IDENTITY_LABEL_MAP, IdentityLabel } from "../state/IdentityLabel";
-import { getBracket } from "./Bracket";
+import { getBracket, getBracketName } from "./Bracket";
 import { getAllGamesForDeck } from "./Game";
 
 export function getDeckGamesCount(deck: DbDeck, games: DbGame[]): number {
@@ -80,7 +80,9 @@ export function getColourIdentityLabel(
 export function getDeckDescriptorString(deck: DeckWithStats): string {
   const bracket = getBracket(deck);
   const identityLabel = getColourIdentityLabel(deck.colourIdentity ?? []);
-  return `${bracket} ${identityLabel.split(" ")[0]} ${deck.format} Deck`;
+  return `${getBracketName(bracket)} ${identityLabel.split(" ")[0]} ${
+    deck.format
+  } Deck`;
 }
 
 export function getCardDiff(

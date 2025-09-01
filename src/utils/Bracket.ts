@@ -8,6 +8,21 @@ export const EXTRA_TURN_LIMIT: number = 9999;
 export const TWO_CARD_COMBO_LIMIT: number = 9999;
 export const CARD_COUNT: number = 100;
 
+export function getBracketName(bracket: Bracket) {
+  switch (bracket) {
+    case Bracket.PRECON:
+      return "Precon";
+    case Bracket.LOW_POWER:
+      return "Low-Power";
+    case Bracket.MID_POWER:
+      return "Mid-Power";
+    case Bracket.HIGH_POWER:
+      return "High-Power";
+    case Bracket.ILLEGAL:
+      return "Illegal";
+  }
+}
+
 export function getBracket(deck: DeckWithStats) {
   if (deck.bracket) {
     return deck.bracket;

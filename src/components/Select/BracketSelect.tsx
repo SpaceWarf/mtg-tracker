@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import ReactSelect, { SingleValue } from "react-select";
 import { Bracket } from "../../state/Bracket";
 import { SelectOption } from "../../state/SelectOption";
+import { getBracketName } from "../../utils/Bracket";
 
 type OwnProps = {
   value?: Bracket;
@@ -18,7 +19,7 @@ export function BracketSelect({
 }: OwnProps) {
   const options = Object.values(Bracket).map((bracket) => ({
     value: bracket,
-    label: bracket,
+    label: getBracketName(bracket),
   }));
 
   const optionsValue = useMemo(() => {
