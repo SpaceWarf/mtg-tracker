@@ -10,6 +10,10 @@ export const CARD_COUNT_MAX: number = 100;
 export const CARD_COUNT_MIN: number = 100;
 
 export function getBracket(deck: DeckWithStats) {
+  if (deck.bracket) {
+    return deck.bracket;
+  }
+
   const tooManyGameChangers = deck.gameChangers.length > GAME_CHANGER_LIMIT;
   const tooManyTutors = deck.tutors.length > TUTOR_LIMIT;
   const tooManyExtraTurns = deck.extraTurns.length > EXTRA_TURN_LIMIT;

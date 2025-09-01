@@ -4,7 +4,7 @@ import { Bracket } from "../../state/Bracket";
 import { SelectOption } from "../../state/SelectOption";
 
 type OwnProps = {
-  value: Bracket;
+  value?: Bracket;
   menuPlacement?: "top" | "bottom";
   clearable?: boolean;
   onChange: (value: Bracket) => void;

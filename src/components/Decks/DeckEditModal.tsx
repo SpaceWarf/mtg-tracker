@@ -10,6 +10,7 @@ import {
   Dialog,
   Flex,
   Heading,
+  Text,
   TextField,
 } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
@@ -18,10 +19,12 @@ import { useNavigate } from "react-router";
 import { usePlayers } from "../../hooks/usePlayers";
 import { ArchidektService } from "../../services/Archidekt";
 import { DeckService } from "../../services/Deck";
+import { Bracket } from "../../state/Bracket";
 import { DbDeck } from "../../state/Deck";
 import { DeckDetails } from "../../state/DeckDetails";
 import { getDeckCommandersString } from "../../utils/Deck";
 import { getPlayerByExternalId } from "../../utils/Player";
+import { BracketSelect } from "../Select/BracketSelect";
 import { PlayerSelect } from "../Select/PlayerSelect";
 
 type OwnProps = {
@@ -37,6 +40,7 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
   const [commander, setCommander] = useState<string>(deck.commander ?? "");
   const [externalId, setExternalId] = useState<string>(deck.externalId ?? "");
   const [builder, setBuilder] = useState<string>(deck.builder ?? "");
+  const [bracket, setBracket] = useState<Bracket | undefined>(deck.bracket);
   const [deckDetails, setDeckDetails] = useState<DeckDetails>();
   const [autofilling, setAutofilling] = useState<boolean>(false);
   const [autofillError, setAutofillError] = useState<string>("");
@@ -48,18 +52,23 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
       commander,
       externalId,
       builder: builder ?? "",
-      featured: deckDetails?.featured ?? "",
-      price: deckDetails?.price ?? "",
-      saltSum: deckDetails?.saltSum ?? "",
-      size: deckDetails?.size ?? "",
-      viewCount: deckDetails?.viewCount ?? "",
-      format: deckDetails?.format ?? "",
-      deckCreatedAt: deckDetails?.createdAt ?? "",
-      deckUpdatedAt: deckDetails?.updatedAt ?? "",
-      colourIdentity: deckDetails?.colourIdentity ?? [],
-      cards: deckDetails?.cards ?? [],
-      categories: deckDetails?.categories ?? [],
+      bracket: bracket ?? ("" as Bracket),
     };
+
+    if (deckDetails) {
+      update.featured = deckDetails.featured;
+      update.price = deckDetails.price;
+      update.saltSum = deckDetails.saltSum;
+      update.size = deckDetails.size;
+      update.viewCount = deckDetails.viewCount;
+      update.format = deckDetails.format;
+      update.deckCreatedAt = deckDetails.createdAt;
+      update.deckUpdatedAt = deckDetails.updatedAt;
+      update.colourIdentity = deckDetails.colourIdentity;
+      update.cards = deckDetails.cards;
+      update.categories = deckDetails.categories;
+    }
+
     await DeckService.update(deck.id, update);
     navigate(0);
   }
@@ -172,6 +181,21 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
             isMulti={false}
             menuPlacement="top"
             disabled={autofilling}
+          />
+        </div>
+
+        <div className="mb-5">
+          <div className="mb-1">
+            <Heading size="3">Bracket</Heading>
+            <Text size="1" color="gray">
+              Leaving this field empty will let the application automatically
+              determine the bracket.
+            </Text>
+          </div>
+          <BracketSelect
+            value={bracket}
+            onChange={setBracket}
+            menuPlacement="top"
           />
         </div>
 

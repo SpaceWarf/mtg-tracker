@@ -1,3 +1,4 @@
+import { Bracket } from "./Bracket";
 import { Combo } from "./Combo";
 import { DatabaseItem } from "./DatabaseItem";
 import { DeckCardDetails, DeckCategoryDetails } from "./DeckDetails";
@@ -23,6 +24,7 @@ export interface Deck {
   versions?: DeckVersion[];
   latestVersionId: string;
   possibleCombos?: Combo[];
+  bracket?: Bracket;
 }
 
 export interface DbDeck extends Deck, DatabaseItem {}

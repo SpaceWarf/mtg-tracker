@@ -11,6 +11,7 @@ import {
   Dialog,
   Flex,
   Heading,
+  Text,
   TextField,
 } from "@radix-ui/themes";
 import { useState } from "react";
@@ -18,10 +19,12 @@ import { useNavigate } from "react-router";
 import { usePlayers } from "../../hooks/usePlayers";
 import { ArchidektService } from "../../services/Archidekt";
 import { DeckService } from "../../services/Deck";
+import { Bracket } from "../../state/Bracket";
 import { Deck } from "../../state/Deck";
 import { DeckDetails } from "../../state/DeckDetails";
 import { getDeckCommandersString } from "../../utils/Deck";
 import { getPlayerByExternalId } from "../../utils/Player";
+import { BracketSelect } from "../Select/BracketSelect";
 import { PlayerSelect } from "../Select/PlayerSelect";
 
 export function DeckCreateModal() {
@@ -31,6 +34,7 @@ export function DeckCreateModal() {
   const [commander, setCommander] = useState<string>("");
   const [externalId, setExternalId] = useState<string>("");
   const [builder, setBuilder] = useState<string>("");
+  const [bracket, setBracket] = useState<Bracket | undefined>();
   const [deckDetails, setDeckDetails] = useState<DeckDetails>();
   const [autofilling, setAutofilling] = useState<boolean>(false);
   const [autofillError, setAutofillError] = useState<string>("");
@@ -54,6 +58,7 @@ export function DeckCreateModal() {
       categories: deckDetails?.categories ?? [],
       versions: [],
       latestVersionId: "",
+      bracket: bracket ?? ("" as Bracket),
     };
     await DeckService.create(deck);
     navigate(0);
@@ -171,6 +176,21 @@ export function DeckCreateModal() {
             value={builder as string}
             onChange={setBuilder}
             isMulti={false}
+            menuPlacement="top"
+          />
+        </div>
+
+        <div className="mb-5">
+          <div className="mb-1">
+            <Heading size="3">Bracket</Heading>
+            <Text size="1" color="gray">
+              Leaving this field empty will let the application automatically
+              determine the bracket.
+            </Text>
+          </div>
+          <BracketSelect
+            value={bracket}
+            onChange={setBracket}
             menuPlacement="top"
           />
         </div>
