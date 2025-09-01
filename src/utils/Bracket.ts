@@ -6,8 +6,7 @@ export const GAME_CHANGER_LIMIT: number = 3;
 export const TUTOR_LIMIT: number = 9999;
 export const EXTRA_TURN_LIMIT: number = 9999;
 export const TWO_CARD_COMBO_LIMIT: number = 9999;
-export const CARD_COUNT_MAX: number = 100;
-export const CARD_COUNT_MIN: number = 100;
+export const CARD_COUNT: number = 100;
 
 export function getBracket(deck: DeckWithStats) {
   if (deck.bracket) {
@@ -20,8 +19,8 @@ export function getBracket(deck: DeckWithStats) {
   const tooManyMassLandDenials =
     deck.massLandDenials.length > MASS_LAND_DENIAL_LIMIT;
   const tooMany2CardCombos = deck.combos.length > TWO_CARD_COMBO_LIMIT;
-  const tooManyCards = parseInt(deck.size ?? "0") > CARD_COUNT_MAX;
-  const notEnoughCards = parseInt(deck.size ?? "0") < CARD_COUNT_MIN;
+  const tooManyCards = parseInt(deck.size ?? "0") > CARD_COUNT;
+  const notEnoughCards = parseInt(deck.size ?? "0") < CARD_COUNT;
 
   if (
     tooManyGameChangers ||
@@ -80,12 +79,12 @@ export function getBracketDetails(deck: DeckWithStats): string[] {
       );
     }
 
-    if (parseInt(deck.size ?? "0") > CARD_COUNT_MAX) {
-      details.push(`More than ${CARD_COUNT_MAX} cards (${deck.size})`);
+    if (parseInt(deck.size ?? "0") > CARD_COUNT) {
+      details.push(`More than ${CARD_COUNT} cards (${deck.size})`);
     }
 
-    if (parseInt(deck.size ?? "0") < CARD_COUNT_MIN) {
-      details.push(`Less than ${CARD_COUNT_MIN} cards (${deck.size})`);
+    if (parseInt(deck.size ?? "0") < CARD_COUNT) {
+      details.push(`Less than ${CARD_COUNT} cards (${deck.size})`);
     }
   }
 

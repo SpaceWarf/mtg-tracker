@@ -1,10 +1,10 @@
 import { Flex, Link, Strong, Table, Text } from "@radix-ui/themes";
+import { useMemo } from "react";
 import { Combo } from "../../state/Combo";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckCardDetails } from "../../state/DeckDetails";
 import {
-  CARD_COUNT_MAX,
-  CARD_COUNT_MIN,
+  CARD_COUNT,
   EXTRA_TURN_LIMIT,
   GAME_CHANGER_LIMIT,
   MASS_LAND_DENIAL_LIMIT,
@@ -107,7 +107,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
         <Table.Row>
           <Table.RowHeaderCell width="125px">
             <Flex direction="column">
-              <Text>Infinite combos</Text>
+              <Text>Combos</Text>
               {TWO_CARD_COMBO_LIMIT !== 9999 && (
                 <Text
                   size="1"
@@ -121,7 +121,7 @@ export function DeckDetailsTable({ deck }: OwnProps) {
             </Flex>
           </Table.RowHeaderCell>
           <Table.Cell>
-            <CardComboList combos={deck.combos} />
+            <CardComboList deck={deck} />
           </Table.Cell>
         </Table.Row>
 
@@ -145,24 +145,17 @@ export function DeckDetailsTable({ deck }: OwnProps) {
           <Table.RowHeaderCell width="125px">
             <Flex direction="column">
               <Text>Card count</Text>
-              {CARD_COUNT_MAX !== 9999 && (
+              {CARD_COUNT !== 9999 && (
                 <Text
                   size="1"
                   color={
-                    parseInt(deck.size || "0") > CARD_COUNT_MAX ? "red" : "gray"
+                    parseInt(deck.size || "0") > CARD_COUNT ||
+                    parseInt(deck.size || "0") < CARD_COUNT
+                      ? "red"
+                      : "gray"
                   }
                 >
-                  max. {CARD_COUNT_MAX}
-                </Text>
-              )}
-              {CARD_COUNT_MIN !== 9999 && (
-                <Text
-                  size="1"
-                  color={
-                    parseInt(deck.size || "0") < CARD_COUNT_MIN ? "red" : "gray"
-                  }
-                >
-                  min. {CARD_COUNT_MIN}
+                  exactly {CARD_COUNT}
                 </Text>
               )}
             </Flex>
@@ -231,8 +224,25 @@ function CardNameList({ cards }: { cards: DeckCardDetails[] }) {
   );
 }
 
-function CardComboList({ combos }: { combos: Combo[] }) {
-  if (combos.length === 0) {
+function CardComboList({ deck }: { deck: DeckWithStats }) {
+  const early2CardCombos = useMemo(() => {
+    return deck.combos.filter(
+      (combo) => combo.cards.length === 2 && combo.bracket === "4-5"
+    );
+  }, [deck.combos]);
+
+  const late2CardCombos = useMemo(() => {
+    return deck.combos.filter(
+      (combo) =>
+        combo.cards.length === 2 && ["any", "3"].includes(combo.bracket)
+    );
+  }, [deck.combos]);
+
+  const otherCombos = useMemo(() => {
+    return deck.combos.filter((combo) => combo.cards.length !== 2);
+  }, [deck.combos]);
+
+  if (deck.combos.length === 0) {
     return (
       <Text size="2">
         <Strong>-</Strong>
@@ -241,16 +251,55 @@ function CardComboList({ combos }: { combos: Combo[] }) {
   }
 
   return (
-    <ul>
-      {combos.map((combo) => (
-        <li key={combo.name}>
-          <Link href={`https://edhrec.com${combo.href}`} target="_blank">
-            <Text size="2">
-              <Strong>{combo.name.split(" (")[0]}</Strong>
-            </Text>
-          </Link>
-        </li>
-      ))}
-    </ul>
+    <>
+      {early2CardCombos.length > 0 && (
+        <>
+          <Text size="1" color="gray">
+            <Strong>Early 2 card combos</Strong>
+          </Text>
+          <ul className="mb-2">
+            {early2CardCombos.map((combo) => (
+              <CardComboListItem combo={combo} />
+            ))}
+          </ul>
+        </>
+      )}
+      {late2CardCombos.length > 0 && (
+        <>
+          <Text size="1" color="gray">
+            <Strong>Other 2 card combos</Strong>
+          </Text>
+          <ul className="mb-2">
+            {late2CardCombos.map((combo) => (
+              <CardComboListItem combo={combo} />
+            ))}
+          </ul>
+        </>
+      )}
+      {otherCombos.length > 0 && (
+        <>
+          <Text size="1" color="gray">
+            <Strong>3+ card combos</Strong>
+          </Text>
+          <ul>
+            {otherCombos.map((combo) => (
+              <CardComboListItem combo={combo} />
+            ))}
+          </ul>
+        </>
+      )}
+    </>
+  );
+}
+
+function CardComboListItem({ combo }: { combo: Combo }) {
+  return (
+    <li key={combo.name}>
+      <Link href={`https://edhrec.com${combo.href}`} target="_blank">
+        <Text size="2">
+          <Strong>{combo.name.split(" (")[0]}</Strong>
+        </Text>
+      </Link>
+    </li>
   );
 }

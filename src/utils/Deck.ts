@@ -80,7 +80,7 @@ export function getColourIdentityLabel(
 export function getDeckDescriptorString(deck: DeckWithStats): string {
   const bracket = getBracket(deck);
   const identityLabel = getColourIdentityLabel(deck.colourIdentity ?? []);
-  return `${bracket} ${identityLabel.split(" ")[0]} Deck`;
+  return `${bracket} ${identityLabel.split(" ")[0]} ${deck.format} Deck`;
 }
 
 export function getCardDiff(
