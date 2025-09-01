@@ -102,7 +102,9 @@ export class ArchidektDeckScraper extends HTMLScraper {
   }
 
   private getCommanders(): string[] {
-    return this.getPremierCards().map((card) => card.name);
+    return this.getPremierCards()
+      .map((card) => card.name)
+      .sort((a, b) => a.localeCompare(b));
   }
 
   private getColourIdentity(): string[] {

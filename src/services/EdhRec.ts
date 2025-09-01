@@ -2,6 +2,7 @@ import axios from "axios";
 import { Combo } from "../state/Combo";
 import { DeckDetails } from "../state/DeckDetails";
 import { EdhRecCombo } from "../state/EdhRecCombos";
+import { getSanitizedCommanderString } from "../utils/Deck";
 
 export class EdhRecService {
   static async getDeckInfiniteCombos(deck: DeckDetails): Promise<Combo[]> {
@@ -9,15 +10,11 @@ export class EdhRecService {
       return Promise.resolve([]);
     }
 
-    const commander = deck.commanders[0]
-      .split(" // ")[0]
-      .replace(/ /g, "-")
-      .replace(/(,|'|")/g, "")
-      .toLowerCase();
-
     try {
       const res = await axios.get<EdhRecCombo>(
-        `https://json.edhrec.com/pages/combos/${commander}.json`
+        `https://json.edhrec.com/pages/combos/${getSanitizedCommanderString(
+          deck.commanders.join(" & ")
+        )}.json`
       );
       const cardList = res.data.container.json_dict.cardlists;
       const combos: Combo[] = cardList.map((card) => {
@@ -37,5 +34,10 @@ export class EdhRecService {
     } catch (error) {
       return Promise.reject(error);
     }
+  }
+
+  static getDeckUrl(id: string): string {
+    console.log(id);
+    return `https://edhrec.com/commanders/${getSanitizedCommanderString(id)}`;
   }
 }

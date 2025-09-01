@@ -1,7 +1,6 @@
 import {
   CommitIcon,
   DotsVerticalIcon,
-  ExternalLinkIcon,
   ListBulletIcon,
   MagnifyingGlassIcon,
   Pencil1Icon,
@@ -21,6 +20,7 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { ArchidektService } from "../../services/Archidekt";
+import { EdhRecService } from "../../services/EdhRec";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckCardView } from "../../state/DeckCardView";
 import { getDateTimeString } from "../../utils/Date";
@@ -144,8 +144,22 @@ export function DeckCard({
                     )
                   }
                 >
-                  <ExternalLinkIcon width="18" height="18" />
-                  Open in Archidekt
+                  <img src="/img/logos/archidekt.webp" width="16" height="16" />
+                  Open on Archidekt
+                </DropdownMenu.Item>
+              )}
+              {deck.externalId && (
+                <DropdownMenu.Item
+                  className="mb-1"
+                  onClick={() =>
+                    window.open(
+                      EdhRecService.getDeckUrl(deck.commander ?? ""),
+                      "_blank"
+                    )
+                  }
+                >
+                  <img src="/img/logos/edhrec.webp" width="18" height="16" />
+                  Open on EDHREC
                 </DropdownMenu.Item>
               )}
               {editable && (

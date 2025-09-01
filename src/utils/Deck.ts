@@ -24,7 +24,7 @@ export function getDeckWinRate(deck: DbDeck, games: DbGame[]): number {
 }
 
 export function getDeckCommandersString(commanders: string[]): string {
-  return commanders.join(" // ");
+  return commanders.join(" & ");
 }
 
 export function getVisibleCards(deck: DbDeck): DeckCardDetails[] {
@@ -257,4 +257,13 @@ export function populateDeckDetails(
     deckUpdatedAt: deckDetails.updatedAt,
   };
   return populateDeck(deck, [], gameChangers);
+}
+
+export function getSanitizedCommanderString(commander: string): string {
+  return commander
+    .split(" // ")[0]
+    .replace(" & ", "-")
+    .replace(/ /g, "-")
+    .replace(/(,|'|")/g, "")
+    .toLowerCase();
 }
