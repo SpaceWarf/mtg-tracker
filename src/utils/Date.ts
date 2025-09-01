@@ -1,4 +1,8 @@
 export function getLongDateString(date: string, longMonth = true): string {
+  if (date === "") {
+    return "-";
+  }
+
   return new Date(date).toLocaleDateString("en-us", {
     year: "numeric",
     month: longMonth ? "long" : "short",
