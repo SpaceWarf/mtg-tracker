@@ -10,34 +10,33 @@ export const CARD_COUNT_MAX: number = 100;
 export const CARD_COUNT_MIN: number = 100;
 
 export function getBracket(deck: DeckWithStats) {
-  if (deck.gameChangers.length > GAME_CHANGER_LIMIT) {
-    return Bracket.ILLEGAL;
-  }
-
-  if (deck.tutors.length > TUTOR_LIMIT) {
-    return Bracket.ILLEGAL;
-  }
-
-  if (deck.extraTurns.length > EXTRA_TURN_LIMIT) {
-    return Bracket.ILLEGAL;
-  }
-
-  if (deck.massLandDenials.length > MASS_LAND_DENIAL_LIMIT) {
-    return Bracket.ILLEGAL;
-  }
-
-  if (deck.combos.length > TWO_CARD_COMBO_LIMIT) {
-    return Bracket.ILLEGAL;
-  }
+  const tooManyGameChangers = deck.gameChangers.length > GAME_CHANGER_LIMIT;
+  const tooManyTutors = deck.tutors.length > TUTOR_LIMIT;
+  const tooManyExtraTurns = deck.extraTurns.length > EXTRA_TURN_LIMIT;
+  const tooManyMassLandDenials =
+    deck.massLandDenials.length > MASS_LAND_DENIAL_LIMIT;
+  const tooMany2CardCombos = deck.combos.length > TWO_CARD_COMBO_LIMIT;
+  const tooManyCards = parseInt(deck.size ?? "0") > CARD_COUNT_MAX;
+  const notEnoughCards = parseInt(deck.size ?? "0") < CARD_COUNT_MIN;
 
   if (
-    parseInt(deck.size ?? "0") > CARD_COUNT_MAX ||
-    parseInt(deck.size ?? "0") < CARD_COUNT_MIN
+    tooManyGameChangers ||
+    tooManyTutors ||
+    tooManyExtraTurns ||
+    tooManyMassLandDenials ||
+    tooMany2CardCombos ||
+    tooManyCards ||
+    notEnoughCards
   ) {
     return Bracket.ILLEGAL;
   }
 
-  if (deck.gameChangers.length > 0) {
+  const hasEarly2CardCombo = deck.combos.some(
+    (combo) => combo.cards.length === 2 && combo.bracket === "4-5"
+  );
+  const hasGameChanger = deck.gameChangers.length > 0;
+
+  if (hasEarly2CardCombo || hasGameChanger) {
     return Bracket.HIGH_POWER;
   }
 
@@ -83,6 +82,19 @@ export function getBracketDetails(deck: DeckWithStats): string[] {
 
     if (parseInt(deck.size ?? "0") < CARD_COUNT_MIN) {
       details.push(`Less than ${CARD_COUNT_MIN} cards (${deck.size})`);
+    }
+  }
+
+  if (bracket === Bracket.HIGH_POWER) {
+    if (deck.gameChangers.length > 0) {
+      details.push(`Has game changers (${deck.gameChangers.length})`);
+    }
+
+    const early2CardCombo = deck.combos.filter(
+      (combo) => combo.cards.length === 2 && combo.bracket === "4-5"
+    );
+    if (early2CardCombo.length > 0) {
+      details.push(`Has early 2-card combos (${early2CardCombo.length})`);
     }
   }
 

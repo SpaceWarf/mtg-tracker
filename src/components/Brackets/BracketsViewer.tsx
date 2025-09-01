@@ -28,6 +28,7 @@ export function BracketsViewer() {
     >
       {BRACKET_DATA.map((bracket, index) => (
         <Flex
+          key={bracket.bracket}
           className="bracket-container"
           direction="column"
           align="center"
@@ -46,8 +47,13 @@ export function BracketsViewer() {
           <div className="bracket-divider" />
 
           <Flex direction="column" gap="6">
-            {bracket.rules.map((rule) => (
-              <Flex className="bracket-rule" align="center" gap="5">
+            {bracket.rules.map((rule, index) => (
+              <Flex
+                key={`${bracket.bracket}-rule-${index}`}
+                className="bracket-rule"
+                align="center"
+                gap="5"
+              >
                 <div className={rule.colour}>{ICON_MAP[rule.icon]}</div>
                 <Text>{rule.text}</Text>
               </Flex>
