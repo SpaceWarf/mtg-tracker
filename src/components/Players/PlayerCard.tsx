@@ -1,6 +1,5 @@
 import {
   DotsVerticalIcon,
-  ExternalLinkIcon,
   MagnifyingGlassIcon,
   Pencil1Icon,
   TrashIcon,
@@ -108,8 +107,12 @@ export function PlayerCard({
                       )
                     }
                   >
-                    <ExternalLinkIcon width="18" height="18" />
-                    Open in Archidekt
+                    <img
+                      src="/img/logos/archidekt.webp"
+                      width="16"
+                      height="16"
+                    />
+                    Open on Archidekt
                   </DropdownMenu.Item>
                 )}
                 {editable && (
