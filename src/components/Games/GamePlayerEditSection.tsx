@@ -3,6 +3,7 @@ import { cloneDeep } from "lodash";
 import { GamePlayer } from "../../state/Game";
 import { DeckSelect } from "../Select/DeckSelect";
 import { PlayerSelect } from "../Select/PlayerSelect";
+import { VersionSelect } from "../Select/VersionSelect";
 
 type OwnProps = {
   gamePlayer: GamePlayer;
@@ -30,9 +31,17 @@ export function GamePlayerEditSection({
     const update: GamePlayer = {
       ...cloneDeep(gamePlayer),
       deck: value,
-      deckVersion: version,
+      deckVersion: version ? version : "initial",
     };
     delete update.deckObj;
+    onChange(update);
+  }
+
+  function handleDeckVersionChange(value: string) {
+    const update: GamePlayer = {
+      ...cloneDeep(gamePlayer),
+      deckVersion: value,
+    };
     onChange(update);
   }
 
@@ -69,13 +78,32 @@ export function GamePlayerEditSection({
           isMulti={false}
           clearable={false}
         />
-        <DeckSelect
-          value={gamePlayer.deck}
-          onChange={handleDeckChange}
-          isMulti={false}
-          menuPlacement={invertDropdownLayout ? "top" : "bottom"}
-          clearable={false}
-        />
+        <Flex gap="3">
+          <Flex width="65%" flexGrow="1">
+            <div className="w-full">
+              <DeckSelect
+                value={gamePlayer.deck}
+                onChange={handleDeckChange}
+                isMulti={false}
+                menuPlacement={invertDropdownLayout ? "top" : "bottom"}
+                clearable={false}
+              />
+            </div>
+          </Flex>
+          {gamePlayer.deck && (
+            <Flex width="35%" flexGrow="1">
+              <div className="w-full">
+                <VersionSelect
+                  deckId={gamePlayer.deck}
+                  value={gamePlayer.deckVersion ?? "initial"}
+                  onChange={handleDeckVersionChange}
+                  isMulti={false}
+                  menuPlacement={invertDropdownLayout ? "top" : "bottom"}
+                />
+              </div>
+            </Flex>
+          )}
+        </Flex>
         <Flex gap="3">
           <Text as="label" size="2">
             <Flex gap="2">

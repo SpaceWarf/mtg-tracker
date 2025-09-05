@@ -61,7 +61,7 @@ export function GameEditModal({ open, game, onClose }: OwnProps) {
     <Dialog.Root open={open} onOpenChange={handleOpenChange}>
       <Dialog.Description></Dialog.Description>
 
-      <Dialog.Content>
+      <Dialog.Content className="max-w-[50vw]">
         <Dialog.Title>Edit game</Dialog.Title>
 
         <div className="mb-5">

@@ -95,7 +95,7 @@ export function GameCreateModal() {
 
       <Dialog.Description></Dialog.Description>
 
-      <Dialog.Content>
+      <Dialog.Content className="max-w-[50vw]">
         <Dialog.Title>Create game</Dialog.Title>
 
         <div className="mb-5">
