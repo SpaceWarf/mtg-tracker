@@ -39,6 +39,9 @@ type OwnProps = {
   highlightedDirection: "asc" | "desc";
 };
 
+/**
+ * Deprecated
+ */
 export function DeckCard({
   deck,
   editable,
