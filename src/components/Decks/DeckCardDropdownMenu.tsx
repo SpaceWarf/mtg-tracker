@@ -53,12 +53,13 @@ export function DeckCardDropdownMenu({
           {deck.externalId && (
             <DropdownMenu.Item
               className="mb-1"
-              onClick={() =>
+              onClick={(e) => {
+                e.stopPropagation();
                 window.open(
                   ArchidektService.getDeckUrl(deck.externalId ?? ""),
                   "_blank"
-                )
-              }
+                );
+              }}
             >
               <img src="/img/logos/archidekt.webp" width="16" height="16" />
               Open on Archidekt
@@ -67,38 +68,63 @@ export function DeckCardDropdownMenu({
           {deck.externalId && (
             <DropdownMenu.Item
               className="mb-1"
-              onClick={() =>
+              onClick={(e) => {
+                e.stopPropagation();
                 window.open(
                   EdhRecService.getDeckUrl(deck.commander ?? ""),
                   "_blank"
-                )
-              }
+                );
+              }}
             >
               <img src="/img/logos/edhrec.webp" width="18" height="16" />
               Open on EDHREC
             </DropdownMenu.Item>
           )}
           {editable && (
-            <DropdownMenu.Item className="mb-1" onClick={onEdit}>
+            <DropdownMenu.Item
+              className="mb-1"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit();
+              }}
+            >
               <Pencil1Icon width="18" height="18" />
               Edit
             </DropdownMenu.Item>
           )}
           {editable && (
-            <DropdownMenu.Item className="mb-1" onClick={onSync}>
+            <DropdownMenu.Item
+              className="mb-1"
+              onClick={(e) => {
+                e.stopPropagation();
+                onSync();
+              }}
+            >
               <UpdateIcon width="18" height="18" />
               Sync
             </DropdownMenu.Item>
           )}
           {editable && deck.versions && deck.versions.length > 0 && (
-            <DropdownMenu.Item className="mb-1" onClick={onVersionManager}>
+            <DropdownMenu.Item
+              className="mb-1"
+              onClick={(e) => {
+                e.stopPropagation();
+                onVersionManager();
+              }}
+            >
               <CommitIcon width="18" height="18" />
               Manage versions
             </DropdownMenu.Item>
           )}
           {editable && <DropdownMenu.Separator />}
           {editable && (
-            <DropdownMenu.Item color="red" onClick={onDelete}>
+            <DropdownMenu.Item
+              color="red"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
+            >
               <TrashIcon width="18" height="18" />
               Delete
             </DropdownMenu.Item>

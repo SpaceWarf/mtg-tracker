@@ -1,4 +1,5 @@
 import { Flex } from "@radix-ui/themes";
+import { useMemo } from "react";
 import { ManaIcon } from "../Icons/ManaIcon";
 
 type OwnProps = {
@@ -6,18 +7,23 @@ type OwnProps = {
 };
 
 export function IdentityHeader({ label }: OwnProps) {
+  const parts = useMemo(() => {
+    return label.split(" ");
+  }, [label]);
+
   return (
     <Flex gap="2" align="center">
-      <span>{label.split(" ")[0]}</span>
-      <Flex gap="1">
-        {label
-          .split(" ")[1]
-          .replaceAll(/\(|\)/g, "")
-          .split("")
-          .map((colour) => (
-            <ManaIcon key={colour} colour={colour} size="small" />
-          ))}
-      </Flex>
+      <span>{parts[0]}</span>
+      {parts[1] && (
+        <Flex gap="1">
+          {parts[1]
+            .replaceAll(/\(|\)/g, "")
+            .split("")
+            .map((colour) => (
+              <ManaIcon key={colour} colour={colour} size="small" />
+            ))}
+        </Flex>
+      )}
     </Flex>
   );
 }

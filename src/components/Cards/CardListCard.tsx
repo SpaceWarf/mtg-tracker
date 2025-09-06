@@ -86,7 +86,7 @@ export function CardListCard({
 
     if (!cardUris) {
       try {
-        const cardUris = await ScryfallService.getCardObject(card);
+        const cardUris = await ScryfallService.getCardObjectByCode(card);
         setCardUris(cardUris);
       } catch (error) {
         console.error(error);

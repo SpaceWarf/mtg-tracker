@@ -58,6 +58,8 @@ export function GameChangersViewer() {
         <CardListFilters
           hasVersions={(deck?.versions?.length ?? 0) > 0}
           onChange={handleCardListFiltersChange}
+          showVersionToggle
+          showLegend
         />
         <Flex gap="2">
           {auth.user && (

@@ -1,0 +1,15 @@
+.card-preview {
+  border-radius: 10px;
+
+  &.clickable {
+    cursor: pointer;
+  }
+
+  &.large {
+    height: 350px;
+  }
+
+  &.small {
+    height: 250px;
+  }
+}

@@ -1,0 +1,95 @@
+import {
+  faCalendarDays,
+  faCalendarPlus,
+  faCrown,
+  faDice,
+  faDollarSign,
+  faEye,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Flex } from "@radix-ui/themes";
+import { useMemo } from "react";
+import "../../assets/styles/DeckShowcase.scss";
+import { useAuth } from "../../hooks/useAuth";
+import { DeckWithStats } from "../../state/Deck";
+import { getLongDateString } from "../../utils/Date";
+import { CardPreview } from "../Cards/CardPreview";
+import { DeckHeader2 } from "./DeckHeader2";
+import { DeckTags } from "./DeckTags";
+
+type OwnProps = {
+  deck: DeckWithStats;
+};
+
+export function DeckShowcase({ deck }: OwnProps) {
+  const { user } = useAuth();
+
+  const commander = useMemo(() => {
+    return deck.cards?.find((card) => card.name === deck.commander);
+  }, [deck]);
+
+  return (
+    <div className="deck-showcase">
+      <Flex
+        className="header"
+        direction="column"
+        gap="5"
+        style={
+          {
+            ["--url" as string]: `url(${deck.featured})`,
+          } as React.CSSProperties
+        }
+      >
+        <DeckHeader2 deck={deck} editable={!!user} />
+        <Flex justify="center">
+          {commander && <CardPreview card={commander} clickable />}
+        </Flex>
+        <DeckTags deck={deck} />
+      </Flex>
+      <Flex direction="column" className="stats-table">
+        <Flex className="stats-row" justify="between" flexGrow="1">
+          <Flex className="label" align="center" gap="2">
+            <FontAwesomeIcon size="xl" width="22" icon={faDice} />
+            <p>Games Played</p>
+          </Flex>
+          <p className="value">{deck.gamesPlayed}</p>
+        </Flex>
+        <Flex className="stats-row" justify="between" flexGrow="1">
+          <Flex className="label" align="center" gap="2">
+            <FontAwesomeIcon size="xl" width="22" icon={faCrown} />
+            <p>Games Won</p>
+          </Flex>
+          <p className="value">{deck.winCount}</p>
+        </Flex>
+        <Flex className="stats-row" justify="between" flexGrow="1">
+          <Flex className="label" align="center" gap="2">
+            <FontAwesomeIcon size="xl" width="22" icon={faDollarSign} />
+            <p>Est. Price</p>
+          </Flex>
+          <p className="value">{deck.price}</p>
+        </Flex>
+        <Flex className="stats-row" justify="between" flexGrow="1">
+          <Flex className="label" align="center" gap="2">
+            <FontAwesomeIcon size="xl" width="22" icon={faEye} />
+            <p>View Count</p>
+          </Flex>
+          <p className="value">{deck.viewCount}</p>
+        </Flex>
+        <Flex className="stats-row" justify="between" flexGrow="1">
+          <Flex className="label" align="center" gap="2">
+            <FontAwesomeIcon size="xl" width="22" icon={faCalendarDays} />
+            <p>Created At</p>
+          </Flex>
+          <p className="value">{getLongDateString(deck.deckCreatedAt ?? "")}</p>
+        </Flex>
+        <Flex className="stats-row" justify="between" flexGrow="1">
+          <Flex className="label" align="center" gap="2">
+            <FontAwesomeIcon size="xl" width="22" icon={faCalendarPlus} />
+            <p>Updated At</p>
+          </Flex>
+          <p className="value">{getLongDateString(deck.deckUpdatedAt ?? "")}</p>
+        </Flex>
+      </Flex>
+    </div>
+  );
+}

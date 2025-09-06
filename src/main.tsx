@@ -9,6 +9,7 @@ import { AlertProvider } from "./contexts/AlertProvider.tsx";
 import { AuthProvider } from "./contexts/AuthProvider.tsx";
 import { DataProvider } from "./contexts/DataProvider.tsx";
 import { Brackets } from "./pages/Brackets.tsx";
+import { DeckById } from "./pages/DeckById.tsx";
 import { Decks } from "./pages/Decks.tsx";
 import { DeckValidator } from "./pages/DeckValidator.tsx";
 import { GameChangers } from "./pages/GameChangers.tsx";
@@ -37,6 +38,7 @@ export function Main() {
                     <Route path="/" element={<Games />} />
                     <Route path="/players" element={<Players />} />
                     <Route path="/decks" element={<Decks />} />
+                    <Route path="/decks/:id" element={<DeckById />} />
                     <Route path="/game-changers" element={<GameChangers />} />
                     <Route path="/deck-validator" element={<DeckValidator />} />
                     <Route path="/brackets" element={<Brackets />} />

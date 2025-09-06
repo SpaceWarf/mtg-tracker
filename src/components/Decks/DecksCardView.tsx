@@ -9,23 +9,14 @@ type OwnProps = {
   highlightedDirection: "asc" | "desc";
 };
 
-export function DecksCardView({
-  decks,
-  highlightedKey,
-  highlightedDirection,
-}: OwnProps) {
+export function DecksCardView({ decks }: OwnProps) {
   const auth = useAuth();
 
   return (
     <Flex className="mb-10" flexGrow="1" gap="25px" wrap="wrap">
       {decks.map((deck) => (
-        <div key={deck.id} style={{ flexBasis: "calc(33.33% - 25px)" }}>
-          <DeckCard2
-            deck={deck}
-            editable={!!auth.user}
-            highlightedKey={highlightedKey}
-            highlightedDirection={highlightedDirection}
-          />
+        <div key={deck.id} style={{ flexBasis: "calc(33.33% - 17px)" }}>
+          <DeckCard2 deck={deck} editable={!!auth.user} />
         </div>
       ))}
     </Flex>

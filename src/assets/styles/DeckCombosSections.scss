@@ -1,0 +1,9 @@
+@use "../styles/colours" as c;
+
+.deck-combos-card {
+  .section-title {
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+    color: c.$text-primary;
+  }
+}

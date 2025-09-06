@@ -31,8 +31,8 @@ export function PieChart({
       }
     >
       <Flex direction="column" align="center" gap="1">
-        <p className="win-percent">{value}%</p>
-        <p className="win-percent-label">{label}</p>
+        <p className="value">{value}%</p>
+        <p className="label">{label}</p>
       </Flex>
     </div>
   );

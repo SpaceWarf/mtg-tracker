@@ -1,0 +1,18 @@
+@use "../styles/colours" as c;
+
+.combo-preview {
+  cursor: pointer;
+
+  &:hover {
+    .combo-name {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+
+  .combo-name {
+    font-size: 1rem;
+    line-height: 1rem;
+    color: c.$text-secondary;
+  }
+}

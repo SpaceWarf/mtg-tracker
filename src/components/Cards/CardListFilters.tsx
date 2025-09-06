@@ -20,6 +20,8 @@ import { SortFctSelect } from "../Select/SortFctSelect";
 
 type OwnProps = {
   hasVersions: boolean;
+  showVersionToggle?: boolean;
+  showLegend?: boolean;
   onChange: (
     groupBy: CardGroupBy,
     sortBy: CardSortFctKey,
@@ -28,7 +30,12 @@ type OwnProps = {
   ) => void;
 };
 
-export function CardListFilters({ hasVersions, onChange }: OwnProps) {
+export function CardListFilters({
+  hasVersions,
+  showVersionToggle,
+  showLegend,
+  onChange,
+}: OwnProps) {
   const [groupBy, setGroupBy] = useState<SingleValue<SelectOption>>(
     CardGroupByOptions[CardGroupBy.CATEGORY]
   );
@@ -88,7 +95,7 @@ export function CardListFilters({ hasVersions, onChange }: OwnProps) {
         />
       </div>
 
-      {hasVersions && (
+      {showVersionToggle && hasVersions && (
         <div>
           <CheckboxCards.Root
             className="mt-5"
@@ -104,37 +111,39 @@ export function CardListFilters({ hasVersions, onChange }: OwnProps) {
         </div>
       )}
 
-      <div>
-        <Heading className="mb-1" size="3">
-          Legend
-        </Heading>
-        <Flex height="40px" direction="column" wrap="wrap">
-          <Flex height="50%" align="center" gap="1" mr="3">
-            <SketchLogoIcon width="14" height="14" />
-            <Text>WOTC Game Changers</Text>
+      {showLegend && (
+        <div>
+          <Heading className="mb-1" size="3">
+            Legend
+          </Heading>
+          <Flex height="40px" direction="column" wrap="wrap">
+            <Flex height="50%" align="center" gap="1" mr="3">
+              <SketchLogoIcon width="14" height="14" />
+              <Text>WOTC Game Changers</Text>
+            </Flex>
+            <Flex height="50%" align="center" gap="1" mr="3">
+              <SketchLogoIcon color="orange" width="14" height="14" />
+              <Text>In-House Game Changers</Text>
+            </Flex>
+            <Flex height="50%" align="center" gap="1" mr="3">
+              <img src={"/img/icons/tutor.svg"} width="14" height="14" />
+              <Text>Tutor</Text>
+            </Flex>
+            <Flex height="50%" align="center" gap="1" mr="3">
+              <img src={"/img/icons/extra-turn.svg"} width="14" height="14" />
+              <Text>Extra Turn</Text>
+            </Flex>
+            <Flex height="50%" align="center" gap="1" mr="3">
+              <img src={"/img/icons/land-denial.svg"} width="14" height="14" />
+              <Text>Mass Land Denial</Text>
+            </Flex>
+            <Flex height="50%" align="center" gap="1" mr="3">
+              <UpdateIcon width="14" height="14" />
+              <Text>Flippable</Text>
+            </Flex>
           </Flex>
-          <Flex height="50%" align="center" gap="1" mr="3">
-            <SketchLogoIcon color="orange" width="14" height="14" />
-            <Text>In-House Game Changers</Text>
-          </Flex>
-          <Flex height="50%" align="center" gap="1" mr="3">
-            <img src={"/img/icons/tutor.svg"} width="14" height="14" />
-            <Text>Tutor</Text>
-          </Flex>
-          <Flex height="50%" align="center" gap="1" mr="3">
-            <img src={"/img/icons/extra-turn.svg"} width="14" height="14" />
-            <Text>Extra Turn</Text>
-          </Flex>
-          <Flex height="50%" align="center" gap="1" mr="3">
-            <img src={"/img/icons/land-denial.svg"} width="14" height="14" />
-            <Text>Mass Land Denial</Text>
-          </Flex>
-          <Flex height="50%" align="center" gap="1" mr="3">
-            <UpdateIcon width="14" height="14" />
-            <Text>Flippable</Text>
-          </Flex>
-        </Flex>
-      </div>
+        </div>
+      )}
     </Flex>
   );
 }
