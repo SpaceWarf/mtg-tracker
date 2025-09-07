@@ -44,6 +44,7 @@ import { DeckEditModal } from "./DeckEditModal";
 import { DeckShowcase } from "./DeckShowcase";
 import { DeckStatsSection } from "./DeckStatsSection";
 import { DeckVersionManagerModal } from "./DeckVersionManagerModal";
+import { DeckVersionManagerSection } from "./DeckVersionManagerSection";
 import { DeckVersionViewer } from "./DeckVersionViewer";
 
 export function DeckByIdViewer() {
@@ -221,6 +222,15 @@ export function DeckByIdViewer() {
                 <SegmentedControl.Item value={DeckByIdViewType.DECKLIST}>
                   Decklist
                 </SegmentedControl.Item>
+                {!!user &&
+                  populatedDeck.versions &&
+                  populatedDeck.versions.length > 0 && (
+                    <SegmentedControl.Item
+                      value={DeckByIdViewType.VERSION_MANAGER}
+                    >
+                      Version Manager
+                    </SegmentedControl.Item>
+                  )}
               </SegmentedControl.Root>
             )}
 
@@ -297,21 +307,6 @@ export function DeckByIdViewer() {
                   </IconButton>
                 </Tooltip>
               )}
-              {!!user &&
-                populatedDeck.versions &&
-                populatedDeck.versions.length > 0 && (
-                  <Tooltip content="Manage Versions">
-                    <IconButton
-                      variant="soft"
-                      color="gray"
-                      size="3"
-                      disabled={syncing}
-                      onClick={handleManageVersions}
-                    >
-                      <FontAwesomeIcon icon={faCodeCommit} />
-                    </IconButton>
-                  </Tooltip>
-                )}
               {!!user && (
                 <Tooltip content="Delete Deck">
                   <IconButton
@@ -327,6 +322,7 @@ export function DeckByIdViewer() {
               )}
             </Flex>
           </DataCard>
+
           <Flex gap="5">
             <Flex flexBasis="425px" minWidth="425px">
               <div className="w-full">
@@ -411,6 +407,12 @@ export function DeckByIdViewer() {
                   )}
                 </>
               )}
+              {!!user &&
+                populatedDeck.versions &&
+                populatedDeck.versions.length > 0 &&
+                viewType === DeckByIdViewType.VERSION_MANAGER && (
+                  <DeckVersionManagerSection deck={populatedDeck} />
+                )}
             </Flex>
           </Flex>
         </Flex>
