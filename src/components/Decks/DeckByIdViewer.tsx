@@ -20,7 +20,7 @@ import {
   Tooltip,
 } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router";
 import "../../assets/styles/DeckByIdViewer.scss";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
@@ -53,12 +53,13 @@ export function DeckByIdViewer() {
   const { gameChangers } = useGameChangers();
   const mousePosition = useMousePosition();
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const [groupBy, setGroupBy] = useState<CardGroupBy>(CardGroupBy.CATEGORY);
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
   const [search, setSearch] = useState<string>("");
   const [showVersionGraph, setShowVersionGraph] = useState<boolean>(false);
   const [viewType, setViewType] = useState<DeckByIdViewType>(
-    DeckByIdViewType.STATS
+    searchParams.get("view") as DeckByIdViewType
   );
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
   const [versionManagerOpen, setVersionManagerOpen] = useState<boolean>(false);
@@ -158,6 +159,12 @@ export function DeckByIdViewer() {
     setDeleteModalOpen(true);
   }
 
+  function handleViewTypeChange(value: DeckByIdViewType) {
+    setViewType(value);
+    searchParams.set("view", value);
+    setSearchParams(searchParams);
+  }
+
   if (loading || !populatedDeck) {
     return <Spinner mt="5" size="3" />;
   }
@@ -208,9 +215,7 @@ export function DeckByIdViewer() {
                 size="3"
                 value={viewType}
                 disabled={syncing}
-                onValueChange={(value) =>
-                  setViewType(value as DeckByIdViewType)
-                }
+                onValueChange={handleViewTypeChange}
               >
                 <SegmentedControl.Item value={DeckByIdViewType.STATS}>
                   Stats
