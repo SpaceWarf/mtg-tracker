@@ -2,6 +2,24 @@
 
 .card-preview {
   position: relative;
+  perspective: 1000px;
+
+  .card-preview-inner {
+    position: relative;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+
+    .card-preview-front,
+    .card-preview-back {
+      position: absolute;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    .card-preview-back {
+      transform: rotateY(180deg);
+    }
+  }
 
   &.clickable {
     cursor: pointer;
