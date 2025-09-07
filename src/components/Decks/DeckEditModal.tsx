@@ -1,9 +1,6 @@
-import {
-  CheckIcon,
-  Cross2Icon,
-  InfoCircledIcon,
-  Pencil1Icon,
-} from "@radix-ui/react-icons";
+import { faCheck, faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 import {
   Button,
   Callout,
@@ -140,7 +137,7 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
             disabled={!externalId || autofilling}
             loading={autofilling}
           >
-            <Pencil1Icon width="18" height="18" />
+            <FontAwesomeIcon icon={faPen} />
             Autofill Details
           </Button>
         </Flex>
@@ -202,12 +199,14 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
         <Flex gap="3" mt="4" mb="2" justify="between">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <Cross2Icon /> Cancel
+              <FontAwesomeIcon icon={faXmark} />
+              Cancel
             </Button>
           </Dialog.Close>
           <Dialog.Close disabled={!canSave()} onClick={handleSave}>
             <Button className="h-10">
-              <CheckIcon /> Save
+              <FontAwesomeIcon icon={faCheck} />
+              Save
             </Button>
           </Dialog.Close>
         </Flex>

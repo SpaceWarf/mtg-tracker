@@ -18,7 +18,7 @@ export function DeckCard2({ deck, editable = false }: OwnProps) {
 
   return (
     <div
-      className="deck-card mt-2"
+      className="deck-card"
       style={
         {
           ["--url" as string]: `url(${deck.featured})`,

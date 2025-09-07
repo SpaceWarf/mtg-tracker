@@ -1,4 +1,6 @@
-import { ExclamationTriangleIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { faRotate } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import {
   Button,
   Dialog,
@@ -62,7 +64,7 @@ export function DeckSyncModal() {
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
         <Button className="h-10" variant="soft">
-          <UpdateIcon width="18" height="18" />
+          <FontAwesomeIcon icon={faRotate} />
           Sync All
         </Button>
       </Dialog.Trigger>

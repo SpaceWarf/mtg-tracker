@@ -1,4 +1,5 @@
-import { Flex } from "@radix-ui/themes";
+import { Grid } from "@radix-ui/themes";
+import { useMemo } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { DeckWithStats } from "../../state/Deck";
 import { DeckCard2 } from "./DeckCard2";
@@ -12,13 +13,17 @@ type OwnProps = {
 export function DecksCardView({ decks }: OwnProps) {
   const auth = useAuth();
 
+  const rowCount = useMemo(() => {
+    return Math.ceil(decks.length / 3);
+  }, [decks]);
+
   return (
-    <Flex className="mb-10" flexGrow="1" gap="25px" wrap="wrap">
+    <Grid columns="3" rows={`${rowCount}`} gap="5">
       {decks.map((deck) => (
-        <div key={deck.id} style={{ flexBasis: "calc(33.33% - 17px)" }}>
+        <div key={deck.id}>
           <DeckCard2 deck={deck} editable={!!auth.user} />
         </div>
       ))}
-    </Flex>
+    </Grid>
   );
 }

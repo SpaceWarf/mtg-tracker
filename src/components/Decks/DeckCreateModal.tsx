@@ -1,9 +1,10 @@
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   CheckIcon,
   Cross2Icon,
   InfoCircledIcon,
   Pencil1Icon,
-  PlusIcon,
 } from "@radix-ui/react-icons";
 import {
   Button,
@@ -99,8 +100,8 @@ export function DeckCreateModal() {
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
         <Button className="h-10">
-          <PlusIcon width="18" height="18" />
-          Create new deck
+          <FontAwesomeIcon icon={faPlus} />
+          Create New Deck
         </Button>
       </Dialog.Trigger>
 

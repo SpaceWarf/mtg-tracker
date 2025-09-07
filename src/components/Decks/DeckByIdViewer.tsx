@@ -283,7 +283,7 @@ export function DeckByIdViewer() {
                   </IconButton>
                 </Tooltip>
               )}
-              {populatedDeck.externalId && (
+              {!!user && populatedDeck.externalId && (
                 <Tooltip content="Sync Deck">
                   <IconButton
                     variant="soft"
@@ -297,19 +297,21 @@ export function DeckByIdViewer() {
                   </IconButton>
                 </Tooltip>
               )}
-              {populatedDeck.versions && populatedDeck.versions.length > 0 && (
-                <Tooltip content="Manage Versions">
-                  <IconButton
-                    variant="soft"
-                    color="gray"
-                    size="3"
-                    disabled={syncing}
-                    onClick={handleManageVersions}
-                  >
-                    <FontAwesomeIcon icon={faCodeCommit} />
-                  </IconButton>
-                </Tooltip>
-              )}
+              {!!user &&
+                populatedDeck.versions &&
+                populatedDeck.versions.length > 0 && (
+                  <Tooltip content="Manage Versions">
+                    <IconButton
+                      variant="soft"
+                      color="gray"
+                      size="3"
+                      disabled={syncing}
+                      onClick={handleManageVersions}
+                    >
+                      <FontAwesomeIcon icon={faCodeCommit} />
+                    </IconButton>
+                  </Tooltip>
+                )}
               {!!user && (
                 <Tooltip content="Delete Deck">
                   <IconButton
