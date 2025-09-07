@@ -1,4 +1,4 @@
-import { Flex, Tabs, Text } from "@radix-ui/themes";
+import { Flex, Grid, Tabs, Text } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useDecks } from "../../hooks/useDecks";
@@ -366,14 +366,6 @@ export function CardList({
     return columnCount - (versionId !== "latest" ? 1 : 0);
   }, [columnCount, versionId]);
 
-  const columnWidth = useMemo(() => {
-    return 100 / columnCount;
-  }, [columnCount]);
-
-  const marginToRemove = useMemo(() => {
-    return (20 * (columnCount - 1)) / columnCount;
-  }, [columnCount]);
-
   const categoryColumns: CategoryCardList[][] = useMemo(() => {
     return categoryCardLists.reduce((acc, category, index) => {
       const colIndex = index % adjustedColumnCount;
@@ -406,7 +398,6 @@ export function CardList({
     }
 
     const versionIdx = versions.findIndex((v) => v.id === id);
-
     if (versionIdx === 0) {
       return getLongDateString(deck.createdAt, false);
     }
@@ -467,14 +458,9 @@ export function CardList({
         </Tabs.Root>
       )}
 
-      <Flex gap="20px">
+      <Grid gap="20px" columns={`${columnCount}`}>
         {categoryColumns.map((column, index) => (
-          <Flex
-            key={index}
-            direction="column"
-            gap="20px"
-            width={`calc(${columnWidth}% - ${marginToRemove}px)`}
-          >
+          <Flex key={index} direction="column" gap="20px">
             {column.map((category) => (
               <CardListCategory
                 key={category.category.name}
@@ -487,17 +473,15 @@ export function CardList({
           </Flex>
         ))}
         {versionId !== "latest" && (
-          <Flex width={`calc(${columnWidth}% - ${marginToRemove}px)`}>
-            <CardDiffViewer
-              added={addedCardsWithQuantities}
-              removed={removedCardsWithQuantities}
-              mousePosition={mousePosition}
-              gameChangers={gameChangers ?? []}
-              withDescription
-            />
-          </Flex>
+          <CardDiffViewer
+            added={addedCardsWithQuantities}
+            removed={removedCardsWithQuantities}
+            mousePosition={mousePosition}
+            gameChangers={gameChangers ?? []}
+            withDescription
+          />
         )}
-      </Flex>
+      </Grid>
     </div>
   );
 }

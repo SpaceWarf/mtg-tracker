@@ -59,7 +59,7 @@ export function DeckByIdViewer() {
   const [search, setSearch] = useState<string>("");
   const [showVersionGraph, setShowVersionGraph] = useState<boolean>(false);
   const [viewType, setViewType] = useState<DeckByIdViewType>(
-    searchParams.get("view") as DeckByIdViewType
+    (searchParams.get("view") as DeckByIdViewType) || DeckByIdViewType.STATS
   );
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
   const [versionManagerOpen, setVersionManagerOpen] = useState<boolean>(false);
