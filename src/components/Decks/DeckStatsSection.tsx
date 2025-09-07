@@ -4,6 +4,7 @@ import { Flex } from "@radix-ui/themes";
 import { DeckWithStats } from "../../state/Deck";
 import { DataCard } from "../Common/DataCard";
 import { WinRatePieChart } from "../Common/WinRatePieChart";
+import { DeckGamesLineChart } from "./DeckGamesLineChart";
 
 type OwnProps = {
   deck: DeckWithStats;
@@ -24,12 +25,9 @@ export function DeckStatsSection({ deck }: OwnProps) {
         </DataCard>
       </Flex>
       <Flex width="75%">
-        <DataCard
-          title="Games Played"
-          icon={<FontAwesomeIcon icon={faChartLine} />}
-        >
+        <DataCard title="Games" icon={<FontAwesomeIcon icon={faChartLine} />}>
           <Flex align="center" justify="center">
-            {/* TODO Chart */}
+            <DeckGamesLineChart deck={deck} />
           </Flex>
         </DataCard>
       </Flex>

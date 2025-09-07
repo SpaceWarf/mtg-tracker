@@ -62,6 +62,7 @@ export function DataCard({
             <Flex
               direction={direction}
               width={direction === "row" ? "auto" : "100%"}
+              height="100%"
               justify={align}
             >
               {children}
