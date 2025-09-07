@@ -20,7 +20,7 @@ import {
   Spinner,
   Tooltip,
 } from "@radix-ui/themes";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router";
 import "../../assets/styles/DataCard.scss";
 import { useAuth } from "../../hooks/useAuth";
@@ -110,6 +110,12 @@ export function DeckByIdViewer() {
     return Math.ceil(count / 2);
   }, [populatedDeck]);
 
+  useEffect(() => {
+    if (!loading && id && !deck) {
+      navigate("/decks");
+    }
+  }, [deck, id, loading, navigate]);
+
   function handleCardListFiltersChange(
     groupBy: CardGroupBy,
     sortBy: CardSortFctKey,
@@ -152,10 +158,6 @@ export function DeckByIdViewer() {
     } finally {
       setSyncing(false);
     }
-  }
-
-  function handleManageVersions() {
-    setVersionManagerOpen(true);
   }
 
   function handleDelete() {
