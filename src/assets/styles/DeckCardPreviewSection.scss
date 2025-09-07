@@ -1,7 +1,9 @@
-.deck-card-preview-section {
+.deck-card-preview-section.data-card {
   overflow: hidden;
+  padding-bottom: 0;
 
   .overflow-container {
     overflow-x: scroll;
+    padding-bottom: 15px;
   }
 }

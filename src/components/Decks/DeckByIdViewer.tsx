@@ -90,12 +90,14 @@ export function DeckByIdViewer() {
           justify="between"
           align="center"
         >
-          <Link to="/decks">
-            <Button variant="soft" color="gray" size="3">
-              <FontAwesomeIcon icon={faLeftLong} />
-              Back
-            </Button>
-          </Link>
+          <Flex gap="3" width="250px">
+            <Link to="/decks">
+              <Button variant="soft" color="gray" size="3">
+                <FontAwesomeIcon icon={faLeftLong} />
+                Back
+              </Button>
+            </Link>
+          </Flex>
 
           <SegmentedControl.Root
             defaultValue={DeckByIdViewType.STATS}
@@ -111,7 +113,7 @@ export function DeckByIdViewer() {
             </SegmentedControl.Item>
           </SegmentedControl.Root>
 
-          <Flex gap="3">
+          <Flex gap="3" align="end" width="250px">
             {deck?.externalId && (
               <>
                 <Button

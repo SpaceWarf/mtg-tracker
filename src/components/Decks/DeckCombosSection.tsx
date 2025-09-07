@@ -37,7 +37,9 @@ export function DeckCombosSection({ deck }: OwnProps) {
       <Flex className="combos-container" direction="column" gap="2">
         {early2CardCombos.length > 0 && (
           <Flex className="combo-section" direction="column" gap="2">
-            <p className="section-title">Early Game 2 Card Combos</p>
+            <div className="section-title-container">
+              <p className="section-title">Early Game 2 Card Combos</p>
+            </div>
             <Flex gap="7" wrap="wrap" mt="3">
               {early2CardCombos.map((combo) => (
                 <ComboPreview key={combo.name} combo={combo} />
@@ -47,7 +49,9 @@ export function DeckCombosSection({ deck }: OwnProps) {
         )}
         {late2CardCombos.length > 0 && (
           <Flex className="combo-section" direction="column" gap="2" mt="5">
-            <p className="section-title">Late Game 2 Card Combos</p>
+            <div className="section-title-container">
+              <p className="section-title">Late Game 2 Card Combos</p>
+            </div>
             <Flex gap="7" wrap="wrap" mt="3">
               {late2CardCombos.map((combo) => (
                 <ComboPreview key={combo.name} combo={combo} />
@@ -57,7 +61,9 @@ export function DeckCombosSection({ deck }: OwnProps) {
         )}
         {otherCombos.length > 0 && (
           <Flex className="combo-section" direction="column" gap="2" mt="5">
-            <p className="section-title">3+ Card Combos</p>
+            <div className="section-title-container">
+              <p className="section-title">3+ Card Combos</p>
+            </div>
             <Flex gap="7" wrap="wrap" mt="3">
               {otherCombos.map((combo) => (
                 <ComboPreview key={combo.name} combo={combo} />
