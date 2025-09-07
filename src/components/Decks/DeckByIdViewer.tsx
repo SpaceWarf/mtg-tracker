@@ -3,6 +3,7 @@ import {
   faCodeCommit,
   faForward,
   faGem,
+  faLayerGroup,
   faLeftLong,
   faMagnifyingGlass,
   faPen,
@@ -385,7 +386,7 @@ export function DeckByIdViewer() {
                     {populatedDeck.tutors.length > 0 && (
                       <DeckCardPreviewSection
                         title="Tutors"
-                        icon={<FontAwesomeIcon icon={faMagnifyingGlass} />}
+                        icon={<FontAwesomeIcon icon={faLayerGroup} />}
                         cards={populatedDeck.tutors}
                       />
                     )}

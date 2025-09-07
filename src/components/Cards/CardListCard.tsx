@@ -2,7 +2,7 @@ import {
   faBomb,
   faForward,
   faGem,
-  faMagnifyingGlass,
+  faLayerGroup,
   faRotate,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -176,11 +176,7 @@ export function CardListCard({
           )}
           {card.tutor && (
             <Tooltip content="Tutor">
-              <FontAwesomeIcon
-                icon={faMagnifyingGlass}
-                width="12"
-                height="12"
-              />
+              <FontAwesomeIcon icon={faLayerGroup} width="12" height="12" />
             </Tooltip>
           )}
           {card.extraTurns && (
