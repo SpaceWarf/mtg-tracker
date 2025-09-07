@@ -1,6 +1,7 @@
 import {
   faBomb,
   faCodeCommit,
+  faForward,
   faGem,
   faLeftLong,
   faMagnifyingGlass,
@@ -387,14 +388,14 @@ export function DeckByIdViewer() {
                     {populatedDeck.tutors.length > 0 && (
                       <DeckCardPreviewSection
                         title="Tutors"
-                        icon={<FontAwesomeIcon icon={faGem} />}
+                        icon={<FontAwesomeIcon icon={faMagnifyingGlass} />}
                         cards={populatedDeck.tutors}
                       />
                     )}
                     {populatedDeck.extraTurns.length > 0 && (
                       <DeckCardPreviewSection
                         title="Extra Turns"
-                        icon={<FontAwesomeIcon icon={faGem} />}
+                        icon={<FontAwesomeIcon icon={faForward} />}
                         cards={populatedDeck.extraTurns}
                       />
                     )}

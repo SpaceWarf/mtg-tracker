@@ -1,10 +1,13 @@
 import {
-  MinusIcon,
-  PlusIcon,
-  SketchLogoIcon,
-  UpdateIcon,
-} from "@radix-ui/react-icons";
-import { Flex, IconButton, Link, Text } from "@radix-ui/themes";
+  faBomb,
+  faForward,
+  faGem,
+  faMagnifyingGlass,
+  faRotate,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
+import { Flex, IconButton, Link, Text, Tooltip } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { ScryfallService } from "../../services/Scryfall";
@@ -155,35 +158,52 @@ export function CardListCard({
           {gameChangerType !== GameChangerType.NONE && (
             <>
               {gameChangerType === GameChangerType.WOTC && (
-                <div>
-                  <SketchLogoIcon width="14" height="14" />
-                </div>
+                <Tooltip content="WOTC Game Changer">
+                  <FontAwesomeIcon icon={faGem} width="12" height="12" />
+                </Tooltip>
               )}
               {gameChangerType === GameChangerType.IN_HOUSE && (
-                <div>
-                  <SketchLogoIcon color="orange" width="14" height="14" />
-                </div>
+                <Tooltip content="In-House Game Changer">
+                  <FontAwesomeIcon
+                    icon={faGem}
+                    color="orange"
+                    width="12"
+                    height="12"
+                  />
+                </Tooltip>
               )}
             </>
           )}
           {card.tutor && (
-            <img src={"/img/icons/tutor.svg"} width="14" height="14" />
+            <Tooltip content="Tutor">
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                width="12"
+                height="12"
+              />
+            </Tooltip>
           )}
           {card.extraTurns && (
-            <img src={"/img/icons/extra-turn.svg"} width="14" height="14" />
+            <Tooltip content="Extra Turn">
+              <FontAwesomeIcon icon={faForward} width="12" height="12" />
+            </Tooltip>
           )}
           {card.massLandDenial && (
-            <img src={"/img/icons/land-denial.svg"} width="14" height="14" />
+            <Tooltip content="Mass Land Denial">
+              <FontAwesomeIcon icon={faBomb} width="12" height="12" />
+            </Tooltip>
           )}
           {flippableCardLayouts.includes(card.layout) && (
-            <IconButton
-              variant="ghost"
-              color="gray"
-              size="1"
-              onClick={() => setFlipped(!flipped)}
-            >
-              <UpdateIcon width="14" height="14" />
-            </IconButton>
+            <Tooltip content="Flip Card">
+              <IconButton
+                variant="ghost"
+                color="gray"
+                size="1"
+                onClick={() => setFlipped(!flipped)}
+              >
+                <FontAwesomeIcon icon={faRotate} width="12" height="12" />
+              </IconButton>
+            </Tooltip>
           )}
         </Flex>
         <Flex

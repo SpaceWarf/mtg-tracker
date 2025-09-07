@@ -1,8 +1,4 @@
-import {
-  MagnifyingGlassIcon,
-  SketchLogoIcon,
-  UpdateIcon,
-} from "@radix-ui/react-icons";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import {
   CheckboxCards,
   Flex,
@@ -21,7 +17,6 @@ import { SortFctSelect } from "../Select/SortFctSelect";
 type OwnProps = {
   hasVersions: boolean;
   showVersionToggle?: boolean;
-  showLegend?: boolean;
   onChange: (
     groupBy: CardGroupBy,
     sortBy: CardSortFctKey,
@@ -33,7 +28,6 @@ type OwnProps = {
 export function CardListFilters({
   hasVersions,
   showVersionToggle,
-  showLegend,
   onChange,
 }: OwnProps) {
   const [groupBy, setGroupBy] = useState<SingleValue<SelectOption>>(
@@ -108,40 +102,6 @@ export function CardListFilters({
               </Flex>
             </CheckboxCards.Item>
           </CheckboxCards.Root>
-        </div>
-      )}
-
-      {showLegend && (
-        <div>
-          <Heading className="mb-1" size="3">
-            Legend
-          </Heading>
-          <Flex height="40px" direction="column" wrap="wrap">
-            <Flex height="50%" align="center" gap="1" mr="3">
-              <SketchLogoIcon width="14" height="14" />
-              <Text>WOTC Game Changers</Text>
-            </Flex>
-            <Flex height="50%" align="center" gap="1" mr="3">
-              <SketchLogoIcon color="orange" width="14" height="14" />
-              <Text>In-House Game Changers</Text>
-            </Flex>
-            <Flex height="50%" align="center" gap="1" mr="3">
-              <img src={"/img/icons/tutor.svg"} width="14" height="14" />
-              <Text>Tutor</Text>
-            </Flex>
-            <Flex height="50%" align="center" gap="1" mr="3">
-              <img src={"/img/icons/extra-turn.svg"} width="14" height="14" />
-              <Text>Extra Turn</Text>
-            </Flex>
-            <Flex height="50%" align="center" gap="1" mr="3">
-              <img src={"/img/icons/land-denial.svg"} width="14" height="14" />
-              <Text>Mass Land Denial</Text>
-            </Flex>
-            <Flex height="50%" align="center" gap="1" mr="3">
-              <UpdateIcon width="14" height="14" />
-              <Text>Flippable</Text>
-            </Flex>
-          </Flex>
         </div>
       )}
     </Flex>

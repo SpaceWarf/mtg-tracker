@@ -1,4 +1,4 @@
-import { faGem } from "@fortawesome/free-solid-svg-icons";
+import { faInfinity } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex } from "@radix-ui/themes";
 import { useMemo } from "react";
@@ -31,7 +31,7 @@ export function DeckCombosSection({ deck }: OwnProps) {
   return (
     <Flex className="data-card deck-combos-card" direction="column">
       <Flex className="title" align="center" gap="3" mb="5">
-        <FontAwesomeIcon icon={faGem} />
+        <FontAwesomeIcon icon={faInfinity} />
         <p>Combos</p>
       </Flex>
       <Flex className="combos-container" direction="column" gap="2">
