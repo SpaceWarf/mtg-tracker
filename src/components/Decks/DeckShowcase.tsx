@@ -39,7 +39,7 @@ export function DeckShowcase({ deck }: OwnProps) {
       >
         <DeckHeader2 deck={deck} />
         <Flex justify="center">
-          {commander && <CardPreview card={commander} clickable />}
+          <CardPreview card={commander} clickable />
         </Flex>
         <DeckTags deck={deck} />
       </Flex>
@@ -63,14 +63,14 @@ export function DeckShowcase({ deck }: OwnProps) {
             <FontAwesomeIcon size="xl" width="22" icon={faDollarSign} />
             <p>Est. Price</p>
           </Flex>
-          <p className="value">{deck.price}</p>
+          <p className="value">{deck.price ?? "-"}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
             <FontAwesomeIcon size="xl" width="22" icon={faEye} />
             <p>View Count</p>
           </Flex>
-          <p className="value">{deck.viewCount}</p>
+          <p className="value">{deck.viewCount ?? "-"}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">

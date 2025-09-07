@@ -1,6 +1,6 @@
 import { faRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "@radix-ui/themes";
+import { Button, Skeleton } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import "../../assets/styles/CardPreview.scss";
 import { ScryfallService } from "../../services/Scryfall";
@@ -51,7 +51,11 @@ export function CardPreview({
   }
 
   if (!fetchedUris) {
-    return <div>Loading...</div>;
+    return (
+      <div className={`card-preview ${size}`}>
+        <Skeleton className="w-full h-full" />
+      </div>
+    );
   }
 
   return (
