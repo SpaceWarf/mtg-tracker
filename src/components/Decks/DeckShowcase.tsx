@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex } from "@radix-ui/themes";
 import { useMemo } from "react";
 import "../../assets/styles/DeckShowcase.scss";
-import { useAuth } from "../../hooks/useAuth";
 import { DeckWithStats } from "../../state/Deck";
 import { getLongDateString } from "../../utils/Date";
 import { CardPreview } from "../Cards/CardPreview";
@@ -22,8 +21,6 @@ type OwnProps = {
 };
 
 export function DeckShowcase({ deck }: OwnProps) {
-  const { user } = useAuth();
-
   const commander = useMemo(() => {
     return deck.cards?.find((card) => card.name === deck.commander);
   }, [deck]);
@@ -40,7 +37,7 @@ export function DeckShowcase({ deck }: OwnProps) {
           } as React.CSSProperties
         }
       >
-        <DeckHeader2 deck={deck} editable={!!user} />
+        <DeckHeader2 deck={deck} />
         <Flex justify="center">
           {commander && <CardPreview card={commander} clickable />}
         </Flex>

@@ -14,9 +14,10 @@ import { DeckVersionManagerModal } from "./DeckVersionManagerModal";
 type OwnProps = {
   deck: DeckWithStats;
   editable?: boolean;
+  showActions?: boolean;
 };
 
-export function DeckHeader2({ deck, editable = false }: OwnProps) {
+export function DeckHeader2({ deck, editable, showActions }: OwnProps) {
   const navigate = useNavigate();
   const { dbPlayers } = usePlayers();
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
@@ -80,15 +81,17 @@ export function DeckHeader2({ deck, editable = false }: OwnProps) {
           <p className="deck-builder">by {builder}</p>
         </Flex>
         <Flex className="actions">
-          <DeckCardDropdownMenu
-            deck={deck}
-            editable={editable}
-            syncing={syncing}
-            onEdit={() => setEditModalOpen(true)}
-            onSync={handleSync}
-            onVersionManager={() => setVersionManagerOpen(true)}
-            onDelete={() => setDeleteModalOpen(true)}
-          />
+          {showActions && (
+            <DeckCardDropdownMenu
+              deck={deck}
+              editable={editable}
+              syncing={syncing}
+              onEdit={() => setEditModalOpen(true)}
+              onSync={handleSync}
+              onVersionManager={() => setVersionManagerOpen(true)}
+              onDelete={() => setDeleteModalOpen(true)}
+            />
+          )}
         </Flex>
       </Flex>
     </>

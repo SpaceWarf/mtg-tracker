@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react";
+import { faRotate } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "@radix-ui/themes";
+import { useEffect, useMemo, useState } from "react";
 import "../../assets/styles/CardPreview.scss";
 import { ScryfallService } from "../../services/Scryfall";
 import { CardUris } from "../../state/CardUris";
@@ -20,6 +23,11 @@ export function CardPreview({
   const [fetchedUris, setFetchedUris] = useState<CardUris | undefined>(
     cardUris
   );
+  const [flipped, setFlipped] = useState(false);
+
+  const faceUri = useMemo(() => {
+    return fetchedUris?.faceUris[flipped ? 1 : 0];
+  }, [fetchedUris, flipped]);
 
   useEffect(() => {
     async function getCardDetails() {
@@ -38,11 +46,23 @@ export function CardPreview({
     }
   }
 
+  function handleFlip() {
+    setFlipped(!flipped);
+  }
+
+  if (!fetchedUris) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <img
-      className={`card-preview ${size} ${clickable ? "clickable" : ""}`}
-      src={fetchedUris?.faceUris[0]}
-      onClick={clickable ? handleClick : undefined}
-    />
+    <div className={`card-preview ${size} ${clickable ? "clickable" : ""}`}>
+      <img src={faceUri} onClick={clickable ? handleClick : undefined} />
+      {fetchedUris.faceUris.length > 1 && (
+        <Button variant="surface" color="gray" onClick={handleFlip}>
+          <FontAwesomeIcon icon={faRotate} />
+          Flip Card
+        </Button>
+      )}
+    </div>
   );
 }

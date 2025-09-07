@@ -8,7 +8,6 @@ import {
 } from "@radix-ui/react-icons";
 import { DropdownMenu, IconButton } from "@radix-ui/themes";
 import { useNavigate } from "react-router";
-import "../../assets/styles/DeckCardDropdownMenu.scss";
 import { ArchidektService } from "../../services/Archidekt";
 import { EdhRecService } from "../../services/EdhRec";
 import { DeckWithStats } from "../../state/Deck";

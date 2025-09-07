@@ -28,7 +28,7 @@ export function DeckCard2({ deck, editable = false }: OwnProps) {
     >
       <Flex className="h-full" direction="column" justify="between">
         <Flex className="content-container" direction="column" gap="3">
-          <DeckHeader2 deck={deck} editable={editable} />
+          <DeckHeader2 deck={deck} editable={editable} showActions />
           <Flex justify="between">
             <Flex mt="2" gap="4">
               <Tooltip content="Games Played">

@@ -12,24 +12,18 @@ type OwnProps = {
 
 export function DeckCardPreviewSection({ title, icon, cards }: OwnProps) {
   return (
-    <Flex
-      className="data-card deck-card-preview-section"
-      direction="column"
-      flexBasis="calc(50% - 11px)"
-    >
+    <Flex className="data-card deck-card-preview-section" direction="column">
       <Flex className="title" align="center" gap="3" mb="5">
         {icon}
         <p>
           {title} ({cards.length})
         </p>
       </Flex>
-      <div className="overflow-container">
-        <Flex gap="3">
-          {cards.map((card) => (
-            <CardPreview key={card.name} card={card} size="small" clickable />
-          ))}
-        </Flex>
-      </div>
+      <Flex className="overflow-container" gap="3">
+        {cards.map((card) => (
+          <CardPreview key={card.name} card={card} size="small" clickable />
+        ))}
+      </Flex>
     </Flex>
   );
 }
