@@ -1,8 +1,6 @@
-import {
-  Cross2Icon,
-  EyeOpenIcon,
-  TextAlignMiddleIcon,
-} from "@radix-ui/react-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Cross2Icon, TextAlignMiddleIcon } from "@radix-ui/react-icons";
 import { Button, Dialog, Flex, Heading, Text } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
@@ -206,7 +204,7 @@ export function DeckVersionManagerModal({ open, deck, onClose }: OwnProps) {
                   onClick={handlePreviewMerge}
                   disabled={!canMerge || merging || !!previewVersions}
                 >
-                  <EyeOpenIcon />
+                  <FontAwesomeIcon icon={faEye} />
                   Preview Merge
                 </Button>
                 {previewVersions && (

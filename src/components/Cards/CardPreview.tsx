@@ -64,7 +64,7 @@ export function CardPreview({
       {fetchedUris.faceUris.length > 1 && (
         <Button variant="surface" color="gray" onClick={handleFlip}>
           <FontAwesomeIcon icon={faRotate} />
-          Flip Card
+          Flip
         </Button>
       )}
     </div>
