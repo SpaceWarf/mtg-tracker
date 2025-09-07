@@ -2,6 +2,7 @@ import { faChartLine, faPercent } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex } from "@radix-ui/themes";
 import { DeckWithStats } from "../../state/Deck";
+import { DataCard } from "../Common/DataCard";
 import { WinRatePieChart } from "../Common/WinRatePieChart";
 
 type OwnProps = {
@@ -11,23 +12,26 @@ type OwnProps = {
 export function DeckStatsSection({ deck }: OwnProps) {
   return (
     <Flex gap="5">
-      <Flex className="data-card" direction="column" width="25%">
-        <Flex className="title" align="center" gap="3" mb="5">
-          <FontAwesomeIcon icon={faPercent} />
-          <p>Win Rate</p>
-        </Flex>
-        <Flex align="center" justify="center">
-          <WinRatePieChart deck={deck} size="large" />
-        </Flex>
+      <Flex width="25%">
+        <DataCard
+          title="Win Rate"
+          icon={<FontAwesomeIcon icon={faPercent} />}
+          align="center"
+        >
+          <Flex align="center" justify="center">
+            <WinRatePieChart deck={deck} size="large" />
+          </Flex>
+        </DataCard>
       </Flex>
-      <Flex className="data-card" direction="column" flexGrow="1">
-        <Flex className="title" align="center" gap="3" mb="5">
-          <FontAwesomeIcon icon={faChartLine} />
-          <p>Games Played</p>
-        </Flex>
-        <Flex align="center" justify="center">
-          {/* TODO Chart */}
-        </Flex>
+      <Flex width="75%">
+        <DataCard
+          title="Games Played"
+          icon={<FontAwesomeIcon icon={faChartLine} />}
+        >
+          <Flex align="center" justify="center">
+            {/* TODO Chart */}
+          </Flex>
+        </DataCard>
       </Flex>
     </Flex>
   );

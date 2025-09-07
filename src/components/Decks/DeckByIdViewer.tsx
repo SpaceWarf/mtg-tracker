@@ -22,7 +22,7 @@ import {
 } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router";
-import "../../assets/styles/DeckByIdViewer.scss";
+import "../../assets/styles/DataCard.scss";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGameChangers } from "../../hooks/useGameChangers";
@@ -36,6 +36,7 @@ import { DeckByIdViewType } from "../../state/DeckByIdViewType";
 import { populateDeck } from "../../utils/Deck";
 import { CardList } from "../Cards/CardList";
 import { CardListFilters } from "../Cards/CardListFilters";
+import { DataCard } from "../Common/DataCard";
 import { DeckCardPreviewSection } from "./DeckCardPreviewSection";
 import { DeckCombosSection } from "./DeckCombosSection";
 import { DeckDeleteModal } from "./DeckDeleteModal";
@@ -196,11 +197,7 @@ export function DeckByIdViewer() {
 
       <div className="deck-by-id-viewer p-5 w-full max-w-[1750px]">
         <Flex direction="column" gap="5">
-          <Flex
-            className="data-card actions-card"
-            justify="between"
-            align="center"
-          >
+          <DataCard direction="row" align="between">
             <Flex gap="3" width="250px">
               <Link to="/decks">
                 <Button variant="soft" color="gray" size="3" disabled={syncing}>
@@ -227,7 +224,7 @@ export function DeckByIdViewer() {
               </SegmentedControl.Root>
             )}
 
-            <Flex gap="3" justify="end" width="250px">
+            <Flex gap="2" justify="end" width="250px">
               <Tooltip content="Search Games">
                 <IconButton
                   variant="soft"
@@ -327,7 +324,7 @@ export function DeckByIdViewer() {
                 </Tooltip>
               )}
             </Flex>
-          </Flex>
+          </DataCard>
           <Flex gap="5">
             <Flex flexBasis="425px" minWidth="425px">
               <div className="w-full">
@@ -339,25 +336,23 @@ export function DeckByIdViewer() {
                 <>
                   {populatedDeck.versions &&
                     populatedDeck.versions.length > 0 && (
-                      <Flex className="data-card" direction="column">
-                        <Flex className="title" align="center" gap="3" mb="5">
-                          <FontAwesomeIcon icon={faCodeCommit} />
-                          <p>Versions</p>
-                        </Flex>
+                      <DataCard
+                        title="Versions"
+                        icon={<FontAwesomeIcon icon={faCodeCommit} />}
+                      >
                         <DeckVersionViewer
                           deck={populatedDeck}
                           sortCardsBy={sortBy}
                           mousePosition={mousePosition}
                           gameChangers={gameChangers ?? []}
                         />
-                      </Flex>
+                      </DataCard>
                     )}
                   {populatedDeck.cards && populatedDeck.cards.length > 0 && (
-                    <Flex className="data-card" direction="column">
-                      <Flex className="title" align="center" gap="3" mb="5">
-                        <FontAwesomeIcon icon={faTableList} />
-                        <p>Decklist</p>
-                      </Flex>
+                    <DataCard
+                      title="Decklist"
+                      icon={<FontAwesomeIcon icon={faTableList} />}
+                    >
                       <CardListFilters
                         hasVersions={(populatedDeck.versions?.length ?? 0) > 0}
                         onChange={handleCardListFiltersChange}
@@ -370,7 +365,7 @@ export function DeckByIdViewer() {
                         deck={populatedDeck}
                         columnCount={4}
                       />
-                    </Flex>
+                    </DataCard>
                   )}
                 </>
               )}

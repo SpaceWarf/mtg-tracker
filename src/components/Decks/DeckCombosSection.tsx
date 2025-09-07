@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import "../../assets/styles/DeckCombosSections.scss";
 import { DeckWithStats } from "../../state/Deck";
 import { ComboPreview } from "../Cards/ComboPreview";
+import { DataCard } from "../Common/DataCard";
 
 type OwnProps = {
   deck: DeckWithStats;
@@ -29,49 +30,48 @@ export function DeckCombosSection({ deck }: OwnProps) {
   }, [deck.combos]);
 
   return (
-    <Flex className="data-card deck-combos-card" direction="column">
-      <Flex className="title" align="center" gap="3" mb="5">
-        <FontAwesomeIcon icon={faInfinity} />
-        <p>Combos</p>
-      </Flex>
-      <Flex className="combos-container" direction="column" gap="2">
-        {early2CardCombos.length > 0 && (
-          <Flex className="combo-section" direction="column" gap="2">
-            <div className="section-title-container">
-              <p className="section-title">Early Game 2 Card Combos</p>
-            </div>
-            <Flex gap="7" wrap="wrap" mt="3">
-              {early2CardCombos.map((combo) => (
-                <ComboPreview key={combo.name} combo={combo} />
-              ))}
-            </Flex>
+    <DataCard
+      className="deck-combos-card"
+      title="Combos"
+      icon={<FontAwesomeIcon icon={faInfinity} />}
+      direction="column"
+    >
+      {early2CardCombos.length > 0 && (
+        <Flex width="100%" direction="column" gap="2">
+          <div className="section-title-container">
+            <p className="section-title">Early Game 2 Card Combos</p>
+          </div>
+          <Flex gap="7" wrap="wrap" mt="3">
+            {early2CardCombos.map((combo) => (
+              <ComboPreview key={combo.name} combo={combo} />
+            ))}
           </Flex>
-        )}
-        {late2CardCombos.length > 0 && (
-          <Flex className="combo-section" direction="column" gap="2" mt="5">
-            <div className="section-title-container">
-              <p className="section-title">Late Game 2 Card Combos</p>
-            </div>
-            <Flex gap="7" wrap="wrap" mt="3">
-              {late2CardCombos.map((combo) => (
-                <ComboPreview key={combo.name} combo={combo} />
-              ))}
-            </Flex>
+        </Flex>
+      )}
+      {late2CardCombos.length > 0 && (
+        <Flex width="100%" direction="column" gap="2" mt="5">
+          <div className="section-title-container">
+            <p className="section-title">Late Game 2 Card Combos</p>
+          </div>
+          <Flex gap="7" wrap="wrap" mt="3">
+            {late2CardCombos.map((combo) => (
+              <ComboPreview key={combo.name} combo={combo} />
+            ))}
           </Flex>
-        )}
-        {otherCombos.length > 0 && (
-          <Flex className="combo-section" direction="column" gap="2" mt="5">
-            <div className="section-title-container">
-              <p className="section-title">3+ Card Combos</p>
-            </div>
-            <Flex gap="7" wrap="wrap" mt="3">
-              {otherCombos.map((combo) => (
-                <ComboPreview key={combo.name} combo={combo} />
-              ))}
-            </Flex>
+        </Flex>
+      )}
+      {otherCombos.length > 0 && (
+        <Flex width="100%" direction="column" gap="2" mt="5">
+          <div className="section-title-container">
+            <p className="section-title">3+ Card Combos</p>
+          </div>
+          <Flex gap="7" wrap="wrap" mt="3">
+            {otherCombos.map((combo) => (
+              <ComboPreview key={combo.name} combo={combo} />
+            ))}
           </Flex>
-        )}
-      </Flex>
-    </Flex>
+        </Flex>
+      )}
+    </DataCard>
   );
 }
