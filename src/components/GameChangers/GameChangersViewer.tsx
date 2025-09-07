@@ -115,6 +115,8 @@ export function GameChangersViewer() {
           <DataCard
             title="Versions"
             icon={<FontAwesomeIcon icon={faCodeCommit} />}
+            collapsable
+            defaultCollapsed
           >
             <DeckVersionViewer
               deck={deck}

@@ -12,6 +12,24 @@
     line-height: 1.5rem;
     font-weight: 500;
     color: c.$text-secondary;
+
+    .fa-chevron-down {
+      transition: transform 0.25s ease-in-out;
+    }
+
+    &.collapsable {
+      cursor: pointer;
+
+      &:hover {
+        color: c.$text-primary;
+      }
+
+      &.collapsed {
+        .fa-chevron-down {
+          transform: rotate(-90deg);
+        }
+      }
+    }
   }
 
   &.actions-card {

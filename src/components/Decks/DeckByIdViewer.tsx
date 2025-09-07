@@ -339,6 +339,8 @@ export function DeckByIdViewer() {
                       <DataCard
                         title="Versions"
                         icon={<FontAwesomeIcon icon={faCodeCommit} />}
+                        collapsable
+                        defaultCollapsed
                       >
                         <DeckVersionViewer
                           deck={populatedDeck}
