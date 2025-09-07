@@ -1,11 +1,13 @@
 import {
-  CommitIcon,
-  DotsVerticalIcon,
-  MagnifyingGlassIcon,
-  Pencil1Icon,
-  TrashIcon,
-  UpdateIcon,
-} from "@radix-ui/react-icons";
+  faCodeCommit,
+  faEye,
+  faMagnifyingGlass,
+  faPen,
+  faRotate,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { DropdownMenu, IconButton } from "@radix-ui/themes";
 import { useNavigate } from "react-router";
 import { ArchidektService } from "../../services/Archidekt";
@@ -44,9 +46,22 @@ export function DeckCardDropdownMenu({
         <DropdownMenu.Content>
           <DropdownMenu.Item
             className="mb-1"
-            onClick={() => navigate(`/?decks=${deck.id}`)}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/decks/${deck.id}`);
+            }}
           >
-            <MagnifyingGlassIcon width="18" height="18" />
+            <FontAwesomeIcon icon={faEye} />
+            Open
+          </DropdownMenu.Item>
+          <DropdownMenu.Item
+            className="mb-1"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/?decks=${deck.id}`);
+            }}
+          >
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
             Search Games
           </DropdownMenu.Item>
           {deck.externalId && (
@@ -87,7 +102,7 @@ export function DeckCardDropdownMenu({
                 onEdit();
               }}
             >
-              <Pencil1Icon width="18" height="18" />
+              <FontAwesomeIcon icon={faPen} />
               Edit
             </DropdownMenu.Item>
           )}
@@ -99,7 +114,7 @@ export function DeckCardDropdownMenu({
                 onSync();
               }}
             >
-              <UpdateIcon width="18" height="18" />
+              <FontAwesomeIcon icon={faRotate} />
               Sync
             </DropdownMenu.Item>
           )}
@@ -111,7 +126,7 @@ export function DeckCardDropdownMenu({
                 onVersionManager();
               }}
             >
-              <CommitIcon width="18" height="18" />
+              <FontAwesomeIcon icon={faCodeCommit} />
               Manage versions
             </DropdownMenu.Item>
           )}
@@ -124,7 +139,7 @@ export function DeckCardDropdownMenu({
                 onDelete();
               }}
             >
-              <TrashIcon width="18" height="18" />
+              <FontAwesomeIcon icon={faTrash} />
               Delete
             </DropdownMenu.Item>
           )}
