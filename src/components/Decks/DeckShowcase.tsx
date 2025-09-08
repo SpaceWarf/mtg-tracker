@@ -5,6 +5,8 @@ import {
   faDice,
   faDollarSign,
   faEye,
+  faFaceAngry,
+  faLayerGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex } from "@radix-ui/themes";
@@ -61,10 +63,24 @@ export function DeckShowcase({ deck }: OwnProps) {
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
+            <FontAwesomeIcon size="xl" width="22" icon={faLayerGroup} />
+            <p>Size</p>
+          </Flex>
+          <p className="value">{deck.size ?? "-"}</p>
+        </Flex>
+        <Flex className="stats-row" justify="between" flexGrow="1">
+          <Flex className="label" align="center" gap="2">
             <FontAwesomeIcon size="xl" width="22" icon={faDollarSign} />
             <p>Est. Price</p>
           </Flex>
           <p className="value">{deck.price ?? "-"}</p>
+        </Flex>
+        <Flex className="stats-row" justify="between" flexGrow="1">
+          <Flex className="label" align="center" gap="2">
+            <FontAwesomeIcon size="xl" width="22" icon={faFaceAngry} />
+            <p>Salt Sum</p>
+          </Flex>
+          <p className="value">{deck.saltSum ?? "-"}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
