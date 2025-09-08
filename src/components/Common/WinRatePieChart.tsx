@@ -29,7 +29,7 @@ export function WinRatePieChart({ deck, size = "small" }: OwnProps) {
       return "200px";
     }
 
-    return "100px";
+    return "110px";
   }, [size]);
 
   const pieThickness = useMemo(() => {
