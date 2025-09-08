@@ -109,7 +109,7 @@ export function DeckVersionViewer({
       >
         <div>
           <div
-            className={`version-card w-[225px] ${
+            className={`version-card min-w-[250px] ${
               selectedIndex === -1 ? "selected" : ""
             } ${onClickVersion ? "selectable" : ""}`}
             onClick={() => onClickVersion?.(versions[0].id)}
@@ -129,7 +129,7 @@ export function DeckVersionViewer({
           <Flex key={`version-${index}`}>
             <div>
               <div
-                className={`version-card w-[350px] ${
+                className={`version-card min-w-[250px] ${
                   index === selectedIndex ? "selected" : ""
                 } ${onClickVersion ? "selectable" : ""}`}
                 onClick={() =>
@@ -163,6 +163,7 @@ export function DeckVersionViewer({
                     )}
                   mousePosition={mousePosition}
                   gameChangers={gameChangers}
+                  direction="row"
                 />
               </div>
             </div>

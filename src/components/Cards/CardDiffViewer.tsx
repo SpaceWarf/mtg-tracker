@@ -1,4 +1,5 @@
-import { Flex, Heading } from "@radix-ui/themes";
+import { Flex, Grid, Heading } from "@radix-ui/themes";
+import { useMemo } from "react";
 import { DeckCardDetails } from "../../state/DeckDetails";
 import { DiffType } from "../../state/DiffType";
 import { MousePosition } from "../../state/MousePosition";
@@ -10,6 +11,7 @@ type OwnProps = {
   mousePosition: MousePosition;
   gameChangers: DeckCardDetails[];
   withDescription?: boolean;
+  direction?: "column" | "row";
 };
 
 export function CardDiffViewer({
@@ -17,14 +19,37 @@ export function CardDiffViewer({
   removed,
   mousePosition,
   gameChangers,
-  withDescription = false,
+  withDescription,
+  direction = "column",
 }: OwnProps) {
+  const diffCount = useMemo(() => {
+    let count = 0;
+
+    if (added.length > 0) {
+      count++;
+    }
+
+    if (removed.length > 0) {
+      count++;
+    }
+
+    return count;
+  }, [added.length, removed.length]);
+
+  const columns = useMemo(() => {
+    return direction === "row" ? `${diffCount}` : "1";
+  }, [direction, diffCount]);
+
   return (
     <Flex direction="column" gap="1" flexGrow="1">
       {withDescription && (
         <Heading size="4">Differences with latest version</Heading>
       )}
-      <Flex direction="column" gap="3">
+      <Grid
+        columns={columns}
+        width={direction === "row" ? `${diffCount * 350}px` : undefined}
+        gap="5"
+      >
         {added.length > 0 && (
           <CardListCategory
             category={{
@@ -63,7 +88,7 @@ export function CardDiffViewer({
             gameChangers={gameChangers}
           />
         )}
-      </Flex>
+      </Grid>
     </Flex>
   );
 }
