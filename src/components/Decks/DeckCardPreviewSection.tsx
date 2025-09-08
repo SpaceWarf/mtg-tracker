@@ -9,11 +9,22 @@ type OwnProps = {
   title: string;
   icon: ReactElement;
   cards: DeckCardDetails[];
+  error?: boolean;
 };
 
-export function DeckCardPreviewSection({ title, icon, cards }: OwnProps) {
+export function DeckCardPreviewSection({
+  title,
+  icon,
+  cards,
+  error,
+}: OwnProps) {
   return (
-    <DataCard className="deck-card-preview-section" title={title} icon={icon}>
+    <DataCard
+      className="deck-card-preview-section"
+      title={title}
+      icon={icon}
+      error={error}
+    >
       <Flex className="overflow-container" gap="3">
         {cards.map((card) => (
           <CardPreview key={card.name} cards={[card]} size="small" clickable />

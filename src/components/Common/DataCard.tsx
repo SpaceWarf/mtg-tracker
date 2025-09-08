@@ -13,6 +13,7 @@ type OwnProps = {
   align?: "start" | "center" | "end" | "between";
   collapsable?: boolean;
   defaultCollapsed?: boolean;
+  error?: boolean;
 };
 
 export function DataCard({
@@ -22,8 +23,9 @@ export function DataCard({
   children,
   direction = "column",
   align = "start",
-  collapsable = false,
-  defaultCollapsed = false,
+  collapsable,
+  defaultCollapsed,
+  error,
 }: OwnProps) {
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
 
@@ -35,7 +37,7 @@ export function DataCard({
 
   return (
     <Flex
-      className={`data-card ${className}`}
+      className={`data-card ${className} ${error ? "error" : ""}`}
       direction={direction}
       justify={direction === "row" ? "between" : "start"}
       align={direction === "row" ? "center" : "start"}

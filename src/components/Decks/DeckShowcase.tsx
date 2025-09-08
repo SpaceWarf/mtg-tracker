@@ -13,6 +13,7 @@ import { Flex } from "@radix-ui/themes";
 import { useMemo } from "react";
 import "../../assets/styles/DeckShowcase.scss";
 import { DeckWithStats } from "../../state/Deck";
+import { CARD_COUNT } from "../../utils/Bracket";
 import { getLongDateString } from "../../utils/Date";
 import { getDeckCommanders } from "../../utils/Deck";
 import { CardPreview } from "../Cards/CardPreview";
@@ -61,7 +62,13 @@ export function DeckShowcase({ deck }: OwnProps) {
           </Flex>
           <p className="value">{deck.winCount}</p>
         </Flex>
-        <Flex className="stats-row" justify="between" flexGrow="1">
+        <Flex
+          className={`stats-row ${
+            parseInt(deck.size ?? "0") !== CARD_COUNT ? "error" : ""
+          }`}
+          justify="between"
+          flexGrow="1"
+        >
           <Flex className="label" align="center" gap="2">
             <FontAwesomeIcon size="xl" width="22" icon={faLayerGroup} />
             <p>Size</p>

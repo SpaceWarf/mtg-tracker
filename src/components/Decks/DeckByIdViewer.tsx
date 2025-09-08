@@ -42,6 +42,12 @@ import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { DeckMatchup } from "../../state/Deck";
 import { DeckByIdViewType } from "../../state/DeckByIdViewType";
 import {
+  EXTRA_TURN_LIMIT,
+  GAME_CHANGER_LIMIT,
+  MASS_LAND_DENIAL_LIMIT,
+  TUTOR_LIMIT,
+} from "../../utils/Bracket";
+import {
   getDeckBadMatchups,
   getDeckCommanders,
   getDeckGoodMatchups,
@@ -180,7 +186,10 @@ export function DeckByIdViewer() {
           </Tooltip>
           <Tooltip content={good ? "Games Won" : "Games Lost"}>
             <Flex gap="1">
-              <FontAwesomeIcon icon={faCrown} color={good ? "green" : "red"} />
+              <FontAwesomeIcon
+                icon={faCrown}
+                color={good ? "green" : "#d84242"}
+              />
               <p>{good ? matchup.won : matchup.lost}</p>
             </Flex>
           </Tooltip>
@@ -494,6 +503,9 @@ export function DeckByIdViewer() {
                         title={`Game Changers (${populatedDeck.gameChangers.length})`}
                         icon={<FontAwesomeIcon icon={faGem} />}
                         cards={populatedDeck.gameChangers}
+                        error={
+                          populatedDeck.gameChangers.length > GAME_CHANGER_LIMIT
+                        }
                       />
                     )}
                     {populatedDeck.tutors.length > 0 && (
@@ -501,6 +513,7 @@ export function DeckByIdViewer() {
                         title={`Tutors (${populatedDeck.tutors.length})`}
                         icon={<FontAwesomeIcon icon={faLayerGroup} />}
                         cards={populatedDeck.tutors}
+                        error={populatedDeck.tutors.length > TUTOR_LIMIT}
                       />
                     )}
                     {populatedDeck.extraTurns.length > 0 && (
@@ -508,6 +521,9 @@ export function DeckByIdViewer() {
                         title={`Extra Turns (${populatedDeck.extraTurns.length})`}
                         icon={<FontAwesomeIcon icon={faForward} />}
                         cards={populatedDeck.extraTurns}
+                        error={
+                          populatedDeck.extraTurns.length > EXTRA_TURN_LIMIT
+                        }
                       />
                     )}
                     {populatedDeck.massLandDenials.length > 0 && (
@@ -515,6 +531,10 @@ export function DeckByIdViewer() {
                         title={`Mass Land Denials (${populatedDeck.massLandDenials.length})`}
                         icon={<FontAwesomeIcon icon={faBomb} />}
                         cards={populatedDeck.massLandDenials}
+                        error={
+                          populatedDeck.massLandDenials.length >
+                          MASS_LAND_DENIAL_LIMIT
+                        }
                       />
                     )}
                   </Grid>

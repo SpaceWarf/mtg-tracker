@@ -4,6 +4,7 @@ import { Flex } from "@radix-ui/themes";
 import { useMemo } from "react";
 import "../../assets/styles/DeckCombosSections.scss";
 import { DeckWithStats } from "../../state/Deck";
+import { TWO_CARD_COMBO_LIMIT } from "../../utils/Bracket";
 import { ComboPreview } from "../Cards/ComboPreview";
 import { DataCard } from "../Common/DataCard";
 
@@ -35,6 +36,7 @@ export function DeckCombosSection({ deck }: OwnProps) {
       title={`Combos (${deck.combos.length})`}
       icon={<FontAwesomeIcon icon={faInfinity} />}
       direction="column"
+      error={early2CardCombos.length > TWO_CARD_COMBO_LIMIT}
     >
       {early2CardCombos.length > 0 && (
         <Flex width="100%" direction="column" gap="2">

@@ -33,6 +33,16 @@
     .stats-row {
       padding: 15px;
 
+      &.error {
+        .label {
+          color: c.$red;
+        }
+
+        .value {
+          color: c.$red;
+        }
+      }
+
       .label {
         font-size: 0.9rem;
         line-height: 0.9rem;

@@ -135,7 +135,7 @@ export function CardListCard({
             <PlusIcon color="green" width="14" height="14" />
           )}
           {diffType === DiffType.REMOVED && (
-            <MinusIcon color="red" width="14" height="14" />
+            <MinusIcon color="#d84242" width="14" height="14" />
           )}
           <p className="card-qty">{card.qty}</p>
         </Flex>

@@ -7,6 +7,12 @@
   border-radius: 10px;
   background-color: c.$card-background;
 
+  &.error {
+    .title {
+      color: c.$red;
+    }
+  }
+
   .title {
     font-size: 1.5rem;
     line-height: 1.5rem;
