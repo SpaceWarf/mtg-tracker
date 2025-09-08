@@ -82,6 +82,9 @@ export function DeckByIdViewer() {
   const [versionManagerOpen, setVersionManagerOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [syncing, setSyncing] = useState<boolean>(false);
+  const [selectedVersionId, setSelectedVersionId] = useState<string>(
+    searchParams.get("version") ?? "latest"
+  );
 
   const deck = useMemo(() => {
     return dbDecks?.find((deck) => deck.id === id);
@@ -244,6 +247,12 @@ export function DeckByIdViewer() {
   function handleViewTypeChange(value: DeckByIdViewType) {
     setViewType(value);
     searchParams.set("view", value);
+    setSearchParams(searchParams);
+  }
+
+  function handleVersionChange(value: string) {
+    setSelectedVersionId(value);
+    searchParams.set("version", value);
     setSearchParams(searchParams);
   }
 
@@ -424,6 +433,8 @@ export function DeckByIdViewer() {
                           sortCardsBy={sortBy}
                           mousePosition={mousePosition}
                           gameChangers={gameChangers ?? []}
+                          selectedVersionId={selectedVersionId}
+                          onClickVersion={handleVersionChange}
                         />
                       </DataCard>
                     )}
@@ -443,6 +454,8 @@ export function DeckByIdViewer() {
                         showVersionGraph={showVersionGraph}
                         deck={populatedDeck}
                         columnCount={4}
+                        selectedVersionId={selectedVersionId}
+                        onClickVersion={handleVersionChange}
                       />
                     </DataCard>
                   )}

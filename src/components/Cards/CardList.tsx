@@ -1,6 +1,5 @@
 import { Flex, Grid, Tabs, Text } from "@radix-ui/themes";
-import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router";
+import { useMemo } from "react";
 import { useDecks } from "../../hooks/useDecks";
 import { useMousePosition } from "../../hooks/useMousePosition";
 import { CardGroupBy } from "../../state/CardGroupBy";
@@ -28,6 +27,8 @@ type OwnProps = {
   deck: DbDeck;
   columnCount?: number;
   forcedCategoryOrder?: string[];
+  selectedVersionId?: string;
+  onClickVersion?: (id: string) => void;
 };
 
 export function CardList({
@@ -38,11 +39,11 @@ export function CardList({
   deck,
   columnCount = 5,
   forcedCategoryOrder,
+  selectedVersionId,
+  onClickVersion,
 }: OwnProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
   const { dbDecks } = useDecks();
   const mousePosition = useMousePosition();
-  const [versionId, setVersionId] = useState<string>("latest");
 
   const versions = useMemo(() => {
     return deck.versions ?? [];
@@ -57,8 +58,8 @@ export function CardList({
   }, [deck]);
 
   const cardDiffFromLatest = useMemo(() => {
-    return getAggregatedCardDiff(versions, versionId);
-  }, [versionId, versions]);
+    return getAggregatedCardDiff(versions, selectedVersionId ?? "latest");
+  }, [selectedVersionId, versions]);
 
   const gameChangers = useMemo(() => {
     return dbDecks?.find((deck) => deck.gameChangersDeck)?.cards;
@@ -363,8 +364,8 @@ export function CardList({
   ]);
 
   const adjustedColumnCount = useMemo(() => {
-    return columnCount - (versionId !== "latest" ? 1 : 0);
-  }, [columnCount, versionId]);
+    return columnCount - (selectedVersionId !== "latest" ? 1 : 0);
+  }, [columnCount, selectedVersionId]);
 
   const categoryColumns: CategoryCardList[][] = useMemo(() => {
     return categoryCardLists.reduce((acc, category, index) => {
@@ -377,20 +378,6 @@ export function CardList({
       return acc;
     }, [] as CategoryCardList[][]);
   }, [categoryCardLists, adjustedColumnCount]);
-
-  useEffect(() => {
-    const versionId = searchParams.get("version");
-    const version = versions.find((version) => version.id === versionId);
-    if (versionId && version) {
-      setVersionId(versionId);
-    }
-  }, [searchParams, versions]);
-
-  function handleVersionChange(value: string) {
-    setVersionId(value);
-    searchParams.set("version", value);
-    setSearchParams(searchParams);
-  }
 
   function getVersionDate(id: string): string {
     if (id === "latest") {
@@ -413,27 +400,23 @@ export function CardList({
           sortCardsBy={sortBy}
           mousePosition={mousePosition}
           gameChangers={gameChangers ?? []}
-          selectedVersionId={versionId}
-          onClickVersion={handleVersionChange}
+          selectedVersionId={selectedVersionId}
+          onClickVersion={onClickVersion}
         />
       )}
 
       {versions.length > 0 && (
         <Tabs.Root
-          value={versionId}
+          value={selectedVersionId}
           mb="3"
           mt={showVersionGraph ? "3" : "0"}
           onValueChange={(value) => {
-            setVersionId(value);
+            onClickVersion?.(value);
           }}
         >
           <Tabs.List style={{ overflowY: "hidden", overflowX: "scroll" }}>
             {versions.map((version, index) => (
-              <Tabs.Trigger
-                key={version.id}
-                value={version.id}
-                onClick={() => handleVersionChange(version.id)}
-              >
+              <Tabs.Trigger key={version.id} value={version.id}>
                 <Flex direction="column">
                   <Text>Version {index + 1}</Text>
                   <Text size="1" color="gray" mb="2">
@@ -442,11 +425,7 @@ export function CardList({
                 </Flex>
               </Tabs.Trigger>
             ))}
-            <Tabs.Trigger
-              key="latest"
-              value="latest"
-              onClick={() => handleVersionChange("latest")}
-            >
+            <Tabs.Trigger key="latest" value="latest">
               <Flex direction="column">
                 <Text>Version {versions.length + 1} </Text>
                 <Text size="1" color="gray" mb="2">
@@ -472,7 +451,7 @@ export function CardList({
             ))}
           </Flex>
         ))}
-        {versionId !== "latest" && (
+        {selectedVersionId !== "latest" && (
           <CardDiffViewer
             added={addedCardsWithQuantities}
             removed={removedCardsWithQuantities}
