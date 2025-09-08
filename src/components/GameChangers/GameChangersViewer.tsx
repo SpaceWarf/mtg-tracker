@@ -7,7 +7,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex, IconButton, Spinner, Tooltip } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import "../../assets/styles/DataCard.scss";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
@@ -23,6 +23,7 @@ import { DeckVersionViewer } from "../Decks/DeckVersionViewer";
 
 export function GameChangersViewer() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
   const { dbDecks } = useDecks();
   const mousePosition = useMousePosition();
@@ -33,6 +34,9 @@ export function GameChangersViewer() {
   const [search, setSearch] = useState<string>("");
   const [showVersionGraph, setShowVersionGraph] = useState<boolean>(false);
   const [syncing, setSyncing] = useState<boolean>(false);
+  const [selectedVersionId, setSelectedVersionId] = useState<string>(
+    searchParams.get("version") ?? "latest"
+  );
 
   const deck = useMemo(() => {
     return dbDecks?.find((deck) => deck.gameChangersDeck);
@@ -68,6 +72,12 @@ export function GameChangersViewer() {
 
   function handleArchidekt() {
     window.open(ArchidektService.getDeckUrl(deck?.externalId ?? ""), "_blank");
+  }
+
+  function handleVersionChange(value: string) {
+    setSelectedVersionId(value);
+    searchParams.set("version", value);
+    setSearchParams(searchParams);
   }
 
   if (!deck) {
@@ -123,6 +133,8 @@ export function GameChangersViewer() {
               sortCardsBy={sortBy}
               mousePosition={mousePosition}
               gameChangers={gameChangers ?? []}
+              selectedVersionId={selectedVersionId}
+              onClickVersion={handleVersionChange}
             />
           </DataCard>
         )}
@@ -142,6 +154,8 @@ export function GameChangersViewer() {
               showVersionGraph={showVersionGraph}
               deck={deck}
               columnCount={5}
+              selectedVersionId={selectedVersionId}
+              onClickVersion={handleVersionChange}
             />
           </DataCard>
         )}
