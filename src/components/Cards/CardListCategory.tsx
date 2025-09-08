@@ -1,5 +1,6 @@
 import { StarFilledIcon } from "@radix-ui/react-icons";
-import { Flex, Heading, Text } from "@radix-ui/themes";
+import { Flex } from "@radix-ui/themes";
+import "../../assets/styles/CardListCategory.scss";
 import { CardGroupBy } from "../../state/CardGroupBy";
 import { CategoryCardList } from "../../state/CategoryCardList";
 import { DeckCardDetails } from "../../state/DeckDetails";
@@ -21,30 +22,28 @@ export function CardListCategory({
   groupBy,
 }: OwnProps) {
   return (
-    <div key={category.category.name}>
-      <Flex align="end" justify="between">
-        <Flex direction="column">
+    <div key={category.category.name} className="card-list-category">
+      <Flex align="end" justify="between" mb="1">
+        <Flex direction="column" gap="1">
           <Flex gap="1" align="center">
             {category.category.isPremier && (
               <StarFilledIcon width="16" height="16" />
             )}
-            <Heading size="3">
+            <p className="category-name">
               {groupBy === CardGroupBy.COLOUR ? (
                 <IdentityHeader label={category.category.name} />
               ) : (
                 category.category.name
               )}
-            </Heading>
+            </p>
           </Flex>
           {category.description && (
-            <Text className="text-gray-400" size="2">
-              {category.description}
-            </Text>
+            <p className="category-description">{category.description}</p>
           )}
         </Flex>
-        <Text className="text-gray-400" size="2">
+        <p className="category-qty">
           Qty: {category.cards.reduce((acc, card) => acc + card.qty, 0)}
-        </Text>
+        </p>
       </Flex>
       {category.cards.map((card) => (
         <CardListCard

@@ -7,9 +7,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
-import { Flex, IconButton, Link, Text, Tooltip } from "@radix-ui/themes";
+import { Flex, IconButton, Tooltip } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import "../../assets/styles/CardListCard.scss";
 import { ScryfallService } from "../../services/Scryfall";
 import { ArchidektReduxCardLayout } from "../../state/ArchidektReduxData";
 import { CardUris } from "../../state/CardUris";
@@ -116,14 +117,17 @@ export function CardListCard({
   }
 
   return (
-    <div>
+    <div className="card-list-card-container">
       <Flex
-        className="h-6 border-solid border-t border-gray-600"
+        className={`card-list-card ${cardUris ? "selectable" : ""}`}
         align="center"
         onMouseEnter={handleHover}
         onMouseLeave={handleLeave}
-        style={{
-          cursor: cardUris ? "default" : "wait",
+        onClick={(e) => {
+          e.stopPropagation();
+          if (cardUris) {
+            window.open(cardUris.uri, "_blank");
+          }
         }}
       >
         <Flex gap="1" align="center" mr="1">
@@ -133,26 +137,10 @@ export function CardListCard({
           {diffType === DiffType.REMOVED && (
             <MinusIcon color="red" width="14" height="14" />
           )}
-          <Text size="2">{card.qty}</Text>
+          <p className="card-qty">{card.qty}</p>
         </Flex>
         <Flex align="center" overflow="hidden" mr="1">
-          {cardUris ? (
-            <Link
-              className="overflow-hidden whitespace-nowrap overflow-ellipsis"
-              size="2"
-              href={cardUris.uri}
-              target="_blank"
-            >
-              <Text>{card.name}</Text>
-            </Link>
-          ) : (
-            <Text
-              className="overflow-hidden whitespace-nowrap overflow-ellipsis"
-              size="2"
-            >
-              {card.name}
-            </Text>
-          )}
+          <p className="card-name">{card.name}</p>
         </Flex>
         <Flex align="center" mr="1" gap="1" flexGrow="1">
           {gameChangerType !== GameChangerType.NONE && (
