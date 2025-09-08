@@ -12,7 +12,9 @@ export function DeckDescriptor({ deck, version }: OwnProps) {
   return (
     <Flex direction="column">
       <Link
-        href={`/decks?decklist=${deck.id}&version=${nextVersion ?? "latest"}`}
+        href={`/decks/${deck.id}?view=decklist&version=${
+          nextVersion ?? "latest"
+        }`}
         target="_blank"
       >
         {deck.name}{" "}
