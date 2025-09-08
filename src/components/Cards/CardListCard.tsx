@@ -183,7 +183,10 @@ export function CardListCard({
                 variant="ghost"
                 color="gray"
                 size="1"
-                onClick={() => setFlipped(!flipped)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setFlipped(!flipped);
+                }}
               >
                 <FontAwesomeIcon icon={faRotate} width="12" height="12" />
               </IconButton>
