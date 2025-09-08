@@ -1,3 +1,5 @@
+@use "../styles/colours" as c;
+
 .deck-version-viewer-container {
   position: relative;
 
@@ -30,17 +32,34 @@
       max-height: 350px;
     }
 
-    .selected {
-      background-color: #222;
-      &::after {
-        box-shadow: 0 0 0 1px gray;
-      }
-    }
-
-    .rt-Card > div:first-child.selectable {
+    .version-card {
       cursor: pointer;
-      &:hover > .rt-Heading {
-        text-decoration: underline;
+      border-radius: 10px;
+      border-radius: 10px;
+      border: 3px solid c.$card-border;
+      background-color: c.$card-background-dark;
+      padding: 15px;
+
+      &:hover {
+        border-color: c.$card-border-hover;
+      }
+
+      &.selected {
+        border-color: c.$card-border-hover;
+      }
+
+      .version-name {
+        font-size: 1.2rem;
+        line-height: 1.2rem;
+        font-weight: bold;
+        color: c.$text-primary;
+      }
+
+      .version-date {
+        font-size: 0.8rem;
+        line-height: 0.8rem;
+        font-weight: 500;
+        color: c.$text-secondary;
       }
     }
   }
