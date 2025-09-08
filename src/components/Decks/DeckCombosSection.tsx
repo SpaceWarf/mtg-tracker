@@ -32,7 +32,7 @@ export function DeckCombosSection({ deck }: OwnProps) {
   return (
     <DataCard
       className="deck-combos-card"
-      title="Combos"
+      title={`Combos (${deck.combos.length})`}
       icon={<FontAwesomeIcon icon={faInfinity} />}
       direction="column"
     >

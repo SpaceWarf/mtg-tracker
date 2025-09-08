@@ -491,28 +491,28 @@ export function DeckByIdViewer() {
                   <Grid gap="5" columns="2" rows={`${cardPreviewRowCount}`}>
                     {populatedDeck.gameChangers.length > 0 && (
                       <DeckCardPreviewSection
-                        title="Game Changers"
+                        title={`Game Changers (${populatedDeck.gameChangers.length})`}
                         icon={<FontAwesomeIcon icon={faGem} />}
                         cards={populatedDeck.gameChangers}
                       />
                     )}
                     {populatedDeck.tutors.length > 0 && (
                       <DeckCardPreviewSection
-                        title="Tutors"
+                        title={`Tutors (${populatedDeck.tutors.length})`}
                         icon={<FontAwesomeIcon icon={faLayerGroup} />}
                         cards={populatedDeck.tutors}
                       />
                     )}
                     {populatedDeck.extraTurns.length > 0 && (
                       <DeckCardPreviewSection
-                        title="Extra Turns"
+                        title={`Extra Turns (${populatedDeck.extraTurns.length})`}
                         icon={<FontAwesomeIcon icon={faForward} />}
                         cards={populatedDeck.extraTurns}
                       />
                     )}
                     {populatedDeck.massLandDenials.length > 0 && (
                       <DeckCardPreviewSection
-                        title="Mass Land Denial"
+                        title={`Mass Land Denials (${populatedDeck.massLandDenials.length})`}
                         icon={<FontAwesomeIcon icon={faBomb} />}
                         cards={populatedDeck.massLandDenials}
                       />
