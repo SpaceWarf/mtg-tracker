@@ -43,7 +43,7 @@ import { DeckMatchup } from "../../state/Deck";
 import { DeckByIdViewType } from "../../state/DeckByIdViewType";
 import {
   getDeckBadMatchups,
-  getDeckCommander,
+  getDeckCommanders,
   getDeckGoodMatchups,
   populateDeck,
 } from "../../utils/Deck";
@@ -153,7 +153,7 @@ export function DeckByIdViewer() {
       return null;
     }
 
-    const commander = getDeckCommander(deck);
+    const commanders = getDeckCommanders(deck);
     const gamesPlayed = matchup.won + matchup.lost;
     const winRate = (matchup.won / gamesPlayed) * 100;
 
@@ -191,7 +191,7 @@ export function DeckByIdViewer() {
             </Flex>
           </Tooltip>
         </Flex>
-        <CardPreview card={commander} size="small" clickable />
+        <CardPreview cards={commanders} size="small" clickable offsetStack />
       </Flex>
     );
   }

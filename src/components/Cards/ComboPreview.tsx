@@ -33,7 +33,11 @@ export function ComboPreview({ combo }: OwnProps) {
         <p className="combo-name">{combo.name.split(" (")[0]}</p>
         <Flex gap="1" align="center" mt="1">
           {cardsUris.map((cardUris) => (
-            <CardPreview key={cardUris.uri} cardUris={cardUris} size="small" />
+            <CardPreview
+              key={cardUris.uri}
+              cardUris={[cardUris]}
+              size="small"
+            />
           ))}
         </Flex>
       </Flex>

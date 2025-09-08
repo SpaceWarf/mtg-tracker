@@ -47,25 +47,31 @@ export function DeckHeader2({ deck, editable, showActions }: OwnProps) {
   return (
     <>
       {editModalOpen && (
-        <DeckEditModal
-          open={editModalOpen}
-          deck={deck}
-          onClose={() => setEditModalOpen(false)}
-        />
+        <div onClick={(e) => e.stopPropagation()}>
+          <DeckEditModal
+            open={editModalOpen}
+            deck={deck}
+            onClose={() => setEditModalOpen(false)}
+          />
+        </div>
       )}
       {versionManagerOpen && (
-        <DeckVersionManagerModal
-          open={versionManagerOpen}
-          deck={deck}
-          onClose={() => setVersionManagerOpen(false)}
-        />
+        <div onClick={(e) => e.stopPropagation()}>
+          <DeckVersionManagerModal
+            open={versionManagerOpen}
+            deck={deck}
+            onClose={() => setVersionManagerOpen(false)}
+          />
+        </div>
       )}
       {deleteModalOpen && (
-        <DeckDeleteModal
-          open={deleteModalOpen}
-          deck={deck}
-          onClose={() => setDeleteModalOpen(false)}
-        />
+        <div onClick={(e) => e.stopPropagation()}>
+          <DeckDeleteModal
+            open={deleteModalOpen}
+            deck={deck}
+            onClose={() => setDeleteModalOpen(false)}
+          />
+        </div>
       )}
 
       <Flex className="deck-header" justify="between">

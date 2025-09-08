@@ -16,7 +16,7 @@ export function DeckCardPreviewSection({ title, icon, cards }: OwnProps) {
     <DataCard className="deck-card-preview-section" title={title} icon={icon}>
       <Flex className="overflow-container" gap="3">
         {cards.map((card) => (
-          <CardPreview key={card.name} card={card} size="small" clickable />
+          <CardPreview key={card.name} cards={[card]} size="small" clickable />
         ))}
       </Flex>
     </DataCard>

@@ -4,7 +4,11 @@
   position: relative;
   perspective: 1000px;
 
-  .card-preview-inner {
+  &.offset {
+    margin-top: 25px;
+  }
+
+  .card-stack-card {
     position: relative;
     transition: transform 0.5s;
     transform-style: preserve-3d;
@@ -48,5 +52,6 @@
     background-color: rgba(c.$card-border, 0.8);
     color: c.$text-primary;
     cursor: pointer;
+    z-index: 9999;
   }
 }

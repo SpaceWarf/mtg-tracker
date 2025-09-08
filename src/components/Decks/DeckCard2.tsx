@@ -29,11 +29,7 @@ export function DeckCard2({ deck, editable, showActions }: OwnProps) {
     >
       <Flex className="h-full" direction="column" justify="between">
         <Flex className="content-container" direction="column" gap="3">
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
+          <div>
             <DeckHeader2
               deck={deck}
               editable={editable}

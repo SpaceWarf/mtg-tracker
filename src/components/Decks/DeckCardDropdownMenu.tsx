@@ -36,7 +36,10 @@ export function DeckCardDropdownMenu({
   const navigate = useNavigate();
 
   return (
-    <div className="deck-card-dropdown-menu">
+    <div
+      className="deck-card-dropdown-menu"
+      onClick={(e) => e.stopPropagation()}
+    >
       <DropdownMenu.Root>
         <DropdownMenu.Trigger disabled={syncing}>
           <IconButton variant="soft" color="gray">

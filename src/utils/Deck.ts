@@ -334,6 +334,10 @@ export function getSanitizedCommanderString(commander: string): string {
     .toLowerCase();
 }
 
-export function getDeckCommander(deck: DbDeck): DeckCardDetails | undefined {
-  return deck.cards?.find((card) => card.name === deck.commander);
+export function getDeckCommanders(deck: DbDeck): DeckCardDetails[] {
+  return (
+    deck.cards
+      ?.filter((card) => deck.commander?.split(" & ")?.includes(card.name))
+      .sort((a, b) => a.name.localeCompare(b.name)) ?? []
+  );
 }
