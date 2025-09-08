@@ -1,0 +1,35 @@
+@use "../styles/colours" as c;
+
+.card-list-card-container {
+  .card-list-card {
+    cursor: wait;
+    height: 27px;
+    border-top: 1px solid c.$border-primary;
+    padding: 0 5px;
+
+    &.selectable {
+      cursor: pointer;
+    }
+
+    &:hover {
+      background-color: c.$card-background-darker;
+
+      .card-name,
+      .card-qty {
+        color: c.$text-primary-hover;
+      }
+    }
+
+    .card-name,
+    .card-qty {
+      font-size: 0.8rem;
+      color: c.$text-primary;
+    }
+
+    .card-name {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+}

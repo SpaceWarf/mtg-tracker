@@ -1,10 +1,11 @@
 import {
-  AvatarIcon,
-  CheckIcon,
-  Cross2Icon,
-  ExitIcon,
-  InfoCircledIcon,
-} from "@radix-ui/react-icons";
+  faCheck,
+  faSignOut,
+  faUserCircle,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 import {
   Button,
   Callout,
@@ -58,8 +59,8 @@ export function LoginModal() {
 
   if (auth.user) {
     return (
-      <Button variant="soft" onClick={handleLogout}>
-        <ExitIcon width="18" height="18" />
+      <Button className="h-10" variant="soft" onClick={handleLogout}>
+        <FontAwesomeIcon icon={faSignOut} />
         Logout
       </Button>
     );
@@ -68,8 +69,8 @@ export function LoginModal() {
   return (
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
-        <Button variant="soft">
-          <AvatarIcon width="18" height="18" />
+        <Button className="h-10" variant="soft">
+          <FontAwesomeIcon icon={faUserCircle} />
           Login
         </Button>
       </Dialog.Trigger>
@@ -116,7 +117,7 @@ export function LoginModal() {
         <Flex gap="3" mt="4" justify="between">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <Cross2Icon />
+              <FontAwesomeIcon icon={faXmark} />
               Cancel
             </Button>
           </Dialog.Close>
@@ -125,7 +126,7 @@ export function LoginModal() {
             disabled={!canSubmit()}
             onClick={handleLogin}
           >
-            <CheckIcon />
+            <FontAwesomeIcon icon={faCheck} />
             Login
           </Button>
         </Flex>

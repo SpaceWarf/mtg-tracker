@@ -1,7 +1,11 @@
+@use "../styles/colours" as c;
 @import "@radix-ui/themes/styles.css";
 
-.rt-Flex p.rt-Text[id^="radix-"] {
-  display: none;
+* {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
 }
 
 a {
@@ -42,4 +46,31 @@ a {
 ul {
   list-style: disc !important;
   margin-left: 10px !important;
+}
+
+.rt-Flex p.rt-Text[id^="radix-"] {
+  display: none;
+}
+
+.rt-TooltipContent {
+  background-color: c.$tooltip-background;
+
+  .rt-TooltipArrow {
+    fill: c.$tooltip-background;
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: c.$text-primary;
+  }
+}
+
+.rt-BaseButton:not([data-disabled="true"]),
+.rt-SegmentedControlItem,
+.react-select__control {
+  cursor: pointer !important;
+}
+
+.rt-BaseButton[data-disabled="true"] {
+  cursor: not-allowed !important;
 }

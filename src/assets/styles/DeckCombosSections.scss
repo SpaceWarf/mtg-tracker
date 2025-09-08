@@ -1,0 +1,14 @@
+@use "../styles/colours" as c;
+
+.deck-combos-card {
+  .section-title-container {
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid c.$text-secondary;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+    color: c.$text-primary;
+  }
+}

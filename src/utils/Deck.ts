@@ -1,7 +1,7 @@
 import { cloneDeep } from "lodash";
 import { uuidv7 } from "uuidv7";
 import { CardDiff, CardDiffItem } from "../state/CardDiff";
-import { DbDeck, DeckWithStats } from "../state/Deck";
+import { DbDeck, DeckMatchup, DeckWithStats } from "../state/Deck";
 import { DeckCardDetails, DeckDetails } from "../state/DeckDetails";
 import { DeckVersion } from "../state/DeckVersion";
 import { DbGame } from "../state/Game";
@@ -83,6 +83,71 @@ export function getDeckDescriptorString(deck: DeckWithStats): string {
   return `${getBracketName(bracket)} ${identityLabel.split(" ")[0]} ${
     deck.format
   } Deck`;
+}
+
+export function getDeckMatchups(
+  deck: DbDeck,
+  games: DbGame[]
+): Record<string, DeckMatchup> {
+  const matchups: Record<string, DeckMatchup> = {};
+  const playedGames = games.filter((game) =>
+    [
+      game.player1.deck,
+      game.player2.deck,
+      game.player3.deck,
+      game.player4.deck,
+    ].includes(deck.id)
+  );
+
+  playedGames.forEach((game) => {
+    const players = [game.player1, game.player2, game.player3, game.player4];
+    const self = players.find((player) => player.deck === deck.id);
+
+    players.forEach((player) => {
+      if (player.deck !== deck.id) {
+        const won = (matchups[player.deck]?.won ?? 0) + (self?.won ? 1 : 0);
+        const lost = (matchups[player.deck]?.lost ?? 0) + (self?.won ? 0 : 1);
+        const played = won + lost;
+        const winRate = played > 0 ? won / played : 0;
+
+        matchups[player.deck] = {
+          deck: player.deck,
+          played,
+          won,
+          lost,
+          winRate,
+        };
+      }
+    });
+  });
+
+  return matchups;
+}
+
+export function getDeckGoodMatchups(deck: DeckWithStats): DeckMatchup[] {
+  return Object.values(deck.matchups)
+    .sort(
+      (a, b) =>
+        b.winRate - a.winRate ||
+        b.played - a.played ||
+        b.won - a.won ||
+        a.deck.localeCompare(b.deck)
+    )
+    .filter((matchup) => matchup.won > 0)
+    .slice(0, 5);
+}
+
+export function getDeckBadMatchups(deck: DeckWithStats): DeckMatchup[] {
+  return Object.values(deck.matchups)
+    .sort(
+      (a, b) =>
+        a.winRate - b.winRate ||
+        b.played - a.played ||
+        a.lost - b.lost ||
+        a.deck.localeCompare(b.deck)
+    )
+    .filter((matchup) => matchup.lost > 0)
+    .slice(0, 5);
 }
 
 export function getCardDiff(
@@ -237,6 +302,7 @@ export function populateDeck(
         deck.cards?.find((card) => card.name === comboCard)
       )
     ),
+    matchups: getDeckMatchups(deck, games),
   };
 }
 
@@ -266,4 +332,12 @@ export function getSanitizedCommanderString(commander: string): string {
     .replace(/ /g, "-")
     .replace(/(,|'|")/g, "")
     .toLowerCase();
+}
+
+export function getDeckCommanders(deck: DbDeck): DeckCardDetails[] {
+  return (
+    deck.cards
+      ?.filter((card) => deck.commander?.split(" & ")?.includes(card.name))
+      .sort((a, b) => a.name.localeCompare(b.name)) ?? []
+  );
 }

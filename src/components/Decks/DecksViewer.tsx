@@ -60,7 +60,8 @@ export function DecksViewer() {
         deck.name.toLowerCase().includes(search.toLowerCase()) ||
         deck.commander?.toLowerCase().includes(search.toLowerCase());
       const builderFilter = !visiblePlayer || deck.builder === visiblePlayer;
-      const bracketFilter = !bracket || getBracket(deck) === bracket;
+      const bracketFilter =
+        !bracket || (getBracket(deck) === bracket && deck.externalId);
       const identityFilter =
         !identity ||
         getColourIdentityLabel(deck.colourIdentity ?? []) === identity;

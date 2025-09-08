@@ -1,10 +1,11 @@
 import {
-  CheckIcon,
-  Cross2Icon,
-  InfoCircledIcon,
-  Pencil1Icon,
-  PlusIcon,
-} from "@radix-ui/react-icons";
+  faCheck,
+  faPen,
+  faPlus,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 import {
   Button,
   Callout,
@@ -99,8 +100,8 @@ export function DeckCreateModal() {
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
         <Button className="h-10">
-          <PlusIcon width="18" height="18" />
-          Create new deck
+          <FontAwesomeIcon icon={faPlus} />
+          Create New Deck
         </Button>
       </Dialog.Trigger>
 
@@ -137,7 +138,7 @@ export function DeckCreateModal() {
             disabled={!externalId || autofilling}
             loading={autofilling}
           >
-            <Pencil1Icon width="18" height="18" />
+            <FontAwesomeIcon icon={faPen} />
             Autofill Details
           </Button>
         </Flex>
@@ -198,12 +199,14 @@ export function DeckCreateModal() {
         <Flex gap="3" mt="4" justify="between">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <Cross2Icon /> Cancel
+              <FontAwesomeIcon icon={faXmark} />
+              Cancel
             </Button>
           </Dialog.Close>
           <Dialog.Close disabled={!canSave()} onClick={handleCreate}>
             <Button className="h-10">
-              <CheckIcon /> Save
+              <FontAwesomeIcon icon={faCheck} />
+              Save
             </Button>
           </Dialog.Close>
         </Flex>

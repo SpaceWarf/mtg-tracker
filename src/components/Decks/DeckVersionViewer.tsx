@@ -1,5 +1,5 @@
 import { ChevronUpIcon } from "@radix-ui/react-icons";
-import { Card, ChevronDownIcon, Flex, Heading, Text } from "@radix-ui/themes";
+import { ChevronDownIcon, Flex } from "@radix-ui/themes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import "../../assets/styles/DeckVersionViewer.scss";
 import { CardDiff } from "../../state/CardDiff";
@@ -101,27 +101,26 @@ export function DeckVersionViewer({
     <div
       className={`deck-version-viewer-container ${preview ? "preview" : ""}`}
     >
-      {preview && <Heading className="preview-heading mb-3">Preview</Heading>}
+      {preview && <p className="preview-heading mb-3">Preview</p>}
       <Flex
         ref={overflowingDiv}
         className={`deck-version-viewer ${expanded ? "expanded" : ""}`}
         pb="5"
       >
         <div>
-          <Card
-            className={`w-[225px] ${selectedIndex === -1 ? "selected" : ""}`}
+          <div
+            className={`version-card min-w-[250px] ${
+              selectedIndex === -1 ? "selected" : ""
+            } ${onClickVersion ? "selectable" : ""}`}
+            onClick={() => onClickVersion?.(versions[0].id)}
           >
-            <Flex
-              className={`${onClickVersion ? "selectable" : ""}`}
-              align="end"
-              gap="2"
-              mb="3"
-              onClick={() => onClickVersion?.(versions[0].id)}
-            >
-              <Heading>Version 1</Heading>
-              <Text>{getLongDateString(deck.createdAt, false)}</Text>
+            <Flex align="end" gap="2">
+              <p className="version-name">Version 1</p>
+              <p className="version-date">
+                {getLongDateString(deck.createdAt, false)}
+              </p>
             </Flex>
-          </Card>
+          </div>
         </div>
         {deck.versions && deck.versions.length > 0 && (
           <div className="arrow-connector mt-6" />
@@ -129,22 +128,17 @@ export function DeckVersionViewer({
         {versions.map((_, index) => (
           <Flex key={`version-${index}`}>
             <div>
-              <Card
-                className={`w-[350px] ${
+              <div
+                className={`version-card min-w-[250px] ${
                   index === selectedIndex ? "selected" : ""
-                }`}
+                } ${onClickVersion ? "selectable" : ""}`}
+                onClick={() =>
+                  onClickVersion?.(versions[index + 1]?.id ?? "latest")
+                }
               >
-                <Flex
-                  className={`${onClickVersion ? "selectable" : ""}`}
-                  align="end"
-                  gap="2"
-                  mb="3"
-                  onClick={() =>
-                    onClickVersion?.(versions[index + 1]?.id ?? "latest")
-                  }
-                >
-                  <Heading>Version {index + 2}</Heading>
-                  <Text>{getVersionDate(index)}</Text>
+                <Flex align="end" gap="2" mb="3">
+                  <p className="version-name">Version {index + 2}</p>
+                  <p className="version-date">{getVersionDate(index)}</p>
                 </Flex>
                 <CardDiffViewer
                   added={getVersionDiff(index)
@@ -169,8 +163,9 @@ export function DeckVersionViewer({
                     )}
                   mousePosition={mousePosition}
                   gameChangers={gameChangers}
+                  direction="row"
                 />
-              </Card>
+              </div>
             </div>
             {index !== latestIndex && <div className="arrow-connector mt-6" />}
           </Flex>
@@ -184,7 +179,11 @@ export function DeckVersionViewer({
           onClick={() => setExpanded(!expanded)}
         >
           <Flex gap="2" align="center">
-            {expanded ? <Text>see less</Text> : <Text>see more</Text>}
+            {expanded ? (
+              <p className="expand-text">see less</p>
+            ) : (
+              <p className="expand-text">see more</p>
+            )}
             {expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
           </Flex>
         </Flex>

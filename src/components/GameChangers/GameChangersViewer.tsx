@@ -1,24 +1,42 @@
-import { ExternalLinkIcon, UpdateIcon } from "@radix-ui/react-icons";
-import { Button, Flex, IconButton, Spinner } from "@radix-ui/themes";
+import {
+  faCodeCommit,
+  faGem,
+  faRotate,
+  faTableList,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Flex, IconButton, Spinner, Tooltip } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
+import "../../assets/styles/DataCard.scss";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
+import { useGameChangers } from "../../hooks/useGameChangers";
+import { useMousePosition } from "../../hooks/useMousePosition";
 import { ArchidektService } from "../../services/Archidekt";
 import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { CardList } from "../Cards/CardList";
 import { CardListFilters } from "../Cards/CardListFilters";
+import { DataCard } from "../Common/DataCard";
+import { DeckVersionViewer } from "../Decks/DeckVersionViewer";
 
 export function GameChangersViewer() {
   const navigate = useNavigate();
-  const auth = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { user } = useAuth();
   const { dbDecks } = useDecks();
+  const mousePosition = useMousePosition();
+  const { gameChangers } = useGameChangers();
+
   const [groupBy, setGroupBy] = useState<CardGroupBy>(CardGroupBy.CATEGORY);
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
   const [search, setSearch] = useState<string>("");
   const [showVersionGraph, setShowVersionGraph] = useState<boolean>(false);
   const [syncing, setSyncing] = useState<boolean>(false);
+  const [selectedVersionId, setSelectedVersionId] = useState<string>(
+    searchParams.get("version") ?? "latest"
+  );
 
   const deck = useMemo(() => {
     return dbDecks?.find((deck) => deck.gameChangersDeck);
@@ -52,62 +70,96 @@ export function GameChangersViewer() {
     }
   }
 
+  function handleArchidekt() {
+    window.open(ArchidektService.getDeckUrl(deck?.externalId ?? ""), "_blank");
+  }
+
+  function handleVersionChange(value: string) {
+    setSelectedVersionId(value);
+    searchParams.set("version", value);
+    setSearchParams(searchParams);
+  }
+
+  if (!deck) {
+    return <Spinner size="3" mt="5" />;
+  }
+
   return (
     <div className="p-5 w-full max-w-[1750px]">
-      <Flex align="center" justify="between">
-        <CardListFilters
-          hasVersions={(deck?.versions?.length ?? 0) > 0}
-          onChange={handleCardListFiltersChange}
-        />
-        <Flex gap="2">
-          {auth.user && (
-            <Button
-              variant="soft"
-              color="gray"
-              onClick={handleSync}
-              disabled={!deck || syncing}
-              loading={syncing}
-            >
-              <UpdateIcon width="18" height="18" />
-              Sync
-            </Button>
-          )}
-          <IconButton
-            variant="soft"
-            disabled={!deck}
-            onClick={() =>
-              window.open(
-                ArchidektService.getDeckUrl(deck?.externalId ?? ""),
-                "_blank"
-              )
-            }
+      <Flex direction="column" gap="5">
+        <DataCard
+          title="Gamer Changers"
+          icon={<FontAwesomeIcon icon={faGem} />}
+          direction="row"
+          align="between"
+        >
+          <Flex gap="2">
+            {!!user && (
+              <Tooltip content="Sync Deck">
+                <IconButton
+                  variant="soft"
+                  color="gray"
+                  size="3"
+                  disabled={syncing}
+                  loading={syncing}
+                  onClick={handleSync}
+                >
+                  <FontAwesomeIcon icon={faRotate} />
+                </IconButton>
+              </Tooltip>
+            )}
+            <Tooltip content="Open on Archidekt">
+              <IconButton
+                variant="soft"
+                color="gray"
+                size="3"
+                disabled={syncing}
+                onClick={handleArchidekt}
+              >
+                <img src="/img/logos/archidekt.webp" width="18" height="18" />
+              </IconButton>
+            </Tooltip>
+          </Flex>
+        </DataCard>
+        {deck.versions && deck.versions.length > 0 && (
+          <DataCard
+            title="Versions"
+            icon={<FontAwesomeIcon icon={faCodeCommit} />}
+            collapsable
+            defaultCollapsed
           >
-            <ExternalLinkIcon width="18" height="18" />
-          </IconButton>
-        </Flex>
+            <DeckVersionViewer
+              deck={deck}
+              sortCardsBy={sortBy}
+              mousePosition={mousePosition}
+              gameChangers={gameChangers ?? []}
+              selectedVersionId={selectedVersionId}
+              onClickVersion={handleVersionChange}
+            />
+          </DataCard>
+        )}
+        {deck.cards && deck.cards.length > 0 && (
+          <DataCard
+            title="Decklist"
+            icon={<FontAwesomeIcon icon={faTableList} />}
+          >
+            <CardListFilters
+              hasVersions={(deck.versions?.length ?? 0) > 0}
+              onChange={handleCardListFiltersChange}
+            />
+            <CardList
+              groupBy={groupBy}
+              sortBy={sortBy}
+              search={search}
+              showVersionGraph={showVersionGraph}
+              deck={deck}
+              columnCount={5}
+              selectedVersionId={selectedVersionId}
+              onClickVersion={handleVersionChange}
+            />
+          </DataCard>
+        )}
       </Flex>
-      {deck ? (
-        <CardList
-          groupBy={groupBy}
-          sortBy={sortBy}
-          search={search}
-          showVersionGraph={showVersionGraph}
-          deck={deck}
-          forcedCategoryOrder={[
-            "White",
-            "Blue",
-            "Black",
-            "Red",
-            "Green",
-            "Colorless",
-            "Multicolor",
-            "Commanders",
-            "Land",
-          ]}
-        />
-      ) : (
-        <Spinner />
-      )}
     </div>
   );
 }

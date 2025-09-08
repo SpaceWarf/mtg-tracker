@@ -62,15 +62,18 @@ export function Header({ children }: OwnProps) {
             <TabNav.Link asChild active={location.pathname === "/"}>
               <Link to="/">Games</Link>
             </TabNav.Link>
-            <TabNav.Link asChild active={location.pathname === "/players"}>
+            <TabNav.Link
+              asChild
+              active={location.pathname.includes("/players")}
+            >
               <Link to="/players">Players</Link>
             </TabNav.Link>
-            <TabNav.Link asChild active={location.pathname === "/decks"}>
+            <TabNav.Link asChild active={location.pathname.includes("/decks")}>
               <Link to="/decks">Decks</Link>
             </TabNav.Link>
             <TabNav.Link
               asChild
-              active={location.pathname === "/game-changers"}
+              active={location.pathname.includes("/game-changers")}
             >
               <Link to="/game-changers">Game Changers</Link>
             </TabNav.Link>
@@ -79,7 +82,7 @@ export function Header({ children }: OwnProps) {
             </TabNav.Link> */}
             <TabNav.Link
               asChild
-              active={location.pathname === "/deck-validator"}
+              active={location.pathname.includes("/deck-validator")}
             >
               <Link to="/deck-validator">Deck Validator</Link>
             </TabNav.Link>

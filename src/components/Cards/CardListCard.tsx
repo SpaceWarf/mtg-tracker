@@ -1,12 +1,16 @@
 import {
-  MinusIcon,
-  PlusIcon,
-  SketchLogoIcon,
-  UpdateIcon,
-} from "@radix-ui/react-icons";
-import { Flex, IconButton, Link, Text } from "@radix-ui/themes";
+  faBomb,
+  faForward,
+  faGem,
+  faLayerGroup,
+  faRotate,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
+import { Flex, IconButton, Tooltip } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import "../../assets/styles/CardListCard.scss";
 import { ScryfallService } from "../../services/Scryfall";
 import { ArchidektReduxCardLayout } from "../../state/ArchidektReduxData";
 import { CardUris } from "../../state/CardUris";
@@ -86,7 +90,7 @@ export function CardListCard({
 
     if (!cardUris) {
       try {
-        const cardUris = await ScryfallService.getCardObject(card);
+        const cardUris = await ScryfallService.getCardObjectByCode(card);
         setCardUris(cardUris);
       } catch (error) {
         console.error(error);
@@ -113,77 +117,80 @@ export function CardListCard({
   }
 
   return (
-    <div>
+    <div className="card-list-card-container">
       <Flex
-        className="h-6 border-solid border-t border-gray-600"
+        className={`card-list-card ${cardUris ? "selectable" : ""}`}
         align="center"
         onMouseEnter={handleHover}
         onMouseLeave={handleLeave}
-        style={{
-          cursor: cardUris ? "default" : "wait",
+        onClick={(e) => {
+          e.stopPropagation();
+          if (cardUris) {
+            window.open(cardUris.uri, "_blank");
+          }
         }}
       >
         <Flex gap="1" align="center" mr="1">
           {diffType === DiffType.ADDED && (
-            <PlusIcon color="green" width="14" height="14" />
+            <PlusIcon color="#5abe8c" width="14" height="14" />
           )}
           {diffType === DiffType.REMOVED && (
-            <MinusIcon color="red" width="14" height="14" />
+            <MinusIcon color="#d84242" width="14" height="14" />
           )}
-          <Text size="2">{card.qty}</Text>
+          <p className="card-qty">{card.qty}</p>
         </Flex>
         <Flex align="center" overflow="hidden" mr="1">
-          {cardUris ? (
-            <Link
-              className="overflow-hidden whitespace-nowrap overflow-ellipsis"
-              size="2"
-              href={cardUris.uri}
-              target="_blank"
-            >
-              <Text>{card.name}</Text>
-            </Link>
-          ) : (
-            <Text
-              className="overflow-hidden whitespace-nowrap overflow-ellipsis"
-              size="2"
-            >
-              {card.name}
-            </Text>
-          )}
+          <p className="card-name">{card.name}</p>
         </Flex>
         <Flex align="center" mr="1" gap="1" flexGrow="1">
           {gameChangerType !== GameChangerType.NONE && (
             <>
               {gameChangerType === GameChangerType.WOTC && (
-                <div>
-                  <SketchLogoIcon width="14" height="14" />
-                </div>
+                <Tooltip content="WOTC Game Changer">
+                  <FontAwesomeIcon icon={faGem} width="12" height="12" />
+                </Tooltip>
               )}
               {gameChangerType === GameChangerType.IN_HOUSE && (
-                <div>
-                  <SketchLogoIcon color="orange" width="14" height="14" />
-                </div>
+                <Tooltip content="In-House Game Changer">
+                  <FontAwesomeIcon
+                    icon={faGem}
+                    color="#FA9F42"
+                    width="12"
+                    height="12"
+                  />
+                </Tooltip>
               )}
             </>
           )}
           {card.tutor && (
-            <img src={"/img/icons/tutor.svg"} width="14" height="14" />
+            <Tooltip content="Tutor">
+              <FontAwesomeIcon icon={faLayerGroup} width="12" height="12" />
+            </Tooltip>
           )}
           {card.extraTurns && (
-            <img src={"/img/icons/extra-turn.svg"} width="14" height="14" />
+            <Tooltip content="Extra Turn">
+              <FontAwesomeIcon icon={faForward} width="12" height="12" />
+            </Tooltip>
           )}
           {card.massLandDenial && (
-            <img src={"/img/icons/land-denial.svg"} width="14" height="14" />
+            <Tooltip content="Mass Land Denial">
+              <FontAwesomeIcon icon={faBomb} width="12" height="12" />
+            </Tooltip>
           )}
           {flippableCardLayouts.includes(card.layout) && (
-            <IconButton
-              variant="ghost"
-              color="gray"
-              size="1"
-              onClick={() => setFlipped(!flipped)}
-            >
-              <UpdateIcon width="14" height="14" />
-            </IconButton>
+            <Tooltip content="Flip Card">
+              <IconButton
+                variant="ghost"
+                color="gray"
+                size="1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setFlipped(!flipped);
+                }}
+              >
+                <FontAwesomeIcon icon={faRotate} width="12" height="12" />
+              </IconButton>
+            </Tooltip>
           )}
         </Flex>
         <Flex

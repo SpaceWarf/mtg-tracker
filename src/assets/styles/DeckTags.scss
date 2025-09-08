@@ -1,0 +1,16 @@
+@use "../styles/colours" as c;
+
+.deck-tags {
+  .rt-Badge {
+    background-color: rgba(c.$card-border, 0.6);
+    color: c.$text-primary;
+
+    &.error {
+      background-color: rgba(c.$red, 0.6);
+    }
+  }
+}
+
+.bracket-detail {
+  font-size: 0.9rem;
+}

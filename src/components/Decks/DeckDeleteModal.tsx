@@ -1,10 +1,11 @@
-import { Cross2Icon, TrashIcon } from "@radix-ui/react-icons";
+import { faTrash, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, Flex, Text } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { DeckService } from "../../services/Deck";
 import { DeckWithStats } from "../../state/Deck";
-import { DeckHeader } from "./DeckHeader";
+import { DeckCard2 } from "./DeckCard2";
 
 type OwnProps = {
   open: boolean;
@@ -40,12 +41,13 @@ export function DeckDeleteModal({ open, deck, onClose }: OwnProps) {
           all associated games and <b>cannot be undone</b>.
         </Text>
         <Flex mt="5" mb="7" justify="center">
-          <DeckHeader deck={deck} size="small" />
+          <DeckCard2 deck={deck} />
         </Flex>
         <Flex gap="3" justify="between">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <Cross2Icon /> Cancel
+              <FontAwesomeIcon icon={faXmark} />
+              Cancel
             </Button>
           </Dialog.Close>
           <Button
@@ -55,7 +57,8 @@ export function DeckDeleteModal({ open, deck, onClose }: OwnProps) {
             onClick={handleDelete}
             className="h-10"
           >
-            <TrashIcon /> Delete Forever
+            <FontAwesomeIcon icon={faTrash} />
+            Delete Forever
           </Button>
         </Flex>
       </Dialog.Content>

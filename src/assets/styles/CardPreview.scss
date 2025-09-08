@@ -1,0 +1,58 @@
+@use "../styles/colours" as c;
+
+.card-preview {
+  position: relative;
+  perspective: 1000px;
+
+  &.offset {
+    margin-top: 25px;
+  }
+
+  .card-stack-card {
+    position: relative;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+
+    .card-preview-front,
+    .card-preview-back {
+      position: absolute;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    .card-preview-back {
+      transform: rotateY(180deg);
+    }
+  }
+
+  &.clickable {
+    cursor: pointer;
+  }
+
+  &.large {
+    height: 350px;
+    aspect-ratio: 0.714;
+  }
+
+  &.small {
+    height: 250px;
+    aspect-ratio: 0.714;
+  }
+
+  img,
+  .rt-Skeleton {
+    border-radius: 4.75% / 3.5%;
+  }
+
+  .rt-BaseButton {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 55px;
+    background-color: rgba(c.$card-border, 0.8);
+    color: c.$text-primary;
+    cursor: pointer;
+    z-index: 9999;
+  }
+}

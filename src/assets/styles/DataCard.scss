@@ -1,0 +1,45 @@
+@use "../styles/colours" as c;
+
+.data-card {
+  position: relative;
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: c.$card-background;
+
+  &.error {
+    .title {
+      color: c.$red;
+    }
+  }
+
+  .title {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    color: c.$text-secondary;
+
+    .fa-chevron-down {
+      transition: transform 0.25s ease-in-out;
+    }
+
+    &.collapsable {
+      cursor: pointer;
+
+      &:hover {
+        color: c.$text-primary;
+      }
+
+      &.collapsed {
+        .fa-chevron-down {
+          transform: rotate(-90deg);
+        }
+      }
+    }
+  }
+
+  &.actions-card {
+    .rt-BaseButton {
+      cursor: pointer;
+    }
+  }
+}
