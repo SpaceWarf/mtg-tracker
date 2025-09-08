@@ -46,8 +46,7 @@ export function DeckCardDropdownMenu({
         <DropdownMenu.Content>
           <DropdownMenu.Item
             className="mb-1"
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={() => {
               navigate(`/decks/${deck.id}`);
             }}
           >
@@ -56,8 +55,7 @@ export function DeckCardDropdownMenu({
           </DropdownMenu.Item>
           <DropdownMenu.Item
             className="mb-1"
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={() => {
               navigate(`/?decks=${deck.id}`);
             }}
           >
@@ -67,8 +65,7 @@ export function DeckCardDropdownMenu({
           {deck.externalId && (
             <DropdownMenu.Item
               className="mb-1"
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={() => {
                 window.open(
                   ArchidektService.getDeckUrl(deck.externalId ?? ""),
                   "_blank"
@@ -82,8 +79,7 @@ export function DeckCardDropdownMenu({
           {deck.externalId && (
             <DropdownMenu.Item
               className="mb-1"
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={() => {
                 window.open(
                   EdhRecService.getDeckUrl(deck.commander ?? ""),
                   "_blank"
@@ -95,50 +91,26 @@ export function DeckCardDropdownMenu({
             </DropdownMenu.Item>
           )}
           {editable && (
-            <DropdownMenu.Item
-              className="mb-1"
-              onClick={(e) => {
-                e.stopPropagation();
-                onEdit();
-              }}
-            >
+            <DropdownMenu.Item className="mb-1" onClick={onEdit}>
               <FontAwesomeIcon icon={faPen} />
               Edit
             </DropdownMenu.Item>
           )}
           {editable && (
-            <DropdownMenu.Item
-              className="mb-1"
-              onClick={(e) => {
-                e.stopPropagation();
-                onSync();
-              }}
-            >
+            <DropdownMenu.Item className="mb-1" onClick={onSync}>
               <FontAwesomeIcon icon={faRotate} />
               Sync
             </DropdownMenu.Item>
           )}
           {editable && deck.versions && deck.versions.length > 0 && (
-            <DropdownMenu.Item
-              className="mb-1"
-              onClick={(e) => {
-                e.stopPropagation();
-                onVersionManager();
-              }}
-            >
+            <DropdownMenu.Item className="mb-1" onClick={onVersionManager}>
               <FontAwesomeIcon icon={faCodeCommit} />
               Manage versions
             </DropdownMenu.Item>
           )}
           {editable && <DropdownMenu.Separator />}
           {editable && (
-            <DropdownMenu.Item
-              color="red"
-              onClick={(e) => {
-                e.stopPropagation();
-                onDelete();
-              }}
-            >
+            <DropdownMenu.Item color="red" onClick={onDelete}>
               <FontAwesomeIcon icon={faTrash} />
               Delete
             </DropdownMenu.Item>

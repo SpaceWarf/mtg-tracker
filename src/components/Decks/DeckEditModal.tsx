@@ -197,23 +197,13 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
         </div>
 
         <Flex gap="3" mt="4" mb="2" justify="between">
-          <Dialog.Close
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
+          <Dialog.Close>
             <Button className="h-10" variant="outline">
               <FontAwesomeIcon icon={faXmark} />
               Cancel
             </Button>
           </Dialog.Close>
-          <Dialog.Close
-            disabled={!canSave()}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleSave();
-            }}
-          >
+          <Dialog.Close disabled={!canSave()} onClick={handleSave}>
             <Button className="h-10">
               <FontAwesomeIcon icon={faCheck} />
               Save

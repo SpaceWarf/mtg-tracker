@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { DeckService } from "../../services/Deck";
 import { DeckWithStats } from "../../state/Deck";
-import { DeckHeader } from "./DeckHeader";
+import { DeckCard2 } from "./DeckCard2";
 
 type OwnProps = {
   open: boolean;
@@ -41,14 +41,10 @@ export function DeckDeleteModal({ open, deck, onClose }: OwnProps) {
           all associated games and <b>cannot be undone</b>.
         </Text>
         <Flex mt="5" mb="7" justify="center">
-          <DeckHeader deck={deck} size="small" />
+          <DeckCard2 deck={deck} />
         </Flex>
         <Flex gap="3" justify="between">
-          <Dialog.Close
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
+          <Dialog.Close>
             <Button className="h-10" variant="outline">
               <FontAwesomeIcon icon={faXmark} />
               Cancel
@@ -58,10 +54,7 @@ export function DeckDeleteModal({ open, deck, onClose }: OwnProps) {
             color="red"
             disabled={deleting}
             loading={deleting}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDelete();
-            }}
+            onClick={handleDelete}
             className="h-10"
           >
             <FontAwesomeIcon icon={faTrash} />

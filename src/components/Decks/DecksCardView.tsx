@@ -21,7 +21,7 @@ export function DecksCardView({ decks }: OwnProps) {
     <Grid columns="3" rows={`${rowCount}`} gap="5">
       {decks.map((deck) => (
         <div key={deck.id}>
-          <DeckCard2 deck={deck} editable={!!auth.user} />
+          <DeckCard2 deck={deck} editable={!!auth.user} showActions />
         </div>
       ))}
     </Grid>

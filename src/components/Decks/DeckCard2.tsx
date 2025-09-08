@@ -11,24 +11,35 @@ import { DeckTags } from "./DeckTags";
 type OwnProps = {
   deck: DeckWithStats;
   editable?: boolean;
+  showActions?: boolean;
 };
 
-export function DeckCard2({ deck, editable = false }: OwnProps) {
+export function DeckCard2({ deck, editable, showActions }: OwnProps) {
   const navigate = useNavigate();
 
   return (
     <div
-      className="deck-card"
+      className={`deck-card ${showActions ? "selectable" : ""}`}
       style={
         {
           ["--url" as string]: `url(${deck.featured})`,
         } as React.CSSProperties
       }
-      onClick={() => navigate(`/decks/${deck.id}`)}
+      onClick={() => showActions && navigate(`/decks/${deck.id}`)}
     >
       <Flex className="h-full" direction="column" justify="between">
         <Flex className="content-container" direction="column" gap="3">
-          <DeckHeader2 deck={deck} editable={editable} showActions />
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <DeckHeader2
+              deck={deck}
+              editable={editable}
+              showActions={showActions}
+            />
+          </div>
           <Flex justify="between">
             <Flex mt="2" gap="4">
               <Tooltip content="Games Played">
