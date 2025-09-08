@@ -34,10 +34,10 @@ export function WinRatePieChart({ deck, size = "small" }: OwnProps) {
 
   const pieThickness = useMemo(() => {
     if (size === "large") {
-      return "25px";
+      return "26px";
     }
 
-    return "15px";
+    return "16px";
   }, [size]);
 
   return (

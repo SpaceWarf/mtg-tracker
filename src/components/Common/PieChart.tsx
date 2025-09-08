@@ -16,7 +16,7 @@ export function PieChart({
   label,
   animate = true,
   size = "100px",
-  thickness = "15px",
+  thickness = "16px",
 }: OwnProps) {
   return (
     <div
