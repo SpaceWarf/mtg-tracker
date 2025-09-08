@@ -1,6 +1,9 @@
-import { faCodePullRequest, faEye } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCodePullRequest,
+  faEye,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Cross2Icon, TextAlignMiddleIcon } from "@radix-ui/react-icons";
 import { Button, Flex, Heading, Text } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
@@ -183,7 +186,7 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
                 disabled={merging}
                 loading={merging}
               >
-                <TextAlignMiddleIcon />
+                <FontAwesomeIcon icon={faCodePullRequest} />
                 Confirm Merge
               </Button>
               <Button
@@ -192,7 +195,7 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
                 onClick={handleCancelMerge}
                 disabled={merging}
               >
-                <Cross2Icon />
+                <FontAwesomeIcon icon={faXmark} />
                 Cancel
               </Button>
             </Flex>
