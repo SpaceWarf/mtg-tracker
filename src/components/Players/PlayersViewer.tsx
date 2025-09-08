@@ -4,7 +4,6 @@ import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
-import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
 import { usePlayers } from "../../hooks/usePlayers";
 import { PlayerWithStats } from "../../state/Player";
@@ -37,7 +36,6 @@ export function PlayersViewer() {
   const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const { dbPlayers, loadingPlayers } = usePlayers();
-  const { dbDecks, loadingDecks } = useDecks();
   const { dbGames, loadingGames } = useGames();
   const [search, setSearch] = useState<string>("");
   const [sortFctKey, setSortFctKey] = useState<SelectOption>({
@@ -104,7 +102,7 @@ export function PlayersViewer() {
   }, [searchParams]);
 
   function loading(): boolean {
-    return loadingGames || loadingPlayers || loadingDecks;
+    return loadingGames || loadingPlayers;
   }
 
   function handleSort(value: string) {
@@ -154,10 +152,9 @@ export function PlayersViewer() {
         </Flex>
         <div>{auth.user && <PlayerCreateModal />}</div>
       </Flex>
-      {filteredPlayers.length && dbDecks?.length ? (
+      {filteredPlayers.length ? (
         <PlayersCardView
           players={filteredPlayers}
-          decks={dbDecks}
           highlightedKey={PLAYER_SORT_FCTS[sortFctKey.value].highlightedKey}
           highlightedDirection={
             PLAYER_SORT_FCTS[sortFctKey.value].highlightedDirection

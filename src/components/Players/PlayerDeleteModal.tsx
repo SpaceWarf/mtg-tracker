@@ -1,10 +1,11 @@
-import { Cross2Icon, TrashIcon } from "@radix-ui/react-icons";
+import { faTrash, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, Flex, Text } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { PlayerService } from "../../services/Player";
 import { PlayerWithStats } from "../../state/Player";
-import { PlayerHeader } from "./PlayerHeader";
+import { PlayerCard2 } from "./PlayerCard2";
 
 type OwnProps = {
   open: boolean;
@@ -40,12 +41,13 @@ export function PlayerDeleteModal({ open, player, onClose }: OwnProps) {
           from all associated games and <b>cannot be undone</b>.
         </Text>
         <Flex mt="5" mb="7" justify="center">
-          <PlayerHeader player={player} />
+          <PlayerCard2 player={player} />
         </Flex>
         <Flex gap="3" justify="between" mt="4">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <Cross2Icon /> Cancel
+              <FontAwesomeIcon icon={faXmark} />
+              Cancel
             </Button>
           </Dialog.Close>
           <Button
@@ -55,7 +57,8 @@ export function PlayerDeleteModal({ open, player, onClose }: OwnProps) {
             onClick={handleDelete}
             className="h-10"
           >
-            <TrashIcon /> Delete Forever
+            <FontAwesomeIcon icon={faTrash} />
+            Delete Forever
           </Button>
         </Flex>
       </Dialog.Content>

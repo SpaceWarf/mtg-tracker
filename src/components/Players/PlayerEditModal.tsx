@@ -1,4 +1,5 @@
-import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, Flex, Heading, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -60,11 +61,11 @@ export function PlayerEditModal({ open, player, onClose }: OwnProps) {
 
         <div className="mb-5">
           <Heading className="mb-1" size="3">
-            External ID
+            Archidekt Username
           </Heading>
           <TextField.Root
             className="input-field"
-            placeholder="External ID..."
+            placeholder="Archidekt Username..."
             value={externalId}
             onChange={({ target }) => setExternalId(target.value)}
           ></TextField.Root>
@@ -73,13 +74,13 @@ export function PlayerEditModal({ open, player, onClose }: OwnProps) {
         <Flex gap="3" mt="4" justify="between">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <Cross2Icon />
+              <FontAwesomeIcon icon={faXmark} />
               Cancel
             </Button>
           </Dialog.Close>
           <Dialog.Close disabled={!canSave()} onClick={handleSave}>
             <Button className="h-10">
-              <CheckIcon />
+              <FontAwesomeIcon icon={faCheck} />
               Save
             </Button>
           </Dialog.Close>

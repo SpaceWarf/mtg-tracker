@@ -4,7 +4,7 @@ import { Flex, Tooltip } from "@radix-ui/themes";
 import { useNavigate } from "react-router";
 import "../../assets/styles/DeckCard.scss";
 import { DeckWithStats } from "../../state/Deck";
-import { WinRatePieChart } from "../Common/WinRatePieChart";
+import { SimplePieChart } from "../Common/SimplePieChart";
 import { DeckHeader2 } from "./DeckHeader2";
 import { DeckTags } from "./DeckTags";
 
@@ -39,20 +39,28 @@ export function DeckCard2({ deck, editable, showActions }: OwnProps) {
           <Flex justify="between">
             <Flex mt="2" gap="4">
               <Tooltip content="Games Played">
-                <Flex className="games-played-container" gap="2">
+                <Flex className="stat-container" gap="2">
                   <FontAwesomeIcon size="xl" icon={faDice} />
                   <p>{deck.gamesPlayed}</p>
                 </Flex>
               </Tooltip>
               <Tooltip content="Games Won">
-                <Flex className="games-won-container" gap="2">
+                <Flex className="stat-container" gap="2">
                   <FontAwesomeIcon size="xl" icon={faCrown} />
                   <p>{deck.winCount}</p>
                 </Flex>
               </Tooltip>
             </Flex>
             <div className="win-percent-container mt-[-20px]">
-              <WinRatePieChart deck={deck} />
+              <SimplePieChart
+                value={deck.winRate}
+                label="Win %"
+                colours={{
+                  "25": "#d84242",
+                  "50": "#FA9F42",
+                  "100": "#5abe8c",
+                }}
+              />
             </div>
           </Flex>
         </Flex>
