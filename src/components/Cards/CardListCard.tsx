@@ -132,7 +132,7 @@ export function CardListCard({
       >
         <Flex gap="1" align="center" mr="1">
           {diffType === DiffType.ADDED && (
-            <PlusIcon color="green" width="14" height="14" />
+            <PlusIcon color="#5abe8c" width="14" height="14" />
           )}
           {diffType === DiffType.REMOVED && (
             <MinusIcon color="#d84242" width="14" height="14" />
@@ -154,7 +154,7 @@ export function CardListCard({
                 <Tooltip content="In-House Game Changer">
                   <FontAwesomeIcon
                     icon={faGem}
-                    color="orange"
+                    color="#FA9F42"
                     width="12"
                     height="12"
                   />

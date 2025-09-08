@@ -8,10 +8,6 @@
   font-style: normal;
 }
 
-.rt-Flex p.rt-Text[id^="radix-"] {
-  display: none;
-}
-
 a {
   color: white !important;
   text-decoration-color: white !important;
@@ -52,6 +48,10 @@ ul {
   margin-left: 10px !important;
 }
 
+.rt-Flex p.rt-Text[id^="radix-"] {
+  display: none;
+}
+
 .rt-TooltipContent {
   background-color: c.$tooltip-background;
 
@@ -63,4 +63,10 @@ ul {
     font-size: 0.8rem;
     color: c.$text-primary;
   }
+}
+
+.rt-BaseButton,
+.rt-SegmentedControlItem,
+.react-select__control {
+  cursor: pointer !important;
 }

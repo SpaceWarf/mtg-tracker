@@ -188,7 +188,7 @@ export function DeckByIdViewer() {
             <Flex gap="1">
               <FontAwesomeIcon
                 icon={faCrown}
-                color={good ? "green" : "#d84242"}
+                color={good ? "#5abe8c" : "#d84242"}
               />
               <p>{good ? matchup.won : matchup.lost}</p>
             </Flex>

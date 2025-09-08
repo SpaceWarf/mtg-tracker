@@ -18,10 +18,10 @@ export function WinRatePieChart({ deck, size = "small" }: OwnProps) {
     }
 
     if (winPercent < 50) {
-      return "orange";
+      return "#FA9F42";
     }
 
-    return "green";
+    return "#5abe8c";
   }, [winPercent]);
 
   const pieSize = useMemo(() => {

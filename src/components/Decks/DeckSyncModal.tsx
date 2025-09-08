@@ -1,6 +1,9 @@
-import { faRotate } from "@fortawesome/free-solid-svg-icons";
+import {
+  faExclamationTriangle,
+  faRotate,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import {
   Button,
   Dialog,
@@ -79,7 +82,12 @@ export function DeckSyncModal() {
         <Dialog.Title>Deck Sync</Dialog.Title>
 
         <Flex gap="2" mt="4" mb="4" align="center">
-          <ExclamationTriangleIcon width="25" height="25" color="red" />
+          <FontAwesomeIcon
+            icon={faExclamationTriangle}
+            width="25"
+            height="25"
+            color="#d84242"
+          />
           <Text size="2" color="red">
             This operation is meant to be executed only when the underlying data
             structure of decks has changed. Please consult with Gab before
@@ -111,11 +119,18 @@ export function DeckSyncModal() {
 
         <Flex gap="3" mt="4" justify="between">
           <Dialog.Close disabled={syncing}>
-            <Button variant="soft" color="gray">
+            <Button className="h-10" variant="surface">
+              <FontAwesomeIcon icon={faXmark} />
               Close
             </Button>
           </Dialog.Close>
-          <Button loading={syncing} disabled={syncing} onClick={handleSync}>
+          <Button
+            className="h-10"
+            loading={syncing}
+            disabled={syncing}
+            onClick={handleSync}
+          >
+            <FontAwesomeIcon icon={faRotate} />
             Sync
           </Button>
         </Flex>
