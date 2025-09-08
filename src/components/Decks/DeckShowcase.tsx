@@ -12,6 +12,7 @@ import { useMemo } from "react";
 import "../../assets/styles/DeckShowcase.scss";
 import { DeckWithStats } from "../../state/Deck";
 import { getLongDateString } from "../../utils/Date";
+import { getDeckCommander } from "../../utils/Deck";
 import { CardPreview } from "../Cards/CardPreview";
 import { DeckHeader2 } from "./DeckHeader2";
 import { DeckTags } from "./DeckTags";
@@ -22,7 +23,7 @@ type OwnProps = {
 
 export function DeckShowcase({ deck }: OwnProps) {
   const commander = useMemo(() => {
-    return deck.cards?.find((card) => card.name === deck.commander);
+    return getDeckCommander(deck);
   }, [deck]);
 
   return (

@@ -1,13 +1,18 @@
 import {
   faBomb,
   faCodeCommit,
+  faCrown,
+  faDice,
   faForward,
+  faFrown,
   faGem,
   faLayerGroup,
   faLeftLong,
   faMagnifyingGlass,
   faPen,
+  faPercent,
   faRotate,
+  faSmile,
   faTableList,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
@@ -24,6 +29,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router";
 import "../../assets/styles/DataCard.scss";
+import "../../assets/styles/DeckByIdViewer.scss";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGameChangers } from "../../hooks/useGameChangers";
@@ -33,10 +39,17 @@ import { ArchidektService } from "../../services/Archidekt";
 import { EdhRecService } from "../../services/EdhRec";
 import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
+import { DeckMatchup } from "../../state/Deck";
 import { DeckByIdViewType } from "../../state/DeckByIdViewType";
-import { populateDeck } from "../../utils/Deck";
+import {
+  getDeckBadMatchups,
+  getDeckCommander,
+  getDeckGoodMatchups,
+  populateDeck,
+} from "../../utils/Deck";
 import { CardList } from "../Cards/CardList";
 import { CardListFilters } from "../Cards/CardListFilters";
+import { CardPreview } from "../Cards/CardPreview";
 import { DataCard } from "../Common/DataCard";
 import { DeckCardPreviewSection } from "./DeckCardPreviewSection";
 import { DeckCombosSection } from "./DeckCombosSection";
@@ -111,11 +124,74 @@ export function DeckByIdViewer() {
     return Math.ceil(count / 2);
   }, [populatedDeck]);
 
+  const goodMatchups = useMemo(() => {
+    if (!populatedDeck) {
+      return [];
+    }
+    return getDeckGoodMatchups(populatedDeck);
+  }, [populatedDeck]);
+
+  const badMatchups = useMemo(() => {
+    if (!populatedDeck) {
+      return [];
+    }
+    return getDeckBadMatchups(populatedDeck);
+  }, [populatedDeck]);
+
   useEffect(() => {
     if (!loading && id && !deck) {
       navigate("/decks");
     }
   }, [deck, id, loading, navigate]);
+
+  function getMatchupPreview(matchup: DeckMatchup, good: boolean) {
+    const deck = dbDecks?.find((deck) => deck.id === matchup.deck);
+    if (!deck) {
+      return null;
+    }
+
+    const commander = getDeckCommander(deck);
+    const gamesPlayed = matchup.won + matchup.lost;
+    const winRate = (matchup.won / gamesPlayed) * 100;
+
+    return (
+      <Flex
+        key={matchup.deck}
+        className="matchup-preview"
+        direction="column"
+        align="center"
+        gap="2"
+      >
+        <p
+          className="name mb-1"
+          onClick={() => window.open(`/decks/${matchup.deck}`, "_blank")}
+        >
+          {deck.name}
+        </p>
+        <Flex className="stats" gap="5">
+          <Tooltip content="Games Played">
+            <Flex gap="1">
+              <FontAwesomeIcon icon={faDice} />
+              <p>{gamesPlayed}</p>
+            </Flex>
+          </Tooltip>
+          <Tooltip content={good ? "Games Won" : "Games Lost"}>
+            <Flex gap="1">
+              <FontAwesomeIcon icon={faCrown} color={good ? "green" : "red"} />
+              <p>{good ? matchup.won : matchup.lost}</p>
+            </Flex>
+          </Tooltip>
+          <Tooltip content="Win Rate">
+            <Flex gap="1">
+              <FontAwesomeIcon icon={faPercent} />
+              <p>{winRate.toFixed(0)}%</p>
+            </Flex>
+          </Tooltip>
+        </Flex>
+        <CardPreview card={commander} size="small" clickable />
+      </Flex>
+    );
+  }
 
   function handleCardListFiltersChange(
     groupBy: CardGroupBy,
@@ -375,6 +451,30 @@ export function DeckByIdViewer() {
               {viewType === DeckByIdViewType.STATS && (
                 <>
                   <DeckStatsSection deck={populatedDeck} />
+                  {goodMatchups.length > 0 && (
+                    <DataCard
+                      title="Good Matchups"
+                      icon={<FontAwesomeIcon icon={faSmile} />}
+                    >
+                      <Flex gap="7" justify="center">
+                        {goodMatchups.map((matchup) =>
+                          getMatchupPreview(matchup, true)
+                        )}
+                      </Flex>
+                    </DataCard>
+                  )}
+                  {badMatchups.length > 0 && (
+                    <DataCard
+                      title="Bad Matchups"
+                      icon={<FontAwesomeIcon icon={faFrown} />}
+                    >
+                      <Flex gap="7" justify="center">
+                        {badMatchups.map((matchup) =>
+                          getMatchupPreview(matchup, false)
+                        )}
+                      </Flex>
+                    </DataCard>
+                  )}
                   <Grid gap="5" columns="2" rows={`${cardPreviewRowCount}`}>
                     {populatedDeck.gameChangers.length > 0 && (
                       <DeckCardPreviewSection

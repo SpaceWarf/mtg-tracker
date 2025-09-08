@@ -1,0 +1,25 @@
+@use "../styles/colours" as c;
+
+.deck-by-id-viewer {
+  .matchup-preview {
+    .name {
+      font-size: 1.1rem;
+      line-height: 1.1rem;
+      font-weight: 500;
+      color: c.$text-primary;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+    }
+
+    .stats {
+      font-size: 1rem;
+      line-height: 1rem;
+      font-weight: 500;
+      color: c.$text-secondary;
+    }
+  }
+}
