@@ -1,5 +1,12 @@
 @import "@radix-ui/themes/styles.css";
 
+* {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
 .rt-Flex p.rt-Text[id^="radix-"] {
   display: none;
 }
