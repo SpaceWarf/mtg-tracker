@@ -1,9 +1,14 @@
-import { Badge, Flex } from "@radix-ui/themes";
+import { Badge, Flex, Tooltip } from "@radix-ui/themes";
 import { useMemo } from "react";
 import "../../assets/styles/DeckTags.scss";
+import { Bracket } from "../../state/Bracket";
 import { DeckWithStats } from "../../state/Deck";
 import { Format, FORMAT_LABELS } from "../../state/Format";
-import { getBracket, getBracketName } from "../../utils/Bracket";
+import {
+  getBracket,
+  getBracketDetails,
+  getBracketName,
+} from "../../utils/Bracket";
 import { getColourIdentityLabel } from "../../utils/Deck";
 
 type OwnProps = {
@@ -19,36 +24,41 @@ export function DeckTags({ deck }: OwnProps) {
     return getColourIdentityLabel(deck.colourIdentity ?? []);
   }, [deck.colourIdentity]);
 
-  const bracketLabel = useMemo(() => {
-    return getBracketName(getBracket(deck));
+  const bracket = useMemo(() => {
+    return getBracket(deck);
   }, [deck]);
+
+  const bracketLabel = useMemo(() => {
+    return getBracketName(bracket);
+  }, [bracket]);
+
+  const bracketDetails = useMemo(() => getBracketDetails(deck), [deck]);
 
   return (
     <Flex className="deck-tags" gap="2">
       {deck.externalId && (
         <>
-          {deck.format && (
-            <Badge color="gray" size="3">
-              {formatLabel}
-            </Badge>
+          {deck.format && <Badge size="3">{formatLabel}</Badge>}
+          {deck.colourIdentity && <Badge size="3">{colourIdentityLabel}</Badge>}
+          {bracketLabel && bracket === Bracket.ILLEGAL && (
+            <Tooltip
+              content={bracketDetails.map((detail) => (
+                <p key={detail} className="bracket-detail mb-1">
+                  {detail}
+                </p>
+              ))}
+            >
+              <Badge className="error" size="3">
+                {bracketLabel}
+              </Badge>
+            </Tooltip>
           )}
-          {deck.colourIdentity && (
-            <Badge color="gray" size="3">
-              {colourIdentityLabel}
-            </Badge>
-          )}
-          {bracketLabel && (
-            <Badge color="gray" size="3">
-              {bracketLabel}
-            </Badge>
+          {bracketLabel && bracket !== Bracket.ILLEGAL && (
+            <Badge size="3">{bracketLabel}</Badge>
           )}
         </>
       )}
-      {!deck.externalId && (
-        <Badge color="gray" size="3">
-          Unsynced
-        </Badge>
-      )}
+      {!deck.externalId && <Badge size="3">Unsynced</Badge>}
     </Flex>
   );
 }

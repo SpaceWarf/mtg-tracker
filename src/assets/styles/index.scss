@@ -1,3 +1,4 @@
+@use "../styles/colours" as c;
 @import "@radix-ui/themes/styles.css";
 
 * {
@@ -49,4 +50,17 @@ a {
 ul {
   list-style: disc !important;
   margin-left: 10px !important;
+}
+
+.rt-TooltipContent {
+  background-color: c.$tooltip-background;
+
+  .rt-TooltipArrow {
+    fill: c.$tooltip-background;
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: c.$text-primary;
+  }
 }

@@ -8,7 +8,7 @@ export const EXTRA_TURN_LIMIT: number = 9999;
 export const TWO_CARD_COMBO_LIMIT: number = 9999;
 export const CARD_COUNT: number = 100;
 
-export function getBracketName(bracket: Bracket) {
+export function getBracketName(bracket: Bracket): string {
   switch (bracket) {
     case Bracket.PRECON:
       return "Precon";
@@ -23,7 +23,7 @@ export function getBracketName(bracket: Bracket) {
   }
 }
 
-export function getBracket(deck: DeckWithStats) {
+export function getBracket(deck: DeckWithStats): Bracket {
   if (deck.bracket) {
     return deck.bracket;
   }
