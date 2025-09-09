@@ -2,7 +2,6 @@ import { faCrown, faDice, faPercent } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Flex, Tooltip } from "@radix-ui/themes";
 import { useMemo } from "react";
-import { useNavigate } from "react-router";
 import "../../assets/styles/PlayerPreview.scss";
 import { usePlayers } from "../../hooks/usePlayers";
 
@@ -14,7 +13,6 @@ type OwnProps = {
 };
 
 export function PlayerPreview({ player, won, lost, good }: OwnProps) {
-  const navigate = useNavigate();
   const { dbPlayers, loadingPlayers } = usePlayers();
 
   const playerData = useMemo(() => {
@@ -37,7 +35,7 @@ export function PlayerPreview({ player, won, lost, good }: OwnProps) {
             ["--url" as string]: `url(/img/pfp/${player}.webp)`,
           } as React.CSSProperties
         }
-        onClick={() => navigate(`/players/${player}`)}
+        onClick={() => window.open(`/players/${player}`, "_blank")}
       >
         <Flex className="h-full" direction="column" gap="2">
           <p className="name">{playerData?.name}</p>

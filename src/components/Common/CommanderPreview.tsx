@@ -38,18 +38,18 @@ export function CommanderPreview({ deck, won, lost, good }: OwnProps) {
   return (
     <Flex
       key={deck}
-      className="commander-preview"
+      className="commander-preview item-card selectable"
       direction="column"
-      align="center"
       gap="2"
+      style={
+        {
+          ["--url" as string]: `url(${deckData.featured})`,
+        } as React.CSSProperties
+      }
+      onClick={() => window.open(`/decks/${deck}`, "_blank")}
     >
-      <p
-        className="name mb-1"
-        onClick={() => window.open(`/decks/${deck}`, "_blank")}
-      >
-        {deckData?.name}
-      </p>
-      <Flex className="stats" gap="5">
+      <p className="name mb-1">{deckData?.name}</p>
+      <Flex className="stats" gap="3" justify="center">
         <Tooltip content="Games Played">
           <Flex gap="1">
             <FontAwesomeIcon icon={faDice} />

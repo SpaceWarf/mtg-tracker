@@ -1,9 +1,12 @@
 @use "../styles/colours" as c;
+@use "../styles/ItemCard.scss";
 
-.player-preview {
+.player-preview.item-card {
+  @extend .item-card;
+
   background-image: radial-gradient(rgba(25, 21, 30, 0.6)), var(--url);
-  height: 200px;
   padding: 15px;
+  height: 200px;
 
   .name {
     font-size: 1.4rem;
