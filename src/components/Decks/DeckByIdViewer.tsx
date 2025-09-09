@@ -415,41 +415,6 @@ export function DeckByIdViewer() {
               {viewType === DeckByIdViewType.STATS && (
                 <>
                   <DeckStatsSection deck={populatedDeck} />
-                  {goodMatchups.length > 0 && (
-                    <DataCard
-                      title="Good Matchups"
-                      icon={<FontAwesomeIcon icon={faSmile} />}
-                    >
-                      <Flex gap="7" justify="center">
-                        {goodMatchups.map((matchup) => (
-                          <CommanderPreview
-                            key={matchup.deck}
-                            deck={matchup.deck}
-                            won={matchup.won}
-                            lost={matchup.lost}
-                            good
-                          />
-                        ))}
-                      </Flex>
-                    </DataCard>
-                  )}
-                  {badMatchups.length > 0 && (
-                    <DataCard
-                      title="Bad Matchups"
-                      icon={<FontAwesomeIcon icon={faFrown} />}
-                    >
-                      <Flex gap="7" justify="center">
-                        {badMatchups.map((matchup) => (
-                          <CommanderPreview
-                            key={matchup.deck}
-                            deck={matchup.deck}
-                            won={matchup.won}
-                            lost={matchup.lost}
-                          />
-                        ))}
-                      </Flex>
-                    </DataCard>
-                  )}
                   <Grid gap="5" columns="2" rows={`${cardPreviewRowCount}`}>
                     {populatedDeck.gameChangers.length > 0 && (
                       <DeckCardPreviewSection
@@ -493,6 +458,41 @@ export function DeckByIdViewer() {
                   </Grid>
                   {populatedDeck.combos.length > 0 && (
                     <DeckCombosSection deck={populatedDeck} />
+                  )}
+                  {goodMatchups.length > 0 && (
+                    <DataCard
+                      title="Good Matchups"
+                      icon={<FontAwesomeIcon icon={faSmile} />}
+                    >
+                      <Flex gap="7" justify="center">
+                        {goodMatchups.map((matchup) => (
+                          <CommanderPreview
+                            key={matchup.deck}
+                            deck={matchup.deck}
+                            won={matchup.won}
+                            lost={matchup.lost}
+                            good
+                          />
+                        ))}
+                      </Flex>
+                    </DataCard>
+                  )}
+                  {badMatchups.length > 0 && (
+                    <DataCard
+                      title="Bad Matchups"
+                      icon={<FontAwesomeIcon icon={faFrown} />}
+                    >
+                      <Flex gap="7" justify="center">
+                        {badMatchups.map((matchup) => (
+                          <CommanderPreview
+                            key={matchup.deck}
+                            deck={matchup.deck}
+                            won={matchup.won}
+                            lost={matchup.lost}
+                          />
+                        ))}
+                      </Flex>
+                    </DataCard>
                   )}
                 </>
               )}

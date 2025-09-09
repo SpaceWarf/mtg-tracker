@@ -7,6 +7,7 @@ import {
   faEye,
   faFaceAngry,
   faLayerGroup,
+  faRotate,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex } from "@radix-ui/themes";
@@ -108,6 +109,13 @@ export function DeckShowcase({ deck }: OwnProps) {
             <p>Updated At</p>
           </Flex>
           <p className="value">{getLongDateString(deck.deckUpdatedAt ?? "")}</p>
+        </Flex>
+        <Flex className="stats-row" justify="between" flexGrow="1">
+          <Flex className="label" align="center" gap="2">
+            <FontAwesomeIcon size="xl" width="22" icon={faRotate} />
+            <p>Last Synced At</p>
+          </Flex>
+          <p className="value">{getLongDateString(deck.updatedAt ?? "")}</p>
         </Flex>
       </Flex>
     </div>
