@@ -101,7 +101,7 @@ export function CardPreview({
           );
         })}
       </div>
-      {fetchedUris[showingIndex].faceUris.length > 1 && (
+      {fetchedUris[showingIndex].faceUris.length > 1 && clickable && (
         <Button variant="surface" color="gray" onClick={handleFlip}>
           <FontAwesomeIcon icon={faRotate} />
           Flip
