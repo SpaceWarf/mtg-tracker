@@ -89,6 +89,9 @@ export function CardPreview({
                   onClick={clickable ? handleClick : undefined}
                   onMouseEnter={() => setShowingIndex(index)}
                   onMouseLeave={() => setShowingIndex(0)}
+                  style={{
+                    transform: `scale(${fetchedUris.length > 1 ? 0.9 : 1})`,
+                  }}
                 />
               </div>
               <div className="card-preview-back">
