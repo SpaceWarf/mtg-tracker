@@ -1,0 +1,21 @@
+@use "../styles/colours" as c;
+
+.commander-preview {
+  .name {
+    font-size: 1.1rem;
+    line-height: 1.1rem;
+    color: c.$text-primary;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+
+  .stats {
+    font-size: 1rem;
+    line-height: 1rem;
+    color: c.$text-secondary;
+  }
+}

@@ -1,16 +1,13 @@
 import {
   faBomb,
   faCodeCommit,
-  faCrown,
   faDice,
   faForward,
   faFrown,
   faGem,
   faLayerGroup,
   faLeftLong,
-  faMagnifyingGlass,
   faPen,
-  faPercent,
   faRotate,
   faSmile,
   faTableList,
@@ -29,7 +26,6 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router";
 import "../../assets/styles/DataCard.scss";
-import "../../assets/styles/DeckByIdViewer.scss";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGameChangers } from "../../hooks/useGameChangers";
@@ -39,7 +35,6 @@ import { ArchidektService } from "../../services/Archidekt";
 import { EdhRecService } from "../../services/EdhRec";
 import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
-import { DeckMatchup } from "../../state/Deck";
 import { DeckByIdViewType } from "../../state/DeckByIdViewType";
 import {
   EXTRA_TURN_LIMIT,
@@ -49,13 +44,12 @@ import {
 } from "../../utils/Bracket";
 import {
   getDeckBadMatchups,
-  getDeckCommanders,
   getDeckGoodMatchups,
   populateDeck,
 } from "../../utils/Deck";
 import { CardList } from "../Cards/CardList";
 import { CardListFilters } from "../Cards/CardListFilters";
-import { CardPreview } from "../Cards/CardPreview";
+import { CommanderPreview } from "../Common/CommanderPreview";
 import { DataCard } from "../Common/DataCard";
 import { DeckCardPreviewSection } from "./DeckCardPreviewSection";
 import { DeckCombosSection } from "./DeckCombosSection";
@@ -152,58 +146,6 @@ export function DeckByIdViewer() {
       navigate("/decks");
     }
   }, [deck, id, loading, navigate]);
-
-  function getMatchupPreview(matchup: DeckMatchup, good: boolean) {
-    const deck = dbDecks?.find((deck) => deck.id === matchup.deck);
-    if (!deck) {
-      return null;
-    }
-
-    const commanders = getDeckCommanders(deck);
-    const gamesPlayed = matchup.won + matchup.lost;
-    const winRate = (matchup.won / gamesPlayed) * 100;
-
-    return (
-      <Flex
-        key={matchup.deck}
-        className="matchup-preview"
-        direction="column"
-        align="center"
-        gap="2"
-      >
-        <p
-          className="name mb-1"
-          onClick={() => window.open(`/decks/${matchup.deck}`, "_blank")}
-        >
-          {deck.name}
-        </p>
-        <Flex className="stats" gap="5">
-          <Tooltip content="Games Played">
-            <Flex gap="1">
-              <FontAwesomeIcon icon={faDice} />
-              <p>{gamesPlayed}</p>
-            </Flex>
-          </Tooltip>
-          <Tooltip content={good ? "Games Won" : "Games Lost"}>
-            <Flex gap="1">
-              <FontAwesomeIcon
-                icon={faCrown}
-                color={good ? "#5abe8c" : "#d84242"}
-              />
-              <p>{good ? matchup.won : matchup.lost}</p>
-            </Flex>
-          </Tooltip>
-          <Tooltip content="Win Rate">
-            <Flex gap="1">
-              <FontAwesomeIcon icon={faPercent} />
-              <p>{winRate.toFixed(0)}%</p>
-            </Flex>
-          </Tooltip>
-        </Flex>
-        <CardPreview cards={commanders} size="small" clickable offsetStack />
-      </Flex>
-    );
-  }
 
   function handleCardListFiltersChange(
     groupBy: CardGroupBy,
@@ -332,7 +274,7 @@ export function DeckByIdViewer() {
             )}
 
             <Flex gap="2" justify="end" width="250px">
-              <Tooltip content="Search Games">
+              <Tooltip content="View All Games">
                 <IconButton
                   variant="soft"
                   color="gray"
@@ -340,7 +282,7 @@ export function DeckByIdViewer() {
                   disabled={syncing}
                   onClick={handleSearchGames}
                 >
-                  <FontAwesomeIcon icon={faMagnifyingGlass} />
+                  <FontAwesomeIcon icon={faDice} />
                 </IconButton>
               </Tooltip>
               {populatedDeck.externalId && (
@@ -479,9 +421,15 @@ export function DeckByIdViewer() {
                       icon={<FontAwesomeIcon icon={faSmile} />}
                     >
                       <Flex gap="7" justify="center">
-                        {goodMatchups.map((matchup) =>
-                          getMatchupPreview(matchup, true)
-                        )}
+                        {goodMatchups.map((matchup) => (
+                          <CommanderPreview
+                            key={matchup.deck}
+                            deck={matchup.deck}
+                            won={matchup.won}
+                            lost={matchup.lost}
+                            good
+                          />
+                        ))}
                       </Flex>
                     </DataCard>
                   )}
@@ -491,9 +439,14 @@ export function DeckByIdViewer() {
                       icon={<FontAwesomeIcon icon={faFrown} />}
                     >
                       <Flex gap="7" justify="center">
-                        {badMatchups.map((matchup) =>
-                          getMatchupPreview(matchup, false)
-                        )}
+                        {badMatchups.map((matchup) => (
+                          <CommanderPreview
+                            key={matchup.deck}
+                            deck={matchup.deck}
+                            won={matchup.won}
+                            lost={matchup.lost}
+                          />
+                        ))}
                       </Flex>
                     </DataCard>
                   )}

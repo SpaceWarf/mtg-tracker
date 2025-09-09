@@ -127,11 +127,7 @@ export function getDeckMatchups(
 export function getDeckGoodMatchups(deck: DeckWithStats): DeckMatchup[] {
   return Object.values(deck.matchups)
     .sort(
-      (a, b) =>
-        b.winRate - a.winRate ||
-        b.played - a.played ||
-        b.won - a.won ||
-        a.deck.localeCompare(b.deck)
+      (a, b) => b.winRate - a.winRate || b.played - a.played || b.won - a.won
     )
     .filter((matchup) => matchup.won > 0)
     .slice(0, 5);
@@ -140,11 +136,7 @@ export function getDeckGoodMatchups(deck: DeckWithStats): DeckMatchup[] {
 export function getDeckBadMatchups(deck: DeckWithStats): DeckMatchup[] {
   return Object.values(deck.matchups)
     .sort(
-      (a, b) =>
-        a.winRate - b.winRate ||
-        b.played - a.played ||
-        a.lost - b.lost ||
-        a.deck.localeCompare(b.deck)
+      (a, b) => a.winRate - b.winRate || b.played - a.played || a.lost - b.lost
     )
     .filter((matchup) => matchup.lost > 0)
     .slice(0, 5);

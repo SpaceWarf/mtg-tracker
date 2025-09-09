@@ -1,59 +1,58 @@
 import { faCrown, faDice } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Flex, Tooltip } from "@radix-ui/themes";
+import { Flex, Grid, Tooltip } from "@radix-ui/themes";
 import { useNavigate } from "react-router";
-import "../../assets/styles/DeckCard.scss";
-import { DeckWithStats } from "../../state/Deck";
+import "../../assets/styles/PlayerCard.scss";
+import { PlayerWithStats } from "../../state/Player";
 import { SimplePieChart } from "../Common/SimplePieChart";
-import { DeckHeader2 } from "./DeckHeader2";
-import { DeckTags } from "./DeckTags";
+import { PlayerHeader2 } from "./PlayerHeader2";
 
 type OwnProps = {
-  deck: DeckWithStats;
+  player: PlayerWithStats;
   editable?: boolean;
   showActions?: boolean;
 };
 
-export function DeckCard2({ deck, editable, showActions }: OwnProps) {
+export function PlayerCard2({ player, editable, showActions }: OwnProps) {
   const navigate = useNavigate();
 
   return (
     <div
-      className={`deck-card ${showActions ? "selectable" : ""}`}
+      className={`player-card ${showActions ? "selectable" : ""}`}
       style={
         {
-          ["--url" as string]: `url(${deck.featured})`,
+          ["--url" as string]: `url(/img/pfp/${player.id}.webp)`,
         } as React.CSSProperties
       }
-      onClick={() => showActions && navigate(`/decks/${deck.id}`)}
+      onClick={() => showActions && navigate(`/players/${player.id}`)}
     >
       <Flex className="h-full" direction="column" justify="between">
         <Flex className="content-container" direction="column" gap="3">
           <div>
-            <DeckHeader2
-              deck={deck}
+            <PlayerHeader2
+              player={player}
               editable={editable}
               showActions={showActions}
             />
           </div>
           <Flex justify="between">
-            <Flex mt="2" gap="4">
+            <Grid columns="2" gapX="4">
               <Tooltip content="Games Played">
                 <Flex className="stat-container" gap="2">
                   <FontAwesomeIcon size="xl" icon={faDice} />
-                  <p>{deck.gamesPlayed}</p>
+                  <p>{player.gamesPlayed}</p>
                 </Flex>
               </Tooltip>
               <Tooltip content="Games Won">
                 <Flex className="stat-container" gap="2">
                   <FontAwesomeIcon size="xl" icon={faCrown} />
-                  <p>{deck.winCount}</p>
+                  <p>{player.winCount}</p>
                 </Flex>
               </Tooltip>
-            </Flex>
-            <div className="win-percent-container mt-[-20px]">
+            </Grid>
+            <div className="win-percent-container">
               <SimplePieChart
-                value={deck.winRate}
+                value={player.winRate}
                 label="Win %"
                 colours={{
                   "25": "#d84242",
@@ -63,9 +62,6 @@ export function DeckCard2({ deck, editable, showActions }: OwnProps) {
               />
             </div>
           </Flex>
-        </Flex>
-        <Flex className="tags-container">
-          <DeckTags deck={deck} />
         </Flex>
       </Flex>
     </div>

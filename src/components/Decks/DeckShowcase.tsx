@@ -34,7 +34,6 @@ export function DeckShowcase({ deck }: OwnProps) {
       <Flex
         className="header"
         direction="column"
-        gap="5"
         style={
           {
             ["--url" as string]: `url(${deck.featured})`,

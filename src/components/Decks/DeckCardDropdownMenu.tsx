@@ -1,5 +1,6 @@
 import {
   faCodeCommit,
+  faEllipsisV,
   faEye,
   faMagnifyingGlass,
   faPen,
@@ -7,7 +8,6 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { DropdownMenu, IconButton } from "@radix-ui/themes";
 import { useNavigate } from "react-router";
 import { ArchidektService } from "../../services/Archidekt";
@@ -36,14 +36,11 @@ export function DeckCardDropdownMenu({
   const navigate = useNavigate();
 
   return (
-    <div
-      className="deck-card-dropdown-menu"
-      onClick={(e) => e.stopPropagation()}
-    >
+    <div onClick={(e) => e.stopPropagation()}>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger disabled={syncing}>
           <IconButton variant="soft" color="gray">
-            <DotsVerticalIcon width="18" height="18" />
+            <FontAwesomeIcon icon={faEllipsisV} />
           </IconButton>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>

@@ -1,4 +1,5 @@
-import { CheckIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
+import { faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, Flex, Heading, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -34,7 +35,7 @@ export function PlayerCreateModal() {
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
         <Button className="h-10 mt-6">
-          <PlusIcon width="18" height="18" />
+          <FontAwesomeIcon icon={faPlus} />
           Create new player
         </Button>
       </Dialog.Trigger>
@@ -58,11 +59,11 @@ export function PlayerCreateModal() {
 
         <div className="mb-5">
           <Heading className="mb-1" size="3">
-            External ID
+            Archidekt Username
           </Heading>
           <TextField.Root
             className="input-field"
-            placeholder="External ID..."
+            placeholder="Archidekt Username..."
             value={externalId}
             onChange={({ target }) => setExternalId(target.value)}
           ></TextField.Root>
@@ -71,12 +72,14 @@ export function PlayerCreateModal() {
         <Flex gap="3" justify="between">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <Cross2Icon /> Cancel
+              <FontAwesomeIcon icon={faXmark} />
+              Cancel
             </Button>
           </Dialog.Close>
           <Dialog.Close disabled={!canCreate()} onClick={handleCreate}>
             <Button className="h-10">
-              <CheckIcon /> Create
+              <FontAwesomeIcon icon={faCheck} />
+              Create
             </Button>
           </Dialog.Close>
         </Flex>

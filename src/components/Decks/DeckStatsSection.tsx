@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex } from "@radix-ui/themes";
 import { DeckWithStats } from "../../state/Deck";
 import { DataCard } from "../Common/DataCard";
-import { WinRatePieChart } from "../Common/WinRatePieChart";
+import { SimplePieChart } from "../Common/SimplePieChart";
 import { DeckGamesLineChart } from "./DeckGamesLineChart";
 
 type OwnProps = {
@@ -20,7 +20,16 @@ export function DeckStatsSection({ deck }: OwnProps) {
           align="center"
         >
           <Flex align="center" justify="center">
-            <WinRatePieChart deck={deck} size="large" />
+            <SimplePieChart
+              value={deck.winRate}
+              label="Win Rate"
+              size="large"
+              colours={{
+                "25": "#d84242",
+                "50": "#FA9F42",
+                "100": "#5abe8c",
+              }}
+            />
           </Flex>
         </DataCard>
       </Flex>

@@ -18,6 +18,15 @@ export interface PlayerWithStats extends DbPlayer {
   solRingRate: number;
   solRingToWinRate: number;
   grandSlamCount: number;
-  deckPlayedMap: Map<string, number>;
-  deckWonMap: Map<string, number>;
+  deckPlayedMap: Map<string, number>; // DEPRECATED
+  deckWonMap: Map<string, number>; // DEPRECATED
+  decksBuilt: number;
+  deckStatsMap: Map<string, DeckStats>;
+}
+
+export interface DeckStats {
+  played: number;
+  won: number;
+  lost: number;
+  winRate: number;
 }

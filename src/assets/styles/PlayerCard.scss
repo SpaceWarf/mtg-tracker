@@ -1,0 +1,11 @@
+@use "../styles/colours" as c;
+@use "../styles/ItemCard.scss";
+
+.player-card {
+  @extend .item-card;
+
+  height: 200px;
+  background-position: 0 0, 0 -75px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    var(--url);
+}

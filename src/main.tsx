@@ -14,6 +14,7 @@ import { Decks } from "./pages/Decks.tsx";
 import { DeckValidator } from "./pages/DeckValidator.tsx";
 import { GameChangers } from "./pages/GameChangers.tsx";
 import { Games } from "./pages/Games.tsx";
+import { PlayerById } from "./pages/PlayerById.tsx";
 import { Players } from "./pages/Players.tsx";
 
 const queryClient = new QueryClient({
@@ -37,6 +38,7 @@ export function Main() {
                   <Routes>
                     <Route path="/" element={<Games />} />
                     <Route path="/players" element={<Players />} />
+                    <Route path="/players/:id" element={<PlayerById />} />
                     <Route path="/decks" element={<Decks />} />
                     <Route path="/decks/:id" element={<DeckById />} />
                     <Route path="/game-changers" element={<GameChangers />} />

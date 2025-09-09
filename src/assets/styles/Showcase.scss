@@ -1,0 +1,59 @@
+@use "../styles/colours" as c;
+
+@property --url {
+  syntax: "<url>";
+  inherits: true;
+  initial-value: none;
+}
+
+.showcase {
+  width: 100%;
+  border-radius: 10px;
+  background-color: c.$card-background;
+
+  .header {
+    min-height: 175px;
+    padding: 15px;
+    border-radius: 10px 10px 0 0;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+      var(--url);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .stats-table {
+    padding: 15px;
+
+    .stats-row {
+      padding: 15px;
+
+      &.error {
+        .label {
+          color: c.$red;
+        }
+
+        .value {
+          color: c.$red;
+        }
+      }
+
+      .label {
+        font-size: 0.9rem;
+        line-height: 0.9rem;
+        color: c.$text-muted;
+      }
+
+      .value {
+        font-size: 1.2rem;
+        line-height: 1.2rem;
+        font-weight: 400;
+        color: c.$text-primary;
+      }
+    }
+
+    .stats-row:not(:last-child) {
+      border-bottom: 1px solid c.$card-border;
+    }
+  }
+}

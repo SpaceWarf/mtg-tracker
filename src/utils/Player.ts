@@ -1,6 +1,7 @@
 import { cloneDeep, omit } from "lodash";
+import { DbDeck } from "../state/Deck";
 import { DbGame } from "../state/Game";
-import { DbPlayer, PlayerWithStats } from "../state/Player";
+import { DbPlayer, DeckStats, PlayerWithStats } from "../state/Player";
 import { getAllGamesForPlayer } from "./Game";
 
 export function getDbPlayerFromPlayerWithStats(
@@ -154,9 +155,66 @@ export function getPlayerDecksWonMap(
   return map;
 }
 
+export function getPlayerDeckStatsMap(
+  player: DbPlayer,
+  games: DbGame[]
+): Map<string, DeckStats> {
+  const map = new Map<string, DeckStats>();
+  const gamesPlayed = getAllGamesForPlayer(player, games);
+  gamesPlayed.forEach((game) => {
+    const entry = map.get(game.deck);
+    if (entry) {
+      const played = entry.played + 1;
+      const won = entry.won + (game.won ? 1 : 0);
+      const lost = entry.lost + (game.won ? 0 : 1);
+      const winRate = played > 0 ? won / played : 0;
+      map.set(game.deck, {
+        ...entry,
+        played,
+        won,
+        lost,
+        winRate,
+      });
+    } else {
+      map.set(game.deck, {
+        played: 1,
+        won: game.won ? 1 : 0,
+        lost: game.won ? 0 : 1,
+        winRate: game.won ? 1 : 0,
+      });
+    }
+  });
+  console.log(map);
+  return map;
+}
+
 export function getPlayerByExternalId(
   externalId: string,
   players: DbPlayer[]
 ): DbPlayer | undefined {
   return players.find((player) => player.externalId === externalId);
+}
+
+export function populatePlayer(
+  player: DbPlayer,
+  games: DbGame[],
+  decks: DbDeck[]
+): PlayerWithStats {
+  return {
+    ...cloneDeep(player),
+    gamesPlayed: getPlayerGamesCount(player, games),
+    winCount: getPlayerWinCount(player, games),
+    winRate: getPlayerWinRate(player, games),
+    startCount: getPlayerGamesStarted(player, games),
+    startRate: getPlayerGamesStartedRate(player, games),
+    startToWinRate: getPlayerGamesStartedToWinRate(player, games),
+    solRingCount: getPlayerSolRingCount(player, games),
+    solRingRate: getPlayerSolRingRate(player, games),
+    solRingToWinRate: getPlayerSolRingToWinRate(player, games),
+    grandSlamCount: getPlayerGrandSlamCount(player, games),
+    deckPlayedMap: getPlayerDecksPlayedMap(player, games),
+    deckWonMap: getPlayerDecksWonMap(player, games),
+    decksBuilt: decks.filter((deck) => deck.builder === player.id).length,
+    deckStatsMap: getPlayerDeckStatsMap(player, games),
+  };
 }
