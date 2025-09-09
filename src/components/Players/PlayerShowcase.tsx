@@ -3,7 +3,7 @@ import {
   faCrown,
   faDice,
   faDiceSix,
-  faLayerGroup,
+  faHammer,
   faRing,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -88,17 +88,36 @@ export function PlayerShowcase({ player }: OwnProps) {
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faLayerGroup} />
-            <p>Unique Decks Played</p>
+            <FontAwesomeIcon size="xl" width="22" icon={faHammer} />
+            <p>Decks Built</p>
           </Flex>
-          <p className="value">{player.deckPlayedMap.size}</p>
+          <p className="value">{player.decksBuilt}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faLayerGroup} />
-            <p>Unique Decks Wins</p>
+            <FontAwesomeIcon size="xl" width="22" icon={faDice} />
+            <p>Decks Played</p>
           </Flex>
-          <p className="value">{player.deckWonMap.size}</p>
+          <p className="value">
+            {
+              Array.from(player.deckStatsMap.entries()).filter(
+                (deck) => deck[1].played > 0
+              ).length
+            }
+          </p>
+        </Flex>
+        <Flex className="stats-row" justify="between" flexGrow="1">
+          <Flex className="label" align="center" gap="2">
+            <FontAwesomeIcon size="xl" width="22" icon={faCrown} />
+            <p>Decks Won With</p>
+          </Flex>
+          <p className="value">
+            {
+              Array.from(player.deckStatsMap.entries()).filter(
+                (deck) => deck[1].won > 0
+              ).length
+            }
+          </p>
         </Flex>
       </Flex>
     </div>

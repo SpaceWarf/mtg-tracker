@@ -1,10 +1,4 @@
-import {
-  faChartLine,
-  faCrown,
-  faDice,
-  faHammer,
-  faPercent,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChartLine, faPercent } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Flex, Grid } from "@radix-ui/themes";
 import { PlayerWithStats } from "../../state/Player";
@@ -120,45 +114,6 @@ export function PlayerStatsSection({ player }: OwnProps) {
           </Flex>
         </DataCard>
       </Box>
-      <DataCard
-        title="Decks Built"
-        icon={<FontAwesomeIcon icon={faHammer} />}
-        align="center"
-      >
-        <Flex align="center" justify="center">
-          <p className="data-stat">{player.decksBuilt}</p>
-        </Flex>
-      </DataCard>
-      <DataCard
-        title="Decks Played"
-        icon={<FontAwesomeIcon icon={faDice} />}
-        align="center"
-      >
-        <Flex align="center" justify="center">
-          <p className="data-stat">
-            {
-              Array.from(player.deckStatsMap.entries()).filter(
-                (deck) => deck[1].played > 0
-              ).length
-            }
-          </p>
-        </Flex>
-      </DataCard>
-      <DataCard
-        title="Decks Won With"
-        icon={<FontAwesomeIcon icon={faCrown} />}
-        align="center"
-      >
-        <Flex align="center" justify="center">
-          <p className="data-stat">
-            {
-              Array.from(player.deckStatsMap.entries()).filter(
-                (deck) => deck[1].won > 0
-              ).length
-            }
-          </p>
-        </Flex>
-      </DataCard>
     </Grid>
   );
 }
