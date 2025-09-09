@@ -74,6 +74,7 @@ export function CardPreview({
       <div className="card-stack">
         {fetchedUris.map((uri, index) => (
           <div
+            key={uri.uri}
             className="card-stack-card"
             style={{
               transform: `rotateY(${flipped ? 180 : 0}deg) translate(${

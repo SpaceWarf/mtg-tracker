@@ -1,37 +1,37 @@
 import Chart from "chart.js/auto";
 import { useEffect, useMemo } from "react";
 import { useGames } from "../../hooks/useGames";
-import { DeckWithStats } from "../../state/Deck";
+import { PlayerWithStats } from "../../state/Player";
 
 type OwnProps = {
-  deck: DeckWithStats;
+  player: PlayerWithStats;
 };
 
-export function DeckGamesLineChart({ deck }: OwnProps) {
+export function PlayerGamesLineChart({ player }: OwnProps) {
   const { dbGames } = useGames();
 
   const playedGames = useMemo(() => {
     if (!dbGames) return [];
     return dbGames.filter((game) =>
       [
-        game.player1.deck,
-        game.player2.deck,
-        game.player3.deck,
-        game.player4.deck,
-      ].includes(deck.id)
+        game.player1.player,
+        game.player2.player,
+        game.player3.player,
+        game.player4.player,
+      ].includes(player.id)
     );
-  }, [dbGames, deck]);
+  }, [dbGames, player]);
 
   const wonGames = useMemo(() => {
     if (!dbGames) return [];
     return dbGames.filter(
       (game) =>
-        (game.player1.deck === deck.id && game.player1.won) ||
-        (game.player2.deck === deck.id && game.player2.won) ||
-        (game.player3.deck === deck.id && game.player3.won) ||
-        (game.player4.deck === deck.id && game.player4.won)
+        (game.player1.player === player.id && game.player1.won) ||
+        (game.player2.player === player.id && game.player2.won) ||
+        (game.player3.player === player.id && game.player3.won) ||
+        (game.player4.player === player.id && game.player4.won)
     );
-  }, [dbGames, deck]);
+  }, [dbGames, player]);
 
   const months = useMemo(() => {
     const months: string[] = [];
@@ -177,5 +177,5 @@ export function DeckGamesLineChart({ deck }: OwnProps) {
     };
   }, [gamesPlayed, gamesWon]);
 
-  return <canvas id="line-chart" height="300" />;
+  return <canvas id="line-chart" height="400" />;
 }

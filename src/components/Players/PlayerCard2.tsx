@@ -1,9 +1,4 @@
-import {
-  faCrown,
-  faDice,
-  faDiceSix,
-  faRing,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCrown, faDice } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex, Grid, Tooltip } from "@radix-ui/themes";
 import { useNavigate } from "react-router";
@@ -41,7 +36,7 @@ export function PlayerCard2({ player, editable, showActions }: OwnProps) {
             />
           </div>
           <Flex justify="between">
-            <Grid columns="2" gapX="4" gapY="0" align="center">
+            <Grid columns="2" gapX="4">
               <Tooltip content="Games Played">
                 <Flex className="stat-container" gap="2">
                   <FontAwesomeIcon size="xl" icon={faDice} />
@@ -54,18 +49,6 @@ export function PlayerCard2({ player, editable, showActions }: OwnProps) {
                   <p>{player.winCount}</p>
                 </Flex>
               </Tooltip>
-              <Tooltip content="Games Started">
-                <Flex className="stat-container" gap="2">
-                  <FontAwesomeIcon size="xl" icon={faDiceSix} />
-                  <p>{player.startCount}</p>
-                </Flex>
-              </Tooltip>
-              <Tooltip content="T1 Sol Rings">
-                <Flex className="stat-container" gap="2">
-                  <FontAwesomeIcon size="xl" icon={faRing} />
-                  <p>{player.solRingCount}</p>
-                </Flex>
-              </Tooltip>
             </Grid>
             <div className="win-percent-container">
               <SimplePieChart
@@ -74,24 +57,6 @@ export function PlayerCard2({ player, editable, showActions }: OwnProps) {
                 colours={{
                   "25": "#d84242",
                   "50": "#FA9F42",
-                  "100": "#5abe8c",
-                }}
-              />
-              <SimplePieChart
-                value={player.startRate}
-                label="Start %"
-                colours={{
-                  "10": "#d84242",
-                  "25": "#FA9F42",
-                  "100": "#5abe8c",
-                }}
-              />
-              <SimplePieChart
-                value={player.solRingRate}
-                label="Sol Ring %"
-                colours={{
-                  "1": "#d84242",
-                  "10": "#FA9F42",
                   "100": "#5abe8c",
                 }}
               />

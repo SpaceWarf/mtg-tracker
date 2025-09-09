@@ -8,15 +8,12 @@
 .item-card {
   --url: none;
 
-  // background-image: radial-gradient(
-  //     circle,
-  //     rgba(25, 21, 30, 0.05) 10%,
-  //     rgba(25, 21, 30, 0.45) 30%,
-  //     rgba(25, 21, 30, 0.92) 75%
-  //   ),
-  //   var(--url);
-
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+  background-image: radial-gradient(
+      circle,
+      rgba(25, 21, 30, 0.05) 10%,
+      rgba(25, 21, 30, 0.45) 30%,
+      rgba(25, 21, 30, 0.92) 75%
+    ),
     var(--url);
 
   height: 260px;
@@ -44,7 +41,7 @@
     padding: 15px;
 
     .stat-container {
-      font-size: 1rem;
+      font-size: 1.3rem;
       color: c.$text-secondary;
 
       svg {
