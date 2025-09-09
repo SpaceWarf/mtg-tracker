@@ -20,6 +20,7 @@ export interface PlayerWithStats extends DbPlayer {
   grandSlamCount: number;
   deckPlayedMap: Map<string, number>; // DEPRECATED
   deckWonMap: Map<string, number>; // DEPRECATED
+  decksBuilt: number;
   deckStatsMap: Map<string, DeckStats>;
 }
 

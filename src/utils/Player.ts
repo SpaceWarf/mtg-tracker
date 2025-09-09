@@ -1,4 +1,5 @@
 import { cloneDeep, omit } from "lodash";
+import { DbDeck } from "../state/Deck";
 import { DbGame } from "../state/Game";
 import { DbPlayer, DeckStats, PlayerWithStats } from "../state/Player";
 import { getAllGamesForPlayer } from "./Game";
@@ -196,7 +197,8 @@ export function getPlayerByExternalId(
 
 export function populatePlayer(
   player: DbPlayer,
-  games: DbGame[]
+  games: DbGame[],
+  decks: DbDeck[]
 ): PlayerWithStats {
   return {
     ...cloneDeep(player),
@@ -212,6 +214,7 @@ export function populatePlayer(
     grandSlamCount: getPlayerGrandSlamCount(player, games),
     deckPlayedMap: getPlayerDecksPlayedMap(player, games),
     deckWonMap: getPlayerDecksWonMap(player, games),
+    decksBuilt: decks.filter((deck) => deck.builder === player.id).length,
     deckStatsMap: getPlayerDeckStatsMap(player, games),
   };
 }

@@ -12,6 +12,7 @@ import { Button, Flex, IconButton, Spinner, Tooltip } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
+import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
 import { usePlayers } from "../../hooks/usePlayers";
 import { ArchidektService } from "../../services/Archidekt";
@@ -29,6 +30,7 @@ export function PlayerByIdViewer() {
   const { user } = useAuth();
   const { dbPlayers, loadingPlayers } = usePlayers();
   const { dbGames, loadingGames } = useGames();
+  const { dbDecks, loadingDecks } = useDecks();
 
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
@@ -38,15 +40,15 @@ export function PlayerByIdViewer() {
   }, [dbPlayers, id]);
 
   const populatedPlayer = useMemo(() => {
-    if (!player || !dbGames) {
+    if (!player || !dbGames || !dbDecks) {
       return undefined;
     }
-    return populatePlayer(player, dbGames);
-  }, [player, dbGames]);
+    return populatePlayer(player, dbGames, dbDecks);
+  }, [player, dbGames, dbDecks]);
 
   const loading = useMemo(() => {
-    return loadingPlayers || loadingGames;
-  }, [loadingPlayers, loadingGames]);
+    return loadingPlayers || loadingGames || loadingDecks;
+  }, [loadingPlayers, loadingGames, loadingDecks]);
 
   function handleSearchGames() {
     navigate(`/?players=${player?.id}`);
