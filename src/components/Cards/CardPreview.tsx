@@ -12,7 +12,6 @@ type OwnProps = {
   cardUris?: CardUris[];
   size?: "large" | "small";
   clickable?: boolean;
-  offsetStack?: boolean;
 };
 
 export function CardPreview({
@@ -20,7 +19,6 @@ export function CardPreview({
   cardUris,
   size = "large",
   clickable,
-  offsetStack,
 }: OwnProps) {
   const [fetchedUris, setFetchedUris] = useState<CardUris[]>(cardUris ?? []);
   const [flipped, setFlipped] = useState(false);
@@ -59,7 +57,7 @@ export function CardPreview({
 
   if (!fetchedUris.length) {
     return (
-      <div className={`card-preview ${size} ${offsetStack ? "offset" : ""}`}>
+      <div className={`card-preview ${size} offset`}>
         <Skeleton className="w-full h-full" />
       </div>
     );
@@ -67,9 +65,7 @@ export function CardPreview({
 
   return (
     <div
-      className={`card-preview ${size} ${clickable ? "clickable" : ""} ${
-        offsetStack ? "offset" : ""
-      }`}
+      className={`card-preview ${size} ${clickable ? "clickable" : ""} offset`}
     >
       <div className="card-stack">
         {fetchedUris.map((uri, index) => (
@@ -79,7 +75,7 @@ export function CardPreview({
             style={{
               transform: `rotateY(${flipped ? 180 : 0}deg) translate(${
                 index * (stackOffset - 10)
-              }px, ${index * -stackOffset}px)`,
+              }px, ${((index ? 1 : -1) * -stackOffset) / 2}px)`,
               zIndex: index === showingIndex ? 100 : fetchedUris.length - index,
             }}
           >

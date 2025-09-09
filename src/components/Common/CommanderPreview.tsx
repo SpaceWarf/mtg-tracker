@@ -72,7 +72,7 @@ export function CommanderPreview({ deck, won, lost, good }: OwnProps) {
           </Flex>
         </Tooltip>
       </Flex>
-      <CardPreview cards={commanders} size="small" clickable offsetStack />
+      <CardPreview cards={commanders} size="small" clickable />
     </Flex>
   );
 }
