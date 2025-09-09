@@ -48,7 +48,7 @@ export function PlayerByIdViewer() {
 
   const loading = useMemo(() => {
     return loadingPlayers || loadingGames || loadingDecks;
-  }, [loadingPlayers, loadingGames]);
+  }, [loadingPlayers, loadingGames, loadingDecks]);
 
   function handleSearchGames() {
     navigate(`/?players=${player?.id}`);
