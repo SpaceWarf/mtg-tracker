@@ -168,7 +168,12 @@ export function PlayerByIdViewer() {
                 >
                   <Flex gap="7" justify="center">
                     {Array.from(populatedPlayer.deckStatsMap.entries())
-                      .sort((a, b) => b[1].played - a[1].played)
+                      .sort(
+                        (a, b) =>
+                          b[1].played - a[1].played ||
+                          b[1].won - a[1].won ||
+                          a[1].lost - b[1].lost
+                      )
                       .slice(0, 5)
                       .map(([deck, stats]) => (
                         <CommanderPreview
@@ -189,7 +194,12 @@ export function PlayerByIdViewer() {
                 >
                   <Flex gap="7" justify="center">
                     {Array.from(populatedPlayer.deckStatsMap.entries())
-                      .sort((a, b) => b[1].winRate - a[1].winRate)
+                      .sort(
+                        (a, b) =>
+                          b[1].winRate - a[1].winRate ||
+                          b[1].played - a[1].played ||
+                          a[1].lost - b[1].lost
+                      )
                       .slice(0, 5)
                       .map(([deck, stats]) => (
                         <CommanderPreview
