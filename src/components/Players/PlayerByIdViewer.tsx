@@ -47,10 +47,6 @@ export function PlayerByIdViewer() {
     return loadingPlayers || loadingGames;
   }, [loadingPlayers, loadingGames]);
 
-  if (loading || !populatedPlayer) {
-    return <Spinner mt="5" size="3" />;
-  }
-
   function handleSearchGames() {
     navigate(`/?players=${player?.id}`);
   }
@@ -68,6 +64,10 @@ export function PlayerByIdViewer() {
 
   function handleDelete() {
     setDeleteModalOpen(true);
+  }
+
+  if (loading || !populatedPlayer) {
+    return <Spinner mt="5" size="3" />;
   }
 
   return (
