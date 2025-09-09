@@ -39,10 +39,18 @@ export interface DeckWithStats extends DbDeck {
   tutors: DeckCardDetails[];
   combos: Combo[];
   matchups: Record<string, DeckMatchup>;
+  playerStats: Record<string, DeckPlayerStats>;
 }
 
 export interface DeckMatchup {
   deck: string;
+  played: number;
+  won: number;
+  lost: number;
+  winRate: number;
+}
+
+export interface DeckPlayerStats {
   played: number;
   won: number;
   lost: number;

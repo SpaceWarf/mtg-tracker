@@ -12,6 +12,7 @@ import {
   faSmile,
   faTableList,
   faTrash,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -51,6 +52,7 @@ import { CardList } from "../Cards/CardList";
 import { CardListFilters } from "../Cards/CardListFilters";
 import { CommanderPreview } from "../Common/CommanderPreview";
 import { DataCard } from "../Common/DataCard";
+import { PlayerPreview } from "../Players/PlayerPreview";
 import { DeckCardPreviewSection } from "./DeckCardPreviewSection";
 import { DeckCombosSection } from "./DeckCombosSection";
 import { DeckDeleteModal } from "./DeckDeleteModal";
@@ -464,7 +466,7 @@ export function DeckByIdViewer() {
                       title="Good Matchups"
                       icon={<FontAwesomeIcon icon={faSmile} />}
                     >
-                      <Flex gap="7" justify="center">
+                      <Flex gap="5">
                         {goodMatchups.map((matchup) => (
                           <CommanderPreview
                             key={matchup.deck}
@@ -482,7 +484,7 @@ export function DeckByIdViewer() {
                       title="Bad Matchups"
                       icon={<FontAwesomeIcon icon={faFrown} />}
                     >
-                      <Flex gap="7" justify="center">
+                      <Flex gap="5">
                         {badMatchups.map((matchup) => (
                           <CommanderPreview
                             key={matchup.deck}
@@ -491,6 +493,27 @@ export function DeckByIdViewer() {
                             lost={matchup.lost}
                           />
                         ))}
+                      </Flex>
+                    </DataCard>
+                  )}
+                  {Object.keys(populatedDeck.playerStats).length > 0 && (
+                    <DataCard
+                      title="Most Played By"
+                      icon={<FontAwesomeIcon icon={faUsers} />}
+                    >
+                      <Flex gap="5">
+                        {Object.entries(populatedDeck.playerStats)
+                          .sort((a, b) => b[1].played - a[1].played)
+                          .slice(0, 5)
+                          .map(([player, stats]) => (
+                            <PlayerPreview
+                              key={player}
+                              player={player}
+                              won={stats.won}
+                              lost={stats.lost}
+                              good
+                            />
+                          ))}
                       </Flex>
                     </DataCard>
                   )}

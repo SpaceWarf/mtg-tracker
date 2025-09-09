@@ -48,7 +48,7 @@ export function PlayerByIdViewer() {
 
   const loading = useMemo(() => {
     return loadingPlayers || loadingGames || loadingDecks;
-  }, [loadingPlayers, loadingGames, loadingDecks]);
+  }, [loadingPlayers, loadingGames]);
 
   function handleSearchGames() {
     navigate(`/?players=${player?.id}`);
@@ -183,7 +183,7 @@ export function PlayerByIdViewer() {
                   title="Most Played Decks"
                   icon={<FontAwesomeIcon icon={faHeart} />}
                 >
-                  <Flex gap="7" justify="center">
+                  <Flex gap="5">
                     {Array.from(populatedPlayer.deckStatsMap.entries())
                       .sort(
                         (a, b) =>
@@ -209,7 +209,7 @@ export function PlayerByIdViewer() {
                   title="Best Decks"
                   icon={<FontAwesomeIcon icon={faStar} />}
                 >
-                  <Flex gap="7" justify="center">
+                  <Flex gap="5">
                     {Array.from(populatedPlayer.deckStatsMap.entries())
                       .sort(
                         (a, b) =>

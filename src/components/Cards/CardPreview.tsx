@@ -68,33 +68,38 @@ export function CardPreview({
       className={`card-preview ${size} ${clickable ? "clickable" : ""} offset`}
     >
       <div className="card-stack">
-        {fetchedUris.map((uri, index) => (
-          <div
-            key={uri.uri}
-            className="card-stack-card"
-            style={{
-              transform: `rotateY(${flipped ? 180 : 0}deg) translate(${
-                index * (stackOffset - 10)
-              }px, ${((index ? 1 : -1) * -stackOffset) / 2}px)`,
-              zIndex: index === showingIndex ? 100 : fetchedUris.length - index,
-            }}
-          >
-            <div className="card-preview-front">
-              <img
-                src={uri.faceUris[0]}
-                onClick={clickable ? handleClick : undefined}
-                onMouseEnter={() => setShowingIndex(index)}
-                onMouseLeave={() => setShowingIndex(0)}
-              />
+        {fetchedUris.map((uri, index) => {
+          const indexMultiplier = fetchedUris.length > 1 ? (index ? 1 : -1) : 0;
+          const offset = fetchedUris.length > 1 ? stackOffset / 2 : 0;
+          const indexedOffset = indexMultiplier * offset;
+          const rotation = flipped ? 180 : 0;
+          return (
+            <div
+              key={uri.uri}
+              className="card-stack-card"
+              style={{
+                transform: `rotateY(${rotation}deg) translate(${indexedOffset}px, ${-indexedOffset}px)`,
+                zIndex:
+                  index === showingIndex ? 100 : fetchedUris.length - index,
+              }}
+            >
+              <div className="card-preview-front">
+                <img
+                  src={uri.faceUris[0]}
+                  onClick={clickable ? handleClick : undefined}
+                  onMouseEnter={() => setShowingIndex(index)}
+                  onMouseLeave={() => setShowingIndex(0)}
+                />
+              </div>
+              <div className="card-preview-back">
+                <img
+                  src={uri.faceUris[1]}
+                  onClick={clickable ? handleClick : undefined}
+                />
+              </div>
             </div>
-            <div className="card-preview-back">
-              <img
-                src={uri.faceUris[1]}
-                onClick={clickable ? handleClick : undefined}
-              />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       {fetchedUris[showingIndex].faceUris.length > 1 && (
         <Button variant="surface" color="gray" onClick={handleFlip}>

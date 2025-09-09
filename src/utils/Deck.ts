@@ -1,7 +1,12 @@
 import { cloneDeep } from "lodash";
 import { uuidv7 } from "uuidv7";
 import { CardDiff, CardDiffItem } from "../state/CardDiff";
-import { DbDeck, DeckMatchup, DeckWithStats } from "../state/Deck";
+import {
+  DbDeck,
+  DeckMatchup,
+  DeckPlayerStats,
+  DeckWithStats,
+} from "../state/Deck";
 import { DeckCardDetails, DeckDetails } from "../state/DeckDetails";
 import { DeckVersion } from "../state/DeckVersion";
 import { DbGame } from "../state/Game";
@@ -140,6 +145,42 @@ export function getDeckBadMatchups(deck: DeckWithStats): DeckMatchup[] {
     )
     .filter((matchup) => matchup.lost > 0)
     .slice(0, 5);
+}
+
+export function getDeckPlayerStats(
+  deck: DbDeck,
+  games: DbGame[]
+): Record<string, DeckPlayerStats> {
+  const playerStats: Record<string, DeckPlayerStats> = {};
+  const playedGames = games.filter((game) =>
+    [
+      game.player1.deck,
+      game.player2.deck,
+      game.player3.deck,
+      game.player4.deck,
+    ].includes(deck.id)
+  );
+
+  playedGames.forEach((game) => {
+    const players = [game.player1, game.player2, game.player3, game.player4];
+    const self = players.find((player) => player.deck === deck.id);
+
+    if (self) {
+      const played = (playerStats[self.player]?.played ?? 0) + 1;
+      const won = (playerStats[self.player]?.won ?? 0) + (self?.won ? 1 : 0);
+      const lost = (playerStats[self.player]?.lost ?? 0) + (self?.won ? 0 : 1);
+      const winRate = played > 0 ? won / played : 0;
+
+      playerStats[self.player] = {
+        played,
+        won,
+        lost,
+        winRate,
+      };
+    }
+  });
+
+  return playerStats;
 }
 
 export function getCardDiff(
@@ -295,6 +336,7 @@ export function populateDeck(
       )
     ),
     matchups: getDeckMatchups(deck, games),
+    playerStats: getDeckPlayerStats(deck, games),
   };
 }
 

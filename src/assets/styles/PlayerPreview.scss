@@ -1,0 +1,27 @@
+@use "../styles/colours" as c;
+
+.player-preview {
+  background-image: radial-gradient(rgba(25, 21, 30, 0.6)), var(--url);
+  height: 200px;
+  padding: 15px;
+
+  .name {
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+    font-weight: bold;
+    color: c.$text-primary;
+  }
+
+  .played {
+    font-size: 5rem;
+    line-height: 5rem;
+    font-weight: bold;
+    color: c.$text-primary;
+  }
+
+  .stats {
+    font-size: 2rem;
+    line-height: 2rem;
+    color: c.$text-primary;
+  }
+}
