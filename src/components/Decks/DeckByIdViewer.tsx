@@ -1,12 +1,12 @@
 import {
   faBomb,
   faCodeCommit,
+  faDice,
   faForward,
   faFrown,
   faGem,
   faLayerGroup,
   faLeftLong,
-  faMagnifyingGlass,
   faPen,
   faRotate,
   faSmile,
@@ -274,7 +274,7 @@ export function DeckByIdViewer() {
             )}
 
             <Flex gap="2" justify="end" width="250px">
-              <Tooltip content="Search Games">
+              <Tooltip content="View All Games">
                 <IconButton
                   variant="soft"
                   color="gray"
@@ -282,7 +282,7 @@ export function DeckByIdViewer() {
                   disabled={syncing}
                   onClick={handleSearchGames}
                 >
-                  <FontAwesomeIcon icon={faMagnifyingGlass} />
+                  <FontAwesomeIcon icon={faDice} />
                 </IconButton>
               </Tooltip>
               {populatedDeck.externalId && (

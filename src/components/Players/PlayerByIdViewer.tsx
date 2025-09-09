@@ -1,7 +1,8 @@
 import {
+  faDice,
   faHeart,
+  faLayerGroup,
   faLeftLong,
-  faMagnifyingGlass,
   faPen,
   faStar,
   faTrash,
@@ -49,6 +50,10 @@ export function PlayerByIdViewer() {
 
   function handleSearchGames() {
     navigate(`/?players=${player?.id}`);
+  }
+
+  function handleSearchDecks() {
+    navigate(`/decks?builder=${player?.id}`);
   }
 
   function handleArchidekt() {
@@ -100,14 +105,24 @@ export function PlayerByIdViewer() {
             </Flex>
 
             <Flex gap="2" justify="end" width="250px">
-              <Tooltip content="Search Games">
+              <Tooltip content="View All Games">
                 <IconButton
                   variant="soft"
                   color="gray"
                   size="3"
                   onClick={handleSearchGames}
                 >
-                  <FontAwesomeIcon icon={faMagnifyingGlass} />
+                  <FontAwesomeIcon icon={faDice} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip content="View All Decks">
+                <IconButton
+                  variant="soft"
+                  color="gray"
+                  size="3"
+                  onClick={handleSearchDecks}
+                >
+                  <FontAwesomeIcon icon={faLayerGroup} />
                 </IconButton>
               </Tooltip>
               {populatedPlayer.externalId && (
