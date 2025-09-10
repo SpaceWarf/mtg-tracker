@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { Flex, Heading, Spinner, TextField } from "@radix-ui/themes";
+import { Box, Flex, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -68,7 +68,7 @@ export function PlayersViewer() {
     <div className="p-5 w-full max-w-[1750px]">
       <Flex className="mb-5" justify="between" wrap="wrap">
         <Flex gap="5" wrap="wrap">
-          <div className="w-60">
+          <Box width={{ initial: "100%", xs: "60" }}>
             <Heading className="mb-1" size="3">
               Search
             </Heading>
@@ -82,21 +82,21 @@ export function PlayersViewer() {
                 <MagnifyingGlassIcon height="16" width="16" />
               </TextField.Slot>
             </TextField.Root>
-          </div>
-          <div>
-            <div>
-              <Heading className="mb-1" size="3">
-                Sort by
-              </Heading>
-              <SortFctSelect
-                type={SortFctType.PLAYER}
-                value={sortFctKey.value}
-                onChange={handleSort}
-              />
-            </div>
-          </div>
+          </Box>
+          <Box width={{ initial: "100%", xs: "60" }}>
+            <Heading className="mb-1" size="3">
+              Sort by
+            </Heading>
+            <SortFctSelect
+              type={SortFctType.PLAYER}
+              value={sortFctKey.value}
+              onChange={handleSort}
+            />
+          </Box>
         </Flex>
-        <div>{auth.user && <PlayerCreateModal />}</div>
+        <Box width={{ initial: "100%", xs: "60" }}>
+          <Flex justify="center">{auth.user && <PlayerCreateModal />}</Flex>
+        </Box>
       </Flex>
       {filteredPlayers.length ? (
         <PlayersCardView

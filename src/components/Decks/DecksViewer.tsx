@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { Flex, Heading, Spinner, TextField } from "@radix-ui/themes";
+import { Box, Flex, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -135,7 +135,7 @@ export function DecksViewer() {
     <div className="p-5 w-full max-w-[1750px]">
       <Flex className="mb-5" justify="between" wrap="wrap">
         <Flex gap="5" wrap="wrap">
-          <div className="w-60">
+          <Box width={{ initial: "100%", xs: "60" }}>
             <Heading className="mb-1" size="3">
               Search
             </Heading>
@@ -149,8 +149,8 @@ export function DecksViewer() {
                 <MagnifyingGlassIcon height="16" width="16" />
               </TextField.Slot>
             </TextField.Root>
-          </div>
-          <div>
+          </Box>
+          <Box width={{ initial: "100%", xs: "60" }}>
             <Heading className="mb-1" size="3">
               Sort by
             </Heading>
@@ -159,8 +159,8 @@ export function DecksViewer() {
               value={sortFctKey}
               onChange={handleSort}
             />
-          </div>
-          <div>
+          </Box>
+          <Box width={{ initial: "100%", xs: "60" }}>
             <Heading className="mb-1" size="3">
               Builder
             </Heading>
@@ -169,8 +169,8 @@ export function DecksViewer() {
               onChange={handleChangeBuilder}
               isMulti={false}
             />
-          </div>
-          <div>
+          </Box>
+          <Box width={{ initial: "100%", xs: "60" }}>
             <Heading className="mb-1" size="3">
               Bracket
             </Heading>
@@ -178,8 +178,8 @@ export function DecksViewer() {
               value={bracket as Bracket}
               onChange={handleChangeBracket}
             />
-          </div>
-          <div>
+          </Box>
+          <Box width={{ initial: "100%", xs: "60" }}>
             <Heading className="mb-1" size="3">
               Identity
             </Heading>
@@ -187,13 +187,15 @@ export function DecksViewer() {
               value={identity as IdentityLabel}
               onChange={handleChangeIdentity}
             />
-          </div>
+          </Box>
         </Flex>
         {auth.user && (
-          <Flex className="mt-6" align="center" gap="3">
-            <DeckSyncModal />
-            <DeckCreateModal />
-          </Flex>
+          <Box width={{ initial: "100%", xs: "60" }}>
+            <Flex className="mt-6" align="center" gap="3" justify="center">
+              <DeckSyncModal />
+              <DeckCreateModal />
+            </Flex>
+          </Box>
         )}
       </Flex>
       {filteredDecks.length ? (
