@@ -35,7 +35,7 @@ export function DeckTags({ deck }: OwnProps) {
   const bracketDetails = useMemo(() => getBracketDetails(deck), [deck]);
 
   return (
-    <Flex className="deck-tags" gap="2">
+    <Flex className="deck-tags" gap="2" wrap="wrap">
       {deck.externalId && (
         <>
           {deck.format && <Badge size="3">{formatLabel}</Badge>}

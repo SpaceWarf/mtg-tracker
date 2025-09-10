@@ -1,6 +1,6 @@
 import { faChartLine, faPercent } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Flex } from "@radix-ui/themes";
+import { Box, Flex, Grid } from "@radix-ui/themes";
 import { DeckWithStats } from "../../state/Deck";
 import { DataCard } from "../Common/DataCard";
 import { SimplePieChart } from "../Common/SimplePieChart";
@@ -12,8 +12,8 @@ type OwnProps = {
 
 export function DeckStatsSection({ deck }: OwnProps) {
   return (
-    <Flex gap="5">
-      <Flex width="25%">
+    <Grid gap="5" columns={{ initial: "1", lg: "3", xl: "4" }}>
+      <Box gridColumn="span 1">
         <DataCard
           title="Win Rate"
           icon={<FontAwesomeIcon icon={faPercent} />}
@@ -32,14 +32,20 @@ export function DeckStatsSection({ deck }: OwnProps) {
             />
           </Flex>
         </DataCard>
-      </Flex>
-      <Flex width="75%">
+      </Box>
+      <Box
+        gridColumn={{
+          initial: "span 1",
+          lg: "span 2",
+          xl: "span 3",
+        }}
+      >
         <DataCard title="Games" icon={<FontAwesomeIcon icon={faChartLine} />}>
           <Flex align="center" justify="center">
             <DeckGamesLineChart deck={deck} />
           </Flex>
         </DataCard>
-      </Flex>
-    </Flex>
+      </Box>
+    </Grid>
   );
 }

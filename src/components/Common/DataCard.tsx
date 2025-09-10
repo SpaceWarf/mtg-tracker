@@ -37,7 +37,7 @@ export function DataCard({
 
   return (
     <Flex
-      className={`data-card ${className} ${error ? "error" : ""}`}
+      className={`data-card h-full ${className} ${error ? "error" : ""}`}
       direction={direction}
       justify={direction === "row" ? "between" : "start"}
       align={direction === "row" ? "center" : "start"}

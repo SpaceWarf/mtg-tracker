@@ -16,6 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  Box,
   Button,
   Flex,
   Grid,
@@ -102,32 +103,6 @@ export function DeckByIdViewer() {
   const loading = useMemo(() => {
     return loadingDecks || loadingGames;
   }, [loadingDecks, loadingGames]);
-
-  const cardPreviewRowCount = useMemo(() => {
-    let count = 0;
-
-    if (!populatedDeck) {
-      return 0;
-    }
-
-    if (populatedDeck.gameChangers.length > 0) {
-      count++;
-    }
-
-    if (populatedDeck.tutors.length > 0) {
-      count++;
-    }
-
-    if (populatedDeck.extraTurns.length > 0) {
-      count++;
-    }
-
-    if (populatedDeck.massLandDenials.length > 0) {
-      count++;
-    }
-
-    return Math.ceil(count / 2);
-  }, [populatedDeck]);
 
   const goodMatchups = useMemo(() => {
     if (!populatedDeck) {
@@ -238,139 +213,154 @@ export function DeckByIdViewer() {
       )}
 
       <div className="deck-by-id-viewer p-5 w-full max-w-[1750px]">
-        <Flex direction="column" gap="5">
-          <DataCard direction="row" align="between">
-            <Flex gap="3" width="250px">
-              <Link to="/decks">
-                <Button variant="soft" color="gray" size="3" disabled={syncing}>
-                  <FontAwesomeIcon icon={faLeftLong} />
-                  Back
-                </Button>
-              </Link>
-            </Flex>
+        <Grid columns="1" gap="5">
+          <DataCard direction="row">
+            <Grid width="100%" columns={{ initial: "2", sm: "3" }} gap="5">
+              <Flex gap="3">
+                <Link to="/decks">
+                  <Button
+                    variant="soft"
+                    color="gray"
+                    size="3"
+                    disabled={syncing}
+                  >
+                    <FontAwesomeIcon icon={faLeftLong} />
+                    Back
+                  </Button>
+                </Link>
+              </Flex>
 
-            {populatedDeck.externalId && (
-              <SegmentedControl.Root
-                defaultValue={DeckByIdViewType.STATS}
-                size="3"
-                value={viewType}
-                disabled={syncing}
-                onValueChange={handleViewTypeChange}
-              >
-                <SegmentedControl.Item value={DeckByIdViewType.STATS}>
-                  Stats
-                </SegmentedControl.Item>
-                <SegmentedControl.Item value={DeckByIdViewType.DECKLIST}>
-                  Decklist
-                </SegmentedControl.Item>
-                {!!user &&
-                  populatedDeck.versions &&
-                  populatedDeck.versions.length > 0 && (
-                    <SegmentedControl.Item
-                      value={DeckByIdViewType.VERSION_MANAGER}
-                    >
-                      Version Manager
-                    </SegmentedControl.Item>
-                  )}
-              </SegmentedControl.Root>
-            )}
-
-            <Flex gap="2" justify="end" width="250px">
-              <Tooltip content="View All Games">
-                <IconButton
-                  variant="soft"
-                  color="gray"
-                  size="3"
-                  disabled={syncing}
-                  onClick={handleSearchGames}
-                >
-                  <FontAwesomeIcon icon={faDice} />
-                </IconButton>
-              </Tooltip>
               {populatedDeck.externalId && (
-                <>
-                  <Tooltip content="Open on Archidekt">
-                    <IconButton
-                      variant="soft"
-                      color="gray"
-                      size="3"
-                      disabled={syncing}
-                      onClick={handleArchidekt}
-                    >
-                      <img
-                        src="/img/logos/archidekt.webp"
-                        width="18"
-                        height="18"
-                      />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip content="Open on EDHREC">
-                    <IconButton
-                      variant="soft"
-                      color="gray"
-                      size="3"
-                      disabled={syncing}
-                      onClick={handleEdhRec}
-                    >
-                      <img
-                        src="/img/logos/edhrec.webp"
-                        width="18"
-                        height="18"
-                      />
-                    </IconButton>
-                  </Tooltip>
-                </>
+                <Flex justify={{ initial: "end", sm: "center" }}>
+                  <SegmentedControl.Root
+                    defaultValue={DeckByIdViewType.STATS}
+                    size="3"
+                    value={viewType}
+                    disabled={syncing}
+                    onValueChange={handleViewTypeChange}
+                  >
+                    <SegmentedControl.Item value={DeckByIdViewType.STATS}>
+                      Stats
+                    </SegmentedControl.Item>
+                    <SegmentedControl.Item value={DeckByIdViewType.DECKLIST}>
+                      Decklist
+                    </SegmentedControl.Item>
+                    {!!user &&
+                      populatedDeck.versions &&
+                      populatedDeck.versions.length > 0 && (
+                        <SegmentedControl.Item
+                          value={DeckByIdViewType.VERSION_MANAGER}
+                        >
+                          Version Manager
+                        </SegmentedControl.Item>
+                      )}
+                  </SegmentedControl.Root>
+                </Flex>
               )}
-              {!!user && (
-                <Tooltip content="Edit Deck">
+
+              <Flex
+                gap="2"
+                gridColumn={{ initial: "span 2", sm: "auto" }}
+                justify={{ initial: "center", sm: "end" }}
+              >
+                <Tooltip content="View All Games">
                   <IconButton
                     variant="soft"
                     color="gray"
                     size="3"
                     disabled={syncing}
-                    onClick={handleEdit}
+                    onClick={handleSearchGames}
                   >
-                    <FontAwesomeIcon icon={faPen} />
+                    <FontAwesomeIcon icon={faDice} />
                   </IconButton>
                 </Tooltip>
-              )}
-              {!!user && populatedDeck.externalId && (
-                <Tooltip content="Sync Deck">
-                  <IconButton
-                    variant="soft"
-                    color="gray"
-                    size="3"
-                    disabled={syncing}
-                    loading={syncing}
-                    onClick={handleSync}
-                  >
-                    <FontAwesomeIcon icon={faRotate} />
-                  </IconButton>
-                </Tooltip>
-              )}
-              {!!user && (
-                <Tooltip content="Delete Deck">
-                  <IconButton
-                    variant="soft"
-                    color="red"
-                    size="3"
-                    disabled={syncing}
-                    onClick={handleDelete}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </IconButton>
-                </Tooltip>
-              )}
-            </Flex>
+                {populatedDeck.externalId && (
+                  <>
+                    <Tooltip content="Open on Archidekt">
+                      <IconButton
+                        variant="soft"
+                        color="gray"
+                        size="3"
+                        disabled={syncing}
+                        onClick={handleArchidekt}
+                      >
+                        <img
+                          src="/img/logos/archidekt.webp"
+                          width="18"
+                          height="18"
+                        />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip content="Open on EDHREC">
+                      <IconButton
+                        variant="soft"
+                        color="gray"
+                        size="3"
+                        disabled={syncing}
+                        onClick={handleEdhRec}
+                      >
+                        <img
+                          src="/img/logos/edhrec.webp"
+                          width="18"
+                          height="18"
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  </>
+                )}
+                {!!user && (
+                  <Tooltip content="Edit Deck">
+                    <IconButton
+                      variant="soft"
+                      color="gray"
+                      size="3"
+                      disabled={syncing}
+                      onClick={handleEdit}
+                    >
+                      <FontAwesomeIcon icon={faPen} />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                {!!user && populatedDeck.externalId && (
+                  <Tooltip content="Sync Deck">
+                    <IconButton
+                      variant="soft"
+                      color="gray"
+                      size="3"
+                      disabled={syncing}
+                      loading={syncing}
+                      onClick={handleSync}
+                    >
+                      <FontAwesomeIcon icon={faRotate} />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                {!!user && (
+                  <Tooltip content="Delete Deck">
+                    <IconButton
+                      variant="soft"
+                      color="red"
+                      size="3"
+                      disabled={syncing}
+                      onClick={handleDelete}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </Flex>
+            </Grid>
           </DataCard>
 
-          <Flex gap="5">
-            <Flex flexBasis="425px" minWidth="425px">
-              <div className="w-full">
-                <DeckShowcase deck={populatedDeck} />
-              </div>
-            </Flex>
-            <Flex direction="column" gap="5" flexGrow="1">
+          <Grid gap="5" columns={{ initial: "1", md: "5", lg: "7" }}>
+            <Box gridColumn={{ initial: "span 1", md: "span 2", lg: "span 2" }}>
+              <DeckShowcase deck={populatedDeck} />
+            </Box>
+            <Grid
+              gap="5"
+              columns="1"
+              gridColumn={{ initial: "span 1", md: "span 3", lg: "span 5" }}
+            >
               {viewType === DeckByIdViewType.DECKLIST && (
                 <>
                   {populatedDeck.versions &&
@@ -417,7 +407,7 @@ export function DeckByIdViewer() {
               {viewType === DeckByIdViewType.STATS && (
                 <>
                   <DeckStatsSection deck={populatedDeck} />
-                  <Grid gap="5" columns="2" rows={`${cardPreviewRowCount}`}>
+                  <Grid gap="5" columns={{ initial: "1", lg: "2" }}>
                     {populatedDeck.gameChangers.length > 0 && (
                       <DeckCardPreviewSection
                         title={`Game Changers (${populatedDeck.gameChangers.length})`}
@@ -466,7 +456,16 @@ export function DeckByIdViewer() {
                       title="Good Matchups"
                       icon={<FontAwesomeIcon icon={faSmile} />}
                     >
-                      <Flex gap="5">
+                      <Grid
+                        gap="5"
+                        columns={{
+                          initial: "1",
+                          xs: "2",
+                          sm: "3",
+                          lg: "4",
+                          xl: "5",
+                        }}
+                      >
                         {goodMatchups.map((matchup) => (
                           <CommanderPreview
                             key={matchup.deck}
@@ -476,7 +475,7 @@ export function DeckByIdViewer() {
                             good
                           />
                         ))}
-                      </Flex>
+                      </Grid>
                     </DataCard>
                   )}
                   {badMatchups.length > 0 && (
@@ -484,7 +483,16 @@ export function DeckByIdViewer() {
                       title="Bad Matchups"
                       icon={<FontAwesomeIcon icon={faFrown} />}
                     >
-                      <Flex gap="5">
+                      <Grid
+                        gap="5"
+                        columns={{
+                          initial: "1",
+                          xs: "2",
+                          sm: "3",
+                          lg: "4",
+                          xl: "5",
+                        }}
+                      >
                         {badMatchups.map((matchup) => (
                           <CommanderPreview
                             key={matchup.deck}
@@ -493,7 +501,7 @@ export function DeckByIdViewer() {
                             lost={matchup.lost}
                           />
                         ))}
-                      </Flex>
+                      </Grid>
                     </DataCard>
                   )}
                   {Object.keys(populatedDeck.playerStats).length > 0 && (
@@ -501,7 +509,16 @@ export function DeckByIdViewer() {
                       title="Most Played By"
                       icon={<FontAwesomeIcon icon={faUsers} />}
                     >
-                      <Flex gap="5">
+                      <Grid
+                        gap="5"
+                        columns={{
+                          initial: "1",
+                          xs: "2",
+                          sm: "3",
+                          lg: "4",
+                          xl: "5",
+                        }}
+                      >
                         {Object.entries(populatedDeck.playerStats)
                           .sort((a, b) => b[1].played - a[1].played)
                           .slice(0, 5)
@@ -514,7 +531,7 @@ export function DeckByIdViewer() {
                               good
                             />
                           ))}
-                      </Flex>
+                      </Grid>
                     </DataCard>
                   )}
                 </>
@@ -525,9 +542,9 @@ export function DeckByIdViewer() {
                 viewType === DeckByIdViewType.VERSION_MANAGER && (
                   <DeckVersionManagerSection deck={populatedDeck} />
                 )}
-            </Flex>
-          </Flex>
-        </Flex>
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     </>
   );
