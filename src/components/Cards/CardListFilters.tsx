@@ -1,5 +1,6 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import {
+  Box,
   CheckboxCards,
   Flex,
   Heading,
@@ -48,7 +49,7 @@ export function CardListFilters({
 
   return (
     <Flex className="mb-5" gap="5" wrap="wrap">
-      <div className="w-60">
+      <Box width={{ initial: "100%", xs: "60" }}>
         <Heading className="mb-1" size="3">
           Search
         </Heading>
@@ -62,9 +63,9 @@ export function CardListFilters({
             <MagnifyingGlassIcon height="16" width="16" />
           </TextField.Slot>
         </TextField.Root>
-      </div>
+      </Box>
 
-      <div>
+      <Box width={{ initial: "100%", xs: "60" }}>
         <Heading className="mb-1" size="3">
           Group by
         </Heading>
@@ -76,9 +77,9 @@ export function CardListFilters({
           value={groupBy}
           onChange={(value: SingleValue<SelectOption>) => setGroupBy(value)}
         />
-      </div>
+      </Box>
 
-      <div>
+      <Box width={{ initial: "100%", xs: "60" }}>
         <Heading className="mb-1" size="3">
           Sort by
         </Heading>
@@ -87,7 +88,7 @@ export function CardListFilters({
           value={sortBy}
           onChange={(value: string) => setSortBy(value as CardSortFctKey)}
         />
-      </div>
+      </Box>
 
       {showVersionToggle && hasVersions && (
         <div>
