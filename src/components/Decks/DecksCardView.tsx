@@ -13,7 +13,7 @@ export function DecksCardView({ decks }: OwnProps) {
   const auth = useAuth();
 
   return (
-    <Grid columns={{ initial: "1", md: "2", xl: "3" }} gap="5">
+    <Grid columns={{ initial: "1", sm: "2", xl: "3" }} gap="5">
       {decks.map((deck) => (
         <div key={deck.id}>
           <DeckCard2 deck={deck} editable={!!auth.user} showActions />
