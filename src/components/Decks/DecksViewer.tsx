@@ -133,7 +133,7 @@ export function DecksViewer() {
 
   return (
     <div className="p-5 w-full max-w-[1750px]">
-      <Flex className="mb-5" justify="between">
+      <Flex className="mb-5" justify="between" wrap="wrap">
         <Flex gap="5" wrap="wrap">
           <div className="w-60">
             <Heading className="mb-1" size="3">
