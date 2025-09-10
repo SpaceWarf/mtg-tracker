@@ -1,19 +1,34 @@
 import "@assets/styles/Header.scss";
+import {
+  faBars,
+  faCheck,
+  faDice,
+  faGem,
+  faLayerGroup,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { Flex, IconButton, Select, TabNav, Text } from "@radix-ui/themes";
-import { ReactElement, useContext, useEffect } from "react";
+import {
+  DropdownMenu,
+  Flex,
+  IconButton,
+  Select,
+  TabNav,
+  Text,
+} from "@radix-ui/themes";
+import { useContext, useEffect } from "react";
 import { Link, useLocation, useSearchParams } from "react-router";
 import { DataContext } from "../contexts/DataContext";
+import { useWindowDimensions } from "../hooks/useWindowDimensions";
 import { Year } from "../state/Year";
 import { LoginModal } from "./LoginModal";
 
-type OwnProps = {
-  children?: ReactElement;
-};
-
-export function Header({ children }: OwnProps) {
+export function Header() {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { windowWidth } = useWindowDimensions();
+
   const { year, setYear } = useContext(DataContext);
 
   useEffect(() => {
@@ -28,12 +43,51 @@ export function Header({ children }: OwnProps) {
     setSearchParams(searchParams);
   };
 
-  return (
-    <>
+  if (windowWidth < 900) {
+    return (
       <Flex className="Header p-3 bg-gray-800" align="center" justify="between">
         <Flex align="center" justify="start" flexBasis="25%">
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger>
+              <IconButton variant="soft">
+                <FontAwesomeIcon icon={faBars} />
+              </IconButton>
+            </DropdownMenu.Trigger>
+
+            <DropdownMenu.Content>
+              <DropdownMenu.Item className="mb-1">
+                <Link to="/">
+                  <FontAwesomeIcon className="mr-2" icon={faDice} /> Games
+                </Link>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item className="mb-1">
+                <Link to="/players">
+                  <FontAwesomeIcon className="mr-2" icon={faUser} /> Players
+                </Link>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item className="mb-1">
+                <Link to="/decks">
+                  <FontAwesomeIcon className="mr-2" icon={faLayerGroup} /> Decks
+                </Link>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item className="mb-1">
+                <Link to="/game-changers">
+                  <FontAwesomeIcon className="mr-2" icon={faGem} /> Game
+                  Changers
+                </Link>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item className="mb-1">
+                <Link to="/deck-validator">
+                  <FontAwesomeIcon className="mr-2" icon={faCheck} /> Deck
+                  Validator
+                </Link>
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
+        </Flex>
+        <Flex align="center">
           <img width="40px" src="/img/chalice.png"></img>
-          <Text>Calice de Marbre</Text>
+          {windowWidth > 500 && <Text>Calice de Marbre</Text>}
           <IconButton
             className="ml-[1px]"
             variant="ghost"
@@ -57,45 +111,75 @@ export function Header({ children }: OwnProps) {
             </Select.Root>
           </div>
         </Flex>
-        <nav>
-          <TabNav.Root>
-            <TabNav.Link asChild active={location.pathname === "/"}>
-              <Link to="/">Games</Link>
-            </TabNav.Link>
-            <TabNav.Link
-              asChild
-              active={location.pathname.includes("/players")}
-            >
-              <Link to="/players">Players</Link>
-            </TabNav.Link>
-            <TabNav.Link asChild active={location.pathname.includes("/decks")}>
-              <Link to="/decks">Decks</Link>
-            </TabNav.Link>
-            <TabNav.Link
-              asChild
-              active={location.pathname.includes("/game-changers")}
-            >
-              <Link to="/game-changers">Game Changers</Link>
-            </TabNav.Link>
-            {/* <TabNav.Link asChild active={location.pathname === "/brackets"}>
-              <Link to="/brackets">Brackets</Link>
-            </TabNav.Link> */}
-            <TabNav.Link
-              asChild
-              active={location.pathname.includes("/deck-validator")}
-            >
-              <Link to="/deck-validator">Deck Validator</Link>
-            </TabNav.Link>
-            {/* <TabNav.Link `asChild active={location.pathname === "/rewind"}>
-              <Link to="/rewind">Rewind</Link>
-            </TabNav.Link>` */}
-          </TabNav.Root>
-        </nav>
         <Flex flexBasis="25%" justify="end">
           <LoginModal />
         </Flex>
       </Flex>
-      {children}
-    </>
+    );
+  }
+
+  return (
+    <Flex className="Header p-3 bg-gray-800" align="center" justify="between">
+      <Flex align="center" justify="start" flexBasis="25%">
+        <img width="40px" src="/img/chalice.png"></img>
+        <Text>Calice de Marbre</Text>
+        <IconButton
+          className="ml-[1px]"
+          variant="ghost"
+          color="gray"
+          onClick={() =>
+            window.open("https://github.com/SpaceWarf/mtg-tracker", "_blank")
+          }
+        >
+          <GitHubLogoIcon />
+        </IconButton>
+        <div className="mt-2 ml-3">
+          <Select.Root value={year} onValueChange={handleChangeYear}>
+            <Select.Trigger variant="ghost" />
+            <Select.Content>
+              {Object.values(Year).map((year) => (
+                <Select.Item key={year} value={year}>
+                  {year}
+                </Select.Item>
+              ))}
+            </Select.Content>
+          </Select.Root>
+        </div>
+      </Flex>
+      <nav>
+        <TabNav.Root>
+          <TabNav.Link asChild active={location.pathname === "/"}>
+            <Link to="/">Games</Link>
+          </TabNav.Link>
+          <TabNav.Link asChild active={location.pathname.includes("/players")}>
+            <Link to="/players">Players</Link>
+          </TabNav.Link>
+          <TabNav.Link asChild active={location.pathname.includes("/decks")}>
+            <Link to="/decks">Decks</Link>
+          </TabNav.Link>
+          <TabNav.Link
+            asChild
+            active={location.pathname.includes("/game-changers")}
+          >
+            <Link to="/game-changers">Game Changers</Link>
+          </TabNav.Link>
+          {/* <TabNav.Link asChild active={location.pathname === "/brackets"}>
+              <Link to="/brackets">Brackets</Link>
+            </TabNav.Link> */}
+          <TabNav.Link
+            asChild
+            active={location.pathname.includes("/deck-validator")}
+          >
+            <Link to="/deck-validator">Deck Validator</Link>
+          </TabNav.Link>
+          {/* <TabNav.Link `asChild active={location.pathname === "/rewind"}>
+              <Link to="/rewind">Rewind</Link>
+            </TabNav.Link>` */}
+        </TabNav.Root>
+      </nav>
+      <Flex flexBasis="25%" justify="end">
+        <LoginModal />
+      </Flex>
+    </Flex>
   );
 }
