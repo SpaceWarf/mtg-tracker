@@ -8,7 +8,15 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Flex, IconButton, Spinner, Tooltip } from "@radix-ui/themes";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  IconButton,
+  Spinner,
+  Tooltip,
+} from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
@@ -95,95 +103,110 @@ export function PlayerByIdViewer() {
       )}
 
       <div className="player-by-id-viewer p-5 w-full max-w-[1750px]">
-        <Flex direction="column" gap="5">
-          <DataCard direction="row" align="between">
-            <Flex gap="3" width="250px">
-              <Link to="/players">
-                <Button variant="soft" color="gray" size="3">
-                  <FontAwesomeIcon icon={faLeftLong} />
-                  Back
-                </Button>
-              </Link>
-            </Flex>
+        <Grid columns="1" gap="5">
+          <DataCard direction="row">
+            <Flex width="100%" gap="5" justify="between" wrap="wrap">
+              <Flex gap="3">
+                <Link to="/players">
+                  <Button variant="soft" color="gray" size="3">
+                    <FontAwesomeIcon icon={faLeftLong} />
+                    Back
+                  </Button>
+                </Link>
+              </Flex>
 
-            <Flex gap="2" justify="end" width="250px">
-              <Tooltip content="View All Games">
-                <IconButton
-                  variant="soft"
-                  color="gray"
-                  size="3"
-                  onClick={handleSearchGames}
-                >
-                  <FontAwesomeIcon icon={faDice} />
-                </IconButton>
-              </Tooltip>
-              <Tooltip content="View All Decks">
-                <IconButton
-                  variant="soft"
-                  color="gray"
-                  size="3"
-                  onClick={handleSearchDecks}
-                >
-                  <FontAwesomeIcon icon={faLayerGroup} />
-                </IconButton>
-              </Tooltip>
-              {populatedPlayer.externalId && (
-                <Tooltip content="Open on Archidekt">
+              <Flex gap="2" justify="end">
+                <Tooltip content="View All Games">
                   <IconButton
                     variant="soft"
                     color="gray"
                     size="3"
-                    onClick={handleArchidekt}
+                    onClick={handleSearchGames}
                   >
-                    <img
-                      src="/img/logos/archidekt.webp"
-                      width="18"
-                      height="18"
-                    />
+                    <FontAwesomeIcon icon={faDice} />
                   </IconButton>
                 </Tooltip>
-              )}
-              {!!user && (
-                <Tooltip content="Edit Player">
+                <Tooltip content="View All Decks">
                   <IconButton
                     variant="soft"
                     color="gray"
                     size="3"
-                    onClick={handleEdit}
+                    onClick={handleSearchDecks}
                   >
-                    <FontAwesomeIcon icon={faPen} />
+                    <FontAwesomeIcon icon={faLayerGroup} />
                   </IconButton>
                 </Tooltip>
-              )}
-              {!!user && (
-                <Tooltip content="Delete Player">
-                  <IconButton
-                    variant="soft"
-                    color="red"
-                    size="3"
-                    onClick={handleDelete}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </IconButton>
-                </Tooltip>
-              )}
+                {populatedPlayer.externalId && (
+                  <Tooltip content="Open on Archidekt">
+                    <IconButton
+                      variant="soft"
+                      color="gray"
+                      size="3"
+                      onClick={handleArchidekt}
+                    >
+                      <img
+                        src="/img/logos/archidekt.webp"
+                        width="18"
+                        height="18"
+                      />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                {!!user && (
+                  <Tooltip content="Edit Player">
+                    <IconButton
+                      variant="soft"
+                      color="gray"
+                      size="3"
+                      onClick={handleEdit}
+                    >
+                      <FontAwesomeIcon icon={faPen} />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                {!!user && (
+                  <Tooltip content="Delete Player">
+                    <IconButton
+                      variant="soft"
+                      color="red"
+                      size="3"
+                      onClick={handleDelete}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </Flex>
             </Flex>
           </DataCard>
 
-          <Flex gap="5">
-            <Flex flexBasis="375px" minWidth="375px">
+          <Grid gap="5" columns={{ initial: "1", sm: "5", lg: "7" }}>
+            <Box gridColumn={{ initial: "span 1", sm: "span 2", lg: "span 2" }}>
               <div className="w-full">
                 <PlayerShowcase player={populatedPlayer} />
               </div>
-            </Flex>
-            <Flex direction="column" gap="5" flexGrow="1">
+            </Box>
+
+            <Grid
+              gap="5"
+              columns="1"
+              gridColumn={{ initial: "span 1", sm: "span 3", lg: "span 5" }}
+            >
               <PlayerStatsSection player={populatedPlayer} />
               {populatedPlayer.deckPlayedMap.size > 0 && (
                 <DataCard
                   title="Most Played Decks"
                   icon={<FontAwesomeIcon icon={faHeart} />}
                 >
-                  <Flex gap="5">
+                  <Grid
+                    gap="5"
+                    columns={{
+                      initial: "1",
+                      xs: "2",
+                      lg: "4",
+                      xl: "5",
+                    }}
+                  >
                     {Array.from(populatedPlayer.deckStatsMap.entries())
                       .sort(
                         (a, b) =>
@@ -201,7 +224,7 @@ export function PlayerByIdViewer() {
                           good
                         />
                       ))}
-                  </Flex>
+                  </Grid>
                 </DataCard>
               )}
               {populatedPlayer.deckStatsMap.size > 0 && (
@@ -209,7 +232,15 @@ export function PlayerByIdViewer() {
                   title="Best Decks"
                   icon={<FontAwesomeIcon icon={faStar} />}
                 >
-                  <Flex gap="5">
+                  <Grid
+                    gap="5"
+                    columns={{
+                      initial: "1",
+                      xs: "2",
+                      lg: "4",
+                      xl: "5",
+                    }}
+                  >
                     {Array.from(populatedPlayer.deckStatsMap.entries())
                       .sort(
                         (a, b) =>
@@ -227,12 +258,12 @@ export function PlayerByIdViewer() {
                           good
                         />
                       ))}
-                  </Flex>
+                  </Grid>
                 </DataCard>
               )}
-            </Flex>
-          </Flex>
-        </Flex>
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     </>
   );

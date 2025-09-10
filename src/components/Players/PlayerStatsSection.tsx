@@ -12,7 +12,10 @@ type OwnProps = {
 
 export function PlayerStatsSection({ player }: OwnProps) {
   return (
-    <Grid gap="5" columns="3">
+    <Grid
+      gap="5"
+      columns={{ initial: "1", xs: "2", sm: "1", md: "2", lg: "3" }}
+    >
       <DataCard
         title="Win Rate"
         icon={<FontAwesomeIcon icon={faPercent} />}
@@ -49,24 +52,6 @@ export function PlayerStatsSection({ player }: OwnProps) {
           />
         </Flex>
       </DataCard>
-      {/* <DataCard
-        title="Start to Win Rate"
-        icon={<FontAwesomeIcon icon={faPercent} />}
-        align="center"
-      >
-        <Flex align="center" justify="center">
-          <SimplePieChart
-            value={player.startToWinRate}
-            label="Start to Win %"
-            size="large"
-            colours={{
-              "25": "#d84242",
-              "50": "#FA9F42",
-              "100": "#5abe8c",
-            }}
-          />
-        </Flex>
-      </DataCard> */}
       <DataCard
         title="T1 Sol Ring Rate"
         icon={<FontAwesomeIcon icon={faPercent} />}
@@ -85,25 +70,15 @@ export function PlayerStatsSection({ player }: OwnProps) {
           />
         </Flex>
       </DataCard>
-      {/* <DataCard
-        title="T1 Sol Ring to Win Rate"
-        icon={<FontAwesomeIcon icon={faPercent} />}
-        align="center"
+      <Box
+        gridColumn={{
+          initial: "span 1",
+          xs: "span 2",
+          sm: "span 1",
+          md: "span 2",
+          lg: "span 3",
+        }}
       >
-        <Flex align="center" justify="center">
-          <SimplePieChart
-            value={player.solRingToWinRate}
-            label="T1 Sol Ring to Win %"
-            size="large"
-            colours={{
-              "25": "#d84242",
-              "50": "#FA9F42",
-              "100": "#5abe8c",
-            }}
-          />
-        </Flex>
-      </DataCard> */}
-      <Box gridColumn="span 3">
         <DataCard
           title="Games"
           icon={<FontAwesomeIcon icon={faChartLine} />}
