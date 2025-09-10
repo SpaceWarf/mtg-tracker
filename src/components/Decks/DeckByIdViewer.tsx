@@ -146,6 +146,12 @@ export function DeckByIdViewer() {
     return count;
   }, [populatedDeck]);
 
+  const showVersionManagerTab = useMemo(() => {
+    return (
+      !!user && populatedDeck?.versions && populatedDeck.versions.length > 0
+    );
+  }, [user, populatedDeck]);
+
   useEffect(() => {
     if (!loading && id && !deck) {
       navigate("/decks");
@@ -243,7 +249,7 @@ export function DeckByIdViewer() {
       <div className="deck-by-id-viewer p-5 w-full max-w-[1750px]">
         <Grid columns="1" gap="5">
           <DataCard direction="row">
-            {windowWidth > 1024 ? (
+            {windowWidth > (showVersionManagerTab ? 1024 : 800) ? (
               <Flex width="100%" gap="5" justify="between" wrap="wrap">
                 <Box width="250px">
                   <Link to="/decks">
@@ -262,7 +268,7 @@ export function DeckByIdViewer() {
                 {populatedDeck.externalId && (
                   <SegmentedControl.Root
                     defaultValue={DeckByIdViewType.STATS}
-                    size={{ initial: "1", xs: "3" }}
+                    size="3"
                     value={viewType}
                     disabled={syncing}
                     onValueChange={handleViewTypeChange}
@@ -273,15 +279,13 @@ export function DeckByIdViewer() {
                     <SegmentedControl.Item value={DeckByIdViewType.DECKLIST}>
                       Decklist
                     </SegmentedControl.Item>
-                    {!!user &&
-                      populatedDeck.versions &&
-                      populatedDeck.versions.length > 0 && (
-                        <SegmentedControl.Item
-                          value={DeckByIdViewType.VERSION_MANAGER}
-                        >
-                          Version Manager
-                        </SegmentedControl.Item>
-                      )}
+                    {showVersionManagerTab && (
+                      <SegmentedControl.Item
+                        value={DeckByIdViewType.VERSION_MANAGER}
+                      >
+                        Version Manager
+                      </SegmentedControl.Item>
+                    )}
                   </SegmentedControl.Root>
                 )}
 
@@ -490,7 +494,10 @@ export function DeckByIdViewer() {
                   <Flex className="w-full" justify="center">
                     <SegmentedControl.Root
                       defaultValue={DeckByIdViewType.STATS}
-                      size={{ initial: "1", xs: "3" }}
+                      size={{
+                        initial: showVersionManagerTab ? "1" : "2",
+                        xs: "3",
+                      }}
                       value={viewType}
                       disabled={syncing}
                       onValueChange={handleViewTypeChange}
@@ -501,15 +508,13 @@ export function DeckByIdViewer() {
                       <SegmentedControl.Item value={DeckByIdViewType.DECKLIST}>
                         Decklist
                       </SegmentedControl.Item>
-                      {!!user &&
-                        populatedDeck.versions &&
-                        populatedDeck.versions.length > 0 && (
-                          <SegmentedControl.Item
-                            value={DeckByIdViewType.VERSION_MANAGER}
-                          >
-                            Version Manager
-                          </SegmentedControl.Item>
-                        )}
+                      {showVersionManagerTab && (
+                        <SegmentedControl.Item
+                          value={DeckByIdViewType.VERSION_MANAGER}
+                        >
+                          Version Manager
+                        </SegmentedControl.Item>
+                      )}
                     </SegmentedControl.Root>
                   </Flex>
                 )}
