@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { DbGame } from "../../state/Game";
 import { getLongDateString } from "../../utils/Date";
-import { GameCard } from "./GameCard";
+import { GameCard2 } from "./GameCard2";
 
 type OwnProps = {
   games: DbGame[];
@@ -38,7 +38,7 @@ export function GamesCardView({ games }: OwnProps) {
       <Flex className="mb-10" flexGrow="1" gap="25px" wrap="wrap">
         {gamesForDate.map((game) => (
           <div key={game.id} style={{ flexBasis: "calc(33.33% - 16.66px)" }}>
-            <GameCard key={game.id} game={game} editable={!!auth.user} />
+            <GameCard2 key={game.id} game={game} editable={!!auth.user} />
           </div>
         ))}
       </Flex>

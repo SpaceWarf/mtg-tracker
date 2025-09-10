@@ -1,6 +1,6 @@
 import { faCrown, faDice } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Flex, Grid, Tooltip } from "@radix-ui/themes";
+import { Box, Flex, Grid, Tooltip } from "@radix-ui/themes";
 import { useNavigate } from "react-router";
 import "../../assets/styles/PlayerCard.scss";
 import { PlayerWithStats } from "../../state/Player";
@@ -28,13 +28,11 @@ export function PlayerCard2({ player, editable, showActions }: OwnProps) {
     >
       <Flex className="h-full" direction="column" justify="between">
         <Flex className="content-container" direction="column" gap="3">
-          <div>
-            <PlayerHeader2
-              player={player}
-              editable={editable}
-              showActions={showActions}
-            />
-          </div>
+          <PlayerHeader2
+            player={player}
+            editable={editable}
+            showActions={showActions}
+          />
           <Flex justify="between">
             <Grid columns="2" gapX="4">
               <Tooltip content="Games Played">
@@ -50,7 +48,7 @@ export function PlayerCard2({ player, editable, showActions }: OwnProps) {
                 </Flex>
               </Tooltip>
             </Grid>
-            <div className="win-percent-container">
+            <Box className="win-percent-container">
               <SimplePieChart
                 value={player.winRate}
                 label="Win %"
@@ -60,7 +58,7 @@ export function PlayerCard2({ player, editable, showActions }: OwnProps) {
                   "100": "#5abe8c",
                 }}
               />
-            </div>
+            </Box>
           </Flex>
         </Flex>
       </Flex>

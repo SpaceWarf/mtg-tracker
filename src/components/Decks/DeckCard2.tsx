@@ -1,6 +1,6 @@
 import { faCrown, faDice } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Flex, Tooltip } from "@radix-ui/themes";
+import { Box, Flex, Tooltip } from "@radix-ui/themes";
 import { useNavigate } from "react-router";
 import "../../assets/styles/DeckCard.scss";
 import { DeckWithStats } from "../../state/Deck";
@@ -29,13 +29,11 @@ export function DeckCard2({ deck, editable, showActions }: OwnProps) {
     >
       <Flex className="h-full" direction="column" justify="between">
         <Flex className="content-container" direction="column" gap="3">
-          <div>
-            <DeckHeader2
-              deck={deck}
-              editable={editable}
-              showActions={showActions}
-            />
-          </div>
+          <DeckHeader2
+            deck={deck}
+            editable={editable}
+            showActions={showActions}
+          />
           <Flex justify="between">
             <Flex mt="2" gap="4">
               <Tooltip content="Games Played">
@@ -51,7 +49,7 @@ export function DeckCard2({ deck, editable, showActions }: OwnProps) {
                 </Flex>
               </Tooltip>
             </Flex>
-            <div className="win-percent-container mt-[-20px]">
+            <Box className="win-percent-container mt-[-20px]">
               <SimplePieChart
                 value={deck.winRate}
                 label="Win %"
@@ -61,12 +59,12 @@ export function DeckCard2({ deck, editable, showActions }: OwnProps) {
                   "100": "#5abe8c",
                 }}
               />
-            </div>
+            </Box>
           </Flex>
         </Flex>
-        <Flex className="tags-container">
+        <Box className="additional-container">
           <DeckTags deck={deck} />
-        </Flex>
+        </Box>
       </Flex>
     </div>
   );
