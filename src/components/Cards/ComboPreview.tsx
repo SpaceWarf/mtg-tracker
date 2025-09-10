@@ -31,7 +31,7 @@ export function ComboPreview({ combo }: OwnProps) {
     <div className="combo-preview" onClick={handleClick}>
       <Flex direction="column" gap="1" align="center">
         <p className="combo-name">{combo.name.split(" (")[0]}</p>
-        <Flex gap="1" align="center">
+        <Flex justify="center" gap="1" wrap="wrap">
           {cardsUris.map((cardUris) => (
             <CardPreview
               key={cardUris.uri}
