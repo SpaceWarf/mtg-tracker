@@ -632,26 +632,27 @@ export function DeckByIdViewer() {
                       title="Good Matchups"
                       icon={<FontAwesomeIcon icon={faSmile} />}
                     >
-                      <Grid
-                        gap="5"
-                        columns={{
-                          initial: "1",
-                          xs: "2",
-                          sm: "3",
-                          lg: "4",
-                          xl: "5",
-                        }}
-                      >
-                        {goodMatchups.map((matchup) => (
-                          <CommanderPreview
-                            key={matchup.deck}
-                            deck={matchup.deck}
-                            won={matchup.won}
-                            lost={matchup.lost}
-                            good
-                          />
-                        ))}
-                      </Grid>
+                      <Flex justify="center">
+                        <Grid
+                          gap="5"
+                          columns={{
+                            initial: "1",
+                            xs: "2",
+                            lg: "4",
+                            xl: "5",
+                          }}
+                        >
+                          {goodMatchups.map((matchup) => (
+                            <CommanderPreview
+                              key={matchup.deck}
+                              deck={matchup.deck}
+                              won={matchup.won}
+                              lost={matchup.lost}
+                              good
+                            />
+                          ))}
+                        </Grid>
+                      </Flex>
                     </DataCard>
                   )}
                   {badMatchups.length > 0 && (
@@ -659,25 +660,26 @@ export function DeckByIdViewer() {
                       title="Bad Matchups"
                       icon={<FontAwesomeIcon icon={faFrown} />}
                     >
-                      <Grid
-                        gap="5"
-                        columns={{
-                          initial: "1",
-                          xs: "2",
-                          sm: "3",
-                          lg: "4",
-                          xl: "5",
-                        }}
-                      >
-                        {badMatchups.map((matchup) => (
-                          <CommanderPreview
-                            key={matchup.deck}
-                            deck={matchup.deck}
-                            won={matchup.won}
-                            lost={matchup.lost}
-                          />
-                        ))}
-                      </Grid>
+                      <Flex justify="center">
+                        <Grid
+                          gap="5"
+                          columns={{
+                            initial: "1",
+                            xs: "2",
+                            lg: "4",
+                            xl: "5",
+                          }}
+                        >
+                          {badMatchups.map((matchup) => (
+                            <CommanderPreview
+                              key={matchup.deck}
+                              deck={matchup.deck}
+                              won={matchup.won}
+                              lost={matchup.lost}
+                            />
+                          ))}
+                        </Grid>
+                      </Flex>
                     </DataCard>
                   )}
                   {Object.keys(populatedDeck.playerStats).length > 0 && (
@@ -685,29 +687,30 @@ export function DeckByIdViewer() {
                       title="Most Played By"
                       icon={<FontAwesomeIcon icon={faUsers} />}
                     >
-                      <Grid
-                        gap="5"
-                        columns={{
-                          initial: "1",
-                          xs: "2",
-                          sm: "3",
-                          lg: "4",
-                          xl: "5",
-                        }}
-                      >
-                        {Object.entries(populatedDeck.playerStats)
-                          .sort((a, b) => b[1].played - a[1].played)
-                          .slice(0, 5)
-                          .map(([player, stats]) => (
-                            <PlayerPreview
-                              key={player}
-                              player={player}
-                              won={stats.won}
-                              lost={stats.lost}
-                              good
-                            />
-                          ))}
-                      </Grid>
+                      <Flex justify="center">
+                        <Grid
+                          gap="5"
+                          columns={{
+                            initial: "1",
+                            xs: "2",
+                            lg: "4",
+                            xl: "5",
+                          }}
+                        >
+                          {Object.entries(populatedDeck.playerStats)
+                            .sort((a, b) => b[1].played - a[1].played)
+                            .slice(0, 5)
+                            .map(([player, stats]) => (
+                              <PlayerPreview
+                                key={player}
+                                player={player}
+                                won={stats.won}
+                                lost={stats.lost}
+                                good
+                              />
+                            ))}
+                        </Grid>
+                      </Flex>
                     </DataCard>
                   )}
                 </>

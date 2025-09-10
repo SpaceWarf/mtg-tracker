@@ -198,33 +198,35 @@ export function PlayerByIdViewer() {
                   title="Most Played Decks"
                   icon={<FontAwesomeIcon icon={faHeart} />}
                 >
-                  <Grid
-                    gap="5"
-                    columns={{
-                      initial: "1",
-                      xs: "2",
-                      lg: "4",
-                      xl: "5",
-                    }}
-                  >
-                    {Array.from(populatedPlayer.deckStatsMap.entries())
-                      .sort(
-                        (a, b) =>
-                          b[1].played - a[1].played ||
-                          b[1].won - a[1].won ||
-                          a[1].lost - b[1].lost
-                      )
-                      .slice(0, 5)
-                      .map(([deck, stats]) => (
-                        <CommanderPreview
-                          key={deck}
-                          deck={deck}
-                          won={stats.won}
-                          lost={stats.lost}
-                          good
-                        />
-                      ))}
-                  </Grid>
+                  <Flex justify="center">
+                    <Grid
+                      gap="5"
+                      columns={{
+                        initial: "1",
+                        xs: "2",
+                        lg: "4",
+                        xl: "5",
+                      }}
+                    >
+                      {Array.from(populatedPlayer.deckStatsMap.entries())
+                        .sort(
+                          (a, b) =>
+                            b[1].played - a[1].played ||
+                            b[1].won - a[1].won ||
+                            a[1].lost - b[1].lost
+                        )
+                        .slice(0, 5)
+                        .map(([deck, stats]) => (
+                          <CommanderPreview
+                            key={deck}
+                            deck={deck}
+                            won={stats.won}
+                            lost={stats.lost}
+                            good
+                          />
+                        ))}
+                    </Grid>
+                  </Flex>
                 </DataCard>
               )}
               {populatedPlayer.deckStatsMap.size > 0 && (
@@ -232,33 +234,35 @@ export function PlayerByIdViewer() {
                   title="Best Decks"
                   icon={<FontAwesomeIcon icon={faStar} />}
                 >
-                  <Grid
-                    gap="5"
-                    columns={{
-                      initial: "1",
-                      xs: "2",
-                      lg: "4",
-                      xl: "5",
-                    }}
-                  >
-                    {Array.from(populatedPlayer.deckStatsMap.entries())
-                      .sort(
-                        (a, b) =>
-                          b[1].winRate - a[1].winRate ||
-                          b[1].played - a[1].played ||
-                          a[1].lost - b[1].lost
-                      )
-                      .slice(0, 5)
-                      .map(([deck, stats]) => (
-                        <CommanderPreview
-                          key={deck}
-                          deck={deck}
-                          won={stats.won}
-                          lost={stats.lost}
-                          good
-                        />
-                      ))}
-                  </Grid>
+                  <Flex justify="center">
+                    <Grid
+                      gap="5"
+                      columns={{
+                        initial: "1",
+                        xs: "2",
+                        lg: "4",
+                        xl: "5",
+                      }}
+                    >
+                      {Array.from(populatedPlayer.deckStatsMap.entries())
+                        .sort(
+                          (a, b) =>
+                            b[1].winRate - a[1].winRate ||
+                            b[1].played - a[1].played ||
+                            a[1].lost - b[1].lost
+                        )
+                        .slice(0, 5)
+                        .map(([deck, stats]) => (
+                          <CommanderPreview
+                            key={deck}
+                            deck={deck}
+                            won={stats.won}
+                            lost={stats.lost}
+                            good
+                          />
+                        ))}
+                    </Grid>
+                  </Flex>
                 </DataCard>
               )}
             </Grid>
