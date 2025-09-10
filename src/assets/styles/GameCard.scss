@@ -1,7 +1,7 @@
 @use "../styles/colours" as c;
 @use "../styles/ItemCard.scss";
 
-.game-card {
+.game-card.item-card {
   @extend .item-card;
   background-image: none;
 }
