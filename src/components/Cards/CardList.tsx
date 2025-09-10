@@ -2,6 +2,7 @@ import { Flex, Grid, Tabs, Text } from "@radix-ui/themes";
 import { useMemo } from "react";
 import { useDecks } from "../../hooks/useDecks";
 import { useMousePosition } from "../../hooks/useMousePosition";
+import { useWindowDimensions } from "../../hooks/useWindowDimensions";
 import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { CARD_SORT_FCTS } from "../../state/CardSortFcts";
@@ -44,6 +45,31 @@ export function CardList({
 }: OwnProps) {
   const { dbDecks } = useDecks();
   const mousePosition = useMousePosition();
+  const { windowWidth } = useWindowDimensions();
+
+  const screenWidthColumnOffset = useMemo(() => {
+    if (windowWidth < 520) {
+      return 1 - columnCount;
+    }
+
+    if (windowWidth < 768) {
+      return -2;
+    }
+
+    if (windowWidth < 1024) {
+      return -1;
+    }
+
+    if (windowWidth < 1280) {
+      return -2;
+    }
+
+    if (windowWidth < 1640) {
+      return -1;
+    }
+
+    return 0;
+  }, [columnCount, windowWidth]);
 
   const versions = useMemo(() => {
     return deck.versions ?? [];
@@ -364,8 +390,12 @@ export function CardList({
   ]);
 
   const adjustedColumnCount = useMemo(() => {
-    return columnCount - (selectedVersionId !== "latest" ? 1 : 0);
-  }, [columnCount, selectedVersionId]);
+    return (
+      columnCount -
+      (selectedVersionId !== "latest" ? 1 : 0) +
+      screenWidthColumnOffset
+    );
+  }, [columnCount, screenWidthColumnOffset, selectedVersionId]);
 
   const categoryColumns: CategoryCardList[][] = useMemo(() => {
     return categoryCardLists.reduce((acc, category, index) => {
@@ -437,7 +467,7 @@ export function CardList({
         </Tabs.Root>
       )}
 
-      <Grid gap="20px" columns={`${columnCount}`}>
+      <Grid gap="20px" columns={`${adjustedColumnCount}`}>
         {categoryColumns.map((column, index) => (
           <Flex key={index} direction="column" gap="20px">
             {column.map((category) => (

@@ -118,6 +118,32 @@ export function DeckByIdViewer() {
     return getDeckBadMatchups(populatedDeck);
   }, [populatedDeck]);
 
+  const cardPreviewSectionCount = useMemo(() => {
+    let count = 0;
+
+    if (!populatedDeck) {
+      return count;
+    }
+
+    if (populatedDeck.gameChangers.length > 0) {
+      count++;
+    }
+
+    if (populatedDeck.tutors.length > 0) {
+      count++;
+    }
+
+    if (populatedDeck.extraTurns.length > 0) {
+      count++;
+    }
+
+    if (populatedDeck.massLandDenials.length > 0) {
+      count++;
+    }
+
+    return count;
+  }, [populatedDeck]);
+
   useEffect(() => {
     if (!loading && id && !deck) {
       navigate("/decks");
@@ -407,7 +433,13 @@ export function DeckByIdViewer() {
               {viewType === DeckByIdViewType.STATS && (
                 <>
                   <DeckStatsSection deck={populatedDeck} />
-                  <Grid gap="5" columns={{ initial: "1", lg: "2" }}>
+                  <Grid
+                    gap="5"
+                    columns={{
+                      initial: "1",
+                      lg: `${Math.min(2, cardPreviewSectionCount)}`,
+                    }}
+                  >
                     {populatedDeck.gameChangers.length > 0 && (
                       <DeckCardPreviewSection
                         title={`Game Changers (${populatedDeck.gameChangers.length})`}

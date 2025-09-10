@@ -47,7 +47,7 @@ export function CardListFilters({
   }, [groupBy, sortBy, search, showVersionGraph, onChange]);
 
   return (
-    <Flex className="mb-5" gap="5">
+    <Flex className="mb-5" gap="5" wrap="wrap">
       <div className="w-60">
         <Heading className="mb-1" size="3">
           Search
