@@ -1,4 +1,4 @@
-import { Flex, Heading, Spinner, Switch, Text } from "@radix-ui/themes";
+import { Box, Flex, Heading, Spinner } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -10,7 +10,6 @@ import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { GameSortFctKey } from "../../state/GameSortFctKey";
 import { GAME_SORT_FCTS, getGameSortFctName } from "../../state/GameSortFcts";
-import { GameViewType } from "../../state/GameViewType";
 import { DbPlayer } from "../../state/Player";
 import { SelectOption } from "../../state/SelectOption";
 import { SortFctType } from "../../state/SortFctType";
@@ -25,12 +24,10 @@ import { PlayerSelect } from "../Select/PlayerSelect";
 import { SortFctSelect } from "../Select/SortFctSelect";
 import { GameCreateModal } from "./GameCreateModal";
 import { GamesCardView } from "./GamesCardView";
-import { GamesTableView } from "./GamesTableView";
 
 export function GamesViewer() {
   const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [viewType, setViewType] = useState<GameViewType>(GameViewType.CARDS);
   const [sortFctKey, setSortFctKey] = useState<SelectOption>(
     searchParams.get("sort")
       ? {
@@ -199,31 +196,9 @@ export function GamesViewer() {
 
   return (
     <div className="p-5 w-full max-w-[1750px]">
-      <Flex className="mb-5" justify="between">
+      <Flex className="mb-5" justify="between" wrap="wrap">
         <Flex gap="5" wrap="wrap">
-          <div>
-            <Heading className="mb-2" size="3">
-              View type
-            </Heading>
-            <Text as="label" size="2">
-              <Flex gap="2">
-                Table
-                <Switch
-                  size="2"
-                  checked={viewType === GameViewType.CARDS}
-                  onClick={() =>
-                    setViewType(
-                      viewType === GameViewType.CARDS
-                        ? GameViewType.TABLE
-                        : GameViewType.CARDS
-                    )
-                  }
-                />
-                Cards
-              </Flex>
-            </Text>
-          </div>
-          <div>
+          <Box width={{ initial: "100%", xs: "60" }}>
             <Heading className="mb-1" size="3">
               Sort by
             </Heading>
@@ -232,8 +207,8 @@ export function GamesViewer() {
               value={sortFctKey.value}
               onChange={handleSort}
             />
-          </div>
-          <div>
+          </Box>
+          <Box width={{ initial: "100%", xs: "60" }}>
             <Heading className="mb-1" size="3">
               Include players
             </Heading>
@@ -242,8 +217,8 @@ export function GamesViewer() {
               onChange={handleSetVisiblePlayers}
               isMulti
             />
-          </div>
-          <div>
+          </Box>
+          <Box width={{ initial: "100%", xs: "60" }}>
             <Heading className="mb-1" size="3">
               Exclude players
             </Heading>
@@ -252,8 +227,8 @@ export function GamesViewer() {
               onChange={handleSetExcludedPlayers}
               isMulti
             />
-          </div>
-          <div className="max-w-96">
+          </Box>
+          <Box width={{ initial: "100%", xs: "60" }}>
             <Heading className="mb-1" size="3">
               Include decks
             </Heading>
@@ -262,8 +237,8 @@ export function GamesViewer() {
               onChange={handleSetVisibleDecks}
               isMulti
             />
-          </div>
-          <div className="max-w-96">
+          </Box>
+          <Box width={{ initial: "100%", xs: "60" }}>
             <Heading className="mb-1" size="3">
               Exclude decks
             </Heading>
@@ -272,22 +247,17 @@ export function GamesViewer() {
               onChange={handleSetExcludedDecks}
               isMulti
             />
-          </div>
+          </Box>
         </Flex>
-        <Flex className="w-60" justify="end">
-          <div>{auth.user && <GameCreateModal />}</div>
-        </Flex>
+        <Box width={{ initial: "100%", xs: "60" }}>
+          <Flex className="mt-6" align="center" gap="3" justify="center">
+            <div>{auth.user && <GameCreateModal />}</div>
+          </Flex>
+        </Box>
       </Flex>
 
       {filteredGames.length ? (
-        <>
-          {viewType === GameViewType.CARDS && (
-            <GamesCardView games={filteredGames} />
-          )}
-          {viewType === GameViewType.TABLE && (
-            <GamesTableView games={filteredGames} />
-          )}
-        </>
+        <GamesCardView games={filteredGames} />
       ) : (
         <div>No results for applied filters.</div>
       )}
