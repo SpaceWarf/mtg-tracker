@@ -4,7 +4,7 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Flex, Heading, Text } from "@radix-ui/themes";
+import { Box, Button, Flex, Heading, Text } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { useGameChangers } from "../../hooks/useGameChangers";
@@ -143,8 +143,8 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
       icon={<FontAwesomeIcon icon={faCodePullRequest} />}
     >
       <Flex direction="column" gap="5">
-        <Flex gap="5" mb="3">
-          <Flex direction="column" width="300px">
+        <Flex gap="5" mb="3" wrap="wrap">
+          <Box width={{ initial: "100%", xs: "300px" }}>
             <Heading className="mb-1" size="3">
               Version to merge
             </Heading>
@@ -169,9 +169,10 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
                 is used in games and cannot be merged.
               </Text>
             )}
-          </Flex>
+          </Box>
           <Button
-            className="h-10 mt-[24px]"
+            className="h-10"
+            mt={{ initial: "0", xs: "24px" }}
             onClick={handlePreviewMerge}
             disabled={!canMerge || merging || !!previewVersions}
           >
@@ -181,7 +182,8 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
           {previewVersions && (
             <Flex gap="5">
               <Button
-                className="h-10 mt-[24px]"
+                className="h-10"
+                mt={{ initial: "0", xs: "24px" }}
                 onClick={handleConfirmMerge}
                 disabled={merging}
                 loading={merging}
@@ -190,7 +192,8 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
                 Confirm Merge
               </Button>
               <Button
-                className="h-10 mt-[24px]"
+                className="h-10"
+                mt={{ initial: "0", xs: "24px" }}
                 variant="outline"
                 onClick={handleCancelMerge}
                 disabled={merging}
