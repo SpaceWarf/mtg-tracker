@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@radix-ui/themes";
+import { Grid, Heading } from "@radix-ui/themes";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { DbGame } from "../../state/Game";
@@ -32,16 +32,14 @@ export function GamesCardView({ games }: OwnProps) {
 
   return Array.from(dateMap.entries()).map(([date, gamesForDate]) => (
     <div key={date}>
-      <Heading className="mb-5 pb-2 border-b">
+      <Heading className="mb-5 mt-5 pb-2 border-b">
         {getLongDateString(date)}
       </Heading>
-      <Flex className="mb-10" flexGrow="1" gap="25px" wrap="wrap">
+      <Grid columns={{ initial: "1", md: "2", xl: "3" }} gap="5">
         {gamesForDate.map((game) => (
-          <div key={game.id} style={{ flexBasis: "calc(33.33% - 16.66px)" }}>
-            <GameCard2 key={game.id} game={game} editable={!!auth.user} />
-          </div>
+          <GameCard2 key={game.id} game={game} editable={!!auth.user} />
         ))}
-      </Flex>
+      </Grid>
     </div>
   ));
 }
