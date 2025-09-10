@@ -76,11 +76,11 @@ export function DeckHeader2({ deck, editable, showActions }: OwnProps) {
 
       <Flex className="deck-header" justify="between">
         <Flex className="name-container" direction="column" gap="1">
-          <Flex align="center" gap="1">
+          <Flex align="center" gap="1" wrap="wrap">
             <p className="deck-name">{deck.name}</p>
             <p className="deck-version">v{(deck.versions?.length ?? 0) + 1}</p>
           </Flex>
-          <Flex gap="1">
+          <Flex gap="1" wrap="wrap">
             <p className="deck-commander">{deck.commander}</p>
             {deck.externalId && <DeckColourIdentity deck={deck} />}
           </Flex>
