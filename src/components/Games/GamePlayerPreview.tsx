@@ -66,7 +66,7 @@ export function GamePlayerPreview({ player }: OwnProps) {
         gap="2"
         onClick={handlePlayerClick}
       >
-        <p>{player.playerObj.name}</p>
+        <p className="player-name">{player.playerObj.name}</p>
         <Flex gap="2">
           {player.won && <GameWonIcon />}
           {player.t1SolRing && <SolRingIcon />}

@@ -42,7 +42,7 @@
         var(--player-url);
     }
 
-    p {
+    .player-name {
       color: c.$text-primary;
       font-size: 2rem;
       font-weight: bold;
@@ -79,7 +79,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
 
     .deck-commander {
