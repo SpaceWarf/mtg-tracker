@@ -66,7 +66,7 @@ export function DeckSyncModal() {
   return (
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
-        <Button className="h-10" variant="soft">
+        <Button className="h-10" variant="soft" color="gray">
           <FontAwesomeIcon icon={faRotate} />
           Sync All
         </Button>

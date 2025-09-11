@@ -206,7 +206,9 @@ export function GamesViewer() {
           icon={<FontAwesomeIcon icon={faDice} />}
           direction="row"
         >
-          <div>{auth.user && <GameCreateModal />}</div>
+          <Grid width="125px" gap="3" columns="1">
+            {auth.user && <GameCreateModal />}
+          </Grid>
         </DataCard>
         <DataCard
           title="Filters"

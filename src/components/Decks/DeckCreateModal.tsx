@@ -99,9 +99,9 @@ export function DeckCreateModal() {
   return (
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
-        <Button className="h-10">
+        <Button className="h-10" variant="soft">
           <FontAwesomeIcon icon={faPlus} />
-          Create New Deck
+          Create
         </Button>
       </Dialog.Trigger>
 

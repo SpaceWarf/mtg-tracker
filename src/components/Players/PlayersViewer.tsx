@@ -76,7 +76,9 @@ export function PlayersViewer() {
           icon={<FontAwesomeIcon icon={faUsers} />}
           direction="row"
         >
-          <div>{auth.user && <PlayerCreateModal />}</div>
+          <Grid width="125px" gap="3" columns="1">
+            {auth.user && <PlayerCreateModal />}
+          </Grid>
         </DataCard>
         <DataCard
           title="Filters"

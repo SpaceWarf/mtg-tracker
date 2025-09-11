@@ -1,5 +1,7 @@
+import { faFilter, faLayerGroup } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { Box, Flex, Heading, Spinner, TextField } from "@radix-ui/themes";
+import { Box, Grid, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -13,6 +15,7 @@ import { IdentityLabel } from "../../state/IdentityLabel";
 import { SortFctType } from "../../state/SortFctType";
 import { getBracket } from "../../utils/Bracket";
 import { getColourIdentityLabel } from "../../utils/Deck";
+import { DataCard } from "../Common/DataCard";
 import { NoResults } from "../Common/NoResults";
 import { BracketSelect } from "../Common/Select/BracketSelect";
 import { IdentitySelect } from "../Common/Select/IdentitySelect";
@@ -134,80 +137,96 @@ export function DecksViewer() {
 
   return (
     <div className="p-5 w-full max-w-[1950px]">
-      <Flex className="data-card mb-5" justify="between" wrap="wrap">
-        <Flex gap="5" wrap="wrap">
-          <Box width={{ initial: "100%", xs: "60" }}>
-            <Heading className="mb-1" size="3">
-              Search
-            </Heading>
-            <TextField.Root
-              className="input-field"
-              placeholder="Search…"
-              value={search}
-              onChange={({ target }) => handleSearch(target.value)}
-            >
-              <TextField.Slot>
-                <MagnifyingGlassIcon height="16" width="16" />
-              </TextField.Slot>
-            </TextField.Root>
-          </Box>
-          <Box width={{ initial: "100%", xs: "60" }}>
-            <Heading className="mb-1" size="3">
-              Sort by
-            </Heading>
-            <SortFctSelect
-              type={SortFctType.DECK}
-              value={sortFctKey}
-              onChange={handleSort}
-            />
-          </Box>
-          <Box width={{ initial: "100%", xs: "60" }}>
-            <Heading className="mb-1" size="3">
-              Builder
-            </Heading>
-            <PlayerSelect
-              value={visiblePlayer}
-              onChange={handleChangeBuilder}
-              isMulti={false}
-            />
-          </Box>
-          <Box width={{ initial: "100%", xs: "60" }}>
-            <Heading className="mb-1" size="3">
-              Bracket
-            </Heading>
-            <BracketSelect
-              value={bracket as Bracket}
-              onChange={handleChangeBracket}
-            />
-          </Box>
-          <Box width={{ initial: "100%", xs: "60" }}>
-            <Heading className="mb-1" size="3">
-              Identity
-            </Heading>
-            <IdentitySelect
-              value={identity as IdentityLabel}
-              onChange={handleChangeIdentity}
-            />
-          </Box>
-        </Flex>
-        {auth.user && (
-          <Box width={{ initial: "100%", xs: "60" }}>
-            <Flex className="mt-6" align="center" gap="3" justify="center">
+      <Grid columns="1" gap="5">
+        <DataCard
+          title="Decks"
+          icon={<FontAwesomeIcon icon={faLayerGroup} />}
+          direction="row"
+        >
+          {auth.user && (
+            <Grid width="250px" gap="3" columns="2">
               <DeckSyncModal />
               <DeckCreateModal />
-            </Flex>
-          </Box>
+            </Grid>
+          )}
+        </DataCard>
+        <DataCard
+          title="Filters"
+          icon={<FontAwesomeIcon icon={faFilter} />}
+          collapsable
+          defaultCollapsed
+        >
+          <Grid
+            gap="5"
+            columns={{ initial: "1", xs: "2", sm: "3", md: "4", lg: "5" }}
+          >
+            <Box>
+              <Heading className="mb-1" size="3">
+                Search
+              </Heading>
+              <TextField.Root
+                className="input-field"
+                placeholder="Search…"
+                value={search}
+                onChange={({ target }) => handleSearch(target.value)}
+              >
+                <TextField.Slot>
+                  <MagnifyingGlassIcon height="16" width="16" />
+                </TextField.Slot>
+              </TextField.Root>
+            </Box>
+            <Box>
+              <Heading className="mb-1" size="3">
+                Sort by
+              </Heading>
+              <SortFctSelect
+                type={SortFctType.DECK}
+                value={sortFctKey}
+                onChange={handleSort}
+              />
+            </Box>
+            <Box>
+              <Heading className="mb-1" size="3">
+                Builder
+              </Heading>
+              <PlayerSelect
+                value={visiblePlayer}
+                onChange={handleChangeBuilder}
+                isMulti={false}
+              />
+            </Box>
+            <Box>
+              <Heading className="mb-1" size="3">
+                Bracket
+              </Heading>
+              <BracketSelect
+                value={bracket as Bracket}
+                onChange={handleChangeBracket}
+              />
+            </Box>
+            <Box>
+              <Heading className="mb-1" size="3">
+                Identity
+              </Heading>
+              <IdentitySelect
+                value={identity as IdentityLabel}
+                onChange={handleChangeIdentity}
+              />
+            </Box>
+          </Grid>
+        </DataCard>
+        {filteredDecks.length ? (
+          <DecksCardView
+            decks={filteredDecks}
+            highlightedKey={DECK_SORT_FCTS[sortFctKey].highlightedKey}
+            highlightedDirection={
+              DECK_SORT_FCTS[sortFctKey].highlightedDirection
+            }
+          />
+        ) : (
+          <NoResults />
         )}
-      </Flex>
-      {filteredDecks.length ? (
-        <DecksCardView
-          decks={filteredDecks}
-          highlightedKey={DECK_SORT_FCTS[sortFctKey].highlightedKey}
-          highlightedDirection={DECK_SORT_FCTS[sortFctKey].highlightedDirection}
-        />
-      ) : (
-        <NoResults />
-      )}
+      </Grid>
     </div>
   );
 }
