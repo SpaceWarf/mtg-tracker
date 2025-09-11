@@ -7,11 +7,21 @@ $text-secondary: #c4c4c4;
 $text-muted: #a1a1a1;
 
 $border-primary: #404040;
+$border-hover: #737373;
 
-$card-background: #202020;
-$card-background-dark: #272727;
-$card-background-darker: #2f2f2f;
+$background-primary: #111113;
+$background-secondary: #202020;
+$background-tertiary: #272727;
+$background-hover: #383838;
+
+$card-background: $background-secondary;
+$card-background-secondary: $background-tertiary;
+$card-background-hover: $background-hover;
 $card-border: $border-primary;
-$card-border-hover: #737373;
+$card-border-hover: $border-hover;
+
+$dropdown-background: $background-secondary;
+$dropdown-item-hover: $background-hover;
+$dropdown-border: $border-primary;
 
 $tooltip-background: #505050;
