@@ -32,14 +32,16 @@
   &.large img {
     height: 350px;
     min-width: calc(350px * 0.714);
+    width: calc(350px * 0.714);
   }
 
   &.small,
   &.small .card-stack,
   &.small .card-stack-card,
   &.small img {
-    height: 250px;
-    min-width: calc(250px * 0.714);
+    height: 275px;
+    min-width: calc(275px * 0.714);
+    width: calc(275px * 0.714);
   }
 
   img,

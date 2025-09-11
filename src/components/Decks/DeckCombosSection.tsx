@@ -1,6 +1,6 @@
 import { faInfinity } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Flex } from "@radix-ui/themes";
+import { Flex, Grid } from "@radix-ui/themes";
 import { useMemo } from "react";
 import "../../assets/styles/DeckCombosSections.scss";
 import { DeckWithStats } from "../../state/Deck";
@@ -43,11 +43,15 @@ export function DeckCombosSection({ deck }: OwnProps) {
           <div className="section-title-container">
             <p className="section-title">Early Game 2 Card Combos</p>
           </div>
-          <Flex gap="7" wrap="wrap" mt="3">
+          <Grid
+            columns={{ initial: "1", sm: "2", md: "1", lg: "2" }}
+            gap="5"
+            mt="3"
+          >
             {early2CardCombos.map((combo) => (
               <ComboPreview key={combo.name} combo={combo} />
             ))}
-          </Flex>
+          </Grid>
         </Flex>
       )}
       {late2CardCombos.length > 0 && (
@@ -55,11 +59,15 @@ export function DeckCombosSection({ deck }: OwnProps) {
           <div className="section-title-container">
             <p className="section-title">Late Game 2 Card Combos</p>
           </div>
-          <Flex gap="7" wrap="wrap" mt="3">
+          <Grid
+            columns={{ initial: "1", sm: "2", md: "1", lg: "2" }}
+            gap="5"
+            mt="3"
+          >
             {late2CardCombos.map((combo) => (
               <ComboPreview key={combo.name} combo={combo} />
             ))}
-          </Flex>
+          </Grid>
         </Flex>
       )}
       {otherCombos.length > 0 && (
@@ -67,11 +75,15 @@ export function DeckCombosSection({ deck }: OwnProps) {
           <div className="section-title-container">
             <p className="section-title">3+ Card Combos</p>
           </div>
-          <Flex gap="7" wrap="wrap" mt="3">
+          <Grid
+            columns={{ initial: "1", sm: "2", md: "1", lg: "2" }}
+            gap="5"
+            mt="3"
+          >
             {otherCombos.map((combo) => (
               <ComboPreview key={combo.name} combo={combo} />
             ))}
-          </Flex>
+          </Grid>
         </Flex>
       )}
     </DataCard>

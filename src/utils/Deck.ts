@@ -135,7 +135,7 @@ export function getDeckGoodMatchups(deck: DeckWithStats): DeckMatchup[] {
       (a, b) => b.winRate - a.winRate || b.played - a.played || b.won - a.won
     )
     .filter((matchup) => matchup.won > 0)
-    .slice(0, 5);
+    .slice(0, 4);
 }
 
 export function getDeckBadMatchups(deck: DeckWithStats): DeckMatchup[] {
@@ -144,7 +144,7 @@ export function getDeckBadMatchups(deck: DeckWithStats): DeckMatchup[] {
       (a, b) => a.winRate - b.winRate || b.played - a.played || a.lost - b.lost
     )
     .filter((matchup) => matchup.lost > 0)
-    .slice(0, 5);
+    .slice(0, 4);
 }
 
 export function getDeckPlayerStats(

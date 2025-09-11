@@ -246,7 +246,7 @@ export function DeckByIdViewer() {
         />
       )}
 
-      <div className="deck-by-id-viewer p-5 w-full max-w-[1750px]">
+      <div className="deck-by-id-viewer p-5 w-full max-w-[1950px]">
         <Grid columns="1" gap="5">
           <DataCard direction="row">
             {windowWidth > (showVersionManagerTab ? 1024 : 800) ? (
@@ -668,7 +668,6 @@ export function DeckByIdViewer() {
                             initial: "1",
                             xs: "2",
                             lg: "4",
-                            xl: "5",
                           }}
                           width="100%"
                         >
@@ -696,7 +695,6 @@ export function DeckByIdViewer() {
                             initial: "1",
                             xs: "2",
                             lg: "4",
-                            xl: "5",
                           }}
                           width="100%"
                         >

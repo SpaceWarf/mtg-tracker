@@ -28,18 +28,25 @@ export function ComboPreview({ combo }: OwnProps) {
   }
 
   return (
-    <div className="combo-preview" onClick={handleClick}>
-      <Flex direction="column" gap="1" align="center">
+    <div className="combo-card selectable" onClick={handleClick}>
+      <Flex
+        className="content-container"
+        direction="column"
+        gap="1"
+        align="center"
+      >
         <p className="combo-name">{combo.name.split(" (")[0]}</p>
-        <Flex justify="center" gap="1" wrap="wrap">
-          {cardsUris.map((cardUris) => (
-            <CardPreview
-              key={cardUris.uri}
-              cardUris={[cardUris]}
-              size="small"
-            />
-          ))}
-        </Flex>
+        <div className="cards-container">
+          <Flex className="cards-container-inner" gap="2">
+            {cardsUris.map((cardUris) => (
+              <CardPreview
+                key={cardUris.uri}
+                cardUris={[cardUris]}
+                size="small"
+              />
+            ))}
+          </Flex>
+        </div>
       </Flex>
     </div>
   );
