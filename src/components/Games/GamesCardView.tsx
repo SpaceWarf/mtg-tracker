@@ -36,8 +36,13 @@ export function GamesCardView({ games }: OwnProps) {
         {getLongDateString(date)}
       </Heading>
       <Grid columns={{ initial: "1", md: "2", xl: "3" }} gap="5">
-        {gamesForDate.map((game) => (
-          <GameCard2 key={game.id} game={game} editable={!!auth.user} />
+        {gamesForDate.map((game, index) => (
+          <GameCard2
+            key={game.id}
+            game={game}
+            index={index}
+            editable={!!auth.user}
+          />
         ))}
       </Grid>
     </div>

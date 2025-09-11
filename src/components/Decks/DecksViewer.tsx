@@ -132,7 +132,7 @@ export function DecksViewer() {
   }
 
   return (
-    <div className="p-5 w-full max-w-[1750px]">
+    <div className="p-5 w-full max-w-[1950px]">
       <Flex className="mb-5" justify="between" wrap="wrap">
         <Flex gap="5" wrap="wrap">
           <Box width={{ initial: "100%", xs: "60" }}>

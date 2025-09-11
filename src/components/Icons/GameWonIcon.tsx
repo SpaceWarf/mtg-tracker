@@ -4,7 +4,7 @@ import { Tooltip } from "@radix-ui/themes";
 
 export function GameWonIcon() {
   return (
-    <Tooltip content="Won the game">
+    <Tooltip content="Won">
       <FontAwesomeIcon color="gold" icon={faCrown} />
     </Tooltip>
   );

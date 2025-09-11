@@ -102,7 +102,7 @@ export function PlayerByIdViewer() {
         />
       )}
 
-      <div className="player-by-id-viewer p-5 w-full max-w-[1750px]">
+      <div className="player-by-id-viewer p-5 w-full max-w-[1950px]">
         <Grid columns="1" gap="5">
           <DataCard direction="row">
             <Flex width="100%" gap="5" justify="between" wrap="wrap">

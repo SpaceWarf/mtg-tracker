@@ -246,7 +246,7 @@ export function DeckByIdViewer() {
         />
       )}
 
-      <div className="deck-by-id-viewer p-5 w-full max-w-[1750px]">
+      <div className="deck-by-id-viewer p-5 w-full max-w-[1950px]">
         <Grid columns="1" gap="5">
           <DataCard direction="row">
             {windowWidth > (showVersionManagerTab ? 1024 : 800) ? (
@@ -641,6 +641,7 @@ export function DeckByIdViewer() {
                             lg: "4",
                             xl: "5",
                           }}
+                          width="100%"
                         >
                           {goodMatchups.map((matchup) => (
                             <CommanderPreview
@@ -667,8 +668,8 @@ export function DeckByIdViewer() {
                             initial: "1",
                             xs: "2",
                             lg: "4",
-                            xl: "5",
                           }}
+                          width="100%"
                         >
                           {badMatchups.map((matchup) => (
                             <CommanderPreview
@@ -694,8 +695,8 @@ export function DeckByIdViewer() {
                             initial: "1",
                             xs: "2",
                             lg: "4",
-                            xl: "5",
                           }}
+                          width="100%"
                         >
                           {Object.entries(populatedDeck.playerStats)
                             .sort((a, b) => b[1].played - a[1].played)

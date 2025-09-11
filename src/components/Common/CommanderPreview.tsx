@@ -40,6 +40,7 @@ export function CommanderPreview({ deck, won, lost, good }: OwnProps) {
       key={deck}
       className="commander-preview item-card selectable"
       direction="column"
+      align="center"
       gap="2"
       style={
         {

@@ -85,7 +85,7 @@ export function GameChangersViewer() {
   }
 
   return (
-    <div className="p-5 w-full max-w-[1750px]">
+    <div className="p-5 w-full max-w-[1950px]">
       <Flex direction="column" gap="5">
         <DataCard
           title="Gamer Changers"

@@ -1,0 +1,105 @@
+@use "../styles/colours" as c;
+
+@property --player-url {
+  syntax: "<url>";
+  inherits: true;
+  initial-value: none;
+}
+
+@property --deck-url {
+  syntax: "<url>";
+  inherits: true;
+  initial-value: none;
+}
+
+.game-player-preview {
+  --player-url: none;
+  --deck-url: none;
+  position: relative;
+
+  &.won {
+    box-shadow: 0 0px 8px 0 gold;
+    border-radius: 10px;
+  }
+
+  .player,
+  .deck {
+    height: 100px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 2px solid c.$card-border;
+    padding: 10px;
+    cursor: pointer;
+
+    &:hover {
+      border: 2px solid c.$card-border-hover;
+    }
+  }
+
+  .player {
+    border-radius: 10px 10px 0 0;
+    background-position: 0 0, 0 -50px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+      var(--player-url);
+
+    &:hover {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        var(--player-url);
+    }
+
+    .player-name {
+      color: c.$text-primary;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  }
+
+  .playing-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.9rem;
+    color: c.$text-secondary;
+    background-color: c.$border-primary;
+    padding: 5px 10px;
+    border-radius: 15px;
+  }
+
+  .deck {
+    border-radius: 0 0 10px 10px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+      var(--deck-url);
+
+    &:hover {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        var(--deck-url);
+    }
+
+    .deck-name {
+      color: c.$text-primary;
+      font-size: 1rem;
+      line-height: 1rem;
+      font-weight: bold;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-bottom: 4px;
+    }
+
+    .deck-commander {
+      color: c.$text-secondary;
+      font-size: 0.9rem;
+      line-height: 0.9rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-bottom: 5px;
+    }
+
+    .deck-version {
+      color: c.$text-muted;
+      font-size: 0.75rem;
+    }
+  }
+}

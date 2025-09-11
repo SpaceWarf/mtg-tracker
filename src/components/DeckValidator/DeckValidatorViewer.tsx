@@ -36,7 +36,7 @@ export function DeckValidatorViewer() {
   }
 
   return (
-    <div className="p-5 w-full max-w-[1750px]">
+    <div className="p-5 w-full max-w-[1950px]">
       <Flex direction="column" align="center">
         <Flex width="300px" direction="column" justify="center">
           <div className="mb-3">

@@ -5,14 +5,11 @@
   @extend .item-card;
 
   background-image: radial-gradient(rgba(25, 21, 30, 0.7)), var(--url);
-  padding: 15px;
-  height: 365px;
-  width: 215px;
+  padding: 15px 15px 0 15px;
+  min-width: 225px;
 
   .name {
-    max-width: 215px;
     font-size: 1.2rem;
-    padding-bottom: 25px;
     font-weight: bold;
     color: c.$text-primary;
     overflow: hidden;

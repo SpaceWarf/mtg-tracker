@@ -1,18 +1,30 @@
 @use "../styles/colours" as c;
+@use "../styles/ItemCard.scss";
 
-.combo-preview {
-  cursor: pointer;
-
-  &:hover {
-    .combo-name {
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-  }
+.combo-card {
+  @extend .item-card;
 
   .combo-name {
-    font-size: 1rem;
-    line-height: 1rem;
-    color: c.$text-secondary;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: c.$text-primary;
+    text-align: center;
+  }
+
+  .cards-container {
+    width: 100%;
+    overflow: hidden;
+
+    .cards-container-inner {
+      overflow: auto;
+
+      & > *:first-child {
+        margin-left: auto;
+      }
+
+      & > *:last-child {
+        margin-right: auto;
+      }
+    }
   }
 }

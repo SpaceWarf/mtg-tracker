@@ -23,7 +23,7 @@ const ICON_MAP: Record<BracketRuleIcon, React.ReactNode> = {
 export function BracketsViewer() {
   return (
     <Flex
-      className="p-5 w-full max-w-[1750px] bracket-viewer"
+      className="p-5 w-full max-w-[1950px] bracket-viewer"
       justify="center"
       gap="5"
     >

@@ -5,5 +5,13 @@
   .overflow-container {
     overflow-x: scroll;
     padding-bottom: 15px;
+
+    & > *:first-child {
+      margin-left: auto;
+    }
+
+    & > *:last-child {
+      margin-right: auto;
+    }
   }
 }
