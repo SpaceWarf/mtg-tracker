@@ -4,4 +4,16 @@
 .game-card.item-card {
   @extend .item-card;
   background-image: none;
+
+  .name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: c.$text-primary;
+  }
+
+  .comments {
+    font-size: 0.9rem;
+    color: c.$text-muted;
+    padding-top: 0.2rem;
+  }
 }

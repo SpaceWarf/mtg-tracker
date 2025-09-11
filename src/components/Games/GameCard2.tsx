@@ -10,10 +10,11 @@ import { GamePlayerPreview } from "./GamePlayerPreview";
 
 type OwnProps = {
   game: DbGame;
+  index: number;
   editable?: boolean;
 };
 
-export function GameCard2({ game, editable }: OwnProps) {
+export function GameCard2({ game, index, editable }: OwnProps) {
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
@@ -37,15 +38,12 @@ export function GameCard2({ game, editable }: OwnProps) {
       <Box className="game-card item-card">
         <Flex className="h-full" direction="column" justify="between">
           <Flex className="content-container" direction="column" gap="3">
-            <Flex gap="3" justify="between">
-              <Flex flexGrow="1">
-                <Grid columns={{ initial: "1", xs: "2" }} width="100%" gap="5">
-                  {[game.player1, game.player2, game.player3, game.player4].map(
-                    (player) => (
-                      <GamePlayerPreview key={player.player} player={player} />
-                    )
-                  )}
-                </Grid>
+            <Flex justify="between">
+              <Flex gap="2" align="center">
+                <p className="name">
+                  Game {index + 1} {game.comments ? "-" : ""}
+                </p>
+                <p className="comments">{game.comments}</p>
               </Flex>
               {editable && (
                 <DropdownMenu.Root>
@@ -74,12 +72,14 @@ export function GameCard2({ game, editable }: OwnProps) {
                 </DropdownMenu.Root>
               )}
             </Flex>
+            <Grid columns={{ initial: "1", xs: "2" }} width="100%" gap="4">
+              {[game.player1, game.player2, game.player3, game.player4].map(
+                (player) => (
+                  <GamePlayerPreview key={player.player} player={player} />
+                )
+              )}
+            </Grid>
           </Flex>
-          {game.comments && (
-            <Box className="additional-container">
-              <p>{game.comments}</p>
-            </Box>
-          )}
         </Flex>
       </Box>
     </>
