@@ -641,6 +641,7 @@ export function DeckByIdViewer() {
                             lg: "4",
                             xl: "5",
                           }}
+                          width="100%"
                         >
                           {goodMatchups.map((matchup) => (
                             <CommanderPreview
@@ -669,6 +670,7 @@ export function DeckByIdViewer() {
                             lg: "4",
                             xl: "5",
                           }}
+                          width="100%"
                         >
                           {badMatchups.map((matchup) => (
                             <CommanderPreview
@@ -696,6 +698,7 @@ export function DeckByIdViewer() {
                             lg: "4",
                             xl: "5",
                           }}
+                          width="100%"
                         >
                           {Object.entries(populatedDeck.playerStats)
                             .sort((a, b) => b[1].played - a[1].played)

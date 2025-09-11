@@ -1,6 +1,6 @@
 import { faRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Skeleton } from "@radix-ui/themes";
+import { Button, Flex, Skeleton } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import "../../assets/styles/CardPreview.scss";
 import { ScryfallService } from "../../services/Scryfall";
@@ -57,49 +57,50 @@ export function CardPreview({
 
   if (!fetchedUris.length) {
     return (
-      <div className={`card-preview ${size} offset`}>
+      <div className={`card-preview ${size}`}>
         <Skeleton className="w-full h-full" />
       </div>
     );
   }
 
   return (
-    <div
-      className={`card-preview ${size} ${clickable ? "clickable" : ""} offset`}
+    <Flex
+      className={`card-preview ${size} ${clickable ? "clickable" : ""}`}
+      justify="center"
     >
       <div className="card-stack">
         {fetchedUris.map((uri, index) => {
           const indexMultiplier = fetchedUris.length > 1 ? (index ? 1 : -1) : 0;
           const offset = fetchedUris.length > 1 ? stackOffset / 2 : 0;
-          const indexedOffset = indexMultiplier * offset;
+          const indexedOffset = Math.floor(indexMultiplier * offset);
           const rotation = flipped ? 180 : 0;
+          console.log(indexedOffset);
           return (
             <div
               key={uri.uri}
               className="card-stack-card"
               style={{
+                position: "absolute",
                 transform: `rotateY(${rotation}deg) translate(${indexedOffset}px, ${-indexedOffset}px)`,
                 zIndex:
                   index === showingIndex ? 100 : fetchedUris.length - index,
               }}
             >
-              <div className="card-preview-front">
-                <img
-                  src={uri.faceUris[0]}
-                  onClick={clickable ? handleClick : undefined}
-                  onMouseEnter={() => setShowingIndex(index)}
-                  onMouseLeave={() => setShowingIndex(0)}
-                  style={{
-                    transform: `scale(${fetchedUris.length > 1 ? 0.9 : 1})`,
-                  }}
-                />
-              </div>
-              <div className="card-preview-back">
-                <img
-                  src={uri.faceUris[1]}
-                  onClick={clickable ? handleClick : undefined}
-                />
-              </div>
+              <img
+                className="card-preview-front"
+                src={uri.faceUris[0]}
+                onClick={clickable ? handleClick : undefined}
+                onMouseEnter={() => setShowingIndex(index)}
+                onMouseLeave={() => setShowingIndex(0)}
+                style={{
+                  transform: `scale(${fetchedUris.length > 1 ? 0.9 : 1})`,
+                }}
+              />
+              <img
+                className="card-preview-back"
+                src={uri.faceUris[1]}
+                onClick={clickable ? handleClick : undefined}
+              />
             </div>
           );
         })}
@@ -110,6 +111,6 @@ export function CardPreview({
           Flip
         </Button>
       )}
-    </div>
+    </Flex>
   );
 }

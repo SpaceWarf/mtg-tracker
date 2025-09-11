@@ -3,11 +3,7 @@
 .card-preview {
   position: relative;
   perspective: 1000px;
-
-  &.offset {
-    margin-top: 12px;
-    margin-bottom: 12px;
-  }
+  margin: 12px 0;
 
   .card-stack-card {
     position: relative;
@@ -30,14 +26,20 @@
     cursor: pointer;
   }
 
-  &.large {
+  &.large,
+  &.large .card-stack,
+  &.large .card-stack-card,
+  &.large img {
     height: 350px;
-    aspect-ratio: 0.714;
+    min-width: calc(350px * 0.714);
   }
 
-  &.small {
+  &.small,
+  &.small .card-stack,
+  &.small .card-stack-card,
+  &.small img {
     height: 250px;
-    aspect-ratio: 0.714;
+    min-width: calc(250px * 0.714);
   }
 
   img,
