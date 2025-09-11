@@ -25,8 +25,8 @@ import { Deck } from "../../state/Deck";
 import { DeckDetails } from "../../state/DeckDetails";
 import { getDeckCommandersString } from "../../utils/Deck";
 import { getPlayerByExternalId } from "../../utils/Player";
-import { BracketSelect } from "../Select/BracketSelect";
-import { PlayerSelect } from "../Select/PlayerSelect";
+import { BracketSelect } from "../Common/Select/BracketSelect";
+import { PlayerSelect } from "../Common/Select/PlayerSelect";
 
 export function DeckCreateModal() {
   const navigate = useNavigate();

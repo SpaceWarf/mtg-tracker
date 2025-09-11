@@ -13,7 +13,7 @@ import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { DbDeck } from "../../state/Deck";
 import { DeckVersion } from "../../state/DeckVersion";
 import { mergeVersions, populateDeck } from "../../utils/Deck";
-import { VersionSelect } from "../Select/VersionSelect";
+import { VersionSelect } from "../Common/Select/VersionSelect";
 import { DeckHeader } from "./DeckHeader";
 import { DeckVersionViewer } from "./DeckVersionViewer";
 

@@ -13,7 +13,7 @@ import { CardGroupBy, CardGroupByOptions } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { SelectOption } from "../../state/SelectOption";
 import { SortFctType } from "../../state/SortFctType";
-import { SortFctSelect } from "../Select/SortFctSelect";
+import { SortFctSelect } from "../Common/Select/SortFctSelect";
 
 type OwnProps = {
   hasVersions: boolean;

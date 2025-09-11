@@ -16,7 +16,7 @@ import { DeckWithStats } from "../../state/Deck";
 import { DeckVersion } from "../../state/DeckVersion";
 import { mergeVersions } from "../../utils/Deck";
 import { DataCard } from "../Common/DataCard";
-import { VersionSelect } from "../Select/VersionSelect";
+import { VersionSelect } from "../Common/Select/VersionSelect";
 import { DeckVersionViewer } from "./DeckVersionViewer";
 
 type OwnProps = {
