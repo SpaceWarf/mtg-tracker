@@ -1,4 +1,9 @@
-import { faChartLine, faPercent } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCrown,
+  faDice,
+  faDiceSix,
+  faRing,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Flex, Grid } from "@radix-ui/themes";
 import { PlayerWithStats } from "../../state/Player";
@@ -18,7 +23,7 @@ export function PlayerStatsSection({ player }: OwnProps) {
     >
       <DataCard
         title="Win Rate"
-        icon={<FontAwesomeIcon icon={faPercent} />}
+        icon={<FontAwesomeIcon icon={faCrown} />}
         align="center"
       >
         <Flex align="center" justify="center">
@@ -36,7 +41,7 @@ export function PlayerStatsSection({ player }: OwnProps) {
       </DataCard>
       <DataCard
         title="Start Rate"
-        icon={<FontAwesomeIcon icon={faPercent} />}
+        icon={<FontAwesomeIcon icon={faDiceSix} />}
         align="center"
       >
         <Flex align="center" justify="center">
@@ -54,7 +59,7 @@ export function PlayerStatsSection({ player }: OwnProps) {
       </DataCard>
       <DataCard
         title="T1 Sol Ring Rate"
-        icon={<FontAwesomeIcon icon={faPercent} />}
+        icon={<FontAwesomeIcon icon={faRing} />}
         align="center"
       >
         <Flex align="center" justify="center">
@@ -81,7 +86,7 @@ export function PlayerStatsSection({ player }: OwnProps) {
       >
         <DataCard
           title="Games"
-          icon={<FontAwesomeIcon icon={faChartLine} />}
+          icon={<FontAwesomeIcon icon={faDice} />}
           align="center"
         >
           <Flex align="center" justify="center">
