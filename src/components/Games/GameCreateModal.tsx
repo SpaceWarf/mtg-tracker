@@ -87,9 +87,9 @@ export function GameCreateModal() {
   return (
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
-        <Button className="h-10">
+        <Button className="h-10" variant="soft">
           <PlusIcon width="18" height="18" />
-          Create new game
+          Create
         </Button>
       </Dialog.Trigger>
 

@@ -1,4 +1,6 @@
-import { Box, Flex, Heading, Spinner } from "@radix-ui/themes";
+import { faDice, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box, Grid, Heading, Spinner } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -19,6 +21,7 @@ import {
   gameHasSomeDecks,
   gameHasSomePlayers,
 } from "../../utils/Game";
+import { DataCard } from "../Common/DataCard";
 import { NoResults } from "../Common/NoResults";
 import { DeckSelect } from "../Common/Select/DeckSelect";
 import { PlayerSelect } from "../Common/Select/PlayerSelect";
@@ -197,71 +200,82 @@ export function GamesViewer() {
 
   return (
     <div className="p-5 w-full max-w-[1950px]">
-      <Flex className="data-card mb-5" justify="between" wrap="wrap">
-        <Flex gap="5" wrap="wrap">
-          <Box width={{ initial: "100%", xs: "60" }}>
-            <Heading className="mb-1" size="3">
-              Sort by
-            </Heading>
-            <SortFctSelect
-              type={SortFctType.GAME}
-              value={sortFctKey.value}
-              onChange={handleSort}
-            />
-          </Box>
-          <Box width={{ initial: "100%", xs: "60" }}>
-            <Heading className="mb-1" size="3">
-              Include players
-            </Heading>
-            <PlayerSelect
-              value={visiblePlayers}
-              onChange={handleSetVisiblePlayers}
-              isMulti
-            />
-          </Box>
-          <Box width={{ initial: "100%", xs: "60" }}>
-            <Heading className="mb-1" size="3">
-              Exclude players
-            </Heading>
-            <PlayerSelect
-              value={excludedPlayers}
-              onChange={handleSetExcludedPlayers}
-              isMulti
-            />
-          </Box>
-          <Box width={{ initial: "100%", xs: "60" }}>
-            <Heading className="mb-1" size="3">
-              Include decks
-            </Heading>
-            <DeckSelect
-              value={visibleDecks}
-              onChange={handleSetVisibleDecks}
-              isMulti
-            />
-          </Box>
-          <Box width={{ initial: "100%", xs: "60" }}>
-            <Heading className="mb-1" size="3">
-              Exclude decks
-            </Heading>
-            <DeckSelect
-              value={excludedDecks}
-              onChange={handleSetExcludedDecks}
-              isMulti
-            />
-          </Box>
-        </Flex>
-        <Box width={{ initial: "100%", xs: "60" }}>
-          <Flex className="mt-6" align="center" gap="3" justify="center">
-            <div>{auth.user && <GameCreateModal />}</div>
-          </Flex>
-        </Box>
-      </Flex>
-
-      {filteredGames.length ? (
-        <GamesCardView games={filteredGames} />
-      ) : (
-        <NoResults />
-      )}
+      <Grid columns="1" gap="5">
+        <DataCard
+          title="Games"
+          icon={<FontAwesomeIcon icon={faDice} />}
+          direction="row"
+        >
+          <div>{auth.user && <GameCreateModal />}</div>
+        </DataCard>
+        <DataCard
+          title="Filters"
+          icon={<FontAwesomeIcon icon={faFilter} />}
+          collapsable
+          defaultCollapsed
+        >
+          <Grid
+            gap="5"
+            columns={{ initial: "1", xs: "2", sm: "3", md: "4", lg: "5" }}
+          >
+            <Box>
+              <Heading className="mb-1" size="3">
+                Sort by
+              </Heading>
+              <SortFctSelect
+                type={SortFctType.GAME}
+                value={sortFctKey.value}
+                onChange={handleSort}
+              />
+            </Box>
+            <Box>
+              <Heading className="mb-1" size="3">
+                Include players
+              </Heading>
+              <PlayerSelect
+                value={visiblePlayers}
+                onChange={handleSetVisiblePlayers}
+                isMulti
+              />
+            </Box>
+            <Box>
+              <Heading className="mb-1" size="3">
+                Exclude players
+              </Heading>
+              <PlayerSelect
+                value={excludedPlayers}
+                onChange={handleSetExcludedPlayers}
+                isMulti
+              />
+            </Box>
+            <Box>
+              <Heading className="mb-1" size="3">
+                Include decks
+              </Heading>
+              <DeckSelect
+                value={visibleDecks}
+                onChange={handleSetVisibleDecks}
+                isMulti
+              />
+            </Box>
+            <Box>
+              <Heading className="mb-1" size="3">
+                Exclude decks
+              </Heading>
+              <DeckSelect
+                value={excludedDecks}
+                onChange={handleSetExcludedDecks}
+                isMulti
+              />
+            </Box>
+          </Grid>
+        </DataCard>
+        {filteredGames.length ? (
+          <GamesCardView games={filteredGames} />
+        ) : (
+          <NoResults />
+        )}
+      </Grid>
     </div>
   );
 }
