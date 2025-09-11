@@ -1,7 +1,7 @@
 import { faCrown, faDice, faPercent } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex, Tooltip } from "@radix-ui/themes";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "../../assets/styles/CommanderPreview.scss";
 import { useDecks } from "../../hooks/useDecks";
 import { getDeckCommanders } from "../../utils/Deck";
@@ -15,7 +15,9 @@ type OwnProps = {
 };
 
 export function CommanderPreview({ deck, won, lost, good }: OwnProps) {
+  const elRef = useRef<HTMLDivElement>(null);
   const { dbDecks, loadingDecks } = useDecks();
+  const [width, setWidth] = useState(0);
 
   const deckData = useMemo(() => {
     return dbDecks?.find((dbDeck) => dbDeck.id === deck);
@@ -28,6 +30,22 @@ export function CommanderPreview({ deck, won, lost, good }: OwnProps) {
     return getDeckCommanders(deckData);
   }, [deckData]);
 
+  useEffect(() => {
+    if (!elRef.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width } = entry.contentRect;
+        setWidth(width);
+      }
+    });
+    observer.observe(elRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   const gamesPlayed = won + lost;
   const winRate = gamesPlayed > 0 ? (won / gamesPlayed) * 100 : 0;
 
@@ -38,6 +56,7 @@ export function CommanderPreview({ deck, won, lost, good }: OwnProps) {
   return (
     <Flex
       key={deck}
+      ref={elRef}
       className="commander-preview item-card selectable"
       direction="column"
       align="center"
@@ -49,7 +68,9 @@ export function CommanderPreview({ deck, won, lost, good }: OwnProps) {
       }
       onClick={() => window.open(`/decks/${deck}`, "_blank")}
     >
-      <p className="name mb-1">{deckData?.name}</p>
+      <p className="name mb-1" style={{ maxWidth: `${width}px` }}>
+        {deckData?.name}
+      </p>
       <Flex className="stats" gap="3" justify="center">
         <Tooltip content="Games Played">
           <Flex gap="1">
