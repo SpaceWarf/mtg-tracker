@@ -24,9 +24,10 @@ import { DeckTags } from "./DeckTags";
 
 type OwnProps = {
   deck: DeckWithStats;
+  showStats?: boolean;
 };
 
-export function DeckShowcase({ deck }: OwnProps) {
+export function DeckShowcase({ deck, showStats }: OwnProps) {
   const commanders = useMemo(() => {
     return getDeckCommanders(deck);
   }, [deck]);
@@ -49,27 +50,35 @@ export function DeckShowcase({ deck }: OwnProps) {
         <DeckTags deck={deck} />
       </Flex>
       <Flex direction="column" className="stats-table">
-        <Flex className="stats-row" justify="between" flexGrow="1">
-          <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faDice} />
-            <p>Games Played</p>
-          </Flex>
-          <p className="value">{deck.gamesPlayed}</p>
-        </Flex>
-        <Flex className="stats-row" justify="between" flexGrow="1">
-          <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faCrown} />
-            <p>Games Won</p>
-          </Flex>
-          <p className="value">{deck.winCount}</p>
-        </Flex>
-        <Flex className="stats-row" justify="between" flexGrow="1">
-          <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faBaseballBatBall} />
-            <p>Grand Slams</p>
-          </Flex>
-          <p className="value">{deck.grandSlamCount}</p>
-        </Flex>
+        {showStats && (
+          <>
+            <Flex className="stats-row" justify="between" flexGrow="1">
+              <Flex className="label" align="center" gap="2">
+                <FontAwesomeIcon size="xl" width="22" icon={faDice} />
+                <p>Games Played</p>
+              </Flex>
+              <p className="value">{deck.gamesPlayed}</p>
+            </Flex>
+            <Flex className="stats-row" justify="between" flexGrow="1">
+              <Flex className="label" align="center" gap="2">
+                <FontAwesomeIcon size="xl" width="22" icon={faCrown} />
+                <p>Games Won</p>
+              </Flex>
+              <p className="value">{deck.winCount}</p>
+            </Flex>
+            <Flex className="stats-row" justify="between" flexGrow="1">
+              <Flex className="label" align="center" gap="2">
+                <FontAwesomeIcon
+                  size="xl"
+                  width="22"
+                  icon={faBaseballBatBall}
+                />
+                <p>Grand Slams</p>
+              </Flex>
+              <p className="value">{deck.grandSlamCount}</p>
+            </Flex>
+          </>
+        )}
         <Flex
           className={`stats-row ${
             parseInt(deck.size ?? "0") !== CARD_COUNT ? "error" : ""

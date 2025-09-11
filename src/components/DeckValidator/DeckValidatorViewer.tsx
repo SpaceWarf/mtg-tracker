@@ -1,12 +1,34 @@
+import {
+  faBomb,
+  faForward,
+  faGem,
+  faLayerGroup,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CheckCircledIcon, InfoCircledIcon } from "@radix-ui/react-icons";
-import { Button, Callout, Flex, Heading, TextField } from "@radix-ui/themes";
+import {
+  Box,
+  Button,
+  Callout,
+  Flex,
+  Grid,
+  Heading,
+  TextField,
+} from "@radix-ui/themes";
 import { useMemo, useState } from "react";
+import "../../assets/styles/DataCard.scss";
 import { useGameChangers } from "../../hooks/useGameChangers";
 import { ArchidektService } from "../../services/Archidekt";
 import { DeckDetails } from "../../state/DeckDetails";
+import {
+  EXTRA_TURN_LIMIT,
+  GAME_CHANGER_LIMIT,
+  MASS_LAND_DENIAL_LIMIT,
+  TUTOR_LIMIT,
+} from "../../utils/Bracket";
 import { populateDeckDetails } from "../../utils/Deck";
-import { DeckDetailsTable } from "../Decks/DeckDetailsTable";
-import { DeckHeader } from "../Decks/DeckHeader";
+import { DeckCardPreviewSection } from "../Decks/DeckCardPreviewSection";
+import { DeckShowcase } from "../Decks/DeckShowcase";
 
 export function DeckValidatorViewer() {
   const [externalId, setExternalId] = useState<string>("");
@@ -20,6 +42,32 @@ export function DeckValidatorViewer() {
       ? populateDeckDetails(deckDetails, gameChangers)
       : undefined;
   }, [deckDetails, gameChangers]);
+
+  const cardPreviewSectionCount = useMemo(() => {
+    let count = 0;
+
+    if (!populatedDeck) {
+      return count;
+    }
+
+    if (populatedDeck.gameChangers.length > 0) {
+      count++;
+    }
+
+    if (populatedDeck.tutors.length > 0) {
+      count++;
+    }
+
+    if (populatedDeck.extraTurns.length > 0) {
+      count++;
+    }
+
+    if (populatedDeck.massLandDenials.length > 0) {
+      count++;
+    }
+
+    return count;
+  }, [populatedDeck]);
 
   async function handleValidate() {
     setLoading(true);
@@ -37,9 +85,9 @@ export function DeckValidatorViewer() {
 
   return (
     <div className="p-5 w-full max-w-[1950px]">
-      <Flex direction="column" align="center">
-        <Flex width="300px" direction="column" justify="center">
-          <div className="mb-3">
+      <Grid columns="1" gap="5">
+        <Flex className="data-card" align="center" justify="start" gap="5">
+          <Box width="300px">
             <Heading className="mb-1" size="3">
               External ID
             </Heading>
@@ -58,8 +106,8 @@ export function DeckValidatorViewer() {
                 <Callout.Text>{error}</Callout.Text>
               </Callout.Root>
             )}
-          </div>
-          <Flex className="mb-5" justify="center">
+          </Box>
+          <Box className="mt-6">
             <Button
               className="h-10"
               onClick={handleValidate}
@@ -69,15 +117,73 @@ export function DeckValidatorViewer() {
               <CheckCircledIcon width="18" height="18" />
               Validate Deck
             </Button>
-          </Flex>
+          </Box>
         </Flex>
         {populatedDeck && (
-          <Flex width="750px" direction="column" gap="3">
-            <DeckHeader deck={populatedDeck} />
-            <DeckDetailsTable deck={populatedDeck} />
-          </Flex>
+          <Grid columns={{ initial: "1", md: "5", lg: "7" }} gap="5">
+            <Box gridColumn={{ initial: "span 1", md: "span 2", lg: "span 2" }}>
+              <DeckShowcase deck={populatedDeck} />
+            </Box>
+            <Grid
+              gap="5"
+              columns="1"
+              gridColumn={{ initial: "span 1", md: "span 3", lg: "span 5" }}
+            >
+              <Box>
+                {cardPreviewSectionCount > 0 && (
+                  <Grid
+                    gap="5"
+                    columns={{
+                      initial: "1",
+                      lg: `${Math.min(2, cardPreviewSectionCount)}`,
+                    }}
+                  >
+                    {populatedDeck.gameChangers.length > 0 && (
+                      <DeckCardPreviewSection
+                        title={`Game Changers (${populatedDeck.gameChangers.length})`}
+                        icon={<FontAwesomeIcon icon={faGem} />}
+                        cards={populatedDeck.gameChangers}
+                        error={
+                          populatedDeck.gameChangers.length > GAME_CHANGER_LIMIT
+                        }
+                      />
+                    )}
+                    {populatedDeck.tutors.length > 0 && (
+                      <DeckCardPreviewSection
+                        title={`Tutors (${populatedDeck.tutors.length})`}
+                        icon={<FontAwesomeIcon icon={faLayerGroup} />}
+                        cards={populatedDeck.tutors}
+                        error={populatedDeck.tutors.length > TUTOR_LIMIT}
+                      />
+                    )}
+                    {populatedDeck.extraTurns.length > 0 && (
+                      <DeckCardPreviewSection
+                        title={`Extra Turns (${populatedDeck.extraTurns.length})`}
+                        icon={<FontAwesomeIcon icon={faForward} />}
+                        cards={populatedDeck.extraTurns}
+                        error={
+                          populatedDeck.extraTurns.length > EXTRA_TURN_LIMIT
+                        }
+                      />
+                    )}
+                    {populatedDeck.massLandDenials.length > 0 && (
+                      <DeckCardPreviewSection
+                        title={`Mass Land Denials (${populatedDeck.massLandDenials.length})`}
+                        icon={<FontAwesomeIcon icon={faBomb} />}
+                        cards={populatedDeck.massLandDenials}
+                        error={
+                          populatedDeck.massLandDenials.length >
+                          MASS_LAND_DENIAL_LIMIT
+                        }
+                      />
+                    )}
+                  </Grid>
+                )}
+              </Box>
+            </Grid>
+          </Grid>
         )}
-      </Flex>
+      </Grid>
     </div>
   );
 }

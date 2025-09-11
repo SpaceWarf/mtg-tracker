@@ -353,6 +353,7 @@ export function populateDeckDetails(
 ): DeckWithStats {
   const deck: DbDeck = {
     ...deckDetails,
+    commander: getDeckCommandersString(deckDetails.commanders),
     externalId: deckDetails.id,
     name: deckDetails.title,
     gameChangersDeck: false,

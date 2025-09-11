@@ -524,7 +524,7 @@ export function DeckByIdViewer() {
 
           <Grid gap="5" columns={{ initial: "1", md: "5", lg: "7" }}>
             <Box gridColumn={{ initial: "span 1", md: "span 2", lg: "span 2" }}>
-              <DeckShowcase deck={populatedDeck} />
+              <DeckShowcase deck={populatedDeck} showStats />
             </Box>
             <Grid
               gap="5"
