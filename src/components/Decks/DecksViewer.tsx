@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Box, Grid, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import { usePopulatedDecks } from "../../hooks/usePopulatedDecks";
@@ -57,6 +57,10 @@ export function DecksViewer() {
 
   const { populatedDecks, populating } = usePopulatedDecks();
   const [filteredDecks, setFilteredDecks] = useState<DeckWithStats[]>([]);
+
+  const hasFiltersApplied = useMemo(() => {
+    return search.length > 0 || visiblePlayer.length > 0 || bracket || identity;
+  }, [search, visiblePlayer, bracket, identity]);
 
   useEffect(() => {
     const filtered = cloneDeep(populatedDecks).filter((deck) => {
@@ -154,7 +158,7 @@ export function DecksViewer() {
           title="Filters"
           icon={<FontAwesomeIcon icon={faFilter} />}
           collapsable
-          defaultCollapsed
+          defaultCollapsed={!hasFiltersApplied}
         >
           <Grid
             gap="5"

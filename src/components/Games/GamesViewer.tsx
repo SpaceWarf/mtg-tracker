@@ -69,6 +69,15 @@ export function GamesViewer() {
     return loadingGames || loadingPlayers || loadingDecks || populatingGames;
   }, [loadingGames, loadingPlayers, loadingDecks, populatingGames]);
 
+  const hasFiltersApplied = useMemo(() => {
+    return (
+      visiblePlayers.length > 0 ||
+      excludedPlayers.length > 0 ||
+      visibleDecks.length > 0 ||
+      excludedDecks.length > 0
+    );
+  }, [visiblePlayers, excludedPlayers, visibleDecks, excludedDecks]);
+
   const getPlayerByIdFromContext = useCallback(
     (id: string): DbPlayer | undefined => {
       return dbPlayers?.find((player) => player.id === id) ?? undefined;
@@ -214,7 +223,7 @@ export function GamesViewer() {
           title="Filters"
           icon={<FontAwesomeIcon icon={faFilter} />}
           collapsable
-          defaultCollapsed
+          defaultCollapsed={!hasFiltersApplied}
         >
           <Grid
             gap="5"

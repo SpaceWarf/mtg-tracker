@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Box, Grid, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import { usePopulatedPlayers } from "../../hooks/usePopulatedPlayers";
@@ -32,6 +32,10 @@ export function PlayersViewer() {
 
   const { populatedPlayers, populating } = usePopulatedPlayers();
   const [filteredPlayers, setFilteredPlayers] = useState<PlayerWithStats[]>([]);
+
+  const hasFiltersApplied = useMemo(() => {
+    return search.length > 0;
+  }, [search]);
 
   useEffect(() => {
     const filtered = cloneDeep(populatedPlayers).filter((player) =>
@@ -84,7 +88,7 @@ export function PlayersViewer() {
           title="Filters"
           icon={<FontAwesomeIcon icon={faFilter} />}
           collapsable
-          defaultCollapsed
+          defaultCollapsed={!hasFiltersApplied}
         >
           <Grid
             gap="5"
