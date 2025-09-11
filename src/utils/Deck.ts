@@ -28,6 +28,12 @@ export function getDeckWinRate(deck: DbDeck, games: DbGame[]): number {
   return winCount / gamesCount || 0;
 }
 
+export function getDeckGrandSlamCount(deck: DbDeck, games: DbGame[]): number {
+  return getAllGamesForDeck(deck, games).filter(
+    (game) => game.started && game.t1SolRing && game.won
+  ).length;
+}
+
 export function getDeckCommandersString(commanders: string[]): string {
   return commanders.join(" & ");
 }
@@ -326,6 +332,7 @@ export function populateDeck(
     gamesPlayed: getDeckGamesCount(deck, games),
     winCount: getDeckWinCount(deck, games),
     winRate: getDeckWinRate(deck, games),
+    grandSlamCount: getDeckGrandSlamCount(deck, games),
     gameChangers: getDeckGameChanger(deck, gameChangers),
     massLandDenials: getDeckMassLandDenial(deck),
     extraTurns: getDeckExtraTurn(deck),

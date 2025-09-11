@@ -1,4 +1,5 @@
 import {
+  faBaseballBatBall,
   faCalendarDays,
   faCalendarPlus,
   faCrown,
@@ -61,6 +62,13 @@ export function DeckShowcase({ deck }: OwnProps) {
             <p>Games Won</p>
           </Flex>
           <p className="value">{deck.winCount}</p>
+        </Flex>
+        <Flex className="stats-row" justify="between" flexGrow="1">
+          <Flex className="label" align="center" gap="2">
+            <FontAwesomeIcon size="xl" width="22" icon={faBaseballBatBall} />
+            <p>Grand Slams</p>
+          </Flex>
+          <p className="value">{deck.grandSlamCount}</p>
         </Flex>
         <Flex
           className={`stats-row ${

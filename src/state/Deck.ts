@@ -33,6 +33,7 @@ export interface DeckWithStats extends DbDeck {
   gamesPlayed: number;
   winCount: number;
   winRate: number;
+  grandSlamCount: number;
   gameChangers: DeckCardDetails[];
   massLandDenials: DeckCardDetails[];
   extraTurns: DeckCardDetails[];
