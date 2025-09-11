@@ -25,9 +25,10 @@ import {
   Spinner,
   Tooltip,
 } from "@radix-ui/themes";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router";
 import "../../assets/styles/DataCard.scss";
+import { FiltersContext } from "../../contexts/FiltersContext";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGameChangers } from "../../hooks/useGameChangers";
@@ -39,6 +40,7 @@ import { EdhRecService } from "../../services/EdhRec";
 import { CardGroupBy } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { DeckByIdViewType } from "../../state/DeckByIdViewType";
+import { GameSortFctKey } from "../../state/GameSortFctKey";
 import {
   EXTRA_TURN_LIMIT,
   GAME_CHANGER_LIMIT,
@@ -66,6 +68,14 @@ import { DeckVersionManagerSection } from "./DeckVersionManagerSection";
 import { DeckVersionViewer } from "./DeckVersionViewer";
 
 export function DeckByIdViewer() {
+  const {
+    setGameSortBy,
+    setGameIncludedPlayers,
+    setGameExcludedPlayers,
+    setGameIncludedDecks,
+    setGameExcludedDecks,
+  } = useContext(FiltersContext);
+
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useAuth();
@@ -171,7 +181,12 @@ export function DeckByIdViewer() {
   }
 
   function handleSearchGames() {
-    navigate(`/?decks=${deck?.id}`);
+    setGameIncludedPlayers([]);
+    setGameExcludedPlayers([]);
+    setGameIncludedDecks([deck?.id ?? ""]);
+    setGameExcludedDecks([]);
+    setGameSortBy(GameSortFctKey.DATE_DESC);
+    navigate(`/`);
   }
 
   function handleArchidekt() {

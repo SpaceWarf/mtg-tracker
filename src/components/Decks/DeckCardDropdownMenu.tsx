@@ -1,18 +1,21 @@
 import {
   faCodeCommit,
+  faDice,
   faEllipsisV,
   faEye,
-  faMagnifyingGlass,
   faPen,
   faRotate,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DropdownMenu, IconButton } from "@radix-ui/themes";
+import { useContext } from "react";
 import { useNavigate } from "react-router";
+import { FiltersContext } from "../../contexts/FiltersContext";
 import { ArchidektService } from "../../services/Archidekt";
 import { EdhRecService } from "../../services/EdhRec";
 import { DeckWithStats } from "../../state/Deck";
+import { GameSortFctKey } from "../../state/GameSortFctKey";
 
 type OwnProps = {
   deck: DeckWithStats;
@@ -33,7 +36,24 @@ export function DeckCardDropdownMenu({
   onVersionManager,
   onDelete,
 }: OwnProps) {
+  const {
+    setGameSortBy,
+    setGameIncludedPlayers,
+    setGameExcludedPlayers,
+    setGameIncludedDecks,
+    setGameExcludedDecks,
+  } = useContext(FiltersContext);
+
   const navigate = useNavigate();
+
+  function handleSearchGames() {
+    setGameIncludedPlayers([]);
+    setGameExcludedPlayers([]);
+    setGameIncludedDecks([deck.id]);
+    setGameExcludedDecks([]);
+    setGameSortBy(GameSortFctKey.DATE_DESC);
+    navigate(`/`);
+  }
 
   return (
     <div onClick={(e) => e.stopPropagation()}>
@@ -53,14 +73,9 @@ export function DeckCardDropdownMenu({
             <FontAwesomeIcon icon={faEye} />
             Open
           </DropdownMenu.Item>
-          <DropdownMenu.Item
-            className="mb-1"
-            onClick={() => {
-              navigate(`/?decks=${deck.id}`);
-            }}
-          >
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-            Search Games
+          <DropdownMenu.Item className="mb-1" onClick={handleSearchGames}>
+            <FontAwesomeIcon icon={faDice} />
+            View All Games
           </DropdownMenu.Item>
           {deck.externalId && (
             <DropdownMenu.Item

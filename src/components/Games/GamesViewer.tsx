@@ -2,8 +2,9 @@ import { faDice, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Grid, Heading, Spinner } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
+import { FiltersContext } from "../../contexts/FiltersContext";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
@@ -11,9 +12,8 @@ import { usePlayers } from "../../hooks/usePlayers";
 import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { GameSortFctKey } from "../../state/GameSortFctKey";
-import { GAME_SORT_FCTS, getGameSortFctName } from "../../state/GameSortFcts";
+import { GAME_SORT_FCTS } from "../../state/GameSortFcts";
 import { DbPlayer } from "../../state/Player";
-import { SelectOption } from "../../state/SelectOption";
 import { SortFctType } from "../../state/SortFctType";
 import {
   gameHasAllDecks,
@@ -30,40 +30,29 @@ import { GameCreateModal } from "./GameCreateModal";
 import { GamesCardView } from "./GamesCardView";
 
 export function GamesViewer() {
+  const {
+    gameSortBy,
+    setGameSortBy,
+    gameIncludedPlayers,
+    setGameIncludedPlayers,
+    gameExcludedPlayers,
+    setGameExcludedPlayers,
+    gameIncludedDecks,
+    setGameIncludedDecks,
+    gameExcludedDecks,
+    setGameExcludedDecks,
+  } = useContext(FiltersContext);
+
   const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [sortFctKey, setSortFctKey] = useState<SelectOption>(
-    searchParams.get("sort")
-      ? {
-          value: searchParams.get("sort") as GameSortFctKey,
-          label: getGameSortFctName(searchParams.get("sort") as GameSortFctKey),
-        }
-      : {
-          value: GameSortFctKey.DATE_DESC,
-          label: getGameSortFctName(GameSortFctKey.DATE_DESC),
-        }
-  );
 
   const { dbGames, loadingGames } = useGames();
+  const { dbDecks, loadingDecks } = useDecks();
+  const { dbPlayers, loadingPlayers } = usePlayers();
+
   const [populatingGames, setPopulatingGames] = useState<boolean>(true);
   const [populatedGames, setPopulatedGames] = useState<DbGame[]>([]);
   const [filteredGames, setFilteredGames] = useState<DbGame[]>([]);
-
-  const { dbPlayers, loadingPlayers } = usePlayers();
-  const [visiblePlayers, setVisiblePlayers] = useState<string[]>(
-    searchParams.get("players")?.split(",") ?? []
-  );
-  const [excludedPlayers, setExcludedPlayers] = useState<string[]>(
-    searchParams.get("excludedPlayers")?.split(",") ?? []
-  );
-
-  const { dbDecks, loadingDecks } = useDecks();
-  const [visibleDecks, setVisibleDecks] = useState<string[]>(
-    searchParams.get("decks")?.split(",") ?? []
-  );
-  const [excludedDecks, setExcludedDecks] = useState<string[]>(
-    searchParams.get("excludedDecks")?.split(",") ?? []
-  );
 
   const loading = useMemo(() => {
     return loadingGames || loadingPlayers || loadingDecks || populatingGames;
@@ -71,12 +60,17 @@ export function GamesViewer() {
 
   const hasFiltersApplied = useMemo(() => {
     return (
-      visiblePlayers.length > 0 ||
-      excludedPlayers.length > 0 ||
-      visibleDecks.length > 0 ||
-      excludedDecks.length > 0
+      gameIncludedPlayers.length > 0 ||
+      gameExcludedPlayers.length > 0 ||
+      gameIncludedDecks.length > 0 ||
+      gameExcludedDecks.length > 0
     );
-  }, [visiblePlayers, excludedPlayers, visibleDecks, excludedDecks]);
+  }, [
+    gameIncludedPlayers,
+    gameExcludedPlayers,
+    gameIncludedDecks,
+    gameExcludedDecks,
+  ]);
 
   const getPlayerByIdFromContext = useCallback(
     (id: string): DbPlayer | undefined => {
@@ -120,11 +114,61 @@ export function GamesViewer() {
   }, [loadingGames, loadingDecks, loadingPlayers, populateGames]);
 
   useEffect(() => {
+    const params: Record<string, string> = {
+      sort: searchParams.get("sort") ?? gameSortBy,
+      players: searchParams.get("players") ?? gameIncludedPlayers.join(","),
+      excludedPlayers:
+        searchParams.get("excludedPlayers") ?? gameExcludedPlayers.join(","),
+      decks: searchParams.get("decks") ?? gameIncludedDecks.join(","),
+      excludedDecks:
+        searchParams.get("excludedDecks") ?? gameExcludedDecks.join(","),
+    };
+
+    if (
+      params.sort &&
+      Object.values<string>(GameSortFctKey).includes(params.sort)
+    ) {
+      setGameSortBy(params.sort as GameSortFctKey);
+    } else {
+      delete params.sort;
+    }
+
+    if (params.players) {
+      setGameIncludedPlayers(params.players.split(","));
+    } else {
+      delete params.players;
+    }
+
+    if (params.excludedPlayers) {
+      setGameExcludedPlayers(params.excludedPlayers.split(","));
+    } else {
+      delete params.excludedPlayers;
+    }
+
+    if (params.decks) {
+      setGameIncludedDecks(params.decks.split(","));
+    } else {
+      delete params.decks;
+    }
+
+    if (params.excludedDecks) {
+      setGameExcludedDecks(params.excludedDecks.split(","));
+    } else {
+      delete params.excludedDecks;
+    }
+
+    setSearchParams(params);
+
+    // We only want to run this effect once when the component mounts
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     const filtered = cloneDeep(populatedGames).filter((game) => {
-      const hasVisiblePlayers = gameHasAllPlayers(game, visiblePlayers);
-      const hasExcludedPlayers = gameHasSomePlayers(game, excludedPlayers);
-      const hasVisibleDecks = gameHasAllDecks(game, visibleDecks);
-      const hasExcludedDecks = gameHasSomeDecks(game, excludedDecks);
+      const hasVisiblePlayers = gameHasAllPlayers(game, gameIncludedPlayers);
+      const hasExcludedPlayers = gameHasSomePlayers(game, gameExcludedPlayers);
+      const hasVisibleDecks = gameHasAllDecks(game, gameIncludedDecks);
+      const hasExcludedDecks = gameHasSomeDecks(game, gameExcludedDecks);
 
       return (
         hasVisiblePlayers &&
@@ -133,23 +177,20 @@ export function GamesViewer() {
         !hasExcludedDecks
       );
     });
-    const sortFct = GAME_SORT_FCTS[sortFctKey.value].sortFct;
+    const sortFct = GAME_SORT_FCTS[gameSortBy].sortFct;
     const sorted = cloneDeep(filtered).sort(sortFct);
     setFilteredGames(sorted);
   }, [
     populatedGames,
-    sortFctKey,
-    visiblePlayers,
-    excludedPlayers,
-    visibleDecks,
-    excludedDecks,
+    gameSortBy,
+    gameIncludedPlayers,
+    gameExcludedPlayers,
+    gameIncludedDecks,
+    gameExcludedDecks,
   ]);
 
   function handleSort(value: string) {
-    setSortFctKey({
-      value: value as GameSortFctKey,
-      label: getGameSortFctName(value as GameSortFctKey),
-    });
+    setGameSortBy(value as GameSortFctKey);
 
     if (!value) {
       searchParams.delete("sort");
@@ -160,7 +201,7 @@ export function GamesViewer() {
   }
 
   function handleSetVisiblePlayers(value: string[]) {
-    setVisiblePlayers(value);
+    setGameIncludedPlayers(value);
 
     if (value.length === 0) {
       searchParams.delete("players");
@@ -171,7 +212,7 @@ export function GamesViewer() {
   }
 
   function handleSetExcludedPlayers(value: string[]) {
-    setExcludedPlayers(value);
+    setGameExcludedPlayers(value);
 
     if (value.length === 0) {
       searchParams.delete("excludedPlayers");
@@ -182,7 +223,7 @@ export function GamesViewer() {
   }
 
   function handleSetVisibleDecks(value: string[]) {
-    setVisibleDecks(value);
+    setGameIncludedDecks(value);
 
     if (value.length === 0) {
       searchParams.delete("decks");
@@ -193,7 +234,7 @@ export function GamesViewer() {
   }
 
   function handleSetExcludedDecks(value: string[]) {
-    setExcludedDecks(value);
+    setGameExcludedDecks(value);
 
     if (value.length === 0) {
       searchParams.delete("excludedDecks");
@@ -235,7 +276,7 @@ export function GamesViewer() {
               </Heading>
               <SortFctSelect
                 type={SortFctType.GAME}
-                value={sortFctKey.value}
+                value={gameSortBy}
                 onChange={handleSort}
               />
             </Box>
@@ -244,7 +285,7 @@ export function GamesViewer() {
                 Include players
               </Heading>
               <PlayerSelect
-                value={visiblePlayers}
+                value={gameIncludedPlayers}
                 onChange={handleSetVisiblePlayers}
                 isMulti
               />
@@ -254,7 +295,7 @@ export function GamesViewer() {
                 Exclude players
               </Heading>
               <PlayerSelect
-                value={excludedPlayers}
+                value={gameExcludedPlayers}
                 onChange={handleSetExcludedPlayers}
                 isMulti
               />
@@ -264,7 +305,7 @@ export function GamesViewer() {
                 Include decks
               </Heading>
               <DeckSelect
-                value={visibleDecks}
+                value={gameIncludedDecks}
                 onChange={handleSetVisibleDecks}
                 isMulti
               />
@@ -274,7 +315,7 @@ export function GamesViewer() {
                 Exclude decks
               </Heading>
               <DeckSelect
-                value={excludedDecks}
+                value={gameExcludedDecks}
                 onChange={handleSetExcludedDecks}
                 isMulti
               />

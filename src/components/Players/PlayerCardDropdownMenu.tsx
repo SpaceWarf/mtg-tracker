@@ -1,13 +1,20 @@
 import {
+  faDice,
   faEllipsisV,
-  faMagnifyingGlass,
+  faLayerGroup,
   faPen,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DropdownMenu, IconButton } from "@radix-ui/themes";
+import { useContext } from "react";
 import { useNavigate } from "react-router";
+import { FiltersContext } from "../../contexts/FiltersContext";
 import { ArchidektService } from "../../services/Archidekt";
+import { Bracket } from "../../state/Bracket";
+import { DeckSortFctKey } from "../../state/DeckSortFctKey";
+import { GameSortFctKey } from "../../state/GameSortFctKey";
+import { IdentityLabel } from "../../state/IdentityLabel";
 import { PlayerWithStats } from "../../state/Player";
 
 type OwnProps = {
@@ -23,7 +30,37 @@ export function PlayerCardDropdownMenu({
   onEdit,
   onDelete,
 }: OwnProps) {
+  const {
+    setGameSortBy,
+    setGameIncludedPlayers,
+    setGameExcludedPlayers,
+    setGameIncludedDecks,
+    setGameExcludedDecks,
+    setDeckSearch,
+    setDeckSortBy,
+    setDeckBuilder,
+    setDeckBracket,
+    setDeckIdentity,
+  } = useContext(FiltersContext);
   const navigate = useNavigate();
+
+  function handleSearchGames() {
+    setGameIncludedPlayers([player.id]);
+    setGameExcludedPlayers([]);
+    setGameIncludedDecks([]);
+    setGameExcludedDecks([]);
+    setGameSortBy(GameSortFctKey.DATE_DESC);
+    navigate(`/`);
+  }
+
+  function handleSearchDecks() {
+    setDeckSearch("");
+    setDeckSortBy(DeckSortFctKey.NAME_ASC);
+    setDeckBuilder(player.id);
+    setDeckBracket("" as Bracket);
+    setDeckIdentity("" as IdentityLabel);
+    navigate(`/decks`);
+  }
 
   return (
     <div onClick={(e) => e.stopPropagation()}>
@@ -34,12 +71,13 @@ export function PlayerCardDropdownMenu({
           </IconButton>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
-          <DropdownMenu.Item
-            className="mb-1"
-            onClick={() => navigate(`/?players=${player.id}`)}
-          >
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-            Search Games
+          <DropdownMenu.Item className="mb-1" onClick={handleSearchGames}>
+            <FontAwesomeIcon icon={faDice} />
+            View All Games
+          </DropdownMenu.Item>
+          <DropdownMenu.Item className="mb-1" onClick={handleSearchDecks}>
+            <FontAwesomeIcon icon={faLayerGroup} />
+            View All Decks
           </DropdownMenu.Item>
           {player.externalId && (
             <DropdownMenu.Item

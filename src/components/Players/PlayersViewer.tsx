@@ -3,17 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Box, Grid, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
+import { FiltersContext } from "../../contexts/FiltersContext";
 import { useAuth } from "../../hooks/useAuth";
 import { usePopulatedPlayers } from "../../hooks/usePopulatedPlayers";
 import { PlayerWithStats } from "../../state/Player";
 import { PlayerSortFctKey } from "../../state/PlayerSortFctKey";
-import {
-  getPlayerSortFctName,
-  PLAYER_SORT_FCTS,
-} from "../../state/PlayerSortFcts";
-import { SelectOption } from "../../state/SelectOption";
+import { PLAYER_SORT_FCTS } from "../../state/PlayerSortFcts";
 import { SortFctType } from "../../state/SortFctType";
 import { DataCard } from "../Common/DataCard";
 import { NoResults } from "../Common/NoResults";
@@ -22,44 +19,69 @@ import { PlayerCreateModal } from "./PlayerCreateModal";
 import { PlayersCardView } from "./PlayersCardView";
 
 export function PlayersViewer() {
+  const { playerSortBy, setPlayerSortBy, playerSearch, setPlayerSearch } =
+    useContext(FiltersContext);
+
   const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState<string>("");
-  const [sortFctKey, setSortFctKey] = useState<SelectOption>({
-    value: PlayerSortFctKey.NAME_ASC,
-    label: getPlayerSortFctName(PlayerSortFctKey.NAME_ASC),
-  });
-
   const { populatedPlayers, populating } = usePopulatedPlayers();
+
   const [filteredPlayers, setFilteredPlayers] = useState<PlayerWithStats[]>([]);
 
   const hasFiltersApplied = useMemo(() => {
-    return search.length > 0;
-  }, [search]);
+    return playerSearch.length > 0;
+  }, [playerSearch]);
 
   useEffect(() => {
     const filtered = cloneDeep(populatedPlayers).filter((player) =>
-      player.name.toLowerCase().includes(search.toLowerCase())
+      player.name.toLowerCase().includes(playerSearch.toLowerCase())
     );
-    const sortFct = PLAYER_SORT_FCTS[sortFctKey.value].sortFct;
+    const sortFct = PLAYER_SORT_FCTS[playerSortBy].sortFct;
     const sorted = filtered.sort(sortFct);
     setFilteredPlayers(sorted);
-  }, [populatedPlayers, sortFctKey, search]);
+  }, [populatedPlayers, playerSortBy, playerSearch]);
 
   useEffect(() => {
-    const urlSortKey = searchParams.get("sort");
-    if (
-      urlSortKey &&
-      Object.values<string>(PlayerSortFctKey).includes(urlSortKey)
-    ) {
-      setSortFctKey({
-        value: urlSortKey as PlayerSortFctKey,
-        label: getPlayerSortFctName(urlSortKey as PlayerSortFctKey),
-      });
+    const params: Record<string, string> = {
+      sort: searchParams.get("sort") ?? playerSortBy,
+      search: searchParams.get("search") ?? playerSearch,
+    };
+
+    if (params.search) {
+      setPlayerSearch(params.search);
+    } else {
+      delete params.search;
     }
-  }, [searchParams]);
+
+    if (
+      params.sort &&
+      Object.values<string>(PlayerSortFctKey).includes(params.sort)
+    ) {
+      setPlayerSortBy(params.sort as PlayerSortFctKey);
+    } else {
+      delete params.sort;
+    }
+
+    setSearchParams(params);
+
+    // We only want to run this effect once when the component mounts
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function handleSearch(value: string) {
+    setPlayerSearch(value);
+
+    if (!value) {
+      searchParams.delete("search");
+    } else {
+      searchParams.set("search", value);
+    }
+    setSearchParams(searchParams);
+  }
 
   function handleSort(value: string) {
+    setPlayerSortBy(value as PlayerSortFctKey);
+
     if (!value) {
       searchParams.delete("sort");
     } else {
@@ -101,8 +123,8 @@ export function PlayersViewer() {
               <TextField.Root
                 className="input-field"
                 placeholder="Search…"
-                value={search}
-                onChange={({ target }) => setSearch(target.value)}
+                value={playerSearch}
+                onChange={({ target }) => handleSearch(target.value)}
               >
                 <TextField.Slot>
                   <MagnifyingGlassIcon height="16" width="16" />
@@ -115,7 +137,7 @@ export function PlayersViewer() {
               </Heading>
               <SortFctSelect
                 type={SortFctType.PLAYER}
-                value={sortFctKey.value}
+                value={playerSortBy}
                 onChange={handleSort}
               />
             </Box>
@@ -124,9 +146,9 @@ export function PlayersViewer() {
         {filteredPlayers.length ? (
           <PlayersCardView
             players={filteredPlayers}
-            highlightedKey={PLAYER_SORT_FCTS[sortFctKey.value].highlightedKey}
+            highlightedKey={PLAYER_SORT_FCTS[playerSortBy].highlightedKey}
             highlightedDirection={
-              PLAYER_SORT_FCTS[sortFctKey.value].highlightedDirection
+              PLAYER_SORT_FCTS[playerSortBy].highlightedDirection
             }
           />
         ) : (

@@ -3,8 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Box, Grid, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
+import { FiltersContext } from "../../contexts/FiltersContext";
 import { useAuth } from "../../hooks/useAuth";
 import { usePopulatedDecks } from "../../hooks/usePopulatedDecks";
 import { Bracket } from "../../state/Bracket";
@@ -26,62 +27,100 @@ import { DecksCardView } from "./DecksCardView";
 import { DeckSyncModal } from "./DeckSyncModal";
 
 export function DecksViewer() {
+  const {
+    deckSearch,
+    setDeckSearch,
+    deckSortBy,
+    setDeckSortBy,
+    deckBuilder,
+    setDeckBuilder,
+    deckBracket,
+    setDeckBracket,
+    deckIdentity,
+    setDeckIdentity,
+  } = useContext(FiltersContext);
+
   const auth = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const [search, setSearch] = useState<string>(
-    searchParams.get("search") ?? ""
-  );
-  const [sortFctKey, setSortFctKey] = useState<DeckSortFctKey>(
-    Object.values<string>(DeckSortFctKey).includes(
-      searchParams.get("sort") ?? ""
-    )
-      ? (searchParams.get("sort") as DeckSortFctKey)
-      : DeckSortFctKey.NAME_ASC
-  );
-  const [visiblePlayer, setVisiblePlayer] = useState<string>(
-    searchParams.get("builder") ?? ""
-  );
-  const [bracket, setBracket] = useState<Bracket | undefined>(
-    Object.values<string>(Bracket).includes(searchParams.get("bracket") ?? "")
-      ? (searchParams.get("bracket") as Bracket)
-      : undefined
-  );
-  const [identity, setIdentity] = useState<IdentityLabel | undefined>(
-    Object.values<string>(IdentityLabel).includes(
-      searchParams.get("identity") ?? ""
-    )
-      ? (searchParams.get("identity") as IdentityLabel)
-      : undefined
-  );
-
   const { populatedDecks, populating } = usePopulatedDecks();
+
   const [filteredDecks, setFilteredDecks] = useState<DeckWithStats[]>([]);
 
   const hasFiltersApplied = useMemo(() => {
-    return search.length > 0 || visiblePlayer.length > 0 || bracket || identity;
-  }, [search, visiblePlayer, bracket, identity]);
+    return (
+      deckSearch.length > 0 ||
+      deckBuilder.length > 0 ||
+      deckBracket ||
+      deckIdentity
+    );
+  }, [deckSearch, deckBuilder, deckBracket, deckIdentity]);
 
   useEffect(() => {
     const filtered = cloneDeep(populatedDecks).filter((deck) => {
       const nameFilter =
-        deck.name.toLowerCase().includes(search.toLowerCase()) ||
-        deck.commander?.toLowerCase().includes(search.toLowerCase());
-      const builderFilter = !visiblePlayer || deck.builder === visiblePlayer;
+        deck.name.toLowerCase().includes(deckSearch.toLowerCase()) ||
+        deck.commander?.toLowerCase().includes(deckSearch.toLowerCase());
+      const builderFilter = !deckBuilder || deck.builder === deckBuilder;
       const bracketFilter =
-        !bracket || (getBracket(deck) === bracket && deck.externalId);
+        !deckBracket || (getBracket(deck) === deckBracket && deck.externalId);
       const identityFilter =
-        !identity ||
-        getColourIdentityLabel(deck.colourIdentity ?? []) === identity;
+        !deckIdentity ||
+        getColourIdentityLabel(deck.colourIdentity ?? []) === deckIdentity;
       return nameFilter && builderFilter && bracketFilter && identityFilter;
     });
-    const sortFct = DECK_SORT_FCTS[sortFctKey].sortFct;
+    const sortFct = DECK_SORT_FCTS[deckSortBy].sortFct;
     const sorted = filtered.sort(sortFct);
     setFilteredDecks(sorted);
-  }, [populatedDecks, sortFctKey, search, visiblePlayer, bracket, identity]);
+  }, [
+    populatedDecks,
+    deckSortBy,
+    deckSearch,
+    deckBuilder,
+    deckBracket,
+    deckIdentity,
+  ]);
+
+  useEffect(() => {
+    const params: Record<string, string> = {
+      sort: searchParams.get("sort") ?? deckSortBy,
+      search: searchParams.get("search") ?? deckSearch,
+      builder: searchParams.get("builder") ?? deckBuilder,
+      bracket: searchParams.get("bracket") ?? deckBracket,
+      identity: searchParams.get("identity") ?? deckIdentity,
+    };
+
+    if (params.search) {
+      setDeckSearch(params.search);
+    } else {
+      delete params.search;
+    }
+
+    if (params.builder) {
+      setDeckBuilder(params.builder);
+    } else {
+      delete params.builder;
+    }
+
+    if (params.bracket) {
+      setDeckBracket(params.bracket as Bracket);
+    } else {
+      delete params.bracket;
+    }
+
+    if (params.identity) {
+      setDeckIdentity(params.identity as IdentityLabel);
+    } else {
+      delete params.identity;
+    }
+
+    setSearchParams(params);
+
+    // We only want to run this effect once when the component mounts
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleSearch(value: string) {
-    setSearch(value);
+    setDeckSearch(value);
 
     if (!value) {
       searchParams.delete("search");
@@ -92,7 +131,7 @@ export function DecksViewer() {
   }
 
   function handleSort(value: string) {
-    setSortFctKey(value as DeckSortFctKey);
+    setDeckSortBy(value as DeckSortFctKey);
 
     if (!value) {
       searchParams.delete("sort");
@@ -103,7 +142,7 @@ export function DecksViewer() {
   }
 
   function handleChangeBuilder(value: string) {
-    setVisiblePlayer(value);
+    setDeckBuilder(value);
 
     if (!value) {
       searchParams.delete("builder");
@@ -114,7 +153,7 @@ export function DecksViewer() {
   }
 
   function handleChangeBracket(value: Bracket) {
-    setBracket(value);
+    setDeckBracket(value);
 
     if (!value) {
       searchParams.delete("bracket");
@@ -125,7 +164,7 @@ export function DecksViewer() {
   }
 
   function handleChangeIdentity(value: IdentityLabel) {
-    setIdentity(value);
+    setDeckIdentity(value);
 
     if (!value) {
       searchParams.delete("identity");
@@ -171,7 +210,7 @@ export function DecksViewer() {
               <TextField.Root
                 className="input-field"
                 placeholder="Search…"
-                value={search}
+                value={deckSearch}
                 onChange={({ target }) => handleSearch(target.value)}
               >
                 <TextField.Slot>
@@ -185,7 +224,7 @@ export function DecksViewer() {
               </Heading>
               <SortFctSelect
                 type={SortFctType.DECK}
-                value={sortFctKey}
+                value={deckSortBy}
                 onChange={handleSort}
               />
             </Box>
@@ -194,7 +233,7 @@ export function DecksViewer() {
                 Builder
               </Heading>
               <PlayerSelect
-                value={visiblePlayer}
+                value={deckBuilder}
                 onChange={handleChangeBuilder}
                 isMulti={false}
               />
@@ -204,7 +243,7 @@ export function DecksViewer() {
                 Bracket
               </Heading>
               <BracketSelect
-                value={bracket as Bracket}
+                value={deckBracket as Bracket}
                 onChange={handleChangeBracket}
               />
             </Box>
@@ -213,7 +252,7 @@ export function DecksViewer() {
                 Identity
               </Heading>
               <IdentitySelect
-                value={identity as IdentityLabel}
+                value={deckIdentity as IdentityLabel}
                 onChange={handleChangeIdentity}
               />
             </Box>
@@ -222,9 +261,9 @@ export function DecksViewer() {
         {filteredDecks.length ? (
           <DecksCardView
             decks={filteredDecks}
-            highlightedKey={DECK_SORT_FCTS[sortFctKey].highlightedKey}
+            highlightedKey={DECK_SORT_FCTS[deckSortBy].highlightedKey}
             highlightedDirection={
-              DECK_SORT_FCTS[sortFctKey].highlightedDirection
+              DECK_SORT_FCTS[deckSortBy].highlightedDirection
             }
           />
         ) : (

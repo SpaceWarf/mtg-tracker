@@ -17,13 +17,18 @@ import {
   Spinner,
   Tooltip,
 } from "@radix-ui/themes";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
+import { FiltersContext } from "../../contexts/FiltersContext";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
 import { usePlayers } from "../../hooks/usePlayers";
 import { ArchidektService } from "../../services/Archidekt";
+import { Bracket } from "../../state/Bracket";
+import { DeckSortFctKey } from "../../state/DeckSortFctKey";
+import { GameSortFctKey } from "../../state/GameSortFctKey";
+import { IdentityLabel } from "../../state/IdentityLabel";
 import { populatePlayer } from "../../utils/Player";
 import { CommanderPreview } from "../Common/CommanderPreview";
 import { DataCard } from "../Common/DataCard";
@@ -33,6 +38,19 @@ import { PlayerShowcase } from "./PlayerShowcase";
 import { PlayerStatsSection } from "./PlayerStatsSection";
 
 export function PlayerByIdViewer() {
+  const {
+    setGameSortBy,
+    setGameIncludedPlayers,
+    setGameExcludedPlayers,
+    setGameIncludedDecks,
+    setGameExcludedDecks,
+    setDeckSearch,
+    setDeckSortBy,
+    setDeckBuilder,
+    setDeckBracket,
+    setDeckIdentity,
+  } = useContext(FiltersContext);
+
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useAuth();
@@ -59,11 +77,21 @@ export function PlayerByIdViewer() {
   }, [loadingPlayers, loadingGames, loadingDecks]);
 
   function handleSearchGames() {
-    navigate(`/?players=${player?.id}`);
+    setGameIncludedPlayers([player?.id ?? ""]);
+    setGameExcludedPlayers([]);
+    setGameIncludedDecks([]);
+    setGameExcludedDecks([]);
+    setGameSortBy(GameSortFctKey.DATE_DESC);
+    navigate(`/`);
   }
 
   function handleSearchDecks() {
-    navigate(`/decks?builder=${player?.id}`);
+    setDeckSearch("");
+    setDeckSortBy(DeckSortFctKey.NAME_ASC);
+    setDeckBuilder(player?.id ?? "");
+    setDeckBracket("" as Bracket);
+    setDeckIdentity("" as IdentityLabel);
+    navigate(`/decks`);
   }
 
   function handleArchidekt() {

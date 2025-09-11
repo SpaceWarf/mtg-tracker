@@ -8,6 +8,7 @@ import { Alert } from "./components/Alert.tsx";
 import { AlertProvider } from "./contexts/AlertProvider.tsx";
 import { AuthProvider } from "./contexts/AuthProvider.tsx";
 import { DataProvider } from "./contexts/DataProvider.tsx";
+import { FiltersProvider } from "./contexts/FiltersProvider.tsx";
 import { Brackets } from "./pages/Brackets.tsx";
 import { DeckById } from "./pages/DeckById.tsx";
 import { Decks } from "./pages/Decks.tsx";
@@ -31,24 +32,29 @@ export function Main() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <DataProvider>
-            <AlertProvider>
-              <div id="mtg-tracker">
-                <Alert />
-                <BrowserRouter>
-                  <Routes>
-                    <Route path="/" element={<Games />} />
-                    <Route path="/players" element={<Players />} />
-                    <Route path="/players/:id" element={<PlayerById />} />
-                    <Route path="/decks" element={<Decks />} />
-                    <Route path="/decks/:id" element={<DeckById />} />
-                    <Route path="/game-changers" element={<GameChangers />} />
-                    <Route path="/deck-validator" element={<DeckValidator />} />
-                    <Route path="/brackets" element={<Brackets />} />
-                    {/* <Route path="/rewind" element={<Rewind />} /> */}
-                  </Routes>
-                </BrowserRouter>
-              </div>
-            </AlertProvider>
+            <FiltersProvider>
+              <AlertProvider>
+                <div id="mtg-tracker">
+                  <Alert />
+                  <BrowserRouter>
+                    <Routes>
+                      <Route path="/" element={<Games />} />
+                      <Route path="/players" element={<Players />} />
+                      <Route path="/players/:id" element={<PlayerById />} />
+                      <Route path="/decks" element={<Decks />} />
+                      <Route path="/decks/:id" element={<DeckById />} />
+                      <Route path="/game-changers" element={<GameChangers />} />
+                      <Route
+                        path="/deck-validator"
+                        element={<DeckValidator />}
+                      />
+                      <Route path="/brackets" element={<Brackets />} />
+                      {/* <Route path="/rewind" element={<Rewind />} /> */}
+                    </Routes>
+                  </BrowserRouter>
+                </div>
+              </AlertProvider>
+            </FiltersProvider>
           </DataProvider>
         </AuthProvider>
       </QueryClientProvider>
