@@ -1,5 +1,7 @@
+import { faFilter, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { Box, Flex, Heading, Spinner, TextField } from "@radix-ui/themes";
+import { Box, Grid, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -13,6 +15,7 @@ import {
 } from "../../state/PlayerSortFcts";
 import { SelectOption } from "../../state/SelectOption";
 import { SortFctType } from "../../state/SortFctType";
+import { DataCard } from "../Common/DataCard";
 import { NoResults } from "../Common/NoResults";
 import { SortFctSelect } from "../Common/Select/SortFctSelect";
 import { PlayerCreateModal } from "./PlayerCreateModal";
@@ -67,49 +70,63 @@ export function PlayersViewer() {
 
   return (
     <div className="p-5 w-full max-w-[1950px]">
-      <Flex className="data-card mb-5" justify="between" wrap="wrap">
-        <Flex gap="5" wrap="wrap">
-          <Box width={{ initial: "100%", xs: "60" }}>
-            <Heading className="mb-1" size="3">
-              Search
-            </Heading>
-            <TextField.Root
-              className="input-field"
-              placeholder="Search…"
-              value={search}
-              onChange={({ target }) => setSearch(target.value)}
-            >
-              <TextField.Slot>
-                <MagnifyingGlassIcon height="16" width="16" />
-              </TextField.Slot>
-            </TextField.Root>
-          </Box>
-          <Box width={{ initial: "100%", xs: "60" }}>
-            <Heading className="mb-1" size="3">
-              Sort by
-            </Heading>
-            <SortFctSelect
-              type={SortFctType.PLAYER}
-              value={sortFctKey.value}
-              onChange={handleSort}
-            />
-          </Box>
-        </Flex>
-        <Box width={{ initial: "100%", xs: "60" }}>
-          <Flex justify="center">{auth.user && <PlayerCreateModal />}</Flex>
-        </Box>
-      </Flex>
-      {filteredPlayers.length ? (
-        <PlayersCardView
-          players={filteredPlayers}
-          highlightedKey={PLAYER_SORT_FCTS[sortFctKey.value].highlightedKey}
-          highlightedDirection={
-            PLAYER_SORT_FCTS[sortFctKey.value].highlightedDirection
-          }
-        />
-      ) : (
-        <NoResults />
-      )}
+      <Grid columns="1" gap="5">
+        <DataCard
+          title="Players"
+          icon={<FontAwesomeIcon icon={faUsers} />}
+          direction="row"
+        >
+          <div>{auth.user && <PlayerCreateModal />}</div>
+        </DataCard>
+        <DataCard
+          title="Filters"
+          icon={<FontAwesomeIcon icon={faFilter} />}
+          collapsable
+          defaultCollapsed
+        >
+          <Grid
+            gap="5"
+            columns={{ initial: "1", xs: "2", sm: "3", md: "4", lg: "5" }}
+          >
+            <Box>
+              <Heading className="mb-1" size="3">
+                Search
+              </Heading>
+              <TextField.Root
+                className="input-field"
+                placeholder="Search…"
+                value={search}
+                onChange={({ target }) => setSearch(target.value)}
+              >
+                <TextField.Slot>
+                  <MagnifyingGlassIcon height="16" width="16" />
+                </TextField.Slot>
+              </TextField.Root>
+            </Box>
+            <Box>
+              <Heading className="mb-1" size="3">
+                Sort by
+              </Heading>
+              <SortFctSelect
+                type={SortFctType.PLAYER}
+                value={sortFctKey.value}
+                onChange={handleSort}
+              />
+            </Box>
+          </Grid>
+        </DataCard>
+        {filteredPlayers.length ? (
+          <PlayersCardView
+            players={filteredPlayers}
+            highlightedKey={PLAYER_SORT_FCTS[sortFctKey.value].highlightedKey}
+            highlightedDirection={
+              PLAYER_SORT_FCTS[sortFctKey.value].highlightedDirection
+            }
+          />
+        ) : (
+          <NoResults />
+        )}
+      </Grid>
     </div>
   );
 }

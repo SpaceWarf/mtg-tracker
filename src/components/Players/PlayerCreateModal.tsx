@@ -34,9 +34,9 @@ export function PlayerCreateModal() {
   return (
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
-        <Button className="h-10 mt-6">
+        <Button className="h-10" variant="soft">
           <FontAwesomeIcon icon={faPlus} />
-          Create new player
+          Create
         </Button>
       </Dialog.Trigger>
 
