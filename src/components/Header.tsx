@@ -55,33 +55,33 @@ export function Header() {
             </DropdownMenu.Trigger>
 
             <DropdownMenu.Content>
-              <DropdownMenu.Item className="mb-1">
-                <Link to="/">
+              <Link to="/">
+                <DropdownMenu.Item className="mb-1">
                   <FontAwesomeIcon className="mr-2" icon={faDice} /> Games
-                </Link>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item className="mb-1">
-                <Link to="/players">
+                </DropdownMenu.Item>
+              </Link>
+              <Link to="/players">
+                <DropdownMenu.Item className="mb-1">
                   <FontAwesomeIcon className="mr-2" icon={faUser} /> Players
-                </Link>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item className="mb-1">
-                <Link to="/decks">
+                </DropdownMenu.Item>
+              </Link>
+              <Link to="/decks">
+                <DropdownMenu.Item className="mb-1">
                   <FontAwesomeIcon className="mr-2" icon={faLayerGroup} /> Decks
-                </Link>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item className="mb-1">
-                <Link to="/game-changers">
+                </DropdownMenu.Item>
+              </Link>
+              <Link to="/game-changers">
+                <DropdownMenu.Item className="mb-1">
                   <FontAwesomeIcon className="mr-2" icon={faGem} /> Game
                   Changers
-                </Link>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item className="mb-1">
-                <Link to="/deck-validator">
+                </DropdownMenu.Item>
+              </Link>
+              <Link to="/deck-validator">
+                <DropdownMenu.Item className="mb-1">
                   <FontAwesomeIcon className="mr-2" icon={faCheck} /> Deck
                   Validator
-                </Link>
-              </DropdownMenu.Item>
+                </DropdownMenu.Item>
+              </Link>
             </DropdownMenu.Content>
           </DropdownMenu.Root>
         </Flex>
