@@ -577,53 +577,56 @@ export function DeckByIdViewer() {
               {viewType === DeckByIdViewType.STATS && (
                 <>
                   <DeckStatsSection deck={populatedDeck} />
-                  <Grid
-                    gap="5"
-                    columns={{
-                      initial: "1",
-                      lg: `${Math.min(2, cardPreviewSectionCount)}`,
-                    }}
-                  >
-                    {populatedDeck.gameChangers.length > 0 && (
-                      <DeckCardPreviewSection
-                        title={`Game Changers (${populatedDeck.gameChangers.length})`}
-                        icon={<FontAwesomeIcon icon={faGem} />}
-                        cards={populatedDeck.gameChangers}
-                        error={
-                          populatedDeck.gameChangers.length > GAME_CHANGER_LIMIT
-                        }
-                      />
-                    )}
-                    {populatedDeck.tutors.length > 0 && (
-                      <DeckCardPreviewSection
-                        title={`Tutors (${populatedDeck.tutors.length})`}
-                        icon={<FontAwesomeIcon icon={faLayerGroup} />}
-                        cards={populatedDeck.tutors}
-                        error={populatedDeck.tutors.length > TUTOR_LIMIT}
-                      />
-                    )}
-                    {populatedDeck.extraTurns.length > 0 && (
-                      <DeckCardPreviewSection
-                        title={`Extra Turns (${populatedDeck.extraTurns.length})`}
-                        icon={<FontAwesomeIcon icon={faForward} />}
-                        cards={populatedDeck.extraTurns}
-                        error={
-                          populatedDeck.extraTurns.length > EXTRA_TURN_LIMIT
-                        }
-                      />
-                    )}
-                    {populatedDeck.massLandDenials.length > 0 && (
-                      <DeckCardPreviewSection
-                        title={`Mass Land Denials (${populatedDeck.massLandDenials.length})`}
-                        icon={<FontAwesomeIcon icon={faBomb} />}
-                        cards={populatedDeck.massLandDenials}
-                        error={
-                          populatedDeck.massLandDenials.length >
-                          MASS_LAND_DENIAL_LIMIT
-                        }
-                      />
-                    )}
-                  </Grid>
+                  {cardPreviewSectionCount > 0 && (
+                    <Grid
+                      gap="5"
+                      columns={{
+                        initial: "1",
+                        lg: `${Math.min(2, cardPreviewSectionCount)}`,
+                      }}
+                    >
+                      {populatedDeck.gameChangers.length > 0 && (
+                        <DeckCardPreviewSection
+                          title={`Game Changers (${populatedDeck.gameChangers.length})`}
+                          icon={<FontAwesomeIcon icon={faGem} />}
+                          cards={populatedDeck.gameChangers}
+                          error={
+                            populatedDeck.gameChangers.length >
+                            GAME_CHANGER_LIMIT
+                          }
+                        />
+                      )}
+                      {populatedDeck.tutors.length > 0 && (
+                        <DeckCardPreviewSection
+                          title={`Tutors (${populatedDeck.tutors.length})`}
+                          icon={<FontAwesomeIcon icon={faLayerGroup} />}
+                          cards={populatedDeck.tutors}
+                          error={populatedDeck.tutors.length > TUTOR_LIMIT}
+                        />
+                      )}
+                      {populatedDeck.extraTurns.length > 0 && (
+                        <DeckCardPreviewSection
+                          title={`Extra Turns (${populatedDeck.extraTurns.length})`}
+                          icon={<FontAwesomeIcon icon={faForward} />}
+                          cards={populatedDeck.extraTurns}
+                          error={
+                            populatedDeck.extraTurns.length > EXTRA_TURN_LIMIT
+                          }
+                        />
+                      )}
+                      {populatedDeck.massLandDenials.length > 0 && (
+                        <DeckCardPreviewSection
+                          title={`Mass Land Denials (${populatedDeck.massLandDenials.length})`}
+                          icon={<FontAwesomeIcon icon={faBomb} />}
+                          cards={populatedDeck.massLandDenials}
+                          error={
+                            populatedDeck.massLandDenials.length >
+                            MASS_LAND_DENIAL_LIMIT
+                          }
+                        />
+                      )}
+                    </Grid>
+                  )}
                   {populatedDeck.combos.length > 0 && (
                     <DeckCombosSection deck={populatedDeck} />
                   )}
