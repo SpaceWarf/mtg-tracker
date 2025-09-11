@@ -13,6 +13,7 @@ import {
 } from "../../state/PlayerSortFcts";
 import { SelectOption } from "../../state/SelectOption";
 import { SortFctType } from "../../state/SortFctType";
+import { NoResults } from "../Common/NoResults";
 import { SortFctSelect } from "../Common/Select/SortFctSelect";
 import { PlayerCreateModal } from "./PlayerCreateModal";
 import { PlayersCardView } from "./PlayersCardView";
@@ -107,7 +108,7 @@ export function PlayersViewer() {
           }
         />
       ) : (
-        <div>No results for applied filters.</div>
+        <NoResults />
       )}
     </div>
   );

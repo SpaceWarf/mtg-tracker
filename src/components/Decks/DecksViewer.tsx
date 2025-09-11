@@ -13,6 +13,7 @@ import { IdentityLabel } from "../../state/IdentityLabel";
 import { SortFctType } from "../../state/SortFctType";
 import { getBracket } from "../../utils/Bracket";
 import { getColourIdentityLabel } from "../../utils/Deck";
+import { NoResults } from "../Common/NoResults";
 import { BracketSelect } from "../Common/Select/BracketSelect";
 import { IdentitySelect } from "../Common/Select/IdentitySelect";
 import { PlayerSelect } from "../Common/Select/PlayerSelect";
@@ -205,7 +206,7 @@ export function DecksViewer() {
           highlightedDirection={DECK_SORT_FCTS[sortFctKey].highlightedDirection}
         />
       ) : (
-        <div>No results for applied filters.</div>
+        <NoResults />
       )}
     </div>
   );

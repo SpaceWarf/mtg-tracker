@@ -19,6 +19,7 @@ import {
   gameHasSomeDecks,
   gameHasSomePlayers,
 } from "../../utils/Game";
+import { NoResults } from "../Common/NoResults";
 import { DeckSelect } from "../Common/Select/DeckSelect";
 import { PlayerSelect } from "../Common/Select/PlayerSelect";
 import { SortFctSelect } from "../Common/Select/SortFctSelect";
@@ -259,7 +260,7 @@ export function GamesViewer() {
       {filteredGames.length ? (
         <GamesCardView games={filteredGames} />
       ) : (
-        <div>No results for applied filters.</div>
+        <NoResults />
       )}
     </div>
   );
