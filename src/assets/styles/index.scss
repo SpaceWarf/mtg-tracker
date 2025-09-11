@@ -129,6 +129,11 @@ ul {
     color: c.$text-muted;
   }
 
+  .react-select__input-container,
+  .react-select__single-value {
+    color: c.$text-primary;
+  }
+
   .react-select__menu {
     background-color: c.$select-background;
     border: 2px solid c.$select-border;
