@@ -95,6 +95,40 @@ ul {
 }
 
 .react-select-container {
+  .react-select__control {
+    background-color: c.$select-background;
+    border: 2px solid c.$select-background;
+
+    &:hover {
+      border-color: c.$select-border-hover;
+    }
+  }
+
+  .react-select__control--is-focused {
+    border: 2px solid c.$select-border-hover;
+    box-shadow: none;
+  }
+
+  .react-select__indicator {
+    color: c.$text-secondary;
+
+    &:hover {
+      color: c.$text-muted;
+    }
+  }
+
+  .react-select__indicator-separator {
+    background-color: c.$text-secondary;
+  }
+
+  .react-select__single-value {
+    color: c.$text-primary;
+  }
+
+  .react-select__placeholder {
+    color: c.$text-muted;
+  }
+
   .react-select__menu {
     background-color: c.$select-background;
     border: 2px solid c.$select-border;
@@ -107,6 +141,60 @@ ul {
 
     &:hover {
       background-color: c.$select-item-hover;
+    }
+  }
+
+  .react-select__multi-value {
+    background-color: c.$select-item-hover;
+    border-radius: 7px;
+  }
+
+  .react-select__multi-value__label {
+    color: c.$text-primary;
+  }
+
+  .react-select__multi-value__remove:hover {
+    background-color: c.$select-item-hover;
+    background-color: c.$red;
+    color: c.$text-primary;
+    border-radius: 0 7px 7px 0;
+  }
+}
+
+.rt-TextFieldRoot,
+.rt-TextAreaRoot {
+  background-color: c.$input-background;
+  border: 2px solid c.$input-background;
+  box-shadow: none;
+  padding: 0;
+  outline: none;
+  height: 40px;
+
+  &:hover {
+    border-color: c.$input-border-hover;
+  }
+
+  &:focus-within,
+  &:focus {
+    border-color: c.$input-border-hover;
+    box-shadow: none;
+  }
+
+  .rt-TextFieldInput,
+  .rt-TextAreaInput {
+    color: c.$text-primary;
+    font-weight: 500;
+    outline: none;
+
+    &:focus,
+    &:focus {
+      color: c.$text-primary;
+      box-shadow: none;
+    }
+
+    &:placeholder-shown,
+    &:placeholder-shown {
+      color: c.$text-muted;
     }
   }
 }

@@ -1,11 +1,9 @@
+@use "../styles/colours" as c;
+
 .select-option-container {
   display: flex;
   padding: 0.5rem;
   cursor: pointer;
-
-  &:hover {
-    background-color: #222;
-  }
 }
 
 .player-select-option-container {
@@ -18,6 +16,6 @@
 
   span.detail {
     font-size: 0.8rem;
-    color: rgb(149, 149, 149);
+    color: c.$text-muted;
   }
 }

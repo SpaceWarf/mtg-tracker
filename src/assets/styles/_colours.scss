@@ -1,3 +1,5 @@
+@use "sass:color";
+
 $green: #5abe8c;
 $red: #d84242;
 
@@ -24,8 +26,13 @@ $dropdown-background: $background-secondary;
 $dropdown-item-hover: $background-hover;
 $dropdown-border: $border-primary;
 
-$select-background: $background-secondary;
-$select-item-hover: $background-hover;
+$select-background: color.adjust($background-secondary, $lightness: 10%);
+$select-item-hover: color.adjust($background-hover, $lightness: 10%);
 $select-border: $border-primary;
+$select-border-hover: $border-hover;
 
-$tooltip-background: #505050;
+$input-background: color.adjust($background-secondary, $lightness: 10%);
+$input-border: $border-primary;
+$input-border-hover: $border-hover;
+
+$tooltip-background: color.adjust($background-secondary, $lightness: 15%);

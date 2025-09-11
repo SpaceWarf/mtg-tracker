@@ -3,70 +3,8 @@
 @tailwind utilities;
 
 @layer components {
-  .react-select-container .react-select__control {
-    @apply bg-white dark:bg-neutral-700 border-2 border-neutral-300 dark:border-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-500;
-  }
-
-  .react-select-container .react-select__control--is-focused {
-    @apply border-neutral-500 hover:border-neutral-500 dark:border-neutral-400 dark:hover:border-neutral-400 shadow-none;
-  }
-
-  .react-select-container .react-select__indicator-separator {
-    @apply bg-neutral-400;
-  }
-
-  .react-select-container .react-select__input-container,
-  .react-select-container .react-select__single-value {
-    @apply text-neutral-600 dark:text-neutral-200;
-  }
-  .react-select-container .react-select__placeholder {
-    @apply dark:placeholder:text-neutral-500;
-  }
-
-  .react-select-container .react-select__multi-value {
-    @apply bg-neutral-400 dark:bg-neutral-600;
-  }
-
-  .react-select-container .react-select__multi-value__label {
-    @apply text-neutral-800 dark:text-neutral-100;
-  }
-
   .alert {
     @apply fixed top-0 left-0 right-0;
     z-index: 9999;
-  }
-
-  .input-field.rt-TextFieldRoot,
-  .area-field.rt-TextAreaRoot {
-    @apply bg-neutral-700 border-2 border-neutral-300 dark:border-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-500;
-    box-shadow: none;
-    padding: 0;
-    outline: none;
-    height: 40px;
-  }
-
-  .input-field.rt-TextFieldRoot:focus-within,
-  .area-field.rt-TextAreaRoot:focus-within {
-    @apply border-neutral-500 hover:border-neutral-500 dark:border-neutral-400 dark:hover:border-neutral-400 shadow-none;
-  }
-
-  .input-field.rt-TextFieldRoot .rt-TextFieldInput,
-  .area-field.rt-TextAreaRoot .rt-TextAreaInput {
-    @apply dark:text-neutral-100 dark:placeholder:text-neutral-100;
-    outline: none;
-  }
-
-  .input-field.rt-TextFieldRoot .rt-TextFieldInput:focus,
-  .area-field.rt-TextAreaRoot .rt-TextAreaInput:focus {
-    @apply border-neutral-500 hover:border-neutral-500 dark:border-neutral-400 dark:hover:border-neutral-400 shadow-none;
-  }
-
-  .input-field.rt-TextFieldRoot .rt-TextFieldInput:placeholder-shown,
-  .area-field.rt-TextAreaRoot .rt-TextAreaInput:placeholder-shown {
-    @apply dark:placeholder:text-neutral-500;
-  }
-
-  .input-field.rt-TextFieldRoot .rt-TextFieldSlot {
-    @apply dark:text-neutral-100;
   }
 }
