@@ -1,0 +1,61 @@
+@use "sass:math";
+
+.confettis {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 10;
+  perspective: 1000px;
+
+  .confetti {
+    --size: 15px;
+    width: var(--size);
+    height: calc(var(--size) * 1.5);
+    background: white;
+    position: absolute;
+    top: -5vh;
+    pointer-events: none;
+    transform-style: preserve-3d;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translate3d(var(--left-ini), 0, 0) rotate3d(0, 1, 1, 0deg);
+    }
+
+    100% {
+      transform: translate3d(var(--left-end), 300px, 0)
+        rotate3d(
+          var(--rotation-x),
+          var(--rotation-y),
+          var(--rotation-z),
+          var(--rotation)
+        );
+    }
+  }
+
+  @for $i from 1 through 30 {
+    .confetti:nth-child(#{$i}) {
+      --size: #{math.random(3) + 7}px;
+      --left-ini: #{math.random(25) - 10}vw;
+      --left-end: #{math.random(25) - 10}vw;
+      --color: rgb(
+        #{math.random(256)},
+        #{math.random(256)},
+        #{math.random(256)}
+      );
+      --rotation: #{math.random(90) + 270}deg;
+      --rotation-x: #{math.random(3)};
+      --rotation-y: #{math.random(3)};
+      --rotation-z: #{math.random(3)};
+
+      left: #{math.random(60)}px;
+      animation: fall #{2 + math.random(3)}s linear infinite;
+      animation-delay: -#{math.random(10)}s;
+      background: var(--color);
+    }
+  }
+}

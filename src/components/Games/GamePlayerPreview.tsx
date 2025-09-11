@@ -2,6 +2,7 @@ import { Box, Flex } from "@radix-ui/themes";
 import { useEffect, useRef, useState } from "react";
 import "../../assets/styles/GamePlayerPreview.scss";
 import { GamePlayer } from "../../state/Game";
+import { Confetti } from "../Common/Confetti";
 import { DeckColourIdentity } from "../Decks/DeckColourIdentity";
 import { GameStartIcon } from "../Icons/GameStartIcon";
 import { GameWonIcon } from "../Icons/GameWonIcon";
@@ -61,6 +62,7 @@ export function GamePlayerPreview({ player }: OwnProps) {
       className={`game-player-preview ${player.won ? "won" : ""}`}
       ref={elRef}
     >
+      {player.won && player.t1SolRing && player.started && <Confetti />}
       <Flex
         className="player"
         style={playerStyle}
