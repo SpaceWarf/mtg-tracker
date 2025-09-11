@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Spinner } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
@@ -61,6 +61,10 @@ export function GamesViewer() {
   const [excludedDecks, setExcludedDecks] = useState<string[]>(
     searchParams.get("excludedDecks")?.split(",") ?? []
   );
+
+  const loading = useMemo(() => {
+    return loadingGames || loadingPlayers || loadingDecks || populatingGames;
+  }, [loadingGames, loadingPlayers, loadingDecks, populatingGames]);
 
   const getPlayerByIdFromContext = useCallback(
     (id: string): DbPlayer | undefined => {
@@ -129,10 +133,6 @@ export function GamesViewer() {
     excludedDecks,
   ]);
 
-  function loading(): boolean {
-    return loadingGames || loadingPlayers || loadingDecks || populatingGames;
-  }
-
   function handleSort(value: string) {
     setSortFctKey({
       value: value as GameSortFctKey,
@@ -191,7 +191,7 @@ export function GamesViewer() {
     setSearchParams(searchParams);
   }
 
-  if (loading()) {
+  if (loading) {
     return <Spinner className="mt-5" size="3" />;
   }
 
