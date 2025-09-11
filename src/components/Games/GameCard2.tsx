@@ -1,12 +1,12 @@
 import { faEllipsisV, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, DropdownMenu, Flex, Grid, IconButton } from "@radix-ui/themes";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import "../../assets/styles/GameCard.scss";
-import { DbGame, GamePlayer } from "../../state/Game";
+import { DbGame } from "../../state/Game";
 import { GameDeleteModal } from "./GameDeleteModal";
 import { GameEditModal } from "./GameEditModal";
-import { GamePlayerSection } from "./GamePlayerSection";
+import { GamePlayerPreview } from "./GamePlayerPreview";
 
 type OwnProps = {
   game: DbGame;
@@ -16,30 +16,6 @@ type OwnProps = {
 export function GameCard2({ game, editable }: OwnProps) {
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
-
-  const orderedPlayerNames = [
-    game.player1.playerObj?.name ?? "",
-    game.player2.playerObj?.name ?? "",
-    game.player3.playerObj?.name ?? "",
-    game.player4.playerObj?.name ?? "",
-  ].sort();
-
-  const getPlayerbyName = useCallback(
-    (name: string): GamePlayer => {
-      const player = [
-        game.player1,
-        game.player2,
-        game.player3,
-        game.player4,
-      ].find((player) => player.playerObj?.name === name);
-
-      if (!player) {
-        throw new Error("Error: Could not find player.");
-      }
-      return player;
-    },
-    [game]
-  );
 
   return (
     <>
@@ -63,19 +39,12 @@ export function GameCard2({ game, editable }: OwnProps) {
           <Flex className="content-container" direction="column" gap="3">
             <Flex gap="3" justify="between">
               <Flex flexGrow="1">
-                <Grid columns="2" rows="2" width="100%" gap="5">
-                  <GamePlayerSection
-                    player={getPlayerbyName(orderedPlayerNames[0])}
-                  />
-                  <GamePlayerSection
-                    player={getPlayerbyName(orderedPlayerNames[1])}
-                  />
-                  <GamePlayerSection
-                    player={getPlayerbyName(orderedPlayerNames[2])}
-                  />
-                  <GamePlayerSection
-                    player={getPlayerbyName(orderedPlayerNames[3])}
-                  />
+                <Grid columns={{ initial: "1", xs: "2" }} width="100%" gap="5">
+                  {[game.player1, game.player2, game.player3, game.player4].map(
+                    (player) => (
+                      <GamePlayerPreview key={player.player} player={player} />
+                    )
+                  )}
                 </Grid>
               </Flex>
               {editable && (

@@ -1,9 +1,9 @@
 import { Flex } from "@radix-ui/themes";
-import { DeckWithStats } from "../../state/Deck";
+import { DbDeck } from "../../state/Deck";
 import { ManaIcon } from "../Icons/ManaIcon";
 
 interface OwnProps {
-  deck: DeckWithStats;
+  deck: DbDeck;
   size?: "large" | "small";
 }
 

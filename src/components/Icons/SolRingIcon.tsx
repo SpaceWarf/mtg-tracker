@@ -4,7 +4,7 @@ import { Tooltip } from "@radix-ui/themes";
 
 export function SolRingIcon() {
   return (
-    <Tooltip content="Played a turn 1 Sol Ring">
+    <Tooltip content="Turn 1 Sol Ring">
       <FontAwesomeIcon icon={faRing} />
     </Tooltip>
   );
