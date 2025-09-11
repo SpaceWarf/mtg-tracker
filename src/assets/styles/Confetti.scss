@@ -40,8 +40,8 @@
   @for $i from 1 through 30 {
     .confetti:nth-child(#{$i}) {
       --size: #{math.random(3) + 7}px;
-      --left-ini: #{math.random(25) - 10}vw;
-      --left-end: #{math.random(25) - 10}vw;
+      --left-ini: #{math.random(400) - 100}px;
+      --left-end: #{math.random(400) - 100}px;
       --color: rgb(
         #{math.random(256)},
         #{math.random(256)},
