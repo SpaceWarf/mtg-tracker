@@ -1,5 +1,6 @@
 import {
   faBomb,
+  faCheck,
   faForward,
   faGem,
   faLayerGroup,
@@ -27,6 +28,7 @@ import {
   TUTOR_LIMIT,
 } from "../../utils/Bracket";
 import { populateDeckDetails } from "../../utils/Deck";
+import { DataCard } from "../Common/DataCard";
 import { DeckCardPreviewSection } from "../Decks/DeckCardPreviewSection";
 import { DeckShowcase } from "../Decks/DeckShowcase";
 
@@ -86,6 +88,11 @@ export function DeckValidatorViewer() {
   return (
     <div className="p-5 w-full max-w-[1950px]">
       <Grid columns="1" gap="5">
+        <DataCard
+          title="Deck Validator"
+          icon={<FontAwesomeIcon icon={faCheck} />}
+          direction="row"
+        />
         <Flex className="data-card" align="center" justify="start" gap="5">
           <Box width="300px">
             <Heading className="mb-1" size="3">

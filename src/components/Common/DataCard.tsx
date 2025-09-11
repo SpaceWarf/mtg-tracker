@@ -8,7 +8,7 @@ type OwnProps = {
   className?: string;
   title?: string;
   icon?: React.ReactNode;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   direction?: "column" | "row";
   align?: "start" | "center" | "end" | "between";
   collapsable?: boolean;
