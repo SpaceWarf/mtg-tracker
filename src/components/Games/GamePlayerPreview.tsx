@@ -31,6 +31,14 @@ export function GamePlayerPreview({ player }: OwnProps) {
     };
   }, []);
 
+  function handlePlayerClick() {
+    window.open(`/players/${player.player}`, "_blank");
+  }
+
+  function handleDeckClick(version: string) {
+    window.open(`/decks/${player.deck}?version=${version}`, "_blank");
+  }
+
   if (!player.playerObj || !player.deckObj) {
     return null;
   }
@@ -43,6 +51,11 @@ export function GamePlayerPreview({ player }: OwnProps) {
     ["--deck-url" as string]: `url(${player.deckObj.featured})`,
   } as React.CSSProperties;
 
+  const versionIdx =
+    player.deckObj.versions?.findIndex((v) => v.id === player.deckVersion) ??
+    -1;
+  const nextVersion = player.deckObj.versions?.[versionIdx + 1]?.id;
+
   return (
     <Box className="game-player-preview" ref={elRef}>
       <Flex
@@ -51,6 +64,7 @@ export function GamePlayerPreview({ player }: OwnProps) {
         align="center"
         justify="center"
         gap="2"
+        onClick={handlePlayerClick}
       >
         <p>{player.playerObj.name}</p>
         <Flex gap="2">
@@ -68,13 +82,14 @@ export function GamePlayerPreview({ player }: OwnProps) {
         direction="column"
         align="center"
         justify="center"
+        onClick={() => handleDeckClick(nextVersion ?? "latest")}
       >
         <Flex align="center" gap="1" wrap="wrap">
           <p className="deck-name" style={{ maxWidth: `${width - 50}px` }}>
             {player.deckObj.name}
           </p>
           <p className="deck-version">
-            v{(player.deckObj.versions?.length ?? 0) + 1}
+            v{versionIdx === -1 ? "1" : `${versionIdx + 2}`}
           </p>
         </Flex>
         <p className="deck-commander" style={{ maxWidth: `${width - 25}px` }}>

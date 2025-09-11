@@ -24,6 +24,11 @@
     background-repeat: no-repeat;
     border: 2px solid c.$card-border;
     padding: 10px;
+    cursor: pointer;
+
+    &:hover {
+      border: 2px solid c.$card-border-hover;
+    }
   }
 
   .player {
@@ -31,6 +36,11 @@
     background-position: 0 0, 0 -50px;
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
       var(--player-url);
+
+    &:hover {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        var(--player-url);
+    }
 
     p {
       color: c.$text-primary;
@@ -55,6 +65,11 @@
     border-radius: 0 0 10px 10px;
     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
       var(--deck-url);
+
+    &:hover {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        var(--deck-url);
+    }
 
     .deck-name {
       color: c.$text-primary;
