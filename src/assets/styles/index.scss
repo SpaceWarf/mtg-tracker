@@ -198,3 +198,17 @@ ul {
     }
   }
 }
+
+.rt-TabNavRoot {
+  .rt-TabNavItem {
+    &:hover {
+      span {
+        color: c.$text-primary-hover;
+      }
+    }
+
+    span {
+      color: c.$text-primary;
+    }
+  }
+}

@@ -1,6 +1,9 @@
+@use "../styles/colours" as c;
+
 .Header {
   position: sticky;
   top: 0;
   width: 100%;
   z-index: 99;
+  color: c.$text-primary;
 }

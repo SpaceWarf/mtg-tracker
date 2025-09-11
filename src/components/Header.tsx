@@ -6,6 +6,7 @@ import {
   faGem,
   faLayerGroup,
   faUser,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
@@ -149,19 +150,31 @@ export function Header() {
       <nav>
         <TabNav.Root>
           <TabNav.Link asChild active={location.pathname === "/"}>
-            <Link to="/">Games</Link>
+            <Link to="/">
+              <FontAwesomeIcon className="mr-2" icon={faDice} />
+              Games
+            </Link>
           </TabNav.Link>
           <TabNav.Link asChild active={location.pathname.includes("/players")}>
-            <Link to="/players">Players</Link>
+            <Link to="/players">
+              <FontAwesomeIcon className="mr-2" icon={faUsers} />
+              Players
+            </Link>
           </TabNav.Link>
           <TabNav.Link asChild active={location.pathname.includes("/decks")}>
-            <Link to="/decks">Decks</Link>
+            <Link to="/decks">
+              <FontAwesomeIcon className="mr-2" icon={faLayerGroup} />
+              Decks
+            </Link>
           </TabNav.Link>
           <TabNav.Link
             asChild
             active={location.pathname.includes("/game-changers")}
           >
-            <Link to="/game-changers">Game Changers</Link>
+            <Link to="/game-changers">
+              <FontAwesomeIcon className="mr-2" icon={faGem} />
+              Game Changers
+            </Link>
           </TabNav.Link>
           {/* <TabNav.Link asChild active={location.pathname === "/brackets"}>
               <Link to="/brackets">Brackets</Link>
@@ -170,7 +183,10 @@ export function Header() {
             asChild
             active={location.pathname.includes("/deck-validator")}
           >
-            <Link to="/deck-validator">Deck Validator</Link>
+            <Link to="/deck-validator">
+              <FontAwesomeIcon className="mr-2" icon={faCheck} />
+              Deck Validator
+            </Link>
           </TabNav.Link>
           {/* <TabNav.Link `asChild active={location.pathname === "/rewind"}>
               <Link to="/rewind">Rewind</Link>
