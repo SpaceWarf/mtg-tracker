@@ -66,7 +66,7 @@ export function PlayersViewer() {
 
   return (
     <div className="p-5 w-full max-w-[1950px]">
-      <Flex className="mb-5" justify="between" wrap="wrap">
+      <Flex className="data-card mb-5" justify="between" wrap="wrap">
         <Flex gap="5" wrap="wrap">
           <Box width={{ initial: "100%", xs: "60" }}>
             <Heading className="mb-1" size="3">
