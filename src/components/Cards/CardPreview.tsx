@@ -67,6 +67,9 @@ export function CardPreview({
     <Flex
       className={`card-preview ${size} ${clickable ? "clickable" : ""}`}
       justify="center"
+      style={{
+        transform: `scale(${fetchedUris.length > 1 ? 0.9 : 1})`,
+      }}
     >
       <div className="card-stack">
         {fetchedUris.map((uri, index) => {
@@ -81,7 +84,7 @@ export function CardPreview({
               className="card-stack-card"
               style={{
                 position: "absolute",
-                transform: `rotateY(${rotation}deg) translate(${indexedOffset}px, ${-indexedOffset}px)`,
+                transform: `rotateY(${rotation}deg) translate(${indexedOffset}px, ${-indexedOffset}px`,
                 zIndex:
                   index === showingIndex ? 100 : fetchedUris.length - index,
               }}
@@ -92,9 +95,6 @@ export function CardPreview({
                 onClick={clickable ? handleClick : undefined}
                 onMouseEnter={() => setShowingIndex(index)}
                 onMouseLeave={() => setShowingIndex(0)}
-                style={{
-                  transform: `scale(${fetchedUris.length > 1 ? 0.9 : 1})`,
-                }}
               />
               <img
                 className="card-preview-back"
