@@ -77,7 +77,9 @@ export function GamePlayerPreview({ player }: OwnProps) {
             v{(player.deckObj.versions?.length ?? 0) + 1}
           </p>
         </Flex>
-        <p className="deck-commander">{player.deckObj.commander}</p>
+        <p className="deck-commander" style={{ maxWidth: `${width - 25}px` }}>
+          {player.deckObj.commander}
+        </p>
         {player.deckObj.externalId && (
           <DeckColourIdentity deck={player.deckObj} size="small" />
         )}
