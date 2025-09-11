@@ -57,7 +57,10 @@ export function GamePlayerPreview({ player }: OwnProps) {
   const nextVersion = player.deckObj.versions?.[versionIdx + 1]?.id;
 
   return (
-    <Box className="game-player-preview" ref={elRef}>
+    <Box
+      className={`game-player-preview ${player.won ? "won" : ""}`}
+      ref={elRef}
+    >
       <Flex
         className="player"
         style={playerStyle}

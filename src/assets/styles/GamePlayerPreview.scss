@@ -17,6 +17,11 @@
   --deck-url: none;
   position: relative;
 
+  &.won {
+    box-shadow: 0 0px 8px 0 gold;
+    border-radius: 10px;
+  }
+
   .player,
   .deck {
     height: 100px;
