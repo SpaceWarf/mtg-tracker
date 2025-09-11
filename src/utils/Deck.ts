@@ -11,8 +11,10 @@ import { DeckCardDetails, DeckDetails } from "../state/DeckDetails";
 import { DeckVersion } from "../state/DeckVersion";
 import { DbGame } from "../state/Game";
 import { IDENTITY_LABEL_MAP, IdentityLabel } from "../state/IdentityLabel";
+import { DbPlayer } from "../state/Player";
 import { getBracket, getBracketName } from "./Bracket";
 import { getAllGamesForDeck } from "./Game";
+import { getPlayerByExternalId } from "./Player";
 
 export function getDeckGamesCount(deck: DbDeck, games: DbGame[]): number {
   return getAllGamesForDeck(deck, games).length;
@@ -349,13 +351,16 @@ export function populateDeck(
 
 export function populateDeckDetails(
   deckDetails: DeckDetails,
-  gameChangers: DeckCardDetails[]
+  gameChangers: DeckCardDetails[],
+  dbPlayers: DbPlayer[]
 ): DeckWithStats {
+  console.log(deckDetails);
   const deck: DbDeck = {
     ...deckDetails,
     commander: getDeckCommandersString(deckDetails.commanders),
     externalId: deckDetails.id,
     name: deckDetails.title,
+    builder: getPlayerByExternalId(deckDetails.owner, dbPlayers)?.id,
     gameChangersDeck: false,
     latestVersionId: "",
     versions: [],

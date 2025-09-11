@@ -1,12 +1,13 @@
 import {
   faBomb,
   faCheck,
+  faCheckCircle,
+  faExclamationTriangle,
   faForward,
   faGem,
   faLayerGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { CheckCircledIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import {
   Box,
   Button,
@@ -19,6 +20,7 @@ import {
 import { useMemo, useState } from "react";
 import "../../assets/styles/DataCard.scss";
 import { useGameChangers } from "../../hooks/useGameChangers";
+import { usePlayers } from "../../hooks/usePlayers";
 import { ArchidektService } from "../../services/Archidekt";
 import { DeckDetails } from "../../state/DeckDetails";
 import {
@@ -33,6 +35,8 @@ import { DeckCardPreviewSection } from "../Decks/DeckCardPreviewSection";
 import { DeckShowcase } from "../Decks/DeckShowcase";
 
 export function DeckValidatorViewer() {
+  const { dbPlayers } = usePlayers();
+
   const [externalId, setExternalId] = useState<string>("");
   const [deckDetails, setDeckDetails] = useState<DeckDetails>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,7 +45,7 @@ export function DeckValidatorViewer() {
   const { gameChangers } = useGameChangers();
   const populatedDeck = useMemo(() => {
     return deckDetails
-      ? populateDeckDetails(deckDetails, gameChangers)
+      ? populateDeckDetails(deckDetails, gameChangers, dbPlayers ?? [])
       : undefined;
   }, [deckDetails, gameChangers]);
 
@@ -105,14 +109,6 @@ export function DeckValidatorViewer() {
               disabled={loading}
               onChange={({ target }) => setExternalId(target.value)}
             ></TextField.Root>
-            {error && (
-              <Callout.Root color="red" className="mt-2">
-                <Callout.Icon>
-                  <InfoCircledIcon />
-                </Callout.Icon>
-                <Callout.Text>{error}</Callout.Text>
-              </Callout.Root>
-            )}
           </Box>
           <Box className="mt-6">
             <Button
@@ -121,10 +117,18 @@ export function DeckValidatorViewer() {
               disabled={!externalId || loading}
               loading={loading}
             >
-              <CheckCircledIcon width="18" height="18" />
-              Validate Deck
+              <FontAwesomeIcon icon={faCheckCircle} />
+              Validate
             </Button>
           </Box>
+          {error && (
+            <Callout.Root color="red" className="mt-6">
+              <Callout.Icon>
+                <FontAwesomeIcon icon={faExclamationTriangle} />
+              </Callout.Icon>
+              <Callout.Text>{error}</Callout.Text>
+            </Callout.Root>
+          )}
         </Flex>
         {populatedDeck && (
           <Grid columns={{ initial: "1", md: "5", lg: "7" }} gap="5">
