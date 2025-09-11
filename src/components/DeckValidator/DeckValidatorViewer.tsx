@@ -47,7 +47,7 @@ export function DeckValidatorViewer() {
     return deckDetails
       ? populateDeckDetails(deckDetails, gameChangers, dbPlayers ?? [])
       : undefined;
-  }, [deckDetails, gameChangers]);
+  }, [dbPlayers, deckDetails, gameChangers]);
 
   const cardPreviewSectionCount = useMemo(() => {
     let count = 0;

@@ -12,6 +12,7 @@ import {
   Dialog,
   Flex,
   Heading,
+  IconButton,
   TextField,
 } from "@radix-ui/themes";
 import { useState } from "react";
@@ -59,10 +60,9 @@ export function LoginModal() {
 
   if (auth.user) {
     return (
-      <Button className="h-10" variant="soft" onClick={handleLogout}>
-        <FontAwesomeIcon icon={faSignOut} />
-        Logout
-      </Button>
+      <IconButton variant="soft" onClick={handleLogout}>
+        <FontAwesomeIcon icon={faSignOut} size="xs" />
+      </IconButton>
     );
   }
 
