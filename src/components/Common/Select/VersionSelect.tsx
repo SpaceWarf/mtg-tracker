@@ -4,9 +4,9 @@ import ReactSelect, {
   MultiValue,
   SingleValue,
 } from "react-select";
-import { useDecks } from "../../hooks/useDecks";
-import { useVersionSelectOptions } from "../../hooks/useVersionSelectOptions";
-import { SelectOption } from "../../state/SelectOption";
+import { useDecks } from "../../../hooks/useDecks";
+import { useVersionSelectOptions } from "../../../hooks/useVersionSelectOptions";
+import { SelectOption } from "../../../state/SelectOption";
 
 type SharedProps = {
   deckId: string;

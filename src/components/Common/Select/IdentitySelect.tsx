@@ -5,9 +5,9 @@ import ReactSelect, {
   SingleValue,
   SingleValueProps,
 } from "react-select";
-import { IdentityLabel } from "../../state/IdentityLabel";
-import { GroupedOption, SelectOption } from "../../state/SelectOption";
-import { IdentityHeader } from "../Common/IdentityHeader";
+import { IdentityLabel } from "../../../state/IdentityLabel";
+import { GroupedOption, SelectOption } from "../../../state/SelectOption";
+import { IdentityHeader } from "../IdentityHeader";
 
 type OwnProps = {
   value: IdentityLabel;

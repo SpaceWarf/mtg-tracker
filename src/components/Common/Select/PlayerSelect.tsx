@@ -9,10 +9,10 @@ import ReactSelect, {
   SingleValue,
   SingleValueProps,
 } from "react-select";
+import { usePlayers } from "../../../hooks/usePlayers";
+import { usePlayerSelectOptions } from "../../../hooks/usePlayerSelectOptions";
+import { SelectOption } from "../../../state/SelectOption";
 import "../../assets/styles/SelectOptions.scss";
-import { usePlayers } from "../../hooks/usePlayers";
-import { usePlayerSelectOptions } from "../../hooks/usePlayerSelectOptions";
-import { SelectOption } from "../../state/SelectOption";
 
 type SharedProps = {
   menuPlacement?: "top" | "bottom";

@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import ReactSelect, { SingleValue } from "react-select";
-import { Bracket } from "../../state/Bracket";
-import { SelectOption } from "../../state/SelectOption";
-import { getBracketName } from "../../utils/Bracket";
+import { Bracket } from "../../../state/Bracket";
+import { SelectOption } from "../../../state/SelectOption";
+import { getBracketName } from "../../../utils/Bracket";
 
 type OwnProps = {
   value?: Bracket;

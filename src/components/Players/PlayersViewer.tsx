@@ -13,7 +13,7 @@ import {
 } from "../../state/PlayerSortFcts";
 import { SelectOption } from "../../state/SelectOption";
 import { SortFctType } from "../../state/SortFctType";
-import { SortFctSelect } from "../Select/SortFctSelect";
+import { SortFctSelect } from "../Common/Select/SortFctSelect";
 import { PlayerCreateModal } from "./PlayerCreateModal";
 import { PlayersCardView } from "./PlayersCardView";
 

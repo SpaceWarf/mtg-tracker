@@ -19,9 +19,9 @@ import {
   gameHasSomeDecks,
   gameHasSomePlayers,
 } from "../../utils/Game";
-import { DeckSelect } from "../Select/DeckSelect";
-import { PlayerSelect } from "../Select/PlayerSelect";
-import { SortFctSelect } from "../Select/SortFctSelect";
+import { DeckSelect } from "../Common/Select/DeckSelect";
+import { PlayerSelect } from "../Common/Select/PlayerSelect";
+import { SortFctSelect } from "../Common/Select/SortFctSelect";
 import { GameCreateModal } from "./GameCreateModal";
 import { GamesCardView } from "./GamesCardView";
 

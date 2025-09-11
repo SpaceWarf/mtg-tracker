@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import ReactSelect, { SingleValue } from "react-select";
-import { useSortFctSelectOptions } from "../../hooks/useSortFctSelectOptions";
-import { SelectOption } from "../../state/SelectOption";
-import { SortFctType } from "../../state/SortFctType";
+import { useSortFctSelectOptions } from "../../../hooks/useSortFctSelectOptions";
+import { SelectOption } from "../../../state/SelectOption";
+import { SortFctType } from "../../../state/SortFctType";
 
 type OwnProps = {
   type: SortFctType;
