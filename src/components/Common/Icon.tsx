@@ -1,7 +1,7 @@
 type OwnProps = {
   icon: string;
   className?: string;
-  type?: "solid" | "regular";
+  type?: "solid" | "regular" | "brands";
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   color?: string;
 };

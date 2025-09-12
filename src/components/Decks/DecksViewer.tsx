@@ -1,4 +1,3 @@
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Box, Grid, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useContext, useEffect, useMemo, useState } from "react";
@@ -213,7 +212,7 @@ export function DecksViewer() {
                 onChange={({ target }) => handleSearch(target.value)}
               >
                 <TextField.Slot>
-                  <MagnifyingGlassIcon height="16" width="16" />
+                  <Icon icon="magnifying-glass" />
                 </TextField.Slot>
               </TextField.Root>
             </Box>

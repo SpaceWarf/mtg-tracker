@@ -1,9 +1,9 @@
-import { Cross2Icon, TrashIcon } from "@radix-ui/react-icons";
 import { Button, Dialog, Flex, Text } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { GameService } from "../../services/Game";
 import { DbGame } from "../../state/Game";
+import { Icon } from "../Common/Icon";
 
 type OwnProps = {
   open: boolean;
@@ -41,7 +41,8 @@ export function GameDeleteModal({ open, game, onClose }: OwnProps) {
         <Flex gap="3" justify="between" mt="4">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <Cross2Icon /> Cancel
+              <Icon icon="xmark" />
+              Cancel
             </Button>
           </Dialog.Close>
           <Button
@@ -51,7 +52,8 @@ export function GameDeleteModal({ open, game, onClose }: OwnProps) {
             onClick={handleDelete}
             className="h-10"
           >
-            <TrashIcon /> Delete Forever
+            <Icon icon="trash" />
+            Delete Forever
           </Button>
         </Flex>
       </Dialog.Content>

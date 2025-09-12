@@ -1,4 +1,3 @@
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import {
   Box,
   CheckboxCards,
@@ -13,6 +12,7 @@ import { CardGroupBy, CardGroupByOptions } from "../../state/CardGroupBy";
 import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { SelectOption } from "../../state/SelectOption";
 import { SortFctType } from "../../state/SortFctType";
+import { Icon } from "../Common/Icon";
 import { SortFctSelect } from "../Common/Select/SortFctSelect";
 
 type OwnProps = {
@@ -60,7 +60,7 @@ export function CardListFilters({
           onChange={({ target }) => setSearch(target.value)}
         >
           <TextField.Slot>
-            <MagnifyingGlassIcon height="16" width="16" />
+            <Icon icon="magnifying-glass" />
           </TextField.Slot>
         </TextField.Root>
       </Box>

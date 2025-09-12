@@ -1,4 +1,4 @@
-import { CaretDownIcon, CaretUpIcon } from "@radix-ui/react-icons";
+import { Icon } from "../Common/Icon";
 
 type OwnProps = {
   highlighted: boolean;
@@ -9,8 +9,8 @@ export function SortHighlightIcon({ highlighted, direction }: OwnProps) {
   return (
     highlighted && (
       <>
-        {direction === "asc" && <CaretUpIcon width="20px" height="20px" />}
-        {direction === "desc" && <CaretDownIcon width="20px" height="20px" />}
+        {direction === "asc" && <Icon icon="caret-up" />}
+        {direction === "desc" && <Icon icon="caret-down" />}
       </>
     )
   );

@@ -1,5 +1,4 @@
-import { ChevronUpIcon } from "@radix-ui/react-icons";
-import { ChevronDownIcon, Flex } from "@radix-ui/themes";
+import { Flex } from "@radix-ui/themes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import "../../assets/styles/DeckVersionViewer.scss";
 import { CardDiff } from "../../state/CardDiff";
@@ -10,6 +9,7 @@ import { DeckCardDetails } from "../../state/DeckDetails";
 import { MousePosition } from "../../state/MousePosition";
 import { getLongDateString } from "../../utils/Date";
 import { CardDiffViewer } from "../Cards/CardDiffViewer";
+import { Icon } from "../Common/Icon";
 
 type OwnProps = {
   deck: DbDeck;
@@ -184,7 +184,11 @@ export function DeckVersionViewer({
             ) : (
               <p className="expand-text">see more</p>
             )}
-            {expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            {expanded ? (
+              <Icon icon="chevron-up" />
+            ) : (
+              <Icon icon="chevron-down" />
+            )}
           </Flex>
         </Flex>
       )}

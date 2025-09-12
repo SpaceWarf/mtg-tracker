@@ -1,4 +1,3 @@
-import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { Avatar, Flex, Text, Tooltip } from "@radix-ui/themes";
 import { useMemo } from "react";
 import { Bracket } from "../../state/Bracket";
@@ -58,7 +57,7 @@ export function DeckHeader({ deck, size = "large" }: OwnProps) {
                 </Tooltip>
                 {!deck.bracket && (
                   <Tooltip content="The bracket was automatically determined by the app and may be inaccurate.">
-                    <InfoCircledIcon width="12" height="12" color="gray" />
+                    <Icon icon="circle-info" />
                   </Tooltip>
                 )}
               </Flex>
@@ -72,7 +71,7 @@ export function DeckHeader({ deck, size = "large" }: OwnProps) {
                 </Text>
                 {!deck.bracket && (
                   <Tooltip content="The bracket was automatically determined by the app and may be inaccurate.">
-                    <InfoCircledIcon width="12" height="12" color="gray" />
+                    <Icon icon="circle-info" />
                   </Tooltip>
                 )}
               </Flex>

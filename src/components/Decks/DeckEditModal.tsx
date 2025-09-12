@@ -1,4 +1,3 @@
-import { InfoCircledIcon } from "@radix-ui/react-icons";
 import {
   Button,
   Callout,
@@ -122,7 +121,7 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
           {autofillError && (
             <Callout.Root color="red" className="mt-2">
               <Callout.Icon>
-                <InfoCircledIcon />
+                <Icon icon="circle-info" />
               </Callout.Icon>
               <Callout.Text>{autofillError}</Callout.Text>
             </Callout.Root>

@@ -1,4 +1,3 @@
-import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { Flex, IconButton, Tooltip } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
@@ -124,11 +123,9 @@ export function CardListCard({
         }}
       >
         <Flex gap="1" align="center" mr="1">
-          {diffType === DiffType.ADDED && (
-            <PlusIcon color="#5abe8c" width="14" height="14" />
-          )}
+          {diffType === DiffType.ADDED && <Icon icon="plus" color="#5abe8c" />}
           {diffType === DiffType.REMOVED && (
-            <MinusIcon color="#d84242" width="14" height="14" />
+            <Icon icon="minus" color="#d84242" />
           )}
           <p className="card-qty">{card.qty}</p>
         </Flex>

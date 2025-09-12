@@ -1,13 +1,8 @@
-import {
-  CheckCircledIcon,
-  CrossCircledIcon,
-  ExclamationTriangleIcon,
-  InfoCircledIcon,
-} from "@radix-ui/react-icons";
 import { Callout } from "@radix-ui/themes";
 import { useContext } from "react";
 import { AlertContext } from "../contexts/AlertContext";
 import { AlertType } from "../state/AlertType";
+import { Icon } from "./Common/Icon";
 
 const COLORS: Record<AlertType, "green" | "blue" | "yellow" | "red"> = {
   [AlertType.SUCCESS]: "green",
@@ -17,10 +12,10 @@ const COLORS: Record<AlertType, "green" | "blue" | "yellow" | "red"> = {
 };
 
 const ICONS: Record<AlertType, React.ReactNode> = {
-  [AlertType.SUCCESS]: <CheckCircledIcon />,
-  [AlertType.INFO]: <InfoCircledIcon />,
-  [AlertType.WARNING]: <ExclamationTriangleIcon />,
-  [AlertType.ERROR]: <CrossCircledIcon />,
+  [AlertType.SUCCESS]: <Icon icon="check-circle" />,
+  [AlertType.INFO]: <Icon icon="info-circle" />,
+  [AlertType.WARNING]: <Icon icon="exclamation-triangle" />,
+  [AlertType.ERROR]: <Icon icon="x-circle" />,
 };
 
 export function Alert() {

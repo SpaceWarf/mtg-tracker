@@ -1,4 +1,3 @@
-import { ExternalLinkIcon } from "@radix-ui/react-icons";
 import { Dialog, Flex, IconButton } from "@radix-ui/themes";
 import { useState } from "react";
 import { ArchidektService } from "../../services/Archidekt";
@@ -7,6 +6,7 @@ import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { DeckWithStats } from "../../state/Deck";
 import { CardList } from "../Cards/CardList";
 import { CardListFilters } from "../Cards/CardListFilters";
+import { Icon } from "../Common/Icon";
 import { DeckHeader } from "./DeckHeader";
 
 type OwnProps = {
@@ -68,7 +68,7 @@ export function DeckCardListModal({ open, deck, onClose }: OwnProps) {
               )
             }
           >
-            <ExternalLinkIcon width="18" height="18" />
+            <Icon icon="external-link" />
           </IconButton>
         </Flex>
 

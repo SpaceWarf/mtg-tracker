@@ -1,14 +1,6 @@
-import {
-  CaretLeftIcon,
-  CaretRightIcon,
-  Cross2Icon,
-  DotFilledIcon,
-  DotIcon,
-  SpeakerLoudIcon,
-  SpeakerOffIcon,
-} from "@radix-ui/react-icons";
 import { Flex, IconButton } from "@radix-ui/themes";
 import { ReactElement, useEffect, useState } from "react";
+import { Icon } from "../Common/Icon";
 import soundfile from "/audio/last-christmas.mp3";
 
 type OwnProps = {
@@ -86,11 +78,7 @@ export function RewindPageWrapper({
             size="1"
             radius="full"
           >
-            {mute ? (
-              <SpeakerOffIcon width="12" height="12" />
-            ) : (
-              <SpeakerLoudIcon width="12" height="12" />
-            )}
+            {mute ? <Icon icon="volume-xmark" /> : <Icon icon="volume-high" />}
           </IconButton>
           <IconButton
             onClick={handleCancel}
@@ -98,7 +86,7 @@ export function RewindPageWrapper({
             size="1"
             radius="full"
           >
-            <Cross2Icon width="15" height="15" />
+            <Icon icon="xmark" />
           </IconButton>
         </Flex>
       </div>
@@ -113,16 +101,16 @@ export function RewindPageWrapper({
           variant="ghost"
           size="1"
         >
-          <CaretLeftIcon width="18" height="18" />
+          <Icon icon="caret-left" />
         </IconButton>
         <Flex>
           {Array(pageCount)
             .fill("")
             .map((_, idx) =>
               idx === page ? (
-                <DotFilledIcon key={idx} width="10px" height="10px" />
+                <Icon icon="circle-fill" key={idx} size="xs" />
               ) : (
-                <DotIcon key={idx} width="10px" height="10px" />
+                <Icon icon="circle" key={idx} size="xs" />
               )
             )}
         </Flex>
@@ -132,7 +120,7 @@ export function RewindPageWrapper({
           variant="ghost"
           size="1"
         >
-          <CaretRightIcon width="18" height="18" />
+          <Icon icon="caret-right" />
         </IconButton>
       </Flex>
       {children}

@@ -1,23 +1,17 @@
 import "@assets/styles/BracketViewer.scss";
-import { CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons";
 import { Flex, Grid } from "@radix-ui/themes";
 import { BRACKET_DATA, BracketRuleIcon } from "../../state/BracketData";
 import { getBracketName } from "../../utils/Bracket";
+import { Icon } from "../Common/Icon";
 
 const ICON_MAP: Record<BracketRuleIcon, React.ReactNode> = {
-  [BracketRuleIcon.CROSS_CIRCLE]: <CrossCircledIcon width="18" height="18" />,
-  [BracketRuleIcon.CHECK_CIRCLE]: <CheckCircledIcon width="18" height="18" />,
-  [BracketRuleIcon.DOLLAR]: (
-    <svg
-      fill="#000000"
-      width="18px"
-      height="18px"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M8,16a1,1,0,0,0-2,0,5.006,5.006,0,0,0,5,5v1a1,1,0,0,0,2,0V21a5,5,0,0,0,0-10V5a3,3,0,0,1,3,3,1,1,0,0,0,2,0,5.006,5.006,0,0,0-5-5V2a1,1,0,0,0-2,0V3a5,5,0,0,0,0,10v6A3,3,0,0,1,8,16Zm5-3a3,3,0,0,1,0,6ZM8,8a3,3,0,0,1,3-3v6A3,3,0,0,1,8,8Z" />
-    </svg>
+  [BracketRuleIcon.CROSS_CIRCLE]: (
+    <Icon icon="circle-xmark" type="regular" size="lg" />
   ),
+  [BracketRuleIcon.CHECK_CIRCLE]: (
+    <Icon icon="circle-check" type="regular" size="lg" />
+  ),
+  [BracketRuleIcon.DOLLAR]: <Icon icon="dollar-sign" size="lg" />,
 };
 
 export function BracketsViewer() {

@@ -1,4 +1,3 @@
-import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
 import {
   Button,
   Dialog,
@@ -14,6 +13,7 @@ import { useNavigate } from "react-router";
 import { GameService } from "../../services/Game";
 import { DbGame, GamePlayer } from "../../state/Game";
 import { isDateValid } from "../../utils/Date";
+import { Icon } from "../Common/Icon";
 import { GamePlayerEditSection } from "./GamePlayerEditSection";
 
 type OwnProps = {
@@ -116,13 +116,13 @@ export function GameEditModal({ open, game, onClose }: OwnProps) {
         <Flex gap="3" mt="4" justify="between">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <Cross2Icon />
+              <Icon icon="xmark" />
               Cancel
             </Button>
           </Dialog.Close>
           <Dialog.Close disabled={!isDateValid(date)} onClick={handleSave}>
             <Button className="h-10">
-              <CheckIcon />
+              <Icon icon="check" />
               Save
             </Button>
           </Dialog.Close>

@@ -1,4 +1,3 @@
-import { InfoCircledIcon } from "@radix-ui/react-icons";
 import {
   Button,
   Callout,
@@ -102,7 +101,7 @@ export function LoginModal() {
         {loginError && (
           <Callout.Root color="red">
             <Callout.Icon>
-              <InfoCircledIcon />
+              <Icon icon="circle-info" />
             </Callout.Icon>
             <Callout.Text>{loginError}</Callout.Text>
           </Callout.Root>

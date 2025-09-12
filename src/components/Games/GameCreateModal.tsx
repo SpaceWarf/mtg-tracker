@@ -1,10 +1,4 @@
 import {
-  CheckIcon,
-  Cross2Icon,
-  PlusIcon,
-  ResumeIcon,
-} from "@radix-ui/react-icons";
-import {
   Button,
   Dialog,
   Flex,
@@ -19,6 +13,7 @@ import { useNavigate } from "react-router";
 import { GameService } from "../../services/Game";
 import { Game, GamePlayer } from "../../state/Game";
 import { getShortDateString, isDateValid } from "../../utils/Date";
+import { Icon } from "../Common/Icon";
 import { GamePlayerEditSection } from "./GamePlayerEditSection";
 
 export function GameCreateModal() {
@@ -88,7 +83,7 @@ export function GameCreateModal() {
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
         <Button className="h-10" variant="soft">
-          <PlusIcon width="18" height="18" />
+          <Icon icon="plus" />
           Create
         </Button>
       </Dialog.Trigger>
@@ -150,13 +145,13 @@ export function GameCreateModal() {
         <Flex gap="3" justify="between">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <Cross2Icon /> Cancel
+              <Icon icon="xmark" /> Cancel
             </Button>
           </Dialog.Close>
           <Flex gap="3">
             <Dialog.Close disabled={!canCreate()} onClick={handleCreateOne}>
               <Button className="h-10">
-                <CheckIcon /> Create One
+                <Icon icon="check" /> Create One
               </Button>
             </Dialog.Close>
             <Button
@@ -165,7 +160,7 @@ export function GameCreateModal() {
               onClick={handleCreate}
               loading={creating}
             >
-              <ResumeIcon />
+              <Icon icon="forward" />
               Create More
             </Button>
           </Flex>

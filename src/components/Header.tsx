@@ -1,5 +1,4 @@
 import "@assets/styles/Header.scss";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import {
   DropdownMenu,
   Flex,
@@ -97,7 +96,7 @@ export function Header() {
               window.open("https://github.com/SpaceWarf/mtg-tracker", "_blank")
             }
           >
-            <GitHubLogoIcon />
+            <Icon icon="github" type="brands" />
           </IconButton>
           <div className="mt-2 ml-3">
             <Select.Root value={year} onValueChange={handleChangeYear}>
@@ -132,7 +131,7 @@ export function Header() {
             window.open("https://github.com/SpaceWarf/mtg-tracker", "_blank")
           }
         >
-          <GitHubLogoIcon />
+          <Icon icon="github" type="brands" />
         </IconButton>
         <div className="mt-2 ml-3">
           <Select.Root value={year} onValueChange={handleChangeYear}>
