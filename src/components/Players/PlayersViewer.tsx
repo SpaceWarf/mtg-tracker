@@ -95,7 +95,12 @@ export function PlayersViewer() {
   return (
     <div className="p-5 w-full max-w-[1950px]">
       <Grid columns="1" gap="5">
-        <DataCard title="Players" icon={<Icon icon="users" />} direction="row">
+        <DataCard
+          title="Players"
+          icon={<Icon icon="users" />}
+          direction="row"
+          pageHeader
+        >
           <Grid width="125px" gap="3" columns="1">
             {auth.user && <PlayerCreateModal />}
           </Grid>

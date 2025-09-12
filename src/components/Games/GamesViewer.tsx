@@ -250,7 +250,12 @@ export function GamesViewer() {
   return (
     <div className="p-5 w-full max-w-[1950px]">
       <Grid columns="1" gap="5">
-        <DataCard title="Games" icon={<Icon icon="dice" />} direction="row">
+        <DataCard
+          title="Games"
+          icon={<Icon icon="dice" />}
+          direction="row"
+          pageHeader
+        >
           <Grid width="125px" gap="3" columns="1">
             {auth.user && <GameCreateModal />}
           </Grid>

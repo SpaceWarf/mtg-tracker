@@ -183,6 +183,7 @@ export function DecksViewer() {
           title="Decks"
           icon={<Icon icon="cards-blank" />}
           direction="row"
+          pageHeader
         >
           {auth.user && (
             <Grid width="250px" gap="3" columns="2">

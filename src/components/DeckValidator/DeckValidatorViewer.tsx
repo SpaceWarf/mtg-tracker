@@ -87,6 +87,7 @@ export function DeckValidatorViewer() {
           title="Deck Validator"
           icon={<Icon icon="check" />}
           direction="row"
+          pageHeader
         />
         <Flex className="data-card" align="center" justify="start" gap="5">
           <Box width="300px">

@@ -86,6 +86,7 @@ export function GameChangersViewer() {
           icon={<Icon icon="gem" />}
           direction="row"
           align="between"
+          pageHeader
         >
           <Flex gap="2">
             {!!user && (

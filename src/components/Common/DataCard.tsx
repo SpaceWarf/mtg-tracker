@@ -13,6 +13,7 @@ type OwnProps = {
   collapsable?: boolean;
   defaultCollapsed?: boolean;
   error?: boolean;
+  pageHeader?: boolean;
 };
 
 export function DataCard({
@@ -25,6 +26,7 @@ export function DataCard({
   collapsable,
   defaultCollapsed,
   error,
+  pageHeader,
 }: OwnProps) {
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
 
@@ -36,7 +38,9 @@ export function DataCard({
 
   return (
     <Flex
-      className={`data-card h-full ${className} ${error ? "error" : ""}`}
+      className={`data-card h-full ${className} ${error ? "error" : ""} ${
+        pageHeader ? "page-header" : ""
+      }`}
       direction={direction}
       justify={direction === "row" ? "between" : "start"}
       align={direction === "row" ? "center" : "start"}

@@ -23,6 +23,7 @@ export function BracketsViewer() {
           title="Brackets"
           icon={<Icon icon="brackets" />}
           direction="row"
+          pageHeader
         />
         <Grid
           className="bracket-containers"
