@@ -9,7 +9,6 @@ import { DeckCardDropdownMenu } from "./DeckCardDropdownMenu";
 import { DeckColourIdentity } from "./DeckColourIdentity";
 import { DeckDeleteModal } from "./DeckDeleteModal";
 import { DeckEditModal } from "./DeckEditModal";
-import { DeckVersionManagerModal } from "./DeckVersionManagerModal";
 
 type OwnProps = {
   deck: DeckWithStats;
@@ -21,7 +20,6 @@ export function DeckHeader2({ deck, editable, showActions }: OwnProps) {
   const navigate = useNavigate();
   const { dbPlayers } = usePlayers();
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
-  const [versionManagerOpen, setVersionManagerOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [syncing, setSyncing] = useState<boolean>(false);
 
@@ -55,15 +53,6 @@ export function DeckHeader2({ deck, editable, showActions }: OwnProps) {
           />
         </div>
       )}
-      {versionManagerOpen && (
-        <div onClick={(e) => e.stopPropagation()}>
-          <DeckVersionManagerModal
-            open={versionManagerOpen}
-            deck={deck}
-            onClose={() => setVersionManagerOpen(false)}
-          />
-        </div>
-      )}
       {deleteModalOpen && (
         <div onClick={(e) => e.stopPropagation()}>
           <DeckDeleteModal
@@ -94,7 +83,6 @@ export function DeckHeader2({ deck, editable, showActions }: OwnProps) {
               syncing={syncing}
               onEdit={() => setEditModalOpen(true)}
               onSync={handleSync}
-              onVersionManager={() => setVersionManagerOpen(true)}
               onDelete={() => setDeleteModalOpen(true)}
             />
           )}

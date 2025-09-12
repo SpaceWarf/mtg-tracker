@@ -14,7 +14,6 @@ type OwnProps = {
   syncing?: boolean;
   onEdit: () => void;
   onSync: () => void;
-  onVersionManager: () => void;
   onDelete: () => void;
 };
 
@@ -24,7 +23,6 @@ export function DeckCardDropdownMenu({
   syncing,
   onEdit,
   onSync,
-  onVersionManager,
   onDelete,
 }: OwnProps) {
   const {
@@ -106,12 +104,6 @@ export function DeckCardDropdownMenu({
             <DropdownMenu.Item className="mb-1" onClick={onSync}>
               <Icon icon="rotate" />
               Sync
-            </DropdownMenu.Item>
-          )}
-          {editable && deck.versions && deck.versions.length > 0 && (
-            <DropdownMenu.Item className="mb-1" onClick={onVersionManager}>
-              <Icon icon="code-commit" />
-              Manage versions
             </DropdownMenu.Item>
           )}
           {editable && <DropdownMenu.Separator />}

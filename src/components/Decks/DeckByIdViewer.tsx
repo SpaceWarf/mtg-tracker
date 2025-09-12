@@ -47,7 +47,6 @@ import { DeckDeleteModal } from "./DeckDeleteModal";
 import { DeckEditModal } from "./DeckEditModal";
 import { DeckShowcase } from "./DeckShowcase";
 import { DeckStatsSection } from "./DeckStatsSection";
-import { DeckVersionManagerModal } from "./DeckVersionManagerModal";
 import { DeckVersionManagerSection } from "./DeckVersionManagerSection";
 import { DeckVersionViewer } from "./DeckVersionViewer";
 
@@ -78,7 +77,6 @@ export function DeckByIdViewer() {
     (searchParams.get("view") as DeckByIdViewType) || DeckByIdViewType.STATS
   );
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
-  const [versionManagerOpen, setVersionManagerOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [syncing, setSyncing] = useState<boolean>(false);
   const [selectedVersionId, setSelectedVersionId] = useState<string>(
@@ -228,13 +226,6 @@ export function DeckByIdViewer() {
           open={editModalOpen}
           deck={populatedDeck}
           onClose={() => setEditModalOpen(false)}
-        />
-      )}
-      {versionManagerOpen && (
-        <DeckVersionManagerModal
-          open={versionManagerOpen}
-          deck={populatedDeck}
-          onClose={() => setVersionManagerOpen(false)}
         />
       )}
       {deleteModalOpen && (

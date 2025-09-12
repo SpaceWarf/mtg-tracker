@@ -6,6 +6,7 @@ type OwnProps = {
   games: DbGame[];
 };
 
+// DEPRECATED
 export function GamesTableView({ games }: OwnProps) {
   return (
     <Table.Root variant="surface" size="1" layout="fixed">
