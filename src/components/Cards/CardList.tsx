@@ -467,7 +467,12 @@ export function CardList({
         </Tabs.Root>
       )}
 
-      <Grid gap="20px" columns={`${adjustedColumnCount}`}>
+      <Grid
+        gap="20px"
+        columns={`${
+          adjustedColumnCount + (selectedVersionId !== "latest" ? 1 : 0)
+        }`}
+      >
         {categoryColumns.map((column, index) => (
           <Flex key={index} direction="column" gap="20px">
             {column.map((category) => (
