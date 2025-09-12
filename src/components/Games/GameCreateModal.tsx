@@ -3,7 +3,6 @@ import {
   Dialog,
   Flex,
   Grid,
-  Heading,
   TextArea,
   TextField,
 } from "@radix-ui/themes";
@@ -94,9 +93,9 @@ export function GameCreateModal() {
         <Dialog.Title>Create game</Dialog.Title>
 
         <div className="mb-5">
-          <Heading className="mb-1" size="3">
-            Date
-          </Heading>
+          <p className="field-label mb-1">
+            <b>Date</b>
+          </p>
           <TextField.Root
             className="input-field"
             placeholder="Date…"
@@ -131,9 +130,9 @@ export function GameCreateModal() {
         </Grid>
 
         <div className="mt-5 mb-4">
-          <Heading className="mb-1" size="3">
-            Comments
-          </Heading>
+          <p className="field-label mb-1">
+            <b>Comments</b>
+          </p>
           <TextArea
             className="area-field"
             placeholder="Comments…"

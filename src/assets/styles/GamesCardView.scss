@@ -1,0 +1,10 @@
+@use "../styles/colours" as c;
+
+.games-card-view {
+  .date-label {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: c.$text-primary;
+    border-bottom: 2px solid c.$text-secondary;
+  }
+}

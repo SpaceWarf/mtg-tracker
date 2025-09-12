@@ -271,7 +271,7 @@ export function GamesViewer() {
             columns={{ initial: "1", xs: "2", sm: "3", md: "4", lg: "5" }}
           >
             <Box>
-              <p className="mb-1">
+              <p className="field-label mb-1">
                 <b>Sort by</b>
               </p>
               <SortFctSelect
@@ -281,7 +281,7 @@ export function GamesViewer() {
               />
             </Box>
             <Box>
-              <p className="mb-1">
+              <p className="field-label mb-1">
                 <b>Include players</b>
               </p>
               <PlayerSelect
@@ -291,7 +291,7 @@ export function GamesViewer() {
               />
             </Box>
             <Box>
-              <p className="mb-1">
+              <p className="field-label mb-1">
                 <b>Exclude players</b>
               </p>
               <PlayerSelect
@@ -301,7 +301,7 @@ export function GamesViewer() {
               />
             </Box>
             <Box>
-              <p className="mb-1">
+              <p className="field-label mb-1">
                 <b>Include decks</b>
               </p>
               <DeckSelect
@@ -311,7 +311,7 @@ export function GamesViewer() {
               />
             </Box>
             <Box>
-              <p className="mb-1">
+              <p className="field-label mb-1">
                 <b>Exclude decks</b>
               </p>
               <DeckSelect

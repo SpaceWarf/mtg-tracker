@@ -203,7 +203,7 @@ export function DecksViewer() {
             columns={{ initial: "1", xs: "2", sm: "3", md: "4", lg: "5" }}
           >
             <Box>
-              <p className="mb-1">
+              <p className="field-label mb-1">
                 <b>Search</b>
               </p>
               <TextField.Root
@@ -218,7 +218,7 @@ export function DecksViewer() {
               </TextField.Root>
             </Box>
             <Box>
-              <p className="mb-1">
+              <p className="field-label mb-1">
                 <b>Sort by</b>
               </p>
               <SortFctSelect
@@ -228,7 +228,7 @@ export function DecksViewer() {
               />
             </Box>
             <Box>
-              <p className="mb-1">
+              <p className="field-label mb-1">
                 <b>Builder</b>
               </p>
               <PlayerSelect
@@ -238,7 +238,7 @@ export function DecksViewer() {
               />
             </Box>
             <Box>
-              <p className="mb-1">
+              <p className="field-label mb-1">
                 <b>Bracket</b>
               </p>
               <BracketSelect
@@ -247,7 +247,7 @@ export function DecksViewer() {
               />
             </Box>
             <Box>
-              <p className="mb-1">
+              <p className="field-label mb-1">
                 <b>Identity</b>
               </p>
               <IdentitySelect

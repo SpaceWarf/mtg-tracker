@@ -1,4 +1,4 @@
-import { Button, Dialog, Flex, Heading, TextField } from "@radix-ui/themes";
+import { Button, Dialog, Flex, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { PlayerService } from "../../services/Player";
@@ -47,9 +47,9 @@ export function PlayerEditModal({ open, player, onClose }: OwnProps) {
         <Dialog.Title>Edit player</Dialog.Title>
 
         <div className="mb-5">
-          <Heading className="mb-1" size="3">
-            Name
-          </Heading>
+          <p className="field-label mb-1">
+            <b>Name</b>
+          </p>
           <TextField.Root
             className="input-field"
             placeholder="Name..."
@@ -59,9 +59,9 @@ export function PlayerEditModal({ open, player, onClose }: OwnProps) {
         </div>
 
         <div className="mb-5">
-          <Heading className="mb-1" size="3">
-            Archidekt Username
-          </Heading>
+          <p className="field-label mb-1">
+            <b>Archidekt Username</b>
+          </p>
           <TextField.Root
             className="input-field"
             placeholder="Archidekt Username..."

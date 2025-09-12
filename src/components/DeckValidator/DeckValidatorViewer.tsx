@@ -83,7 +83,7 @@ export function DeckValidatorViewer() {
         />
         <Flex className="data-card" align="center" justify="start" gap="5">
           <Box width="300px">
-            <p className="mb-1">
+            <p className="field-label mb-1">
               <b>External ID</b>
             </p>
             <TextField.Root

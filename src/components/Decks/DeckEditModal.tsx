@@ -3,7 +3,6 @@ import {
   Callout,
   Dialog,
   Flex,
-  Heading,
   Text,
   TextField,
 } from "@radix-ui/themes";
@@ -108,9 +107,9 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
         <Dialog.Title>Edit deck</Dialog.Title>
 
         <div className="mb-3">
-          <Heading className="mb-1" size="3">
-            External ID
-          </Heading>
+          <p className="field-label mb-1">
+            <b>External ID</b>
+          </p>
           <TextField.Root
             className="input-field"
             placeholder="External ID..."
@@ -141,9 +140,9 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
         </Flex>
 
         <div className="mb-5">
-          <Heading className="mb-1" size="3">
-            Name
-          </Heading>
+          <p className="field-label mb-1">
+            <b>Name</b>
+          </p>
           <TextField.Root
             className="input-field"
             placeholder="Name..."
@@ -154,9 +153,9 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
         </div>
 
         <div className="mb-5">
-          <Heading className="mb-1" size="3">
-            Commander
-          </Heading>
+          <p className="field-label mb-1">
+            <b>Commander</b>
+          </p>
           <TextField.Root
             className="input-field"
             placeholder="Commander..."
@@ -167,9 +166,9 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
         </div>
 
         <div className="mb-5">
-          <Heading className="mb-1" size="3">
-            Built By
-          </Heading>
+          <p className="field-label mb-1">
+            <b>Built By</b>
+          </p>
           <PlayerSelect
             value={builder as string}
             onChange={setBuilder}
@@ -181,7 +180,9 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
 
         <div className="mb-5">
           <div className="mb-1">
-            <Heading size="3">Bracket</Heading>
+            <p className="field-label mb-1">
+              <b>Bracket</b>
+            </p>
             <Text size="1" color="gray">
               Leaving this field empty will let the application automatically
               determine the bracket.

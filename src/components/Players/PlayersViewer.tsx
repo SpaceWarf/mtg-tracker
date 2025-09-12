@@ -116,7 +116,7 @@ export function PlayersViewer() {
             columns={{ initial: "1", xs: "2", sm: "3", md: "4", lg: "5" }}
           >
             <Box>
-              <p className="mb-1">
+              <p className="field-label mb-1">
                 <b>Search</b>
               </p>
               <TextField.Root
@@ -131,7 +131,7 @@ export function PlayersViewer() {
               </TextField.Root>
             </Box>
             <Box>
-              <p className="mb-1">
+              <p className="field-label mb-1">
                 <b>Sort by</b>
               </p>
               <SortFctSelect

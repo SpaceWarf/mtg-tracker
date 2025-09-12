@@ -1,5 +1,6 @@
-import { Grid, Heading } from "@radix-ui/themes";
+import { Grid } from "@radix-ui/themes";
 import { useCallback, useEffect, useState } from "react";
+import "../../assets/styles/GamesCardView.scss";
 import { useAuth } from "../../hooks/useAuth";
 import { DbGame } from "../../state/Game";
 import { getLongDateString } from "../../utils/Date";
@@ -30,21 +31,23 @@ export function GamesCardView({ games }: OwnProps) {
     populateDateMap(games);
   }, [games, populateDateMap]);
 
-  return Array.from(dateMap.entries()).map(([date, gamesForDate]) => (
-    <div key={date}>
-      <Heading className="mb-5 mt-5 pb-2 border-b">
-        {getLongDateString(date)}
-      </Heading>
-      <Grid columns={{ initial: "1", md: "2", xl: "3" }} gap="5">
-        {gamesForDate.map((game, index) => (
-          <GameCard2
-            key={game.id}
-            game={game}
-            index={index}
-            editable={!!auth.user}
-          />
-        ))}
-      </Grid>
+  return (
+    <div className="games-card-view">
+      {Array.from(dateMap.entries()).map(([date, gamesForDate]) => (
+        <div key={date}>
+          <p className="date-label mb-5 mt-5">{getLongDateString(date)}</p>
+          <Grid columns={{ initial: "1", md: "2", xl: "3" }} gap="5">
+            {gamesForDate.map((game, index) => (
+              <GameCard2
+                key={game.id}
+                game={game}
+                index={index}
+                editable={!!auth.user}
+              />
+            ))}
+          </Grid>
+        </div>
+      ))}
     </div>
-  ));
+  );
 }

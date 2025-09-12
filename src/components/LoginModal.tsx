@@ -3,7 +3,6 @@ import {
   Callout,
   Dialog,
   Flex,
-  Heading,
   IconButton,
   TextField,
 } from "@radix-ui/themes";
@@ -74,9 +73,9 @@ export function LoginModal() {
         <Dialog.Title>Login</Dialog.Title>
 
         <div className="mb-5">
-          <Heading className="mb-1" size="3">
-            Username
-          </Heading>
+          <p className="field-label mb-1">
+            <b>Username</b>
+          </p>
           <TextField.Root
             className="input-field"
             placeholder="Username..."
@@ -86,9 +85,9 @@ export function LoginModal() {
         </div>
 
         <div className="mb-5">
-          <Heading className="mb-1" size="3">
-            Password
-          </Heading>
+          <p className="field-label mb-1">
+            <b>Password</b>
+          </p>
           <TextField.Root
             className="input-field"
             type="password"

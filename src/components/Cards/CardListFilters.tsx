@@ -1,11 +1,4 @@
-import {
-  Box,
-  CheckboxCards,
-  Flex,
-  Heading,
-  Text,
-  TextField,
-} from "@radix-ui/themes";
+import { Box, CheckboxCards, Flex, Text, TextField } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import ReactSelect, { SingleValue } from "react-select";
 import { CardGroupBy, CardGroupByOptions } from "../../state/CardGroupBy";
@@ -50,9 +43,9 @@ export function CardListFilters({
   return (
     <Flex className="mb-5" gap="5" wrap="wrap">
       <Box width={{ initial: "100%", xs: "60" }}>
-        <Heading className="mb-1" size="3">
-          Search
-        </Heading>
+        <p className="field-label mb-1">
+          <b>Search</b>
+        </p>
         <TextField.Root
           className="input-field"
           placeholder="Search…"
@@ -66,9 +59,9 @@ export function CardListFilters({
       </Box>
 
       <Box width={{ initial: "100%", xs: "60" }}>
-        <Heading className="mb-1" size="3">
-          Group by
-        </Heading>
+        <p className="field-label mb-1">
+          <b>Group by</b>
+        </p>
         <ReactSelect
           className="react-select-container min-w-60"
           classNamePrefix="react-select"
@@ -80,9 +73,9 @@ export function CardListFilters({
       </Box>
 
       <Box width={{ initial: "100%", xs: "60" }}>
-        <Heading className="mb-1" size="3">
-          Sort by
-        </Heading>
+        <p className="field-label mb-1">
+          <b>Sort by</b>
+        </p>
         <SortFctSelect
           type={SortFctType.CARD}
           value={sortBy}

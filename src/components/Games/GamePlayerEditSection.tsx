@@ -1,4 +1,4 @@
-import { Flex, Heading, Switch, Text } from "@radix-ui/themes";
+import { Flex, Switch, Text } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { GamePlayer } from "../../state/Game";
 import { DeckSelect } from "../Common/Select/DeckSelect";
@@ -68,9 +68,9 @@ export function GamePlayerEditSection({
 
   return (
     <div>
-      <Heading className="mb-1" size="3">
-        Player {playerIndex}
-      </Heading>
+      <p className="field-label mb-1">
+        <b>Player {playerIndex}</b>
+      </p>
       <Flex direction="column" gap="3">
         <PlayerSelect
           value={gamePlayer.player}
