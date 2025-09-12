@@ -72,7 +72,6 @@ export function DeckByIdViewer() {
   const [groupBy, setGroupBy] = useState<CardGroupBy>(CardGroupBy.CATEGORY);
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
   const [search, setSearch] = useState<string>("");
-  const [showVersionGraph, setShowVersionGraph] = useState<boolean>(false);
   const [viewType, setViewType] = useState<DeckByIdViewType>(
     (searchParams.get("view") as DeckByIdViewType) || DeckByIdViewType.STATS
   );
@@ -153,13 +152,11 @@ export function DeckByIdViewer() {
   function handleCardListFiltersChange(
     groupBy: CardGroupBy,
     sortBy: CardSortFctKey,
-    search: string,
-    showVersionGraph: boolean
+    search: string
   ) {
     setGroupBy(groupBy);
     setSortBy(sortBy);
     setSearch(search);
-    setShowVersionGraph(showVersionGraph);
   }
 
   function handleSearchGames() {
@@ -546,15 +543,11 @@ export function DeckByIdViewer() {
                       title="Decklist"
                       icon={<Icon icon="table-list" />}
                     >
-                      <CardListFilters
-                        hasVersions={(populatedDeck.versions?.length ?? 0) > 0}
-                        onChange={handleCardListFiltersChange}
-                      />
+                      <CardListFilters onChange={handleCardListFiltersChange} />
                       <CardList
                         groupBy={groupBy}
                         sortBy={sortBy}
                         search={search}
-                        showVersionGraph={showVersionGraph}
                         deck={populatedDeck}
                         columnCount={4}
                         selectedVersionId={selectedVersionId}

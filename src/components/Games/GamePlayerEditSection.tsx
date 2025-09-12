@@ -1,4 +1,4 @@
-import { Flex, Switch, Text } from "@radix-ui/themes";
+import { Flex, Switch } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { GamePlayer } from "../../state/Game";
 import { DeckSelect } from "../Common/Select/DeckSelect";
@@ -105,36 +105,30 @@ export function GamePlayerEditSection({
           )}
         </Flex>
         <Flex gap="3">
-          <Text as="label" size="2">
-            <Flex gap="2">
-              <Switch
-                size="1"
-                checked={gamePlayer.won}
-                onClick={handleWonChange}
-              />{" "}
-              Won?
-            </Flex>
-          </Text>
-          <Text as="label" size="2">
-            <Flex gap="2">
-              <Switch
-                size="1"
-                checked={gamePlayer.t1SolRing}
-                onClick={handleT1SolRingChange}
-              />{" "}
-              Sol Ring?
-            </Flex>
-          </Text>
-          <Text as="label" size="2">
-            <Flex gap="2">
-              <Switch
-                size="1"
-                checked={gamePlayer.started}
-                onClick={handleStartedChange}
-              />{" "}
-              Started?
-            </Flex>
-          </Text>
+          <Flex gap="2" align="center">
+            <Switch
+              size="1"
+              checked={gamePlayer.won}
+              onClick={handleWonChange}
+            />{" "}
+            Won?
+          </Flex>
+          <Flex gap="2" align="center">
+            <Switch
+              size="1"
+              checked={gamePlayer.t1SolRing}
+              onClick={handleT1SolRingChange}
+            />{" "}
+            Sol Ring?
+          </Flex>
+          <Flex gap="2" align="center">
+            <Switch
+              size="1"
+              checked={gamePlayer.started}
+              onClick={handleStartedChange}
+            />{" "}
+            Started?
+          </Flex>
         </Flex>
       </Flex>
     </div>

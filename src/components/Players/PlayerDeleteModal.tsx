@@ -1,4 +1,4 @@
-import { Button, Dialog, Flex, Text } from "@radix-ui/themes";
+import { Button, Dialog, Flex } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { PlayerService } from "../../services/Player";
@@ -35,10 +35,10 @@ export function PlayerDeleteModal({ open, player, onClose }: OwnProps) {
 
       <Dialog.Content>
         <Dialog.Title>Delete {player.name}</Dialog.Title>
-        <Text>
+        <p>
           Are you sure you want to delete this player? This will remove them
           from all associated games and <b>cannot be undone</b>.
-        </Text>
+        </p>
         <Flex mt="5" mb="7" justify="center">
           <PlayerCard2 player={player} />
         </Flex>

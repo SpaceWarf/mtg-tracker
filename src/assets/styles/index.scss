@@ -19,6 +19,19 @@ a {
   color: c.$text-secondary;
 }
 
+.text-muted {
+  font-size: 0.75rem;
+  color: c.$text-muted;
+}
+
+.text-warning {
+  color: c.$red;
+}
+
+.text-success {
+  color: c.$green;
+}
+
 .thumbnail-tooltip {
   position: fixed;
   width: 200px;

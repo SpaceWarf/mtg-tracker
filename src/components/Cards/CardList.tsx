@@ -1,4 +1,4 @@
-import { Flex, Grid, Tabs, Text } from "@radix-ui/themes";
+import { Flex, Grid, Tabs } from "@radix-ui/themes";
 import { useMemo } from "react";
 import { useDecks } from "../../hooks/useDecks";
 import { useMousePosition } from "../../hooks/useMousePosition";
@@ -16,7 +16,6 @@ import {
   getColourIdentityLabel,
 } from "../../utils/Deck";
 import { getColourIdentities } from "../../utils/Identity";
-import { DeckVersionViewer } from "../Decks/DeckVersionViewer";
 import { CardDiffViewer } from "./CardDiffViewer";
 import { CardListCategory } from "./CardListCategory";
 
@@ -24,7 +23,6 @@ type OwnProps = {
   groupBy: CardGroupBy;
   sortBy: CardSortFctKey;
   search: string;
-  showVersionGraph: boolean;
   deck: DbDeck;
   columnCount?: number;
   forcedCategoryOrder?: string[];
@@ -36,7 +34,6 @@ export function CardList({
   groupBy,
   sortBy,
   search,
-  showVersionGraph,
   deck,
   columnCount = 5,
   forcedCategoryOrder,
@@ -424,22 +421,10 @@ export function CardList({
 
   return (
     <div>
-      {showVersionGraph && (
-        <DeckVersionViewer
-          deck={deck}
-          sortCardsBy={sortBy}
-          mousePosition={mousePosition}
-          gameChangers={gameChangers ?? []}
-          selectedVersionId={selectedVersionId}
-          onClickVersion={onClickVersion}
-        />
-      )}
-
       {versions.length > 0 && (
         <Tabs.Root
           value={selectedVersionId}
           mb="3"
-          mt={showVersionGraph ? "3" : "0"}
           onValueChange={(value) => {
             onClickVersion?.(value);
           }}
@@ -448,19 +433,17 @@ export function CardList({
             {versions.map((version, index) => (
               <Tabs.Trigger key={version.id} value={version.id}>
                 <Flex direction="column">
-                  <Text>Version {index + 1}</Text>
-                  <Text size="1" color="gray" mb="2">
+                  <p className="pt-3">Version {index + 1}</p>
+                  <p className="pb-3 text-muted">
                     {getVersionDate(version.id)}
-                  </Text>
+                  </p>
                 </Flex>
               </Tabs.Trigger>
             ))}
             <Tabs.Trigger key="latest" value="latest">
               <Flex direction="column">
-                <Text>Version {versions.length + 1} </Text>
-                <Text size="1" color="gray" mb="2">
-                  {getVersionDate("latest")}
-                </Text>
+                <p className="pt-3">Version {versions.length + 1} </p>
+                <p className="pb-3 text-muted">{getVersionDate("latest")}</p>
               </Flex>
             </Tabs.Trigger>
           </Tabs.List>

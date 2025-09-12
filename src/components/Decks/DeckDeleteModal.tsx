@@ -1,4 +1,4 @@
-import { Button, Dialog, Flex, Text } from "@radix-ui/themes";
+import { Button, Dialog, Flex } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { DeckService } from "../../services/Deck";
@@ -35,10 +35,10 @@ export function DeckDeleteModal({ open, deck, onClose }: OwnProps) {
 
       <Dialog.Content>
         <Dialog.Title>Delete {deck.name}</Dialog.Title>
-        <Text>
+        <p>
           Are you sure you want to delete this deck? This will remove it from
           all associated games and <b>cannot be undone</b>.
-        </Text>
+        </p>
         <Flex mt="5" mb="7" justify="center">
           <DeckCard2 deck={deck} />
         </Flex>

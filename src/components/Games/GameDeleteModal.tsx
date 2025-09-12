@@ -1,4 +1,4 @@
-import { Button, Dialog, Flex, Text } from "@radix-ui/themes";
+import { Button, Dialog, Flex } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { GameService } from "../../services/Game";
@@ -34,10 +34,10 @@ export function GameDeleteModal({ open, game, onClose }: OwnProps) {
 
       <Dialog.Content>
         <Dialog.Title>Delete game</Dialog.Title>
-        <Text>
+        <p>
           Are you sure you want to delete this game? This{" "}
           <b>cannot be undone</b>.
-        </Text>
+        </p>
         <Flex gap="3" justify="between" mt="4">
           <Dialog.Close>
             <Button className="h-10" variant="outline">

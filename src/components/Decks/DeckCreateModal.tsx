@@ -1,11 +1,4 @@
-import {
-  Button,
-  Callout,
-  Dialog,
-  Flex,
-  Text,
-  TextField,
-} from "@radix-ui/themes";
+import { Button, Callout, Dialog, Flex, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { usePlayers } from "../../hooks/usePlayers";
@@ -175,13 +168,13 @@ export function DeckCreateModal() {
 
         <div className="mb-5">
           <div className="mb-1">
-            <p className="field-label mb-1">
+            <p className="field-label">
               <b>Bracket</b>
             </p>
-            <Text size="1" color="gray">
+            <p className="text-muted">
               Leaving this field empty will let the application automatically
               determine the bracket.
-            </Text>
+            </p>
           </div>
           <BracketSelect
             value={bracket}

@@ -1,11 +1,4 @@
-import {
-  Button,
-  Dialog,
-  Flex,
-  Progress,
-  Spinner,
-  Text,
-} from "@radix-ui/themes";
+import { Button, Dialog, Flex, Progress, Spinner } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { useDecks } from "../../hooks/useDecks";
 import { ArchidektService } from "../../services/Archidekt";
@@ -22,12 +15,12 @@ export function DeckSyncModal() {
     () => status === DeckSyncStatus.IN_PROGRESS,
     [status]
   );
-  const statusColor: "red" | "green" | undefined = useMemo(() => {
+  const statusColor: "warning" | "success" | undefined = useMemo(() => {
     switch (status) {
       case DeckSyncStatus.ERROR:
-        return "red";
+        return "warning";
       case DeckSyncStatus.COMPLETED:
-        return "green";
+        return "success";
       default:
         return undefined;
     }
@@ -78,32 +71,30 @@ export function DeckSyncModal() {
 
         <Flex gap="2" mt="4" mb="4" align="center">
           <Icon icon="exclamation-triangle" color="#d84242" />
-          <Text size="2" color="red">
+          <p className="text-warning">
             This operation is meant to be executed only when the underlying data
             structure of decks has changed. Please consult with Gab before
             running.
-          </Text>
+          </p>
         </Flex>
 
-        <Text>
+        <p>
           Syncing all decks takes a couple of minutes. <b>DO NOT</b> close the
           modal or the page once the syncing process has started. There are{" "}
           <b>{dbDecks?.length ?? 0}</b> decks to sync.
-        </Text>
+        </p>
 
         <div className="mt-4 mb-6">
           <Flex mb="1" gap="2" align="center">
-            <Text size="3" color={statusColor}>
-              {status}
-            </Text>
+            <p className={`text-${statusColor}`}>{status}</p>
             {syncing && <Spinner size="1" />}
           </Flex>
           <Progress value={(pointer / (dbDecks?.length ?? 0)) * 100} />
           {syncing && (
-            <Text size="1" color="gray">
+            <p className="text-muted">
               Currently syncing deck {pointer} out of {dbDecks?.length ?? 0} -{" "}
               {dbDecks?.[pointer]?.name}
-            </Text>
+            </p>
           )}
         </div>
 

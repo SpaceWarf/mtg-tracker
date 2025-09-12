@@ -5,7 +5,6 @@ import {
   IconButton,
   Select,
   TabNav,
-  Text,
 } from "@radix-ui/themes";
 import { useContext, useEffect } from "react";
 import { Link, useLocation, useSearchParams } from "react-router";
@@ -87,7 +86,7 @@ export function Header() {
         </Flex>
         <Flex align="center">
           <img width="40px" src="/img/chalice.png"></img>
-          {windowWidth > 500 && <Text>Calice de Marbre</Text>}
+          {windowWidth > 500 && <p>Calice de Marbre</p>}
           <IconButton
             className="ml-[1px]"
             variant="ghost"
@@ -122,7 +121,7 @@ export function Header() {
     <Flex className="Header p-3 bg-gray-800" align="center" justify="between">
       <Flex align="center" justify="start" flexBasis="25%">
         <img width="40px" src="/img/chalice.png"></img>
-        {windowWidth > 1150 && <Text>Calice de Marbre</Text>}
+        {windowWidth > 1150 && <p>Calice de Marbre</p>}
         <IconButton
           className="ml-[1px]"
           variant="ghost"

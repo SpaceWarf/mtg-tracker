@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@radix-ui/themes";
+import { Box, Button, Flex } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { useGameChangers } from "../../hooks/useGameChangers";
@@ -146,18 +146,18 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
               disabled={merging}
             />
             {!areVersionsContinuous && selectedVersions.length > 1 && (
-              <Text size="1" color="red" className="mt-1">
+              <p className="text-warning mt-1">
                 Selected versions are not continuous.
-              </Text>
+              </p>
             )}
             {usedVersion && (
-              <Text size="1" color="red" className="mt-1">
+              <p className="text-warning mt-1">
                 Version{" "}
                 {(deck.versions || []).findIndex(
                   (version) => version.id === usedVersion
                 ) + 2}{" "}
                 is used in games and cannot be merged.
-              </Text>
+              </p>
             )}
           </Box>
           <Button
@@ -214,7 +214,7 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
             gameChangers={gameChangers}
           />
         )}
-        {!deck.versions && <Text>No versions to manage.</Text>}
+        {!deck.versions && <p>No versions to manage.</p>}
       </Flex>
     </DataCard>
   );

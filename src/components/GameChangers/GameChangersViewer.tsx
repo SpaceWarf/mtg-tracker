@@ -26,7 +26,6 @@ export function GameChangersViewer() {
   const [groupBy, setGroupBy] = useState<CardGroupBy>(CardGroupBy.CATEGORY);
   const [sortBy, setSortBy] = useState<CardSortFctKey>(CardSortFctKey.NAME_ASC);
   const [search, setSearch] = useState<string>("");
-  const [showVersionGraph, setShowVersionGraph] = useState<boolean>(false);
   const [syncing, setSyncing] = useState<boolean>(false);
   const [selectedVersionId, setSelectedVersionId] = useState<string>(
     searchParams.get("version") ?? "latest"
@@ -39,13 +38,11 @@ export function GameChangersViewer() {
   function handleCardListFiltersChange(
     groupBy: CardGroupBy,
     sortBy: CardSortFctKey,
-    search: string,
-    showVersionGraph: boolean
+    search: string
   ) {
     setGroupBy(groupBy);
     setSortBy(sortBy);
     setSearch(search);
-    setShowVersionGraph(showVersionGraph);
   }
 
   async function handleSync() {
@@ -135,15 +132,11 @@ export function GameChangersViewer() {
         )}
         {deck.cards && deck.cards.length > 0 && (
           <DataCard title="Decklist" icon={<Icon icon="table-list" />}>
-            <CardListFilters
-              hasVersions={(deck.versions?.length ?? 0) > 0}
-              onChange={handleCardListFiltersChange}
-            />
+            <CardListFilters onChange={handleCardListFiltersChange} />
             <CardList
               groupBy={groupBy}
               sortBy={sortBy}
               search={search}
-              showVersionGraph={showVersionGraph}
               deck={deck}
               columnCount={5}
               selectedVersionId={selectedVersionId}
