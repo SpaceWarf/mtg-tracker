@@ -5,6 +5,8 @@
 @use "./common/select" as select;
 @use "./common/input" as input;
 @use "./common/nav" as nav;
+@use "./common/modal" as modal;
+
 @import "@radix-ui/themes/styles.css";
 
 * {

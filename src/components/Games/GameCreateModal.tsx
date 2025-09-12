@@ -100,7 +100,7 @@ export function GameCreateModal() {
 
       <Dialog.Description></Dialog.Description>
 
-      <Dialog.Content className="max-w-[50vw]">
+      <Dialog.Content maxWidth="700px">
         <Dialog.Title>Create game</Dialog.Title>
 
         <div className="mb-5">
@@ -115,7 +115,7 @@ export function GameCreateModal() {
           ></TextField.Root>
         </div>
 
-        <Grid columns="2" rows="2" width="auto" gap="5">
+        <Grid columns={{ initial: "1", sm: "2" }} gap="5">
           <GamePlayerEditSection
             gamePlayer={player1}
             playerIndex={1}
@@ -154,25 +154,52 @@ export function GameCreateModal() {
 
         <Flex gap="3" justify="between">
           <Dialog.Close>
-            <Button className="h-10" variant="outline">
-              <Icon icon="xmark" /> Cancel
-            </Button>
+            {windowWidth > 520 ? (
+              <Button className="h-10" variant="outline">
+                <Icon icon="xmark" /> Cancel
+              </Button>
+            ) : (
+              <IconButton className="h-10 w-10" variant="outline">
+                <Icon icon="xmark" />
+              </IconButton>
+            )}
           </Dialog.Close>
           <Flex gap="3">
-            <Dialog.Close disabled={!canCreate()} onClick={handleCreateOne}>
-              <Button className="h-10">
-                <Icon icon="check" /> Create One
-              </Button>
-            </Dialog.Close>
-            <Button
-              className="h-10"
-              disabled={!canCreate()}
-              onClick={handleCreate}
-              loading={creating}
-            >
-              <Icon icon="forward" />
-              Create More
-            </Button>
+            {windowWidth > 520 ? (
+              <>
+                <Dialog.Close disabled={!canCreate()} onClick={handleCreateOne}>
+                  <Button className="h-10">
+                    <Icon icon="check" />
+                    Create One
+                  </Button>
+                </Dialog.Close>
+                <Button
+                  className="h-10"
+                  disabled={!canCreate()}
+                  onClick={handleCreate}
+                  loading={creating}
+                >
+                  <Icon icon="forward" />
+                  Create More
+                </Button>
+              </>
+            ) : (
+              <>
+                <Dialog.Close disabled={!canCreate()} onClick={handleCreateOne}>
+                  <IconButton className="h-10 w-10">
+                    <Icon icon="check" />
+                  </IconButton>
+                </Dialog.Close>
+                <IconButton
+                  className="h-10 w-10"
+                  disabled={!canCreate()}
+                  onClick={handleCreate}
+                  loading={creating}
+                >
+                  <Icon icon="forward" />
+                </IconButton>
+              </>
+            )}
           </Flex>
         </Flex>
       </Dialog.Content>

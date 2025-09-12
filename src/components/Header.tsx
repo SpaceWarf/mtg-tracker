@@ -77,7 +77,7 @@ export function Header() {
               </Link>
               <Link to="/deck-validator">
                 <DropdownMenu.Item className="mb-1">
-                  <Icon icon="check" />
+                  <Icon icon="check-circle" />
                   Deck Validator
                 </DropdownMenu.Item>
               </Link>
@@ -185,7 +185,7 @@ export function Header() {
             active={location.pathname.includes("/deck-validator")}
           >
             <Link to="/deck-validator">
-              <Icon className="mr-1" icon="check" />
+              <Icon className="mr-1" icon="check-circle" />
               Deck Validator
             </Link>
           </TabNav.Link>

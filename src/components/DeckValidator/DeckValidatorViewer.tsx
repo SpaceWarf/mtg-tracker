@@ -77,7 +77,7 @@ export function DeckValidatorViewer() {
       <Grid columns="1" gap="5">
         <DataCard
           title="Deck Validator"
-          icon={<Icon icon="check" />}
+          icon={<Icon icon="check-circle" />}
           direction="row"
           pageHeader
         />

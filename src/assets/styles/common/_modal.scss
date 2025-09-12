@@ -1,0 +1,11 @@
+@use "./colours" as c;
+
+.rt-DialogContent {
+  background-color: c.$dialog-background;
+  border: 2px solid c.$dialog-border;
+  box-shadow: none;
+
+  .rt-Heading {
+    color: c.$text-primary;
+  }
+}

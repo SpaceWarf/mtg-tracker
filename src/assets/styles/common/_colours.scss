@@ -39,3 +39,6 @@ $input-border: $border-primary;
 $input-border-hover: $border-hover;
 
 $tooltip-background: color.adjust($background-secondary, $lightness: 15%);
+
+$dialog-background: $background-secondary;
+$dialog-border: $border-primary;
