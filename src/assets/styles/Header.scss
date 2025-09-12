@@ -1,9 +1,16 @@
 @use "../styles/common/colours" as c;
 
-.Header {
+.app-header {
   position: sticky;
   top: 0;
   width: 100%;
   z-index: 99;
   color: c.$text-primary;
+
+  .app-header-content {
+    width: 100%;
+    max-width: 1950px;
+    margin: 0 auto;
+    padding: 15px 20px;
+  }
 }
