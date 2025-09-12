@@ -168,6 +168,10 @@ export function DeckByIdViewer() {
     navigate(`/`);
   }
 
+  function handleSearchBuilder() {
+    navigate(`/players/${deck?.builder}`);
+  }
+
   function handleArchidekt() {
     window.open(ArchidektService.getDeckUrl(deck?.externalId ?? ""), "_blank");
   }
@@ -296,6 +300,17 @@ export function DeckByIdViewer() {
                       <Icon icon="dice" />
                     </IconButton>
                   </Tooltip>
+                  <Tooltip content="View Builder">
+                    <IconButton
+                      variant="soft"
+                      color="gray"
+                      size="3"
+                      disabled={syncing}
+                      onClick={handleSearchBuilder}
+                    >
+                      <Icon icon="user" />
+                    </IconButton>
+                  </Tooltip>
                   {populatedDeck.externalId && (
                     <>
                       <Tooltip content="Open on Archidekt">
@@ -375,17 +390,16 @@ export function DeckByIdViewer() {
             ) : (
               <Flex width="100%" gap="5" justify="between" wrap="wrap">
                 <Flex gap="3">
-                  <Link to="/decks">
-                    <Button
-                      variant="soft"
-                      color="gray"
-                      size={{ initial: "2", xs: "3" }}
-                      disabled={syncing}
-                    >
-                      <Icon icon="left-long" />
-                      Back
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="soft"
+                    color="gray"
+                    size={{ initial: "2", xs: "3" }}
+                    disabled={syncing}
+                    onClick={() => navigate(-1)}
+                  >
+                    <Icon icon="left-long" />
+                    Back
+                  </Button>
                 </Flex>
 
                 <Flex

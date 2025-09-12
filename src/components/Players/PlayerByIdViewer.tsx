@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "@radix-ui/themes";
 import { useContext, useMemo, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { FiltersContext } from "../../contexts/FiltersContext";
 import { useAuth } from "../../hooks/useAuth";
 import { useDecks } from "../../hooks/useDecks";
@@ -126,12 +126,15 @@ export function PlayerByIdViewer() {
           <DataCard direction="row">
             <Flex width="100%" gap="5" justify="between" wrap="wrap">
               <Flex gap="3">
-                <Link to="/players">
-                  <Button variant="soft" color="gray" size="3">
-                    <Icon icon="left-long" />
-                    Back
-                  </Button>
-                </Link>
+                <Button
+                  variant="soft"
+                  color="gray"
+                  size="3"
+                  onClick={() => navigate(-1)}
+                >
+                  <Icon icon="left-long" />
+                  Back
+                </Button>
               </Flex>
 
               <Flex gap="2" justify="end">
