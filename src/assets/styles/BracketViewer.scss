@@ -1,9 +1,11 @@
+@use "../styles/colours" as c;
+
 .bracket-viewer {
   .bracket-container {
     position: relative;
     width: 300px;
     height: 650px;
-    border: 3px solid #a57e5a;
+    border: 3px solid c.$gold;
     border-radius: 20px;
     padding: 75px 20px 50px 20px;
 
@@ -13,15 +15,17 @@
       top: 0;
       transform: translate(-50%, -50%);
       left: 50%;
-      background-color: #111113;
+      background-color: c.$black;
 
       .bracket-number {
+        color: c.$text-primary;
         font-size: 4rem;
         font-weight: bold;
       }
     }
 
     .bracket-name {
+      color: c.$text-primary;
       font-size: 2rem;
       font-weight: bold;
       text-align: center;
@@ -30,6 +34,7 @@
     }
 
     .bracket-description {
+      color: c.$text-primary;
       font-size: 1rem;
       font-weight: bold;
       text-align: center;
@@ -40,38 +45,39 @@
     .bracket-divider {
       width: 75px;
       height: 3px;
-      background-color: #a57e5a;
+      background-color: c.$gold;
     }
 
     .bracket-rule {
+      color: c.$text-primary;
       font-size: 0.9rem;
       font-weight: bold;
       text-transform: uppercase;
 
       .red {
-        color: #d84242;
+        color: c.$red;
 
         path {
-          stroke: #d84242;
-          fill: #d84242;
+          stroke: c.$red;
+          fill: c.$red;
         }
       }
 
       .green {
-        color: #5abe8c;
+        color: c.$green;
 
         path {
-          stroke: #5abe8c;
-          fill: #5abe8c;
+          stroke: c.$green;
+          fill: c.$green;
         }
       }
 
       .yellow {
-        color: #fa9f42;
+        color: c.$yellow;
 
         path {
-          stroke: #fa9f42;
-          fill: #fa9f42;
+          stroke: c.$yellow;
+          fill: c.$yellow;
         }
       }
     }
@@ -83,7 +89,7 @@
       top: 100%;
       transform: translate(-50%, -50%);
       left: 50%;
-      background-color: #111113;
+      background-color: c.$black;
     }
   }
 }

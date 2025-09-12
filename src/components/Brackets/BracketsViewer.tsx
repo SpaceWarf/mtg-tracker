@@ -1,6 +1,6 @@
 import "@assets/styles/BracketViewer.scss";
 import { CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons";
-import { Flex, Heading, Text } from "@radix-ui/themes";
+import { Flex, Grid } from "@radix-ui/themes";
 import { BRACKET_DATA, BracketRuleIcon } from "../../state/BracketData";
 import { getBracketName } from "../../utils/Bracket";
 
@@ -22,10 +22,10 @@ const ICON_MAP: Record<BracketRuleIcon, React.ReactNode> = {
 
 export function BracketsViewer() {
   return (
-    <Flex
-      className="p-5 w-full max-w-[1950px] bracket-viewer"
-      justify="center"
+    <Grid
+      className="p-5 max-w-[1950px] bracket-viewer"
       gap="5"
+      columns={{ initial: "1", sm: "2", md: "3", lg: "4" }}
     >
       {BRACKET_DATA.map((bracket, index) => (
         <Flex
@@ -41,12 +41,10 @@ export function BracketsViewer() {
             justify="center"
             align="center"
           >
-            <Heading className="bracket-number">{index + 1}</Heading>
+            <p className="bracket-number">{index + 1}</p>
           </Flex>
-          <Heading className="bracket-name">
-            {getBracketName(bracket.bracket)}
-          </Heading>
-          <Text className="bracket-description">{bracket.description}</Text>
+          <p className="bracket-name">{getBracketName(bracket.bracket)}</p>
+          <p className="bracket-description">{bracket.description}</p>
           <div className="bracket-divider" />
 
           <Flex direction="column" gap="6">
@@ -58,13 +56,13 @@ export function BracketsViewer() {
                 gap="5"
               >
                 <div className={rule.colour}>{ICON_MAP[rule.icon]}</div>
-                <Text>{rule.text}</Text>
+                <p>{rule.text}</p>
               </Flex>
             ))}
             <div className="bracket-bottom-decorator" />
           </Flex>
         </Flex>
       ))}
-    </Flex>
+    </Grid>
   );
 }

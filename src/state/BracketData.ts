@@ -121,7 +121,7 @@ export const BRACKET_DATA: BracketData[] = [
       {
         icon: BracketRuleIcon.DOLLAR,
         colour: "green",
-        text: "500$ budget",
+        text: "1000$ budget",
       },
     ],
   },

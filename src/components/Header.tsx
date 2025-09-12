@@ -5,6 +5,7 @@ import {
   faDice,
   faGem,
   faLayerGroup,
+  faScaleUnbalanced,
   faUser,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
@@ -58,29 +59,38 @@ export function Header() {
             <DropdownMenu.Content>
               <Link to="/">
                 <DropdownMenu.Item className="mb-1">
-                  <FontAwesomeIcon className="mr-2" icon={faDice} /> Games
+                  <FontAwesomeIcon className="mr-2" icon={faDice} />
+                  Games
                 </DropdownMenu.Item>
               </Link>
               <Link to="/players">
                 <DropdownMenu.Item className="mb-1">
-                  <FontAwesomeIcon className="mr-2" icon={faUser} /> Players
+                  <FontAwesomeIcon className="mr-2" icon={faUser} />
+                  Players
                 </DropdownMenu.Item>
               </Link>
               <Link to="/decks">
                 <DropdownMenu.Item className="mb-1">
-                  <FontAwesomeIcon className="mr-2" icon={faLayerGroup} /> Decks
+                  <FontAwesomeIcon className="mr-2" icon={faLayerGroup} />
+                  Decks
                 </DropdownMenu.Item>
               </Link>
               <Link to="/game-changers">
                 <DropdownMenu.Item className="mb-1">
-                  <FontAwesomeIcon className="mr-2" icon={faGem} /> Game
-                  Changers
+                  <FontAwesomeIcon className="mr-2" icon={faGem} />
+                  Game Changers
+                </DropdownMenu.Item>
+              </Link>
+              <Link to="/brackets">
+                <DropdownMenu.Item className="mb-1">
+                  <FontAwesomeIcon className="mr-2" icon={faScaleUnbalanced} />
+                  Brackets
                 </DropdownMenu.Item>
               </Link>
               <Link to="/deck-validator">
                 <DropdownMenu.Item className="mb-1">
-                  <FontAwesomeIcon className="mr-2" icon={faCheck} /> Deck
-                  Validator
+                  <FontAwesomeIcon className="mr-2" icon={faCheck} />
+                  Deck Validator
                 </DropdownMenu.Item>
               </Link>
             </DropdownMenu.Content>
@@ -176,9 +186,12 @@ export function Header() {
               Game Changers
             </Link>
           </TabNav.Link>
-          {/* <TabNav.Link asChild active={location.pathname === "/brackets"}>
-              <Link to="/brackets">Brackets</Link>
-            </TabNav.Link> */}
+          <TabNav.Link asChild active={location.pathname === "/brackets"}>
+            <Link to="/brackets">
+              <FontAwesomeIcon className="mr-2" icon={faScaleUnbalanced} />
+              Brackets
+            </Link>
+          </TabNav.Link>
           <TabNav.Link
             asChild
             active={location.pathname.includes("/deck-validator")}
