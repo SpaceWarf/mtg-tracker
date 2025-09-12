@@ -1,6 +1,6 @@
 import { Flex } from "@radix-ui/themes";
 import { useMemo } from "react";
-import { ManaIcon } from "../Icons/ManaIcon";
+import { ManaIcon } from "./ManaIcon";
 
 type OwnProps = {
   label: string;

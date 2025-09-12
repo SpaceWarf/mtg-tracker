@@ -10,7 +10,7 @@ import { DiffType } from "../../state/DiffType";
 import { GameChangerType } from "../../state/GameChangerType";
 import { MousePosition } from "../../state/MousePosition";
 import { Icon } from "../Common/Icon";
-import { ManaIcon } from "../Icons/ManaIcon";
+import { ManaIcon } from "../Common/ManaIcon";
 
 type OwnProps = {
   card: DeckCardDetails;
