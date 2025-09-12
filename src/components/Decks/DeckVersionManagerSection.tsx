@@ -1,9 +1,3 @@
-import {
-  faCodePullRequest,
-  faEye,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Button, Flex, Heading, Text } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
@@ -16,6 +10,7 @@ import { DeckWithStats } from "../../state/Deck";
 import { DeckVersion } from "../../state/DeckVersion";
 import { mergeVersions } from "../../utils/Deck";
 import { DataCard } from "../Common/DataCard";
+import { Icon } from "../Common/Icon";
 import { VersionSelect } from "../Common/Select/VersionSelect";
 import { DeckVersionViewer } from "./DeckVersionViewer";
 
@@ -138,10 +133,7 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
   }
 
   return (
-    <DataCard
-      title="Version Manager"
-      icon={<FontAwesomeIcon icon={faCodePullRequest} />}
-    >
+    <DataCard title="Version Manager" icon={<Icon icon="code-pull-request" />}>
       <Flex direction="column" gap="5">
         <Flex gap="5" mb="3" wrap="wrap">
           <Box width={{ initial: "100%", xs: "300px" }}>
@@ -176,7 +168,7 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
             onClick={handlePreviewMerge}
             disabled={!canMerge || merging || !!previewVersions}
           >
-            <FontAwesomeIcon icon={faEye} />
+            <Icon icon="eye" />
             Preview Merge
           </Button>
           {previewVersions && (
@@ -188,7 +180,7 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
                 disabled={merging}
                 loading={merging}
               >
-                <FontAwesomeIcon icon={faCodePullRequest} />
+                <Icon icon="code-pull-request" />
                 Confirm Merge
               </Button>
               <Button
@@ -198,7 +190,7 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
                 onClick={handleCancelMerge}
                 disabled={merging}
               >
-                <FontAwesomeIcon icon={faXmark} />
+                <Icon icon="xmark" />
                 Cancel
               </Button>
             </Flex>

@@ -1,10 +1,9 @@
-import { faTrash, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, Flex, Text } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { PlayerService } from "../../services/Player";
 import { PlayerWithStats } from "../../state/Player";
+import { Icon } from "../Common/Icon";
 import { PlayerCard2 } from "./PlayerCard2";
 
 type OwnProps = {
@@ -46,7 +45,7 @@ export function PlayerDeleteModal({ open, player, onClose }: OwnProps) {
         <Flex gap="3" justify="between" mt="4">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <FontAwesomeIcon icon={faXmark} />
+              <Icon icon="xmark" />
               Cancel
             </Button>
           </Dialog.Close>
@@ -57,7 +56,7 @@ export function PlayerDeleteModal({ open, player, onClose }: OwnProps) {
             onClick={handleDelete}
             className="h-10"
           >
-            <FontAwesomeIcon icon={faTrash} />
+            <Icon icon="trash" />
             Delete Forever
           </Button>
         </Flex>

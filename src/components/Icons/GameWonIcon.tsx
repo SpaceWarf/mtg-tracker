@@ -1,11 +1,10 @@
-import { faCrown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from "@radix-ui/themes";
+import { Icon } from "../Common/Icon";
 
 export function GameWonIcon() {
   return (
     <Tooltip content="Won">
-      <FontAwesomeIcon color="gold" icon={faCrown} />
+      <Icon color="gold" icon="crown" />
     </Tooltip>
   );
 }

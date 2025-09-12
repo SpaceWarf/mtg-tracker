@@ -1,11 +1,3 @@
-import {
-  faDice,
-  faEllipsisV,
-  faLayerGroup,
-  faPen,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DropdownMenu, IconButton } from "@radix-ui/themes";
 import { useContext } from "react";
 import { useNavigate } from "react-router";
@@ -16,6 +8,7 @@ import { DeckSortFctKey } from "../../state/DeckSortFctKey";
 import { GameSortFctKey } from "../../state/GameSortFctKey";
 import { IdentityLabel } from "../../state/IdentityLabel";
 import { PlayerWithStats } from "../../state/Player";
+import { Icon } from "../Common/Icon";
 
 type OwnProps = {
   player: PlayerWithStats;
@@ -67,16 +60,16 @@ export function PlayerCardDropdownMenu({
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
           <IconButton variant="soft" color="gray">
-            <FontAwesomeIcon icon={faEllipsisV} />
+            <Icon icon="ellipsis-v" />
           </IconButton>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
           <DropdownMenu.Item className="mb-1" onClick={handleSearchGames}>
-            <FontAwesomeIcon icon={faDice} />
+            <Icon icon="dice" />
             View All Games
           </DropdownMenu.Item>
           <DropdownMenu.Item className="mb-1" onClick={handleSearchDecks}>
-            <FontAwesomeIcon icon={faLayerGroup} />
+            <Icon icon="cards-blank" />
             View All Decks
           </DropdownMenu.Item>
           {player.externalId && (
@@ -95,14 +88,14 @@ export function PlayerCardDropdownMenu({
           )}
           {editable && (
             <DropdownMenu.Item className="mb-1" onClick={onEdit}>
-              <FontAwesomeIcon icon={faPen} />
+              <Icon icon="pen" />
               Edit
             </DropdownMenu.Item>
           )}
           {editable && <DropdownMenu.Separator />}
           {editable && (
             <DropdownMenu.Item color="red" onClick={onDelete}>
-              <FontAwesomeIcon icon={faTrash} />
+              <Icon icon="trash" />
               Delete
             </DropdownMenu.Item>
           )}

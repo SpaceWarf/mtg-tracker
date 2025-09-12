@@ -1,10 +1,3 @@
-import {
-  faCodeCommit,
-  faGem,
-  faRotate,
-  faTableList,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex, IconButton, Spinner, Tooltip } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
@@ -19,6 +12,7 @@ import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { CardList } from "../Cards/CardList";
 import { CardListFilters } from "../Cards/CardListFilters";
 import { DataCard } from "../Common/DataCard";
+import { Icon } from "../Common/Icon";
 import { DeckVersionViewer } from "../Decks/DeckVersionViewer";
 
 export function GameChangersViewer() {
@@ -89,7 +83,7 @@ export function GameChangersViewer() {
       <Flex direction="column" gap="5">
         <DataCard
           title="Gamer Changers"
-          icon={<FontAwesomeIcon icon={faGem} />}
+          icon={<Icon icon="gem" />}
           direction="row"
           align="between"
         >
@@ -104,7 +98,7 @@ export function GameChangersViewer() {
                   loading={syncing}
                   onClick={handleSync}
                 >
-                  <FontAwesomeIcon icon={faRotate} />
+                  <Icon icon="rotate" />
                 </IconButton>
               </Tooltip>
             )}
@@ -124,7 +118,7 @@ export function GameChangersViewer() {
         {deck.versions && deck.versions.length > 0 && (
           <DataCard
             title="Versions"
-            icon={<FontAwesomeIcon icon={faCodeCommit} />}
+            icon={<Icon icon="code-commit" />}
             collapsable
             defaultCollapsed
           >
@@ -139,10 +133,7 @@ export function GameChangersViewer() {
           </DataCard>
         )}
         {deck.cards && deck.cards.length > 0 && (
-          <DataCard
-            title="Decklist"
-            icon={<FontAwesomeIcon icon={faTableList} />}
-          >
+          <DataCard title="Decklist" icon={<Icon icon="table-list" />}>
             <CardListFilters
               hasVersions={(deck.versions?.length ?? 0) > 0}
               onChange={handleCardListFiltersChange}

@@ -1,12 +1,11 @@
 import "@assets/styles/Rewind.scss";
-import { faFilm } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Flex, Heading, Select, Spinner } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useDecks } from "../../hooks/useDecks";
 import { useGames } from "../../hooks/useGames";
 import { usePlayers } from "../../hooks/usePlayers";
+import { Icon } from "../Common/Icon";
 import { RewindPage1 } from "./RewindPage1";
 import { RewindPage2 } from "./RewindPage2";
 import { RewindPage3 } from "./RewindPage3";
@@ -118,7 +117,7 @@ export function RewindViewer() {
         </Select.Root>
       </Flex>
       <Button size="3" disabled={!player} onClick={handleStartRewind}>
-        <FontAwesomeIcon icon={faFilm} />
+        <Icon icon="film" />
         Let's Start!
       </Button>
     </Flex>

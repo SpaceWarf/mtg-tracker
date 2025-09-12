@@ -1,15 +1,7 @@
-import {
-  faBaseballBatBall,
-  faCrown,
-  faDice,
-  faDiceSix,
-  faHammer,
-  faRing,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex } from "@radix-ui/themes";
 import "../../assets/styles/PlayerShowcase.scss";
 import { PlayerWithStats } from "../../state/Player";
+import { Icon } from "../Common/Icon";
 import { PlayerHeader2 } from "./PlayerHeader2";
 
 type OwnProps = {
@@ -53,49 +45,49 @@ export function PlayerShowcase({ player }: OwnProps) {
       <Flex direction="column" className="stats-table">
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faDice} />
+            <Icon size="lg" icon="dice" />
             <p>Games Played</p>
           </Flex>
           <p className="value">{player.gamesPlayed}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faCrown} />
+            <Icon size="lg" icon="crown" />
             <p>Games Won</p>
           </Flex>
           <p className="value">{player.winCount}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faDiceSix} />
+            <Icon size="lg" icon="dice-six" />
             <p>Games Started</p>
           </Flex>
           <p className="value">{player.startCount}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faRing} />
+            <Icon size="lg" icon="ring" />
             <p>T1 Sol Rings</p>
           </Flex>
           <p className="value">{player.solRingCount}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faBaseballBatBall} />
+            <Icon size="lg" icon="baseball-bat-ball" />
             <p>Grand Slams</p>
           </Flex>
           <p className="value">{player.grandSlamCount}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faHammer} />
+            <Icon size="lg" icon="hammer" />
             <p>Decks Built</p>
           </Flex>
           <p className="value">{player.decksBuilt}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faDice} />
+            <Icon size="lg" icon="cards-blank" />
             <p>Decks Played</p>
           </Flex>
           <p className="value">
@@ -108,7 +100,7 @@ export function PlayerShowcase({ player }: OwnProps) {
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faCrown} />
+            <Icon size="lg" icon="crown" />
             <p>Decks Won With</p>
           </Flex>
           <p className="value">

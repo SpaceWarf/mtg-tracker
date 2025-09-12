@@ -1,5 +1,3 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar, Flex } from "@radix-ui/themes";
 import { useMemo } from "react";
 import ReactSelect, {
@@ -13,6 +11,7 @@ import "../../../assets/styles/SelectOptions.scss";
 import { usePlayers } from "../../../hooks/usePlayers";
 import { usePlayerSelectOptions } from "../../../hooks/usePlayerSelectOptions";
 import { SelectOption } from "../../../state/SelectOption";
+import { Icon } from "../Icon";
 
 type SharedProps = {
   menuPlacement?: "top" | "bottom";
@@ -113,7 +112,7 @@ function CustomOption({
     >
       <Avatar
         src={data.image}
-        fallback={<FontAwesomeIcon icon={faUser} />}
+        fallback={<Icon icon="user" />}
         radius="full"
         size="2"
       />
@@ -127,7 +126,7 @@ const CustomValue = ({ ...props }: SingleValueProps<SelectOption>) => (
     <Flex gap="2" align="center">
       <Avatar
         src={props.data.image}
-        fallback={<FontAwesomeIcon icon={faUser} />}
+        fallback={<Icon icon="user" />}
         radius="full"
         size="1"
       />
@@ -142,7 +141,7 @@ const CustomMultiValueLabel = (props: MultiValueGenericProps<SelectOption>) => {
       <Flex gap="2" align="center">
         <Avatar
           src={props.data.image}
-          fallback={<FontAwesomeIcon icon={faUser} />}
+          fallback={<Icon icon="user" />}
           radius="full"
           size="1"
         />

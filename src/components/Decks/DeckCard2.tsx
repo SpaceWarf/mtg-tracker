@@ -1,9 +1,8 @@
-import { faCrown, faDice } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Flex, Tooltip } from "@radix-ui/themes";
 import { useNavigate } from "react-router";
 import "../../assets/styles/DeckCard.scss";
 import { DeckWithStats } from "../../state/Deck";
+import { Icon } from "../Common/Icon";
 import { SimplePieChart } from "../Common/SimplePieChart";
 import { DeckHeader2 } from "./DeckHeader2";
 import { DeckTags } from "./DeckTags";
@@ -38,13 +37,13 @@ export function DeckCard2({ deck, editable, showActions }: OwnProps) {
             <Flex mt="2" gap="4">
               <Tooltip content="Games Played">
                 <Flex className="stat-container" gap="2">
-                  <FontAwesomeIcon size="xl" icon={faDice} />
+                  <Icon icon="dice" size="lg" />
                   <p>{deck.gamesPlayed}</p>
                 </Flex>
               </Tooltip>
               <Tooltip content="Games Won">
                 <Flex className="stat-container" gap="2">
-                  <FontAwesomeIcon size="xl" icon={faCrown} />
+                  <Icon icon="crown" size="lg" />
                   <p>{deck.winCount}</p>
                 </Flex>
               </Tooltip>

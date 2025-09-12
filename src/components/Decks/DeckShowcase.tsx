@@ -1,16 +1,3 @@
-import {
-  faBaseballBatBall,
-  faCalendarDays,
-  faCalendarPlus,
-  faCrown,
-  faDice,
-  faDollarSign,
-  faEye,
-  faFaceAngry,
-  faLayerGroup,
-  faRotate,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex } from "@radix-ui/themes";
 import { useMemo } from "react";
 import "../../assets/styles/DeckShowcase.scss";
@@ -19,6 +6,7 @@ import { CARD_COUNT } from "../../utils/Bracket";
 import { getLongDateString } from "../../utils/Date";
 import { getDeckCommanders } from "../../utils/Deck";
 import { CardPreview } from "../Cards/CardPreview";
+import { Icon } from "../Common/Icon";
 import { DeckHeader2 } from "./DeckHeader2";
 import { DeckTags } from "./DeckTags";
 
@@ -54,25 +42,21 @@ export function DeckShowcase({ deck, showStats }: OwnProps) {
           <>
             <Flex className="stats-row" justify="between" flexGrow="1">
               <Flex className="label" align="center" gap="2">
-                <FontAwesomeIcon size="xl" width="22" icon={faDice} />
+                <Icon icon="dice" size="lg" />
                 <p>Games Played</p>
               </Flex>
               <p className="value">{deck.gamesPlayed}</p>
             </Flex>
             <Flex className="stats-row" justify="between" flexGrow="1">
               <Flex className="label" align="center" gap="2">
-                <FontAwesomeIcon size="xl" width="22" icon={faCrown} />
+                <Icon icon="crown" size="lg" />
                 <p>Games Won</p>
               </Flex>
               <p className="value">{deck.winCount}</p>
             </Flex>
             <Flex className="stats-row" justify="between" flexGrow="1">
               <Flex className="label" align="center" gap="2">
-                <FontAwesomeIcon
-                  size="xl"
-                  width="22"
-                  icon={faBaseballBatBall}
-                />
+                <Icon size="lg" icon="baseball-bat-ball" />
                 <p>Grand Slams</p>
               </Flex>
               <p className="value">{deck.grandSlamCount}</p>
@@ -87,49 +71,49 @@ export function DeckShowcase({ deck, showStats }: OwnProps) {
           flexGrow="1"
         >
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faLayerGroup} />
+            <Icon icon="cards-blank" size="lg" />
             <p>Size</p>
           </Flex>
           <p className="value">{deck.size ?? "-"}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faDollarSign} />
+            <Icon icon="dollar-sign" size="lg" />
             <p>Est. Price</p>
           </Flex>
           <p className="value">{deck.price ?? "-"}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faFaceAngry} />
+            <Icon icon="face-angry" size="lg" />
             <p>Salt Sum</p>
           </Flex>
           <p className="value">{deck.saltSum ?? "-"}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faEye} />
+            <Icon icon="eye" size="lg" />
             <p>View Count</p>
           </Flex>
           <p className="value">{deck.viewCount ?? "-"}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faCalendarDays} />
+            <Icon icon="calendar-days" size="lg" />
             <p>Created At</p>
           </Flex>
           <p className="value">{getLongDateString(deck.deckCreatedAt ?? "")}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faCalendarPlus} />
+            <Icon icon="calendar-plus" size="lg" />
             <p>Updated At</p>
           </Flex>
           <p className="value">{getLongDateString(deck.deckUpdatedAt ?? "")}</p>
         </Flex>
         <Flex className="stats-row" justify="between" flexGrow="1">
           <Flex className="label" align="center" gap="2">
-            <FontAwesomeIcon size="xl" width="22" icon={faRotate} />
+            <Icon icon="rotate" size="lg" />
             <p>Last Synced At</p>
           </Flex>
           <p className="value">{getLongDateString(deck.updatedAt ?? "")}</p>

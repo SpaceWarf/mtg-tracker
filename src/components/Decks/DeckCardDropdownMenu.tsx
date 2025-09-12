@@ -1,13 +1,3 @@
-import {
-  faCodeCommit,
-  faDice,
-  faEllipsisV,
-  faEye,
-  faPen,
-  faRotate,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DropdownMenu, IconButton } from "@radix-ui/themes";
 import { useContext } from "react";
 import { useNavigate } from "react-router";
@@ -16,6 +6,7 @@ import { ArchidektService } from "../../services/Archidekt";
 import { EdhRecService } from "../../services/EdhRec";
 import { DeckWithStats } from "../../state/Deck";
 import { GameSortFctKey } from "../../state/GameSortFctKey";
+import { Icon } from "../Common/Icon";
 
 type OwnProps = {
   deck: DeckWithStats;
@@ -60,7 +51,7 @@ export function DeckCardDropdownMenu({
       <DropdownMenu.Root>
         <DropdownMenu.Trigger disabled={syncing}>
           <IconButton variant="soft" color="gray">
-            <FontAwesomeIcon icon={faEllipsisV} />
+            <Icon icon="ellipsis-vertical" />
           </IconButton>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
@@ -70,11 +61,11 @@ export function DeckCardDropdownMenu({
               navigate(`/decks/${deck.id}`);
             }}
           >
-            <FontAwesomeIcon icon={faEye} />
+            <Icon icon="eye" />
             Open
           </DropdownMenu.Item>
           <DropdownMenu.Item className="mb-1" onClick={handleSearchGames}>
-            <FontAwesomeIcon icon={faDice} />
+            <Icon icon="dice" />
             View All Games
           </DropdownMenu.Item>
           {deck.externalId && (
@@ -107,26 +98,26 @@ export function DeckCardDropdownMenu({
           )}
           {editable && (
             <DropdownMenu.Item className="mb-1" onClick={onEdit}>
-              <FontAwesomeIcon icon={faPen} />
+              <Icon icon="pen" />
               Edit
             </DropdownMenu.Item>
           )}
           {editable && (
             <DropdownMenu.Item className="mb-1" onClick={onSync}>
-              <FontAwesomeIcon icon={faRotate} />
+              <Icon icon="rotate" />
               Sync
             </DropdownMenu.Item>
           )}
           {editable && deck.versions && deck.versions.length > 0 && (
             <DropdownMenu.Item className="mb-1" onClick={onVersionManager}>
-              <FontAwesomeIcon icon={faCodeCommit} />
+              <Icon icon="code-commit" />
               Manage versions
             </DropdownMenu.Item>
           )}
           {editable && <DropdownMenu.Separator />}
           {editable && (
             <DropdownMenu.Item color="red" onClick={onDelete}>
-              <FontAwesomeIcon icon={faTrash} />
+              <Icon icon="trash" />
               Delete
             </DropdownMenu.Item>
           )}

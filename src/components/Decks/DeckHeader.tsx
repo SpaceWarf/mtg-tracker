@@ -1,5 +1,3 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { Avatar, Flex, Text, Tooltip } from "@radix-ui/themes";
 import { useMemo } from "react";
@@ -7,6 +5,7 @@ import { Bracket } from "../../state/Bracket";
 import { DeckWithStats } from "../../state/Deck";
 import { getBracket, getBracketDetails } from "../../utils/Bracket";
 import { getDeckDescriptorString } from "../../utils/Deck";
+import { Icon } from "../Common/Icon";
 import { ManaIcon } from "../Icons/ManaIcon";
 
 interface OwnProps {
@@ -23,7 +22,7 @@ export function DeckHeader({ deck, size = "large" }: OwnProps) {
     <Flex gap="2" align="center">
       <Avatar
         src={deck.featured}
-        fallback={<FontAwesomeIcon icon={faUser} />}
+        fallback={<Icon icon="user" />}
         radius="full"
         size={size === "large" ? "6" : "5"}
       />

@@ -1,13 +1,7 @@
-import {
-  faCrown,
-  faDice,
-  faDiceSix,
-  faRing,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Flex, Grid } from "@radix-ui/themes";
 import { PlayerWithStats } from "../../state/Player";
 import { DataCard } from "../Common/DataCard";
+import { Icon } from "../Common/Icon";
 import { SimplePieChart } from "../Common/SimplePieChart";
 import { PlayerGamesLineChart } from "./PlayerGamesLineChart";
 
@@ -21,11 +15,7 @@ export function PlayerStatsSection({ player }: OwnProps) {
       gap="5"
       columns={{ initial: "1", xs: "2", sm: "1", md: "2", lg: "3" }}
     >
-      <DataCard
-        title="Win Rate"
-        icon={<FontAwesomeIcon icon={faCrown} />}
-        align="center"
-      >
+      <DataCard title="Win Rate" icon={<Icon icon="crown" />} align="center">
         <Flex align="center" justify="center">
           <SimplePieChart
             value={player.winRate}
@@ -41,7 +31,7 @@ export function PlayerStatsSection({ player }: OwnProps) {
       </DataCard>
       <DataCard
         title="Start Rate"
-        icon={<FontAwesomeIcon icon={faDiceSix} />}
+        icon={<Icon icon="dice-six" />}
         align="center"
       >
         <Flex align="center" justify="center">
@@ -59,7 +49,7 @@ export function PlayerStatsSection({ player }: OwnProps) {
       </DataCard>
       <DataCard
         title="T1 Sol Ring Rate"
-        icon={<FontAwesomeIcon icon={faRing} />}
+        icon={<Icon icon="ring" />}
         align="center"
       >
         <Flex align="center" justify="center">
@@ -84,11 +74,7 @@ export function PlayerStatsSection({ player }: OwnProps) {
           lg: "span 3",
         }}
       >
-        <DataCard
-          title="Games"
-          icon={<FontAwesomeIcon icon={faDice} />}
-          align="center"
-        >
+        <DataCard title="Games" icon={<Icon icon="dice" />} align="center">
           <Flex align="center" justify="center">
             <PlayerGamesLineChart player={player} />
           </Flex>

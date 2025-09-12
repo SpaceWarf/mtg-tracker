@@ -1,5 +1,3 @@
-import { faFilter, faUsers } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Box, Grid, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
@@ -13,6 +11,7 @@ import { PlayerSortFctKey } from "../../state/PlayerSortFctKey";
 import { PLAYER_SORT_FCTS } from "../../state/PlayerSortFcts";
 import { SortFctType } from "../../state/SortFctType";
 import { DataCard } from "../Common/DataCard";
+import { Icon } from "../Common/Icon";
 import { NoResults } from "../Common/NoResults";
 import { SortFctSelect } from "../Common/Select/SortFctSelect";
 import { PlayerCreateModal } from "./PlayerCreateModal";
@@ -97,18 +96,14 @@ export function PlayersViewer() {
   return (
     <div className="p-5 w-full max-w-[1950px]">
       <Grid columns="1" gap="5">
-        <DataCard
-          title="Players"
-          icon={<FontAwesomeIcon icon={faUsers} />}
-          direction="row"
-        >
+        <DataCard title="Players" icon={<Icon icon="users" />} direction="row">
           <Grid width="125px" gap="3" columns="1">
             {auth.user && <PlayerCreateModal />}
           </Grid>
         </DataCard>
         <DataCard
           title="Filters"
-          icon={<FontAwesomeIcon icon={faFilter} />}
+          icon={<Icon icon="filter" />}
           collapsable
           defaultCollapsed={!hasFiltersApplied}
         >

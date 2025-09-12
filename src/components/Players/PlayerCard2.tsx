@@ -1,9 +1,8 @@
-import { faCrown, faDice } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Flex, Grid, Tooltip } from "@radix-ui/themes";
 import { useNavigate } from "react-router";
 import "../../assets/styles/PlayerCard.scss";
 import { PlayerWithStats } from "../../state/Player";
+import { Icon } from "../Common/Icon";
 import { SimplePieChart } from "../Common/SimplePieChart";
 import { PlayerHeader2 } from "./PlayerHeader2";
 
@@ -37,13 +36,13 @@ export function PlayerCard2({ player, editable, showActions }: OwnProps) {
             <Grid columns="2" gapX="4">
               <Tooltip content="Games Played">
                 <Flex className="stat-container" gap="2">
-                  <FontAwesomeIcon size="xl" icon={faDice} />
+                  <Icon size="lg" icon="dice" />
                   <p>{player.gamesPlayed}</p>
                 </Flex>
               </Tooltip>
               <Tooltip content="Games Won">
                 <Flex className="stat-container" gap="2">
-                  <FontAwesomeIcon size="xl" icon={faCrown} />
+                  <Icon size="lg" icon="crown" />
                   <p>{player.winCount}</p>
                 </Flex>
               </Tooltip>

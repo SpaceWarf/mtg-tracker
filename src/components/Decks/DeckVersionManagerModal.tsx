@@ -1,6 +1,3 @@
-import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Cross2Icon, TextAlignMiddleIcon } from "@radix-ui/react-icons";
 import { Button, Dialog, Flex, Heading, Text } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
@@ -13,6 +10,7 @@ import { CardSortFctKey } from "../../state/CardSortFctKey";
 import { DbDeck } from "../../state/Deck";
 import { DeckVersion } from "../../state/DeckVersion";
 import { mergeVersions, populateDeck } from "../../utils/Deck";
+import { Icon } from "../Common/Icon";
 import { VersionSelect } from "../Common/Select/VersionSelect";
 import { DeckHeader } from "./DeckHeader";
 import { DeckVersionViewer } from "./DeckVersionViewer";
@@ -204,7 +202,7 @@ export function DeckVersionManagerModal({ open, deck, onClose }: OwnProps) {
                   onClick={handlePreviewMerge}
                   disabled={!canMerge || merging || !!previewVersions}
                 >
-                  <FontAwesomeIcon icon={faEye} />
+                  <Icon icon="eye" />
                   Preview Merge
                 </Button>
                 {previewVersions && (
@@ -215,7 +213,7 @@ export function DeckVersionManagerModal({ open, deck, onClose }: OwnProps) {
                       disabled={merging}
                       loading={merging}
                     >
-                      <TextAlignMiddleIcon />
+                      <Icon icon="code-pull-request" />
                       Confirm Merge
                     </Button>
                     <Button
@@ -224,7 +222,7 @@ export function DeckVersionManagerModal({ open, deck, onClose }: OwnProps) {
                       onClick={handleCancelMerge}
                       disabled={merging}
                     >
-                      <Cross2Icon />
+                      <Icon icon="xmark" />
                       Cancel
                     </Button>
                   </Flex>

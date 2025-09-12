@@ -1,9 +1,8 @@
-import { faEllipsisV, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, DropdownMenu, Flex, Grid, IconButton } from "@radix-ui/themes";
 import { useState } from "react";
 import "../../assets/styles/GameCard.scss";
 import { DbGame } from "../../state/Game";
+import { Icon } from "../Common/Icon";
 import { GameDeleteModal } from "./GameDeleteModal";
 import { GameEditModal } from "./GameEditModal";
 import { GamePlayerPreview } from "./GamePlayerPreview";
@@ -49,7 +48,7 @@ export function GameCard2({ game, index, editable }: OwnProps) {
                 <DropdownMenu.Root>
                   <DropdownMenu.Trigger>
                     <IconButton variant="soft" color="gray">
-                      <FontAwesomeIcon icon={faEllipsisV} />
+                      <Icon icon="ellipsis-v" />
                     </IconButton>
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Content>
@@ -57,7 +56,7 @@ export function GameCard2({ game, index, editable }: OwnProps) {
                       className="mb-1"
                       onClick={() => setEditModalOpen(true)}
                     >
-                      <FontAwesomeIcon icon={faPen} />
+                      <Icon icon="pen" />
                       Edit
                     </DropdownMenu.Item>
                     <DropdownMenu.Separator />
@@ -65,7 +64,7 @@ export function GameCard2({ game, index, editable }: OwnProps) {
                       color="red"
                       onClick={() => setDeleteModalOpen(true)}
                     >
-                      <FontAwesomeIcon icon={faTrash} />
+                      <Icon icon="trash" />
                       Delete
                     </DropdownMenu.Item>
                   </DropdownMenu.Content>

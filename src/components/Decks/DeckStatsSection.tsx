@@ -1,8 +1,7 @@
-import { faCrown, faDice } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Flex, Grid } from "@radix-ui/themes";
 import { DeckWithStats } from "../../state/Deck";
 import { DataCard } from "../Common/DataCard";
+import { Icon } from "../Common/Icon";
 import { SimplePieChart } from "../Common/SimplePieChart";
 import { DeckGamesLineChart } from "./DeckGamesLineChart";
 
@@ -14,11 +13,7 @@ export function DeckStatsSection({ deck }: OwnProps) {
   return (
     <Grid gap="5" columns={{ initial: "1", lg: "3", xl: "4" }}>
       <Box gridColumn="span 1">
-        <DataCard
-          title="Win Rate"
-          icon={<FontAwesomeIcon icon={faCrown} />}
-          align="center"
-        >
+        <DataCard title="Win Rate" icon={<Icon icon="crown" />} align="center">
           <Flex align="center" justify="center">
             <SimplePieChart
               value={deck.winRate}
@@ -40,7 +35,7 @@ export function DeckStatsSection({ deck }: OwnProps) {
           xl: "span 3",
         }}
       >
-        <DataCard title="Games" icon={<FontAwesomeIcon icon={faDice} />}>
+        <DataCard title="Games" icon={<Icon icon="dice" />}>
           <Flex align="center" justify="center">
             <DeckGamesLineChart deck={deck} />
           </Flex>

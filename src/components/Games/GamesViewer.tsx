@@ -1,5 +1,3 @@
-import { faDice, faFilter } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Grid, Heading, Spinner } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
@@ -22,6 +20,7 @@ import {
   gameHasSomePlayers,
 } from "../../utils/Game";
 import { DataCard } from "../Common/DataCard";
+import { Icon } from "../Common/Icon";
 import { NoResults } from "../Common/NoResults";
 import { DeckSelect } from "../Common/Select/DeckSelect";
 import { PlayerSelect } from "../Common/Select/PlayerSelect";
@@ -251,18 +250,14 @@ export function GamesViewer() {
   return (
     <div className="p-5 w-full max-w-[1950px]">
       <Grid columns="1" gap="5">
-        <DataCard
-          title="Games"
-          icon={<FontAwesomeIcon icon={faDice} />}
-          direction="row"
-        >
+        <DataCard title="Games" icon={<Icon icon="dice" />} direction="row">
           <Grid width="125px" gap="3" columns="1">
             {auth.user && <GameCreateModal />}
           </Grid>
         </DataCard>
         <DataCard
           title="Filters"
-          icon={<FontAwesomeIcon icon={faFilter} />}
+          icon={<Icon icon="filter" />}
           collapsable
           defaultCollapsed={!hasFiltersApplied}
         >

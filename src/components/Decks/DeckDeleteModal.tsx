@@ -1,10 +1,9 @@
-import { faTrash, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, Flex, Text } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { DeckService } from "../../services/Deck";
 import { DeckWithStats } from "../../state/Deck";
+import { Icon } from "../Common/Icon";
 import { DeckCard2 } from "./DeckCard2";
 
 type OwnProps = {
@@ -46,7 +45,7 @@ export function DeckDeleteModal({ open, deck, onClose }: OwnProps) {
         <Flex gap="3" justify="between">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <FontAwesomeIcon icon={faXmark} />
+              <Icon icon="xmark" />
               Cancel
             </Button>
           </Dialog.Close>
@@ -57,7 +56,7 @@ export function DeckDeleteModal({ open, deck, onClose }: OwnProps) {
             onClick={handleDelete}
             className="h-10"
           >
-            <FontAwesomeIcon icon={faTrash} />
+            <Icon icon="trash" />
             Delete Forever
           </Button>
         </Flex>

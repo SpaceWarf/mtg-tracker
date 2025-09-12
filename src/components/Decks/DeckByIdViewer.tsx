@@ -1,21 +1,4 @@
 import {
-  faBomb,
-  faCodeCommit,
-  faDice,
-  faForward,
-  faFrown,
-  faGem,
-  faLayerGroup,
-  faLeftLong,
-  faPen,
-  faRotate,
-  faSmile,
-  faTableList,
-  faTrash,
-  faUsers,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
   Box,
   Button,
   Flex,
@@ -56,6 +39,7 @@ import { CardList } from "../Cards/CardList";
 import { CardListFilters } from "../Cards/CardListFilters";
 import { CommanderPreview } from "../Common/CommanderPreview";
 import { DataCard } from "../Common/DataCard";
+import { Icon } from "../Common/Icon";
 import { PlayerPreview } from "../Players/PlayerPreview";
 import { DeckCardPreviewSection } from "./DeckCardPreviewSection";
 import { DeckCombosSection } from "./DeckCombosSection";
@@ -274,7 +258,7 @@ export function DeckByIdViewer() {
                       size="3"
                       disabled={syncing}
                     >
-                      <FontAwesomeIcon icon={faLeftLong} />
+                      <Icon icon="left-long" />
                       Back
                     </Button>
                   </Link>
@@ -318,7 +302,7 @@ export function DeckByIdViewer() {
                       disabled={syncing}
                       onClick={handleSearchGames}
                     >
-                      <FontAwesomeIcon icon={faDice} />
+                      <Icon icon="dice" />
                     </IconButton>
                   </Tooltip>
                   {populatedDeck.externalId && (
@@ -364,7 +348,7 @@ export function DeckByIdViewer() {
                         disabled={syncing}
                         onClick={handleEdit}
                       >
-                        <FontAwesomeIcon icon={faPen} />
+                        <Icon icon="pen" />
                       </IconButton>
                     </Tooltip>
                   )}
@@ -378,7 +362,7 @@ export function DeckByIdViewer() {
                         loading={syncing}
                         onClick={handleSync}
                       >
-                        <FontAwesomeIcon icon={faRotate} />
+                        <Icon icon="rotate" />
                       </IconButton>
                     </Tooltip>
                   )}
@@ -391,7 +375,7 @@ export function DeckByIdViewer() {
                         disabled={syncing}
                         onClick={handleDelete}
                       >
-                        <FontAwesomeIcon icon={faTrash} />
+                        <Icon icon="trash" />
                       </IconButton>
                     </Tooltip>
                   )}
@@ -407,7 +391,7 @@ export function DeckByIdViewer() {
                       size={{ initial: "2", xs: "3" }}
                       disabled={syncing}
                     >
-                      <FontAwesomeIcon icon={faLeftLong} />
+                      <Icon icon="left-long" />
                       Back
                     </Button>
                   </Link>
@@ -426,7 +410,7 @@ export function DeckByIdViewer() {
                       disabled={syncing}
                       onClick={handleSearchGames}
                     >
-                      <FontAwesomeIcon icon={faDice} />
+                      <Icon icon="cards-blank" />
                     </IconButton>
                   </Tooltip>
                   {populatedDeck.externalId && (
@@ -472,7 +456,7 @@ export function DeckByIdViewer() {
                         disabled={syncing}
                         onClick={handleEdit}
                       >
-                        <FontAwesomeIcon icon={faPen} />
+                        <Icon icon="pen" />
                       </IconButton>
                     </Tooltip>
                   )}
@@ -486,7 +470,7 @@ export function DeckByIdViewer() {
                         loading={syncing}
                         onClick={handleSync}
                       >
-                        <FontAwesomeIcon icon={faRotate} />
+                        <Icon icon="rotate" />
                       </IconButton>
                     </Tooltip>
                   )}
@@ -499,7 +483,7 @@ export function DeckByIdViewer() {
                         disabled={syncing}
                         onClick={handleDelete}
                       >
-                        <FontAwesomeIcon icon={faTrash} />
+                        <Icon icon="trash" />
                       </IconButton>
                     </Tooltip>
                   )}
@@ -552,7 +536,7 @@ export function DeckByIdViewer() {
                     populatedDeck.versions.length > 0 && (
                       <DataCard
                         title="Versions"
-                        icon={<FontAwesomeIcon icon={faCodeCommit} />}
+                        icon={<Icon icon="code-commit" />}
                         collapsable
                         defaultCollapsed
                       >
@@ -569,7 +553,7 @@ export function DeckByIdViewer() {
                   {populatedDeck.cards && populatedDeck.cards.length > 0 && (
                     <DataCard
                       title="Decklist"
-                      icon={<FontAwesomeIcon icon={faTableList} />}
+                      icon={<Icon icon="table-list" />}
                     >
                       <CardListFilters
                         hasVersions={(populatedDeck.versions?.length ?? 0) > 0}
@@ -603,7 +587,7 @@ export function DeckByIdViewer() {
                       {populatedDeck.gameChangers.length > 0 && (
                         <DeckCardPreviewSection
                           title={`Game Changers (${populatedDeck.gameChangers.length})`}
-                          icon={<FontAwesomeIcon icon={faGem} />}
+                          icon={<Icon icon="gem" />}
                           cards={populatedDeck.gameChangers}
                           error={
                             populatedDeck.gameChangers.length >
@@ -614,7 +598,7 @@ export function DeckByIdViewer() {
                       {populatedDeck.tutors.length > 0 && (
                         <DeckCardPreviewSection
                           title={`Tutors (${populatedDeck.tutors.length})`}
-                          icon={<FontAwesomeIcon icon={faLayerGroup} />}
+                          icon={<Icon icon="magnifying-glass-plus" />}
                           cards={populatedDeck.tutors}
                           error={populatedDeck.tutors.length > TUTOR_LIMIT}
                         />
@@ -622,7 +606,7 @@ export function DeckByIdViewer() {
                       {populatedDeck.extraTurns.length > 0 && (
                         <DeckCardPreviewSection
                           title={`Extra Turns (${populatedDeck.extraTurns.length})`}
-                          icon={<FontAwesomeIcon icon={faForward} />}
+                          icon={<Icon icon="forward" />}
                           cards={populatedDeck.extraTurns}
                           error={
                             populatedDeck.extraTurns.length > EXTRA_TURN_LIMIT
@@ -632,7 +616,7 @@ export function DeckByIdViewer() {
                       {populatedDeck.massLandDenials.length > 0 && (
                         <DeckCardPreviewSection
                           title={`Mass Land Denials (${populatedDeck.massLandDenials.length})`}
-                          icon={<FontAwesomeIcon icon={faBomb} />}
+                          icon={<Icon icon="bomb" />}
                           cards={populatedDeck.massLandDenials}
                           error={
                             populatedDeck.massLandDenials.length >
@@ -648,7 +632,7 @@ export function DeckByIdViewer() {
                   {goodMatchups.length > 0 && (
                     <DataCard
                       title="Good Matchups"
-                      icon={<FontAwesomeIcon icon={faSmile} />}
+                      icon={<Icon icon="smile" />}
                     >
                       <Flex justify="center">
                         <Grid
@@ -675,10 +659,7 @@ export function DeckByIdViewer() {
                     </DataCard>
                   )}
                   {badMatchups.length > 0 && (
-                    <DataCard
-                      title="Bad Matchups"
-                      icon={<FontAwesomeIcon icon={faFrown} />}
-                    >
+                    <DataCard title="Bad Matchups" icon={<Icon icon="frown" />}>
                       <Flex justify="center">
                         <Grid
                           gap="5"
@@ -704,7 +685,7 @@ export function DeckByIdViewer() {
                   {Object.keys(populatedDeck.playerStats).length > 0 && (
                     <DataCard
                       title="Most Played By"
-                      icon={<FontAwesomeIcon icon={faUsers} />}
+                      icon={<Icon icon="users" />}
                     >
                       <Flex justify="center">
                         <Grid

@@ -1,6 +1,4 @@
 import "@assets/styles/Rewind.scss";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar, Flex, Heading } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { DbDeck } from "../../state/Deck";
@@ -12,6 +10,7 @@ import {
   getPlayerWinCount,
   getPlayerWinRate,
 } from "../../utils/Player";
+import { Icon } from "../Common/Icon";
 
 type RewindPage3OwnProps = {
   viewer: DbPlayer;
@@ -119,7 +118,7 @@ function WinRateRanking({
       <Avatar
         className="mt-1 w-28 h-28"
         src={`/img/pfp/${player?.id}.webp`}
-        fallback={<FontAwesomeIcon icon={faUser} />}
+        fallback={<Icon icon="user" />}
         radius="none"
       />
       <Flex direction="column">

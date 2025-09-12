@@ -1,15 +1,4 @@
 import "@assets/styles/Header.scss";
-import {
-  faBars,
-  faCheck,
-  faDice,
-  faGem,
-  faLayerGroup,
-  faScaleUnbalanced,
-  faUser,
-  faUsers,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import {
   DropdownMenu,
@@ -24,6 +13,7 @@ import { Link, useLocation, useSearchParams } from "react-router";
 import { DataContext } from "../contexts/DataContext";
 import { useWindowDimensions } from "../hooks/useWindowDimensions";
 import { Year } from "../state/Year";
+import { Icon } from "./Common/Icon";
 import { LoginModal } from "./LoginModal";
 
 export function Header() {
@@ -52,44 +42,44 @@ export function Header() {
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <IconButton variant="soft">
-                <FontAwesomeIcon icon={faBars} />
+                <Icon icon="bars" />
               </IconButton>
             </DropdownMenu.Trigger>
 
             <DropdownMenu.Content>
               <Link to="/">
                 <DropdownMenu.Item className="mb-1">
-                  <FontAwesomeIcon className="mr-2" icon={faDice} />
+                  <Icon icon="dice" />
                   Games
                 </DropdownMenu.Item>
               </Link>
               <Link to="/players">
                 <DropdownMenu.Item className="mb-1">
-                  <FontAwesomeIcon className="mr-2" icon={faUser} />
+                  <Icon icon="users" />
                   Players
                 </DropdownMenu.Item>
               </Link>
               <Link to="/decks">
                 <DropdownMenu.Item className="mb-1">
-                  <FontAwesomeIcon className="mr-2" icon={faLayerGroup} />
+                  <Icon icon="cards-blank" />
                   Decks
                 </DropdownMenu.Item>
               </Link>
               <Link to="/game-changers">
                 <DropdownMenu.Item className="mb-1">
-                  <FontAwesomeIcon className="mr-2" icon={faGem} />
+                  <Icon icon="gem" />
                   Game Changers
                 </DropdownMenu.Item>
               </Link>
               <Link to="/brackets">
                 <DropdownMenu.Item className="mb-1">
-                  <FontAwesomeIcon className="mr-2" icon={faScaleUnbalanced} />
+                  <Icon icon="brackets" />
                   Brackets
                 </DropdownMenu.Item>
               </Link>
               <Link to="/deck-validator">
                 <DropdownMenu.Item className="mb-1">
-                  <FontAwesomeIcon className="mr-2" icon={faCheck} />
+                  <Icon icon="check" />
                   Deck Validator
                 </DropdownMenu.Item>
               </Link>
@@ -161,19 +151,19 @@ export function Header() {
         <TabNav.Root>
           <TabNav.Link asChild active={location.pathname === "/"}>
             <Link to="/">
-              <FontAwesomeIcon className="mr-2" icon={faDice} />
+              <Icon className="mr-1" icon="dice" />
               Games
             </Link>
           </TabNav.Link>
           <TabNav.Link asChild active={location.pathname.includes("/players")}>
             <Link to="/players">
-              <FontAwesomeIcon className="mr-2" icon={faUsers} />
+              <Icon className="mr-1" icon="users" />
               Players
             </Link>
           </TabNav.Link>
           <TabNav.Link asChild active={location.pathname.includes("/decks")}>
             <Link to="/decks">
-              <FontAwesomeIcon className="mr-2" icon={faLayerGroup} />
+              <Icon className="mr-1" icon="cards-blank" />
               Decks
             </Link>
           </TabNav.Link>
@@ -182,13 +172,13 @@ export function Header() {
             active={location.pathname.includes("/game-changers")}
           >
             <Link to="/game-changers">
-              <FontAwesomeIcon className="mr-2" icon={faGem} />
+              <Icon className="mr-1" icon="gem" />
               Game Changers
             </Link>
           </TabNav.Link>
           <TabNav.Link asChild active={location.pathname === "/brackets"}>
             <Link to="/brackets">
-              <FontAwesomeIcon className="mr-2" icon={faScaleUnbalanced} />
+              <Icon className="mr-1" icon="brackets" />
               Brackets
             </Link>
           </TabNav.Link>
@@ -197,7 +187,7 @@ export function Header() {
             active={location.pathname.includes("/deck-validator")}
           >
             <Link to="/deck-validator">
-              <FontAwesomeIcon className="mr-2" icon={faCheck} />
+              <Icon className="mr-1" icon="check" />
               Deck Validator
             </Link>
           </TabNav.Link>

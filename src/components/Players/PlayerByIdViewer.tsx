@@ -1,14 +1,4 @@
 import {
-  faDice,
-  faHeart,
-  faLayerGroup,
-  faLeftLong,
-  faPen,
-  faStar,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
   Box,
   Button,
   Flex,
@@ -32,6 +22,7 @@ import { IdentityLabel } from "../../state/IdentityLabel";
 import { populatePlayer } from "../../utils/Player";
 import { CommanderPreview } from "../Common/CommanderPreview";
 import { DataCard } from "../Common/DataCard";
+import { Icon } from "../Common/Icon";
 import { PlayerDeleteModal } from "./PlayerDeleteModal";
 import { PlayerEditModal } from "./PlayerEditModal";
 import { PlayerShowcase } from "./PlayerShowcase";
@@ -137,7 +128,7 @@ export function PlayerByIdViewer() {
               <Flex gap="3">
                 <Link to="/players">
                   <Button variant="soft" color="gray" size="3">
-                    <FontAwesomeIcon icon={faLeftLong} />
+                    <Icon icon="left-long" />
                     Back
                   </Button>
                 </Link>
@@ -151,7 +142,7 @@ export function PlayerByIdViewer() {
                     size="3"
                     onClick={handleSearchGames}
                   >
-                    <FontAwesomeIcon icon={faDice} />
+                    <Icon icon="dice" />
                   </IconButton>
                 </Tooltip>
                 <Tooltip content="View All Decks">
@@ -161,7 +152,7 @@ export function PlayerByIdViewer() {
                     size="3"
                     onClick={handleSearchDecks}
                   >
-                    <FontAwesomeIcon icon={faLayerGroup} />
+                    <Icon icon="layer-group" />
                   </IconButton>
                 </Tooltip>
                 {populatedPlayer.externalId && (
@@ -188,7 +179,7 @@ export function PlayerByIdViewer() {
                       size="3"
                       onClick={handleEdit}
                     >
-                      <FontAwesomeIcon icon={faPen} />
+                      <Icon icon="pen" />
                     </IconButton>
                   </Tooltip>
                 )}
@@ -200,7 +191,7 @@ export function PlayerByIdViewer() {
                       size="3"
                       onClick={handleDelete}
                     >
-                      <FontAwesomeIcon icon={faTrash} />
+                      <Icon icon="trash" />
                     </IconButton>
                   </Tooltip>
                 )}
@@ -224,7 +215,7 @@ export function PlayerByIdViewer() {
               {populatedPlayer.deckPlayedMap.size > 0 && (
                 <DataCard
                   title="Most Played Decks"
-                  icon={<FontAwesomeIcon icon={faHeart} />}
+                  icon={<Icon icon="heart" />}
                 >
                   <Flex justify="center">
                     <Grid
@@ -258,10 +249,7 @@ export function PlayerByIdViewer() {
                 </DataCard>
               )}
               {populatedPlayer.deckStatsMap.size > 0 && (
-                <DataCard
-                  title="Best Decks"
-                  icon={<FontAwesomeIcon icon={faStar} />}
-                >
+                <DataCard title="Best Decks" icon={<Icon icon="star" />}>
                   <Flex justify="center">
                     <Grid
                       gap="5"

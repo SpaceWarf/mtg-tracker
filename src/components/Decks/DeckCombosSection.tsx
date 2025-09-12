@@ -1,5 +1,3 @@
-import { faInfinity } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex, Grid } from "@radix-ui/themes";
 import { useMemo } from "react";
 import "../../assets/styles/DeckCombosSections.scss";
@@ -7,6 +5,7 @@ import { DeckWithStats } from "../../state/Deck";
 import { TWO_CARD_COMBO_LIMIT } from "../../utils/Bracket";
 import { ComboPreview } from "../Cards/ComboPreview";
 import { DataCard } from "../Common/DataCard";
+import { Icon } from "../Common/Icon";
 
 type OwnProps = {
   deck: DeckWithStats;
@@ -34,7 +33,7 @@ export function DeckCombosSection({ deck }: OwnProps) {
     <DataCard
       className="deck-combos-card"
       title={`Combos (${deck.combos.length})`}
-      icon={<FontAwesomeIcon icon={faInfinity} />}
+      icon={<Icon icon="infinity" />}
       direction="column"
       error={early2CardCombos.length > TWO_CARD_COMBO_LIMIT}
     >

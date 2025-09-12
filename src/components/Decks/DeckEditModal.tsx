@@ -1,5 +1,3 @@
-import { faCheck, faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import {
   Button,
@@ -21,6 +19,7 @@ import { DbDeck } from "../../state/Deck";
 import { DeckDetails } from "../../state/DeckDetails";
 import { getDeckCommandersString } from "../../utils/Deck";
 import { getPlayerByExternalId } from "../../utils/Player";
+import { Icon } from "../Common/Icon";
 import { BracketSelect } from "../Common/Select/BracketSelect";
 import { PlayerSelect } from "../Common/Select/PlayerSelect";
 
@@ -137,7 +136,7 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
             disabled={!externalId || autofilling}
             loading={autofilling}
           >
-            <FontAwesomeIcon icon={faPen} />
+            <Icon icon="pen" />
             Autofill Details
           </Button>
         </Flex>
@@ -199,13 +198,13 @@ export function DeckEditModal({ open, deck, onClose }: OwnProps) {
         <Flex gap="3" mt="4" mb="2" justify="between">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <FontAwesomeIcon icon={faXmark} />
+              <Icon icon="xmark" />
               Cancel
             </Button>
           </Dialog.Close>
           <Dialog.Close disabled={!canSave()} onClick={handleSave}>
             <Button className="h-10">
-              <FontAwesomeIcon icon={faCheck} />
+              <Icon icon="check" />
               Save
             </Button>
           </Dialog.Close>

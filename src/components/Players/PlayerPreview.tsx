@@ -1,9 +1,8 @@
-import { faCrown, faDice, faPercent } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex, Tooltip } from "@radix-ui/themes";
 import { useMemo } from "react";
 import "../../assets/styles/PlayerPreview.scss";
 import { usePlayers } from "../../hooks/usePlayers";
+import { Icon } from "../Common/Icon";
 
 type OwnProps = {
   player: string;
@@ -48,7 +47,7 @@ export function PlayerPreview({ player, won, lost, good }: OwnProps) {
                 width="50%"
                 height="50px"
               >
-                <FontAwesomeIcon icon={faDice} />
+                <Icon icon="dice" />
                 <p>{won + lost}</p>
               </Flex>
             </Tooltip>
@@ -60,10 +59,7 @@ export function PlayerPreview({ player, won, lost, good }: OwnProps) {
                 width="50%"
                 height="50px"
               >
-                <FontAwesomeIcon
-                  icon={faCrown}
-                  color={good ? "#5abe8c" : "#d84242"}
-                />
+                <Icon icon="crown" color={good ? "#5abe8c" : "#d84242"} />
                 <p>{good ? won : lost}</p>
               </Flex>
             </Tooltip>
@@ -75,7 +71,7 @@ export function PlayerPreview({ player, won, lost, good }: OwnProps) {
                 width="50%"
                 height="50px"
               >
-                <FontAwesomeIcon icon={faPercent} />
+                <Icon icon="percent" type="regular" />
                 <p>{winRate.toFixed(0)}%</p>
               </Flex>
             </Tooltip>

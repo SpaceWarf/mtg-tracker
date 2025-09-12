@@ -1,14 +1,4 @@
 import {
-  faBomb,
-  faCheck,
-  faCheckCircle,
-  faExclamationTriangle,
-  faForward,
-  faGem,
-  faLayerGroup,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
   Box,
   Button,
   Callout,
@@ -31,6 +21,7 @@ import {
 } from "../../utils/Bracket";
 import { populateDeckDetails } from "../../utils/Deck";
 import { DataCard } from "../Common/DataCard";
+import { Icon } from "../Common/Icon";
 import { DeckCardPreviewSection } from "../Decks/DeckCardPreviewSection";
 import { DeckShowcase } from "../Decks/DeckShowcase";
 
@@ -94,7 +85,7 @@ export function DeckValidatorViewer() {
       <Grid columns="1" gap="5">
         <DataCard
           title="Deck Validator"
-          icon={<FontAwesomeIcon icon={faCheck} />}
+          icon={<Icon icon="check" />}
           direction="row"
         />
         <Flex className="data-card" align="center" justify="start" gap="5">
@@ -117,14 +108,14 @@ export function DeckValidatorViewer() {
               disabled={!externalId || loading}
               loading={loading}
             >
-              <FontAwesomeIcon icon={faCheckCircle} />
+              <Icon icon="check-circle" />
               Validate
             </Button>
           </Box>
           {error && (
             <Callout.Root color="red" className="mt-6">
               <Callout.Icon>
-                <FontAwesomeIcon icon={faExclamationTriangle} />
+                <Icon icon="exclamation-triangle" />
               </Callout.Icon>
               <Callout.Text>{error}</Callout.Text>
             </Callout.Root>
@@ -152,7 +143,7 @@ export function DeckValidatorViewer() {
                     {populatedDeck.gameChangers.length > 0 && (
                       <DeckCardPreviewSection
                         title={`Game Changers (${populatedDeck.gameChangers.length})`}
-                        icon={<FontAwesomeIcon icon={faGem} />}
+                        icon={<Icon icon="gem" />}
                         cards={populatedDeck.gameChangers}
                         error={
                           populatedDeck.gameChangers.length > GAME_CHANGER_LIMIT
@@ -162,7 +153,7 @@ export function DeckValidatorViewer() {
                     {populatedDeck.tutors.length > 0 && (
                       <DeckCardPreviewSection
                         title={`Tutors (${populatedDeck.tutors.length})`}
-                        icon={<FontAwesomeIcon icon={faLayerGroup} />}
+                        icon={<Icon icon="magnifying-glass-plus" />}
                         cards={populatedDeck.tutors}
                         error={populatedDeck.tutors.length > TUTOR_LIMIT}
                       />
@@ -170,7 +161,7 @@ export function DeckValidatorViewer() {
                     {populatedDeck.extraTurns.length > 0 && (
                       <DeckCardPreviewSection
                         title={`Extra Turns (${populatedDeck.extraTurns.length})`}
-                        icon={<FontAwesomeIcon icon={faForward} />}
+                        icon={<Icon icon="forward" />}
                         cards={populatedDeck.extraTurns}
                         error={
                           populatedDeck.extraTurns.length > EXTRA_TURN_LIMIT
@@ -180,7 +171,7 @@ export function DeckValidatorViewer() {
                     {populatedDeck.massLandDenials.length > 0 && (
                       <DeckCardPreviewSection
                         title={`Mass Land Denials (${populatedDeck.massLandDenials.length})`}
-                        icon={<FontAwesomeIcon icon={faBomb} />}
+                        icon={<Icon icon="bomb" />}
                         cards={populatedDeck.massLandDenials}
                         error={
                           populatedDeck.massLandDenials.length >

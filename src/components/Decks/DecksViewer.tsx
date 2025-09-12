@@ -1,5 +1,3 @@
-import { faFilter, faLayerGroup } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Box, Grid, Heading, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
@@ -17,6 +15,7 @@ import { SortFctType } from "../../state/SortFctType";
 import { getBracket } from "../../utils/Bracket";
 import { getColourIdentityLabel } from "../../utils/Deck";
 import { DataCard } from "../Common/DataCard";
+import { Icon } from "../Common/Icon";
 import { NoResults } from "../Common/NoResults";
 import { BracketSelect } from "../Common/Select/BracketSelect";
 import { IdentitySelect } from "../Common/Select/IdentitySelect";
@@ -183,7 +182,7 @@ export function DecksViewer() {
       <Grid columns="1" gap="5">
         <DataCard
           title="Decks"
-          icon={<FontAwesomeIcon icon={faLayerGroup} />}
+          icon={<Icon icon="cards-blank" />}
           direction="row"
         >
           {auth.user && (
@@ -195,7 +194,7 @@ export function DecksViewer() {
         </DataCard>
         <DataCard
           title="Filters"
-          icon={<FontAwesomeIcon icon={faFilter} />}
+          icon={<Icon icon="filter" />}
           collapsable
           defaultCollapsed={!hasFiltersApplied}
         >

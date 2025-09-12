@@ -1,11 +1,10 @@
-import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, Flex, Heading, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { PlayerService } from "../../services/Player";
 import { DbPlayer, PlayerWithStats } from "../../state/Player";
 import { getDbPlayerFromPlayerWithStats } from "../../utils/Player";
+import { Icon } from "../Common/Icon";
 
 type OwnProps = {
   open: boolean;
@@ -74,13 +73,13 @@ export function PlayerEditModal({ open, player, onClose }: OwnProps) {
         <Flex gap="3" mt="4" justify="between">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <FontAwesomeIcon icon={faXmark} />
+              <Icon icon="xmark" />
               Cancel
             </Button>
           </Dialog.Close>
           <Dialog.Close disabled={!canSave()} onClick={handleSave}>
             <Button className="h-10">
-              <FontAwesomeIcon icon={faCheck} />
+              <Icon icon="check" />
               Save
             </Button>
           </Dialog.Close>

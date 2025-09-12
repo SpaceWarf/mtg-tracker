@@ -1,7 +1,6 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar, Flex, Text } from "@radix-ui/themes";
 import { GamePlayer } from "../../state/Game";
+import { Icon } from "../Common/Icon";
 import { DeckDescriptor } from "../Decks/DeckDescriptor";
 import { GameStartIcon } from "../Icons/GameStartIcon";
 import { GameWonIcon } from "../Icons/GameWonIcon";
@@ -18,7 +17,7 @@ export function GamePlayerSection({ player }: OwnProps) {
         <Avatar
           className="mt-1"
           src={`/img/pfp/${player.player}.webp`}
-          fallback={<FontAwesomeIcon icon={faUser} />}
+          fallback={<Icon icon="user" />}
           radius="full"
         />
         <Flex direction="column">

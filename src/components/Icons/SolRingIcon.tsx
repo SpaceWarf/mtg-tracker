@@ -1,11 +1,10 @@
-import { faRing } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from "@radix-ui/themes";
+import { Icon } from "../Common/Icon";
 
 export function SolRingIcon() {
   return (
     <Tooltip content="Turn 1 Sol Ring">
-      <FontAwesomeIcon icon={faRing} />
+      <Icon icon="ring" />
     </Tooltip>
   );
 }

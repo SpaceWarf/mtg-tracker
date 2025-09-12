@@ -1,8 +1,7 @@
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex } from "@radix-ui/themes";
 import { useState } from "react";
 import "../../assets/styles/DataCard.scss";
+import { Icon } from "./Icon";
 
 type OwnProps = {
   className?: string;
@@ -54,9 +53,7 @@ export function DataCard({
             width="100%"
             onClick={handleCollapse}
           >
-            {collapsable && (
-              <FontAwesomeIcon icon={faChevronDown} width="15" height="15" />
-            )}
+            {collapsable && <Icon icon="chevron-down" size="xs" />}
             {icon}
             <p>{title}</p>
           </Flex>

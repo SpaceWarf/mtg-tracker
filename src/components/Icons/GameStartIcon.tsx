@@ -1,11 +1,10 @@
-import { faDiceSix } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from "@radix-ui/themes";
+import { Icon } from "../Common/Icon";
 
 export function GameStartIcon() {
   return (
     <Tooltip content="Started">
-      <FontAwesomeIcon icon={faDiceSix} />
+      <Icon icon="dice-six" />
     </Tooltip>
   );
 }

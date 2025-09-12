@@ -1,12 +1,11 @@
 import "@assets/styles/Rewind.scss";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar, Heading } from "@radix-ui/themes";
 import { DbDeck } from "../../state/Deck";
 import { DbGame } from "../../state/Game";
 import { DbPlayer } from "../../state/Player";
 import { getAllGamesWithPlayer } from "../../utils/Game";
 import { getAmountIntlString } from "../../utils/Intl";
+import { Icon } from "../Common/Icon";
 
 type OwnProps = {
   viewer: DbPlayer;
@@ -32,7 +31,7 @@ export function RewindPage1({ viewer, games }: OwnProps) {
       <Avatar
         className="absolute top-24 left-28 w-80 h-80"
         src={`/img/pfp/${viewer.id}.webp`}
-        fallback={<FontAwesomeIcon icon={faUser} />}
+        fallback={<Icon icon="user" />}
         radius="none"
       />
       <Heading

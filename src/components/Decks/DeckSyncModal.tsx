@@ -1,10 +1,4 @@
 import {
-  faExclamationTriangle,
-  faRotate,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
   Button,
   Dialog,
   Flex,
@@ -16,6 +10,7 @@ import { useMemo, useState } from "react";
 import { useDecks } from "../../hooks/useDecks";
 import { ArchidektService } from "../../services/Archidekt";
 import { DeckSyncStatus } from "../../state/DeckSyncStatus";
+import { Icon } from "../Common/Icon";
 
 export function DeckSyncModal() {
   const { dbDecks } = useDecks();
@@ -67,7 +62,7 @@ export function DeckSyncModal() {
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
         <Button className="h-10" variant="soft" color="gray">
-          <FontAwesomeIcon icon={faRotate} />
+          <Icon icon="rotate" />
           Sync All
         </Button>
       </Dialog.Trigger>
@@ -82,12 +77,7 @@ export function DeckSyncModal() {
         <Dialog.Title>Deck Sync</Dialog.Title>
 
         <Flex gap="2" mt="4" mb="4" align="center">
-          <FontAwesomeIcon
-            icon={faExclamationTriangle}
-            width="25"
-            height="25"
-            color="#d84242"
-          />
+          <Icon icon="exclamation-triangle" color="#d84242" />
           <Text size="2" color="red">
             This operation is meant to be executed only when the underlying data
             structure of decks has changed. Please consult with Gab before
@@ -120,7 +110,7 @@ export function DeckSyncModal() {
         <Flex gap="3" mt="4" justify="between">
           <Dialog.Close disabled={syncing}>
             <Button className="h-10" variant="surface">
-              <FontAwesomeIcon icon={faXmark} />
+              <Icon icon="xmark" />
               Close
             </Button>
           </Dialog.Close>
@@ -130,7 +120,7 @@ export function DeckSyncModal() {
             disabled={syncing}
             onClick={handleSync}
           >
-            <FontAwesomeIcon icon={faRotate} />
+            <Icon icon="rotate" />
             Sync
           </Button>
         </Flex>

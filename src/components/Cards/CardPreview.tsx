@@ -1,11 +1,10 @@
-import { faRotate } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Flex, Skeleton } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import "../../assets/styles/CardPreview.scss";
 import { ScryfallService } from "../../services/Scryfall";
 import { CardUris } from "../../state/CardUris";
 import { DeckCardDetails } from "../../state/DeckDetails";
+import { Icon } from "../Common/Icon";
 
 type OwnProps = {
   cards?: DeckCardDetails[];
@@ -107,7 +106,7 @@ export function CardPreview({
       </div>
       {fetchedUris[showingIndex].faceUris.length > 1 && clickable && (
         <Button variant="surface" color="gray" onClick={handleFlip}>
-          <FontAwesomeIcon icon={faRotate} />
+          <Icon icon="rotate" size="xs" />
           Flip
         </Button>
       )}

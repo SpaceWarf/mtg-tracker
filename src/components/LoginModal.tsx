@@ -1,10 +1,3 @@
-import {
-  faCheck,
-  faSignOut,
-  faUserCircle,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import {
   Button,
@@ -18,6 +11,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
+import { Icon } from "./Common/Icon";
 
 export function LoginModal() {
   const navigate = useNavigate();
@@ -61,7 +55,7 @@ export function LoginModal() {
   if (auth.user) {
     return (
       <IconButton variant="soft" onClick={handleLogout}>
-        <FontAwesomeIcon icon={faSignOut} size="xs" />
+        <Icon icon="sign-out" size="xs" />
       </IconButton>
     );
   }
@@ -70,7 +64,7 @@ export function LoginModal() {
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
         <Button className="h-10" variant="soft">
-          <FontAwesomeIcon icon={faUserCircle} />
+          <Icon icon="user-circle" size="xs" />
           Login
         </Button>
       </Dialog.Trigger>
@@ -117,7 +111,7 @@ export function LoginModal() {
         <Flex gap="3" mt="4" justify="between">
           <Dialog.Close>
             <Button className="h-10" variant="outline">
-              <FontAwesomeIcon icon={faXmark} />
+              <Icon icon="xmark" size="xs" />
               Cancel
             </Button>
           </Dialog.Close>
@@ -126,7 +120,7 @@ export function LoginModal() {
             disabled={!canSubmit()}
             onClick={handleLogin}
           >
-            <FontAwesomeIcon icon={faCheck} />
+            <Icon icon="check" size="xs" />
             Login
           </Button>
         </Flex>

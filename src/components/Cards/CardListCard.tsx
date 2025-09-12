@@ -1,11 +1,3 @@
-import {
-  faBomb,
-  faForward,
-  faGem,
-  faLayerGroup,
-  faRotate,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { Flex, IconButton, Tooltip } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
@@ -18,6 +10,7 @@ import { DeckCardDetails } from "../../state/DeckDetails";
 import { DiffType } from "../../state/DiffType";
 import { GameChangerType } from "../../state/GameChangerType";
 import { MousePosition } from "../../state/MousePosition";
+import { Icon } from "../Common/Icon";
 import { ManaIcon } from "../Icons/ManaIcon";
 
 type OwnProps = {
@@ -147,34 +140,29 @@ export function CardListCard({
             <>
               {gameChangerType === GameChangerType.WOTC && (
                 <Tooltip content="WOTC Game Changer">
-                  <FontAwesomeIcon icon={faGem} width="12" height="12" />
+                  <Icon icon="gem" size="sm" />
                 </Tooltip>
               )}
               {gameChangerType === GameChangerType.IN_HOUSE && (
                 <Tooltip content="In-House Game Changer">
-                  <FontAwesomeIcon
-                    icon={faGem}
-                    color="#FA9F42"
-                    width="12"
-                    height="12"
-                  />
+                  <Icon icon="gem" size="sm" color="#FA9F42" />
                 </Tooltip>
               )}
             </>
           )}
           {card.tutor && (
             <Tooltip content="Tutor">
-              <FontAwesomeIcon icon={faLayerGroup} width="12" height="12" />
+              <Icon icon="magnifying-glass-plus" size="sm" />
             </Tooltip>
           )}
           {card.extraTurns && (
             <Tooltip content="Extra Turn">
-              <FontAwesomeIcon icon={faForward} width="12" height="12" />
+              <Icon icon="forward" size="sm" />
             </Tooltip>
           )}
           {card.massLandDenial && (
             <Tooltip content="Mass Land Denial">
-              <FontAwesomeIcon icon={faBomb} width="12" height="12" />
+              <Icon icon="bomb" size="sm" />
             </Tooltip>
           )}
           {flippableCardLayouts.includes(card.layout) && (
@@ -188,7 +176,7 @@ export function CardListCard({
                   setFlipped(!flipped);
                 }}
               >
-                <FontAwesomeIcon icon={faRotate} width="12" height="12" />
+                <Icon icon="rotate" size="sm" />
               </IconButton>
             </Tooltip>
           )}

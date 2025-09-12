@@ -254,7 +254,7 @@ export function DeckCard({
 
               {deck.updatedAt && (
                 <Text size="1" color="gray">
-                  <i>Last synced on {getDateTimeString(deck.updatedAt)}</i>
+                  <p>Last synced on {getDateTimeString(deck.updatedAt)}</p>
                 </Text>
               )}
             </Flex>

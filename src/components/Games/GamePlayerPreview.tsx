@@ -1,12 +1,10 @@
-import { Box, Flex } from "@radix-ui/themes";
+import { Box, Flex, Tooltip } from "@radix-ui/themes";
 import { useEffect, useRef, useState } from "react";
 import "../../assets/styles/GamePlayerPreview.scss";
 import { GamePlayer } from "../../state/Game";
 import { Confetti } from "../Common/Confetti";
+import { Icon } from "../Common/Icon";
 import { DeckColourIdentity } from "../Decks/DeckColourIdentity";
-import { GameStartIcon } from "../Icons/GameStartIcon";
-import { GameWonIcon } from "../Icons/GameWonIcon";
-import { SolRingIcon } from "../Icons/SolRingIcon";
 
 type OwnProps = {
   player: GamePlayer;
@@ -73,9 +71,21 @@ export function GamePlayerPreview({ player }: OwnProps) {
       >
         <p className="player-name">{player.playerObj.name}</p>
         <Flex gap="2">
-          {player.won && <GameWonIcon />}
-          {player.t1SolRing && <SolRingIcon />}
-          {player.started && <GameStartIcon />}
+          {player.won && (
+            <Tooltip content="Won">
+              <Icon color="gold" icon="crown" />
+            </Tooltip>
+          )}
+          {player.t1SolRing && (
+            <Tooltip content="Turn 1 Sol Ring">
+              <Icon icon="ring" />
+            </Tooltip>
+          )}
+          {player.started && (
+            <Tooltip content="Started">
+              <Icon icon="dice-six" />
+            </Tooltip>
+          )}
         </Flex>
       </Flex>
       <Box className="playing-label">
