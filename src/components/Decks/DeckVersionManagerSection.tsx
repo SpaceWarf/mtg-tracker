@@ -132,6 +132,17 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
     setPreviewVersions(null);
   }
 
+  function handleVersionChange(value: string[]) {
+    setSelectedVersions(
+      value.sort((a, b) => {
+        const indexA = (deck.versions || []).findIndex((v) => v.id === a);
+        const indexB = (deck.versions || []).findIndex((v) => v.id === b);
+        return indexA - indexB;
+      })
+    );
+    setPreviewVersions(null);
+  }
+
   return (
     <DataCard title="Version Manager" icon={<Icon icon="code-pull-request" />}>
       <Flex direction="column" gap="5">
@@ -141,7 +152,7 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
             <VersionSelect
               deckId={deck.id}
               value={selectedVersions}
-              onChange={setSelectedVersions}
+              onChange={handleVersionChange}
               isMulti={true}
               disabled={merging}
             />
