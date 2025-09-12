@@ -1,4 +1,4 @@
-import { Flex, Tooltip } from "@radix-ui/themes";
+import { Box, Flex, Grid, Tooltip } from "@radix-ui/themes";
 import { useMemo } from "react";
 import "../../assets/styles/PlayerPreview.scss";
 import { usePlayers } from "../../hooks/usePlayers";
@@ -38,44 +38,28 @@ export function PlayerPreview({ player, won, lost, good }: OwnProps) {
       <Flex className="h-full" direction="column" gap="2">
         <p className="name">{playerData?.name}</p>
         <Flex className="h-full" align="center" justify="center">
-          <Flex className="stats" align="center" justify="center" wrap="wrap">
+          <Grid columns="2" className="stats" gapX="5">
             <Tooltip content="Games Played">
-              <Flex
-                gap="1"
-                justify="center"
-                align="center"
-                width="50%"
-                height="50px"
-              >
+              <Flex gap="1" justify="center" align="center" height="50px">
                 <Icon icon="dice" />
                 <p>{won + lost}</p>
               </Flex>
             </Tooltip>
             <Tooltip content={good ? "Games Won" : "Games Lost"}>
-              <Flex
-                gap="1"
-                justify="center"
-                align="center"
-                width="50%"
-                height="50px"
-              >
+              <Flex gap="1" justify="center" align="center" height="50px">
                 <Icon icon="crown" color={good ? "#5abe8c" : "#d84242"} />
                 <p>{good ? won : lost}</p>
               </Flex>
             </Tooltip>
-            <Tooltip content="Win Rate">
-              <Flex
-                gap="1"
-                justify="center"
-                align="center"
-                width="50%"
-                height="50px"
-              >
-                <Icon icon="percent" type="regular" />
-                <p>{winRate.toFixed(0)}%</p>
-              </Flex>
-            </Tooltip>
-          </Flex>
+            <Box gridColumn="span 2">
+              <Tooltip content="Win Rate">
+                <Flex gap="1" justify="center" align="center" height="50px">
+                  <Icon icon="percent" type="regular" />
+                  <p>{winRate.toFixed(0)}%</p>
+                </Flex>
+              </Tooltip>
+            </Box>
+          </Grid>
         </Flex>
       </Flex>
     </div>
