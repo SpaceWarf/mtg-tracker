@@ -1,0 +1,5 @@
+@use "./colours" as c;
+
+.toggle {
+  color: c.$text-primary;
+}

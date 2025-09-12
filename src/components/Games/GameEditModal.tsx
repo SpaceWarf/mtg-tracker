@@ -3,12 +3,14 @@ import {
   Dialog,
   Flex,
   Grid,
+  IconButton,
   TextArea,
   TextField,
 } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useWindowDimensions } from "../../hooks/useWindowDimensions";
 import { GameService } from "../../services/Game";
 import { DbGame, GamePlayer } from "../../state/Game";
 import { isDateValid } from "../../utils/Date";
@@ -23,6 +25,8 @@ type OwnProps = {
 
 export function GameEditModal({ open, game, onClose }: OwnProps) {
   const navigate = useNavigate();
+  const { windowWidth } = useWindowDimensions();
+
   const [date, setDate] = useState<string>(game.date);
   const [player1, setPlayer1] = useState<GamePlayer>(game.player1);
   const [player2, setPlayer2] = useState<GamePlayer>(game.player2);
@@ -60,7 +64,7 @@ export function GameEditModal({ open, game, onClose }: OwnProps) {
     <Dialog.Root open={open} onOpenChange={handleOpenChange}>
       <Dialog.Description></Dialog.Description>
 
-      <Dialog.Content className="max-w-[50vw]">
+      <Dialog.Content maxWidth="700px">
         <Dialog.Title>Edit game</Dialog.Title>
 
         <div className="mb-5">
@@ -75,7 +79,7 @@ export function GameEditModal({ open, game, onClose }: OwnProps) {
           ></TextField.Root>
         </div>
 
-        <Grid columns="2" rows="2" width="auto" gap="5">
+        <Grid columns={{ initial: "1", sm: "2" }} gap="5">
           <GamePlayerEditSection
             gamePlayer={player1}
             playerIndex={1}
@@ -114,16 +118,28 @@ export function GameEditModal({ open, game, onClose }: OwnProps) {
 
         <Flex gap="3" mt="4" justify="between">
           <Dialog.Close>
-            <Button className="h-10" variant="outline">
-              <Icon icon="xmark" />
-              Cancel
-            </Button>
+            {windowWidth > 520 ? (
+              <Button className="h-10" variant="outline">
+                <Icon icon="xmark" />
+                Cancel
+              </Button>
+            ) : (
+              <IconButton className="h-10 w-10" variant="outline">
+                <Icon icon="xmark" />
+              </IconButton>
+            )}
           </Dialog.Close>
           <Dialog.Close disabled={!isDateValid(date)} onClick={handleSave}>
-            <Button className="h-10">
-              <Icon icon="check" />
-              Save
-            </Button>
+            {windowWidth > 520 ? (
+              <Button className="h-10">
+                <Icon icon="check" />
+                Save
+              </Button>
+            ) : (
+              <IconButton className="h-10 w-10">
+                <Icon icon="check" />
+              </IconButton>
+            )}
           </Dialog.Close>
         </Flex>
       </Dialog.Content>

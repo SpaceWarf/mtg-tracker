@@ -105,7 +105,7 @@ export function GamePlayerEditSection({
           )}
         </Flex>
         <Flex gap="3">
-          <Flex gap="2" align="center">
+          <Flex className="toggle" gap="2" align="center">
             <Switch
               size="1"
               checked={gamePlayer.won}
@@ -113,7 +113,7 @@ export function GamePlayerEditSection({
             />{" "}
             Won?
           </Flex>
-          <Flex gap="2" align="center">
+          <Flex className="toggle" gap="2" align="center">
             <Switch
               size="1"
               checked={gamePlayer.t1SolRing}
@@ -121,7 +121,7 @@ export function GamePlayerEditSection({
             />{" "}
             Sol Ring?
           </Flex>
-          <Flex gap="2" align="center">
+          <Flex className="toggle" gap="2" align="center">
             <Switch
               size="1"
               checked={gamePlayer.started}

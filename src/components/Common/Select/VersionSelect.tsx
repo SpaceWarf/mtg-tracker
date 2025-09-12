@@ -35,10 +35,13 @@ export function VersionSelect({
   disabled = false,
 }: MultiProps | SingleProps) {
   const { dbDecks, loadingDecks } = useDecks();
+
   const deck = useMemo(() => {
     return dbDecks?.find((deck) => deck.id === deckId);
   }, [dbDecks, deckId]);
+
   const versionSelectOptions = useVersionSelectOptions(deck?.versions ?? []);
+
   const optionsValue = useMemo(() => {
     if (isMulti) {
       return versionSelectOptions.filter((option) =>
