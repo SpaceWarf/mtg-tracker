@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Text } from "@radix-ui/themes";
+import { Box, Button, Flex, Text } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { useGameChangers } from "../../hooks/useGameChangers";
@@ -137,9 +137,7 @@ export function DeckVersionManagerSection({ deck }: OwnProps) {
       <Flex direction="column" gap="5">
         <Flex gap="5" mb="3" wrap="wrap">
           <Box width={{ initial: "100%", xs: "300px" }}>
-            <Heading className="mb-1" size="3">
-              Version to merge
-            </Heading>
+            <p className="field-label mb-1">Version to merge</p>
             <VersionSelect
               deckId={deck.id}
               value={selectedVersions}

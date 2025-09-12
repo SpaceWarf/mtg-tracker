@@ -1,22 +1,25 @@
 @use "../styles/colours" as c;
 
 .card-list-category {
+  .category-header {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: c.$text-primary;
+  }
+
   .category-name {
     font-size: 1rem;
-    line-height: 1rem;
     font-weight: bold;
     color: c.$text-primary;
   }
 
   .category-description {
     font-size: 0.8rem;
-    line-height: 0.8rem;
     color: c.$text-muted;
   }
 
   .category-qty {
     font-size: 0.75rem;
-    line-height: 0.75rem;
     color: c.$text-muted;
   }
 }

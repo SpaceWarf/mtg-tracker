@@ -1,5 +1,6 @@
-import { Flex, Grid, Heading } from "@radix-ui/themes";
+import { Flex, Grid } from "@radix-ui/themes";
 import { useMemo } from "react";
+import "../../assets/styles/CardListCategory.scss";
 import { DeckCardDetails } from "../../state/DeckDetails";
 import { DiffType } from "../../state/DiffType";
 import { MousePosition } from "../../state/MousePosition";
@@ -41,9 +42,14 @@ export function CardDiffViewer({
   }, [direction, diffCount]);
 
   return (
-    <Flex direction="column" gap="1" flexGrow="1">
+    <Flex
+      className="card-list-category"
+      direction="column"
+      gap="1"
+      flexGrow="1"
+    >
       {withDescription && (
-        <Heading size="4">Differences with latest version</Heading>
+        <p className="category-header">Differences with latest version</p>
       )}
       <Grid
         columns={columns}
