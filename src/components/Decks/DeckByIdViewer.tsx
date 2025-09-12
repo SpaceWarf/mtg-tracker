@@ -261,15 +261,18 @@ export function DeckByIdViewer() {
                     onValueChange={handleViewTypeChange}
                   >
                     <SegmentedControl.Item value={DeckByIdViewType.STATS}>
+                      <Icon icon="chart-line mr-1" />
                       Stats
                     </SegmentedControl.Item>
                     <SegmentedControl.Item value={DeckByIdViewType.DECKLIST}>
+                      <Icon icon="table-list mr-1" />
                       Decklist
                     </SegmentedControl.Item>
                     {showVersionManagerTab && (
                       <SegmentedControl.Item
                         value={DeckByIdViewType.VERSION_MANAGER}
                       >
+                        <Icon icon="code-pull-request mr-1" />
                         Version Manager
                       </SegmentedControl.Item>
                     )}
