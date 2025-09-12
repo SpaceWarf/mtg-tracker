@@ -1,0 +1,73 @@
+@use "./colours" as c;
+
+.react-select-container {
+  .react-select__control {
+    background-color: c.$select-background;
+    border: 2px solid c.$select-background;
+
+    &:hover {
+      border-color: c.$select-border-hover;
+    }
+  }
+
+  .react-select__control--is-focused {
+    border: 2px solid c.$select-border-hover;
+    box-shadow: none;
+  }
+
+  .react-select__indicator {
+    color: c.$text-secondary;
+
+    &:hover {
+      color: c.$text-muted;
+    }
+  }
+
+  .react-select__indicator-separator {
+    background-color: c.$text-secondary;
+  }
+
+  .react-select__single-value {
+    color: c.$text-primary;
+  }
+
+  .react-select__placeholder {
+    color: c.$text-muted;
+  }
+
+  .react-select__input-container,
+  .react-select__single-value {
+    color: c.$text-primary;
+  }
+
+  .react-select__menu {
+    background-color: c.$select-background;
+    border: 2px solid c.$select-border;
+  }
+
+  .react-select__option,
+  .select-option-container {
+    background-color: c.$select-background;
+    color: c.$text-primary;
+
+    &:hover {
+      background-color: c.$select-item-hover;
+    }
+  }
+
+  .react-select__multi-value {
+    background-color: c.$select-item-hover;
+    border-radius: 7px;
+  }
+
+  .react-select__multi-value__label {
+    color: c.$text-primary;
+  }
+
+  .react-select__multi-value__remove:hover {
+    background-color: c.$select-item-hover;
+    background-color: c.$red;
+    color: c.$text-primary;
+    border-radius: 0 7px 7px 0;
+  }
+}

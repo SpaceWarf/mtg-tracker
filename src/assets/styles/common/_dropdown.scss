@@ -1,0 +1,24 @@
+@use "./colours" as c;
+
+.rt-PopperContent {
+  box-shadow: none;
+  overflow: visible;
+
+  .rt-DropdownMenuViewport {
+    background-color: c.$dropdown-background;
+    border: 1px solid c.$dropdown-border;
+    border-radius: 5px;
+  }
+
+  .rt-DropdownMenuSeparator {
+    background-color: c.$dropdown-border;
+  }
+
+  .rt-DropdownMenuItem:not([data-accent-color="red"]) {
+    color: c.$text-primary;
+  }
+
+  .rt-DropdownMenuItem[data-highlighted]:not([data-accent-color="red"]) {
+    background-color: c.$dropdown-item-hover;
+  }
+}

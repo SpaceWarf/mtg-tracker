@@ -1,0 +1,38 @@
+@use "./colours" as c;
+
+.rt-TextFieldRoot,
+.rt-TextAreaRoot {
+  background-color: c.$input-background;
+  border: 2px solid c.$input-background;
+  box-shadow: none;
+  padding: 0;
+  outline: none;
+  height: 40px;
+
+  &:hover {
+    border-color: c.$input-border-hover;
+  }
+
+  &:focus-within,
+  &:focus {
+    border-color: c.$input-border-hover;
+    box-shadow: none;
+  }
+
+  .rt-TextFieldInput,
+  .rt-TextAreaInput {
+    color: c.$text-primary;
+    font-weight: 500;
+    outline: none;
+
+    &:focus,
+    &:focus {
+      color: c.$text-primary;
+      box-shadow: none;
+    }
+
+    &::placeholder {
+      color: c.$text-muted;
+    }
+  }
+}

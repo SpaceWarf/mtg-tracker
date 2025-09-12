@@ -1,0 +1,11 @@
+@use "./colours" as c;
+
+.rt-BaseButton:not([data-disabled="true"]),
+.rt-SegmentedControlItem,
+.react-select__control {
+  cursor: pointer !important;
+}
+
+.rt-BaseButton[data-disabled="true"] {
+  cursor: not-allowed !important;
+}
