@@ -1,12 +1,15 @@
-import { Button, Dialog, Flex, TextField } from "@radix-ui/themes";
+import { Button, Dialog, Flex, IconButton, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useWindowDimensions } from "../../hooks/useWindowDimensions";
 import { PlayerService } from "../../services/Player";
 import { Player } from "../../state/Player";
 import { Icon } from "../Common/Icon";
 
 export function PlayerCreateModal() {
   const navigate = useNavigate();
+  const { windowWidth } = useWindowDimensions();
+
   const [name, setName] = useState<string>("");
   const [externalId, setExternalId] = useState<string>("");
 
@@ -33,10 +36,16 @@ export function PlayerCreateModal() {
   return (
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
-        <Button className="h-10" variant="soft">
-          <Icon icon="plus" />
-          Create
-        </Button>
+        {windowWidth > 520 ? (
+          <Button className="h-10" variant="soft">
+            <Icon icon="plus" />
+            Create
+          </Button>
+        ) : (
+          <IconButton className="h-10 w-10" variant="soft">
+            <Icon icon="plus" />
+          </IconButton>
+        )}
       </Dialog.Trigger>
 
       <Dialog.Description></Dialog.Description>

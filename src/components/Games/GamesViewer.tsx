@@ -256,7 +256,7 @@ export function GamesViewer() {
           direction="row"
           pageHeader
         >
-          <Grid width="125px" gap="3" columns="1">
+          <Grid width={{ initial: "40px", xs: "125px" }} gap="3" columns="1">
             {auth.user && <GameCreateModal />}
           </Grid>
         </DataCard>

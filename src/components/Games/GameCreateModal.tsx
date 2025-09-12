@@ -3,12 +3,14 @@ import {
   Dialog,
   Flex,
   Grid,
+  IconButton,
   TextArea,
   TextField,
 } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useWindowDimensions } from "../../hooks/useWindowDimensions";
 import { GameService } from "../../services/Game";
 import { Game, GamePlayer } from "../../state/Game";
 import { getShortDateString, isDateValid } from "../../utils/Date";
@@ -17,6 +19,8 @@ import { GamePlayerEditSection } from "./GamePlayerEditSection";
 
 export function GameCreateModal() {
   const navigate = useNavigate();
+  const { windowWidth } = useWindowDimensions();
+
   const newGamePlayer: GamePlayer = {
     player: "",
     deck: "",
@@ -24,6 +28,7 @@ export function GameCreateModal() {
     t1SolRing: false,
     won: false,
   };
+
   const [date, setDate] = useState<string>(getShortDateString(new Date()));
   const [player1, setPlayer1] = useState<GamePlayer>(cloneDeep(newGamePlayer));
   const [player2, setPlayer2] = useState<GamePlayer>(cloneDeep(newGamePlayer));
@@ -81,10 +86,16 @@ export function GameCreateModal() {
   return (
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
-        <Button className="h-10" variant="soft">
-          <Icon icon="plus" />
-          Create
-        </Button>
+        {windowWidth > 520 ? (
+          <Button className="h-10" variant="soft">
+            <Icon icon="plus" />
+            Create
+          </Button>
+        ) : (
+          <IconButton className="h-10 w-10" variant="soft">
+            <Icon icon="plus" />
+          </IconButton>
+        )}
       </Dialog.Trigger>
 
       <Dialog.Description></Dialog.Description>

@@ -62,14 +62,14 @@ export function LoginModal() {
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
         <Button className="h-10" variant="soft">
-          <Icon icon="user-circle" size="xs" />
+          <Icon icon="user-circle" />
           Login
         </Button>
       </Dialog.Trigger>
 
       <Dialog.Description></Dialog.Description>
 
-      <Dialog.Content width="500px">
+      <Dialog.Content>
         <Dialog.Title>Login</Dialog.Title>
 
         <div className="mb-5">

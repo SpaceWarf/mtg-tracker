@@ -186,7 +186,7 @@ export function DecksViewer() {
           pageHeader
         >
           {auth.user && (
-            <Grid width="250px" gap="3" columns="2">
+            <Grid width={{ initial: "90px", xs: "250px" }} gap="3" columns="2">
               <DeckSyncModal />
               <DeckCreateModal />
             </Grid>

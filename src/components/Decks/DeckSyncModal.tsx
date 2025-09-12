@@ -1,12 +1,22 @@
-import { Button, Dialog, Flex, Progress, Spinner } from "@radix-ui/themes";
+import {
+  Button,
+  Dialog,
+  Flex,
+  IconButton,
+  Progress,
+  Spinner,
+} from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import { useDecks } from "../../hooks/useDecks";
+import { useWindowDimensions } from "../../hooks/useWindowDimensions";
 import { ArchidektService } from "../../services/Archidekt";
 import { DeckSyncStatus } from "../../state/DeckSyncStatus";
 import { Icon } from "../Common/Icon";
 
 export function DeckSyncModal() {
   const { dbDecks } = useDecks();
+  const { windowWidth } = useWindowDimensions();
+
   const [pointer, setPointer] = useState<number>(0);
   const [status, setStatus] = useState<DeckSyncStatus>(
     DeckSyncStatus.NOT_STARTED
@@ -54,10 +64,16 @@ export function DeckSyncModal() {
   return (
     <Dialog.Root onOpenChange={handleOpenChange}>
       <Dialog.Trigger>
-        <Button className="h-10" variant="soft" color="gray">
-          <Icon icon="rotate" />
-          Sync All
-        </Button>
+        {windowWidth > 520 ? (
+          <Button className="h-10" variant="soft" color="gray">
+            <Icon icon="rotate" />
+            Sync All
+          </Button>
+        ) : (
+          <IconButton className="h-10 w-10" variant="soft" color="gray">
+            <Icon icon="rotate" />
+          </IconButton>
+        )}
       </Dialog.Trigger>
 
       <Dialog.Description></Dialog.Description>
