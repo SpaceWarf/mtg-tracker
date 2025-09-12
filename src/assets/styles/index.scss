@@ -107,6 +107,10 @@ ul {
     background-color: c.$dropdown-border;
   }
 
+  .rt-DropdownMenuItem:not([data-accent-color="red"]) {
+    color: c.$text-primary;
+  }
+
   .rt-DropdownMenuItem[data-highlighted]:not([data-accent-color="red"]) {
     background-color: c.$dropdown-item-hover;
   }
@@ -215,8 +219,7 @@ ul {
       box-shadow: none;
     }
 
-    &:placeholder-shown,
-    &:placeholder-shown {
+    &::placeholder {
       color: c.$text-muted;
     }
   }
