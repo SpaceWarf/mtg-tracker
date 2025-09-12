@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { PlayerService } from "../../services/Player";
 import { PlayerWithStats } from "../../state/Player";
 import { Icon } from "../Common/Icon";
-import { PlayerCard2 } from "./PlayerCard2";
+import { PlayerCard } from "./PlayerCard";
 
 type OwnProps = {
   open: boolean;
@@ -40,7 +40,7 @@ export function PlayerDeleteModal({ open, player, onClose }: OwnProps) {
           from all associated games and <b>cannot be undone</b>.
         </p>
         <Flex mt="5" mb="7" justify="center">
-          <PlayerCard2 player={player} />
+          <PlayerCard player={player} />
         </Flex>
         <Flex gap="3" justify="between" mt="4">
           <Dialog.Close>

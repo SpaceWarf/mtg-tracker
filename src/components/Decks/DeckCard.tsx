@@ -1,55 +1,56 @@
-import { Box, Flex, Grid, Tooltip } from "@radix-ui/themes";
+import { Box, Flex, Tooltip } from "@radix-ui/themes";
 import { useNavigate } from "react-router";
-import "../../assets/styles/PlayerCard.scss";
-import { PlayerWithStats } from "../../state/Player";
+import "../../assets/styles/DeckCard.scss";
+import { DeckWithStats } from "../../state/Deck";
 import { Icon } from "../Common/Icon";
 import { SimplePieChart } from "../Common/SimplePieChart";
-import { PlayerHeader2 } from "./PlayerHeader2";
+import { DeckHeader2 } from "./DeckHeader2";
+import { DeckTags } from "./DeckTags";
 
 type OwnProps = {
-  player: PlayerWithStats;
+  deck: DeckWithStats;
   editable?: boolean;
   showActions?: boolean;
 };
 
-export function PlayerCard2({ player, editable, showActions }: OwnProps) {
+export function DeckCard({ deck, editable, showActions }: OwnProps) {
   const navigate = useNavigate();
 
   return (
     <div
-      className={`player-card w-full ${showActions ? "selectable" : ""}`}
+      className={`deck-card w-full ${showActions ? "selectable" : ""}`}
       style={
         {
-          ["--url" as string]: `url(/img/pfp/${player.id}.webp)`,
+          ["--url" as string]: `url(${deck.featured})`,
         } as React.CSSProperties
       }
-      onClick={() => showActions && navigate(`/players/${player.id}`)}
+      onClick={() => showActions && navigate(`/decks/${deck.id}`)}
     >
       <Flex className="h-full" direction="column" justify="between">
         <Flex className="content-container" direction="column" gap="3">
-          <PlayerHeader2
-            player={player}
+          <DeckHeader2
+            deck={deck}
             editable={editable}
             showActions={showActions}
           />
           <Flex justify="between">
-            <Grid columns="2" gapX="4">
+            <Flex mt="2" gap="4">
               <Tooltip content="Games Played">
                 <Flex className="stat-container" gap="2">
-                  <Icon size="lg" icon="dice" />
-                  <p>{player.gamesPlayed}</p>
+                  <Icon icon="dice" size="lg" />
+                  <p>{deck.gamesPlayed}</p>
                 </Flex>
               </Tooltip>
               <Tooltip content="Games Won">
                 <Flex className="stat-container" gap="2">
-                  <Icon size="lg" icon="crown" />
-                  <p>{player.winCount}</p>
+                  <Icon icon="crown" size="lg" />
+                  <p>{deck.winCount}</p>
                 </Flex>
               </Tooltip>
-            </Grid>
-            <Box className="win-percent-container">
+            </Flex>
+            <Box className="win-percent-container mt-[-20px]">
               <SimplePieChart
-                value={player.winRate}
+                value={deck.winRate}
                 label="Win %"
                 colours={{
                   "25": "#d84242",
@@ -60,6 +61,9 @@ export function PlayerCard2({ player, editable, showActions }: OwnProps) {
             </Box>
           </Flex>
         </Flex>
+        <Box className="additional-container">
+          <DeckTags deck={deck} />
+        </Box>
       </Flex>
     </div>
   );

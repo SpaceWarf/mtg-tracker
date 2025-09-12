@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { DeckService } from "../../services/Deck";
 import { DeckWithStats } from "../../state/Deck";
 import { Icon } from "../Common/Icon";
-import { DeckCard2 } from "./DeckCard2";
+import { DeckCard } from "./DeckCard";
 
 type OwnProps = {
   open: boolean;
@@ -40,7 +40,7 @@ export function DeckDeleteModal({ open, deck, onClose }: OwnProps) {
           all associated games and <b>cannot be undone</b>.
         </p>
         <Flex mt="5" mb="7" justify="center">
-          <DeckCard2 deck={deck} />
+          <DeckCard deck={deck} />
         </Flex>
         <Flex gap="3" justify="between">
           <Dialog.Close>
