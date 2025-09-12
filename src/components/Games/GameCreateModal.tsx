@@ -5,10 +5,11 @@ import {
   Grid,
   IconButton,
   TextArea,
-  TextField,
 } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router";
 import { useWindowDimensions } from "../../hooks/useWindowDimensions";
 import { GameService } from "../../services/Game";
@@ -107,12 +108,12 @@ export function GameCreateModal() {
           <p className="field-label mb-1">
             <b>Date</b>
           </p>
-          <TextField.Root
-            className="input-field"
-            placeholder="Date…"
-            value={date}
-            onChange={({ target }) => setDate(target.value)}
-          ></TextField.Root>
+          <DatePicker
+            selected={new Date(date)}
+            onChange={(date) => setDate(date?.toISOString() ?? "")}
+            dateFormat="yyyy-MM-dd"
+            preventOpenOnFocus
+          />
         </div>
 
         <Grid columns={{ initial: "1", sm: "2" }} gap="5">

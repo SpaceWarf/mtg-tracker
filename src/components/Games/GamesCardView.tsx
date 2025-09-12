@@ -17,11 +17,17 @@ export function GamesCardView({ games }: OwnProps) {
   const populateDateMap = useCallback((games: DbGame[]) => {
     const map = new Map<string, DbGame[]>();
     games.forEach((game) => {
-      const entry = map.get(game.date);
+      const dateObj = new Date(game.date);
+      const dateKey = dateObj.toLocaleDateString("en-us", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      const entry = map.get(dateKey);
       if (entry) {
-        map.set(game.date, [...entry, game]);
+        map.set(dateKey, [...entry, game]);
       } else {
-        map.set(game.date, [game]);
+        map.set(dateKey, [game]);
       }
     });
     setDateMap(map);
