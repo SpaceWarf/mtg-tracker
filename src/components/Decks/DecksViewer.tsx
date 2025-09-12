@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, Spinner, TextField } from "@radix-ui/themes";
+import { Box, Grid, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -203,9 +203,9 @@ export function DecksViewer() {
             columns={{ initial: "1", xs: "2", sm: "3", md: "4", lg: "5" }}
           >
             <Box>
-              <Heading className="mb-1" size="3">
-                Search
-              </Heading>
+              <p className="mb-1">
+                <b>Search</b>
+              </p>
               <TextField.Root
                 className="input-field"
                 placeholder="Search…"
@@ -218,9 +218,9 @@ export function DecksViewer() {
               </TextField.Root>
             </Box>
             <Box>
-              <Heading className="mb-1" size="3">
-                Sort by
-              </Heading>
+              <p className="mb-1">
+                <b>Sort by</b>
+              </p>
               <SortFctSelect
                 type={SortFctType.DECK}
                 value={deckSortBy}
@@ -228,9 +228,9 @@ export function DecksViewer() {
               />
             </Box>
             <Box>
-              <Heading className="mb-1" size="3">
-                Builder
-              </Heading>
+              <p className="mb-1">
+                <b>Builder</b>
+              </p>
               <PlayerSelect
                 value={deckBuilder}
                 onChange={handleChangeBuilder}
@@ -238,18 +238,18 @@ export function DecksViewer() {
               />
             </Box>
             <Box>
-              <Heading className="mb-1" size="3">
-                Bracket
-              </Heading>
+              <p className="mb-1">
+                <b>Bracket</b>
+              </p>
               <BracketSelect
                 value={deckBracket as Bracket}
                 onChange={handleChangeBracket}
               />
             </Box>
             <Box>
-              <Heading className="mb-1" size="3">
-                Identity
-              </Heading>
+              <p className="mb-1">
+                <b>Identity</b>
+              </p>
               <IdentitySelect
                 value={deckIdentity as IdentityLabel}
                 onChange={handleChangeIdentity}

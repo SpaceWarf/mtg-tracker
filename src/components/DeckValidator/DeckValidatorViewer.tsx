@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Callout,
-  Flex,
-  Grid,
-  Heading,
-  TextField,
-} from "@radix-ui/themes";
+import { Box, Button, Callout, Flex, Grid, TextField } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
 import "../../assets/styles/DataCard.scss";
 import { useGameChangers } from "../../hooks/useGameChangers";
@@ -91,9 +83,9 @@ export function DeckValidatorViewer() {
         />
         <Flex className="data-card" align="center" justify="start" gap="5">
           <Box width="300px">
-            <Heading className="mb-1" size="3">
-              External ID
-            </Heading>
+            <p className="mb-1">
+              <b>External ID</b>
+            </p>
             <TextField.Root
               className="input-field"
               placeholder="External ID..."

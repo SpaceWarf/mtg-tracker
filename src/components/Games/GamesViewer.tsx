@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, Spinner } from "@radix-ui/themes";
+import { Box, Grid, Spinner } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -271,9 +271,9 @@ export function GamesViewer() {
             columns={{ initial: "1", xs: "2", sm: "3", md: "4", lg: "5" }}
           >
             <Box>
-              <Heading className="mb-1" size="3">
-                Sort by
-              </Heading>
+              <p className="mb-1">
+                <b>Sort by</b>
+              </p>
               <SortFctSelect
                 type={SortFctType.GAME}
                 value={gameSortBy}
@@ -281,9 +281,9 @@ export function GamesViewer() {
               />
             </Box>
             <Box>
-              <Heading className="mb-1" size="3">
-                Include players
-              </Heading>
+              <p className="mb-1">
+                <b>Include players</b>
+              </p>
               <PlayerSelect
                 value={gameIncludedPlayers}
                 onChange={handleSetVisiblePlayers}
@@ -291,9 +291,9 @@ export function GamesViewer() {
               />
             </Box>
             <Box>
-              <Heading className="mb-1" size="3">
-                Exclude players
-              </Heading>
+              <p className="mb-1">
+                <b>Exclude players</b>
+              </p>
               <PlayerSelect
                 value={gameExcludedPlayers}
                 onChange={handleSetExcludedPlayers}
@@ -301,9 +301,9 @@ export function GamesViewer() {
               />
             </Box>
             <Box>
-              <Heading className="mb-1" size="3">
-                Include decks
-              </Heading>
+              <p className="mb-1">
+                <b>Include decks</b>
+              </p>
               <DeckSelect
                 value={gameIncludedDecks}
                 onChange={handleSetVisibleDecks}
@@ -311,9 +311,9 @@ export function GamesViewer() {
               />
             </Box>
             <Box>
-              <Heading className="mb-1" size="3">
-                Exclude decks
-              </Heading>
+              <p className="mb-1">
+                <b>Exclude decks</b>
+              </p>
               <DeckSelect
                 value={gameExcludedDecks}
                 onChange={handleSetExcludedDecks}

@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, Spinner, TextField } from "@radix-ui/themes";
+import { Box, Grid, Spinner, TextField } from "@radix-ui/themes";
 import { cloneDeep } from "lodash";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -116,9 +116,9 @@ export function PlayersViewer() {
             columns={{ initial: "1", xs: "2", sm: "3", md: "4", lg: "5" }}
           >
             <Box>
-              <Heading className="mb-1" size="3">
-                Search
-              </Heading>
+              <p className="mb-1">
+                <b>Search</b>
+              </p>
               <TextField.Root
                 className="input-field"
                 placeholder="Search…"
@@ -131,9 +131,9 @@ export function PlayersViewer() {
               </TextField.Root>
             </Box>
             <Box>
-              <Heading className="mb-1" size="3">
-                Sort by
-              </Heading>
+              <p className="mb-1">
+                <b>Sort by</b>
+              </p>
               <SortFctSelect
                 type={SortFctType.PLAYER}
                 value={playerSortBy}
