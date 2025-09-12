@@ -1,95 +1,100 @@
 @use "../styles/colours" as c;
 
 .bracket-viewer {
-  .bracket-container {
-    position: relative;
-    width: 300px;
-    height: 650px;
-    border: 3px solid c.$gold;
-    border-radius: 20px;
-    padding: 75px 20px 50px 20px;
+  .bracket-containers {
+    width: fit-content;
+    margin: 0 auto;
 
-    .bracket-number-container {
-      position: absolute;
-      width: 150px;
-      top: 0;
-      transform: translate(-50%, -50%);
-      left: 50%;
-      background-color: c.$black;
+    .bracket-container {
+      position: relative;
+      width: 300px;
+      height: 650px;
+      border: 3px solid c.$gold;
+      border-radius: 20px;
+      padding: 75px 20px 50px 20px;
 
-      .bracket-number {
+      .bracket-number-container {
+        position: absolute;
+        width: 150px;
+        top: 0;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        background-color: c.$black;
+
+        .bracket-number {
+          color: c.$text-primary;
+          font-size: 4rem;
+          font-weight: bold;
+        }
+      }
+
+      .bracket-name {
         color: c.$text-primary;
-        font-size: 4rem;
+        font-size: 2rem;
         font-weight: bold;
+        text-align: center;
+        width: 100%;
+        text-transform: uppercase;
       }
-    }
 
-    .bracket-name {
-      color: c.$text-primary;
-      font-size: 2rem;
-      font-weight: bold;
-      text-align: center;
-      width: 100%;
-      text-transform: uppercase;
-    }
+      .bracket-description {
+        color: c.$text-primary;
+        font-size: 0.95rem;
+        font-weight: bold;
+        text-align: center;
+        width: 100%;
+        text-transform: uppercase;
+      }
 
-    .bracket-description {
-      color: c.$text-primary;
-      font-size: 0.95rem;
-      font-weight: bold;
-      text-align: center;
-      width: 100%;
-      text-transform: uppercase;
-    }
+      .bracket-divider {
+        width: 75px;
+        height: 3px;
+        background-color: c.$gold;
+      }
 
-    .bracket-divider {
-      width: 75px;
-      height: 3px;
-      background-color: c.$gold;
-    }
+      .bracket-rule {
+        color: c.$text-primary;
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-transform: uppercase;
 
-    .bracket-rule {
-      color: c.$text-primary;
-      font-size: 0.9rem;
-      font-weight: bold;
-      text-transform: uppercase;
+        .red {
+          color: c.$red;
 
-      .red {
-        color: c.$red;
+          path {
+            stroke: c.$red;
+            fill: c.$red;
+          }
+        }
 
-        path {
-          stroke: c.$red;
-          fill: c.$red;
+        .green {
+          color: c.$green;
+
+          path {
+            stroke: c.$green;
+            fill: c.$green;
+          }
+        }
+
+        .yellow {
+          color: c.$yellow;
+
+          path {
+            stroke: c.$yellow;
+            fill: c.$yellow;
+          }
         }
       }
 
-      .green {
-        color: c.$green;
-
-        path {
-          stroke: c.$green;
-          fill: c.$green;
-        }
+      .bracket-bottom-decorator {
+        position: absolute;
+        width: 150px;
+        height: 20px;
+        top: 100%;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        background-color: c.$black;
       }
-
-      .yellow {
-        color: c.$yellow;
-
-        path {
-          stroke: c.$yellow;
-          fill: c.$yellow;
-        }
-      }
-    }
-
-    .bracket-bottom-decorator {
-      position: absolute;
-      width: 150px;
-      height: 20px;
-      top: 100%;
-      transform: translate(-50%, -50%);
-      left: 50%;
-      background-color: c.$black;
     }
   }
 }

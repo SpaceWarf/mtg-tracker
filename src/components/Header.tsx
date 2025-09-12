@@ -122,7 +122,7 @@ export function Header() {
     <Flex className="Header p-3 bg-gray-800" align="center" justify="between">
       <Flex align="center" justify="start" flexBasis="25%">
         <img width="40px" src="/img/chalice.png"></img>
-        {windowWidth > 1050 && <Text>Calice de Marbre</Text>}
+        {windowWidth > 1150 && <Text>Calice de Marbre</Text>}
         <IconButton
           className="ml-[1px]"
           variant="ghost"
