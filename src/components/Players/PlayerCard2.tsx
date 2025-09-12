@@ -17,7 +17,7 @@ export function PlayerCard2({ player, editable, showActions }: OwnProps) {
 
   return (
     <div
-      className={`player-card ${showActions ? "selectable" : ""}`}
+      className={`player-card w-full ${showActions ? "selectable" : ""}`}
       style={
         {
           ["--url" as string]: `url(/img/pfp/${player.id}.webp)`,

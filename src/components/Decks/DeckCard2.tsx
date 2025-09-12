@@ -18,7 +18,7 @@ export function DeckCard2({ deck, editable, showActions }: OwnProps) {
 
   return (
     <div
-      className={`deck-card ${showActions ? "selectable" : ""}`}
+      className={`deck-card w-full ${showActions ? "selectable" : ""}`}
       style={
         {
           ["--url" as string]: `url(${deck.featured})`,
