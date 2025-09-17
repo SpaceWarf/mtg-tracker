@@ -227,8 +227,8 @@ export function PlayerByIdViewer() {
                         initial: "1",
                         xs: "2",
                         lg: "4",
-                        xl: "5",
                       }}
+                      width="100%"
                     >
                       {Array.from(populatedPlayer.deckStatsMap.entries())
                         .sort(
@@ -237,7 +237,7 @@ export function PlayerByIdViewer() {
                             b[1].won - a[1].won ||
                             a[1].lost - b[1].lost
                         )
-                        .slice(0, 5)
+                        .slice(0, 4)
                         .map(([deck, stats]) => (
                           <CommanderPreview
                             key={deck}
@@ -260,8 +260,8 @@ export function PlayerByIdViewer() {
                         initial: "1",
                         xs: "2",
                         lg: "4",
-                        xl: "5",
                       }}
+                      width="100%"
                     >
                       {Array.from(populatedPlayer.deckStatsMap.entries())
                         .sort(
@@ -270,7 +270,7 @@ export function PlayerByIdViewer() {
                             b[1].played - a[1].played ||
                             a[1].lost - b[1].lost
                         )
-                        .slice(0, 5)
+                        .slice(0, 4)
                         .map(([deck, stats]) => (
                           <CommanderPreview
                             key={deck}

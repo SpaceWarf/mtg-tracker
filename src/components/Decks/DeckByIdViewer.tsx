@@ -642,7 +642,6 @@ export function DeckByIdViewer() {
                             initial: "1",
                             xs: "2",
                             lg: "4",
-                            xl: "5",
                           }}
                           width="100%"
                         >
